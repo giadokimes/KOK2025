@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ΚΟΚ 2026 – v6.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f4f8;
+            color: #1a202c;
+            padding: 0 0 80px 0;
+            min-height: 100vh;
+            transition: background .3s, color .3s;
+        }
+        body.dark {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .header {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 16px 20px 14px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+        }
+        body.dark .header {
+            background: #0b1e33;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .header-title span {
+            font-weight: 300;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .header-actions button {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+        }
+        .header-actions button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        body.dark .header-actions button {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .search-box {
+            margin-top: 12px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a202c;
+            outline: none;
+        }
+        body.dark .search-box input {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .search-box input:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        .search-box .icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            opacity: 0.6;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            margin-bottom: 8px;
+        }
+        .filters button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+        .filters button.active {
+            background: #fff;
+            color: #1e3a5f;
+        }
+        body.dark .filters button.active {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+        .filters button:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+        body.dark .filters button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .count {
+            font-size: 14px;
+            color: #4a5568;
+            padding: 8px 4px 0 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        body.dark .count {
+            color: #94a3b8;
+        }
+        .list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #e2e8f0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        body.dark .card {
+            background: #1e293b;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            border-left-color: #334155;
+        }
+        .card .sign {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card .sign svg {
+            max-width: 60px;
+            max-height: 60px;
+        }
+        .card .content {
+            flex: 1;
+            min-width: 0;
+        }
+        .card .name {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.3;
+        }
+        .card .article {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 2px;
+        }
+        body.dark .card .article {
+            color: #94a3b8;
+        }
+        .card .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+        .card .details .fine {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        body.dark .card .details .fine {
+            color: #f87171;
+        }
+        .card .details .suspend {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        body.dark .card .details .suspend {
+            color: #60a5fa;
+        }
+        .badge-half {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #b45309;
+            background: #ffedd5;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+        body.dark .badge-half {
+            background: #451a03;
+            color: #fdba74;
+        }
+        .card .favorite {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.3;
+            transition: opacity .2s, transform .15s;
+            line-height: 1;
+        }
+        .card .favorite.active {
+            opacity: 1;
+            color: #f59e0b;
+        }
+        .card .favorite:active {
+            transform: scale(1.3);
+        }
+        body.dark .card .favorite {
+            opacity: 0.4;
+        }
+        body.dark .card .favorite.active {
+            opacity: 1;
+            color: #fbbf24;
+        }
+        .badge-criminal {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+        body.dark .badge-criminal {
+            background: #450a0a;
+            color: #fca5a5;
+        }
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+            font-size: 16px;
+        }
+        body.dark .empty {
+            color: #94a3b8;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a202c;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+            z-index: 999;
+        }
+        body.dark .toast {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 17px;
+            }
+            .card .sign {
+                width: 48px;
+                height: 48px;
+            }
+            .card .sign svg {
+                max-width: 48px;
+                max-height: 48px;
+            }
+            .card .name {
+                font-size: 14px;
+            }
+            .card .details {
+                font-size: 13px;
+                gap: 4px 12px;
+            }
+            .filters button {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+        }
+        @media print {
+            .header,
+            .search-box,
+            .filters,
+            .count,
+            .favorite,
+            .header-actions {
+                display: none !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                padding: 0 !important;
+            }
+            body.dark {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            .card {
+                border-left-color: #333 !important;
+                background: #fff !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            .card .article {
+                color: #333 !important;
+            }
+            .card .details .fine {
+                color: #c00 !important;
+            }
+            .card .details .suspend {
+                color: #00c !important;
+            }
+            .badge-criminal {
+                color: #c00 !important;
+                background: #fee !important;
+            }
+            .badge-half {
+                color: #b45309 !important;
+                background: #ffedd5 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <div class="header-title">🚗 ΚΟΚ <span>2026 v6.0</span></div>
+            <div class="header-actions">
+                <button onclick="toggleDark()">🌙</button>
+                <button onclick="toggleFavorites()">⭐</button>
+                <button onclick="window.print()">🖨️</button>
+            </div>
+        </div>
+        <div class="search-box">
+            <span class="icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="render()">
+        </div>
+        <div class="filters" id="filterContainer">
+            <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
+            <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>
+            <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button>
+            <button data-filter="άδειες" onclick="setFilter('άδειες')">Άδειες</button>
+            <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
+            <button data-filter="θόρυβος" onclick="setFilter('θόρυβος')">Θόρυβος</button>
+            <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')">ΕΠΗΟ</button>
+            <button data-filter="ειδικές" onclick="setFilter('ειδικές')">Ειδικές</button>
+        </div>
+    </div>
+
+    <div class="count" id="countDisplay">
+        <span id="countText">0 παραβάσεις</span>
+        <span id="favIndicator" style="display:none;">⭐ Αγαπημένα</span>
+    </div>
+
+    <div class="list" id="listContainer"></div>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v6.0 (με ΣΩΣΤΕΣ SVG πινακίδες)
+        // ΠΗΓΗ: Κωδικοποίηση ΚΟΚ τροπ.2 Ν.5290-26 (30.3.2026)
+        // ============================================================
+        const data = [{
+            id: 1,
+            category: 'στάθμευση',
+            name: 'Σε διάβαση πεζών / ποδηλατιστών (<5μ.)',
+            article: '38§2α',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false,
+            sign: 'crosswalk'
+        }, {
+            id: 2,
+            category: 'στάθμευση',
+            name: 'Σε ράμπα ΑμεΑ',
+            article: '38§2ιστ',
+            fine: 30,
+            suspend: '40 ημέρες αδ. οδ.',
+            half: true,
+            criminal: false,
+            sign: 'disabled'
+        }, {
+            id: 3,
+            category: 'στάθμευση',
+            name: 'Σε θέση φόρτισης ηλεκτρικών (χωρίς φόρτιση)',
+            article: '38§2ιθ',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false
+        }, {
+            id: 4,
+            category: 'στάθμευση',
+            name: 'Σε στάση λεωφορείου (<12μ.)',
+            article: '38§2β',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false
+        }, {
+            id: 5,
+            category: 'στάθμευση',
+            name: 'Σε είσοδο/έξοδο κόμβου (<10μ.)',
+            article: '38§2γ',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false
+        }, {
+            id: 6,
+            category: 'στάθμευση',
+            name: 'Σε σιδηροδρομικές / τροχιοδρομικές γραμμές',
+            article: '38§2δ',
+            fine: 1200,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: true
+        }, {
+            id: 7,
+            category: 'στάθμευση',
+            name: 'Σε πεζοδρόμιο / πλατεία / ποδηλατόδρομο',
+            article: '38§2ε',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false
+        }, {
+            id: 8,
+            category: 'στάθμευση',
+            name: 'Σε είσοδο/έξοδο νοσοκομείου / κλινικής',
+            article: '38§3ζ',
+            fine: 30,
+            suspend: '40 ημέρες αδ. οδ.',
+            half: true,
+            criminal: false
+        }, {
+            id: 9,
+            category: 'στάθμευση',
+            name: 'Σε θέση ΤΑΞΙ (Ρ-70)',
+            article: '38§3θ',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false
+        }, {
+            id: 10,
+            category: 'στάθμευση',
+            name: 'Σε απαγορευτική κίτρινη ζιγκ-ζαγκ',
+            article: '8§8η',
+            fine: 150,
+            suspend: '20 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 11,
+            category: 'στάθμευση',
+            name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης & στάθμευσης)',
+            article: '7§3, 38§1',
+            fine: 30,
+            suspend: '-',
+            half: true,
+            criminal: false,
+            sign: 'r40'
+        }, {
+            id: 12,
+            category: 'στάθμευση',
+            name: 'Παραβίαση Ρ-40 που εμποδίζει δημόσια συγκοινωνία',
+            article: '38§2',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
+            criminal: false,
+            sign: 'r40'
+        }, {
+            id: 13,
+            category: 'κίνηση',
+            name: 'Παραβίαση ερυθρού σηματοδότη',
+            article: '9§3',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 14,
+            category: 'κίνηση',
+            name: 'Παραβίαση STOP (P-2)',
+            article: '7§11β',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false,
+            sign: 'stop'
+        }, {
+            id: 15,
+            category: 'κίνηση',
+            name: 'Παραβίαση P-1 (παραχώρηση προτεραιότητας)',
+            article: '7§11α',
+            fine: 350,
+            suspend: '30 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false,
+            sign: 'p1'
+        }, {
+            id: 16,
+            category: 'κίνηση',
+            name: 'Κίνηση αντίθετα σε μονόδρομο',
+            article: '20§8β',
+            fine: 350,
+            suspend: '70 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 17,
+            category: 'κίνηση',
+            name: 'Απαγόρευση αναστροφής (P-29)',
+            article: '7§11β',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false,
+            sign: 'r29'
+        }, {
+            id: 18,
+            category: 'θόρυβος',
+            name: 'Θόρυβος πέραν επιτρεπομένων ορίων',
+            article: '19§2',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 19,
+            category: 'θόρυβος',
+            name: 'Παρενόχληση από ηχητικό σύστημα',
+            article: '19§3',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 20,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Ε.Ι.Χ.',
+            article: '98§4αβ',
+            fine: 700,
+            suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 21,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Ε.Δ.Χ. / Λεωφορεία',
+            article: '98§4αβ',
+            fine: 1000,
+            suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 22,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Μοτοσικλέτα / Μοτοποδήλατο',
+            article: '98§4αα',
+            fine: 500,
+            suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 23,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Λεωφορεία / Φ.Δ.Χ.',
+            article: 'ΠΔ 237/86',
+            fine: 1000,
+            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 24,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.',
+            article: 'ΠΔ 237/86',
+            fine: 500,
+            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 25,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Δίκυκλα',
+            article: 'ΠΔ 237/86',
+            fine: 250,
+            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 26,
+            category: 'ασφάλεια',
+            name: 'Ατύχημα με ανασφάλιστο (1η φορά)',
+            article: 'ΠΔ 237/86',
+            fine: 'ως άνω',
+            suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 27,
+            category: 'ΕΠΗΟ',
+            name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση',
+            article: '38§4,12',
+            fine: 30,
+            suspend: '-',
+            half: false,
+            criminal: false
+        }, {
+            id: 28,
+            category: 'ΕΠΗΟ',
+            name: 'Είσοδος σε ποδηλατόδρομο (ΕΠΗΟ)',
+            article: '44§7',
+            fine: 150,
+            suspend: '40 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 29,
+            category: 'ΕΠΗΟ',
+            name: 'Χρήση κινητού / ακουστικών (ΕΠΗΟ)',
+            article: '44§1στ,ζ',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 30,
+            category: 'ειδικές',
+            name: 'Παραβίαση ερυθρού – Υποτροπή (2η φορά)',
+            article: '110§3α',
+            fine: 1000,
+            suspend: '180 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 31,
+            category: 'ειδικές',
+            name: 'Παραβίαση ερυθρού – Υποτροπή (3η φορά)',
+            article: '110§4α',
+            fine: 2000,
+            suspend: '1 έτος αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 32,
+            category: 'ειδικές',
+            name: 'Ερυθρός με ατύχημα – Υποτροπή (2η)',
+            article: '110§3β',
+            fine: 2000,
+            suspend: '4 έτη αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 33,
+            category: 'ειδικές',
+            name: 'Υπέρβαση ταχύτητας >50χλμ/ω',
+            article: '24§9γ',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 34,
+            category: 'ειδικές',
+            name: 'STOP/P-29 – Υποτροπή (2η φορά)',
+            article: '110§3α',
+            fine: 1000,
+            suspend: '180 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 35,
+            category: 'ειδικές',
+            name: 'STOP/P-29 – Υποτροπή (3η φορά)',
+            article: '110§4α',
+            fine: 2000,
+            suspend: '1 έτος αδ. οδ.',
+            half: false,
+            criminal: false
+        }];
+
+        // ============================================================
+        // SVG ΠΙΝΑΚΙΔΕΣ – v6.0 (ΣΩΣΤΕΣ, από το signs.pdf)
+        // ============================================================
+        const signs = {
+            stop: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="60" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
+            r40: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-40</text></svg>`,
+            p1: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#cc0000" stroke-width="4"/><polygon points="50,20 80,50 50,80 20,50" fill="#fff" stroke="#cc0000" stroke-width="4"/><polygon points="50,30 70,50 50,70 30,50" fill="#cc0000"/></svg>`,
+            r29: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><path d="M30,25 L70,75 M70,25 L30,75" stroke="#cc0000" stroke-width="6"/></svg>`,
+            disabled: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`,
+            crosswalk: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`
+        };
+
+        // ============================================================
+        // ΚΑΤΑΣΤΑΣΗ & ΣΥΝΑΡΤΗΣΕΙΣ
+        // ============================================================
+        let currentFilter = 'all';
+        let showFavorites = false;
+        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v6')) || {};
+
+        function toggleDark() {
+            document.body.classList.toggle('dark');
+        }
+
+        function toggleFavorites() {
+            showFavorites = !showFavorites;
+            document.getElementById('favIndicator').style.display = showFavorites ? 'inline' : 'none';
+            render();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filters button').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+            render();
+        }
+
+        function toggleFavorite(id) {
+            favorites[id] = !favorites[id];
+            localStorage.setItem('kok_favorites_v6', JSON.stringify(favorites));
+            render();
+            showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        function getSignHTML(sign) {
+            return signs[sign] ? `<div class="sign">${signs[sign]}</div>` : '';
+        }
+
+        function getCardColor(category) {
+            const map = {
+                'στάθμευση': '#f59e0b',
+                'κίνηση': '#ef4444',
+                'άδειες': '#8b5cf6',
+                'ασφάλεια': '#10b981',
+                'θόρυβος': '#f97316',
+                'ΕΠΗΟ': '#06b6d4',
+                'ειδικές': '#dc2626'
+            };
+            return map[category] || '#64748b';
+        }
+
+        function render() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const container = document.getElementById('listContainer');
+            const countEl = document.getElementById('countText');
+
+            let filtered = data.filter(v => {
+                if (showFavorites && !favorites[v.id]) return false;
+                if (currentFilter !== 'all' && v.category !== currentFilter) return false;
+                if (query) {
+                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.suspend).toLowerCase();
+                    if (!searchable.includes(query)) return false;
+                }
+                return true;
+            });
+
+            countEl.textContent = filtered.length + ' παραβάσεις';
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty">🔍 Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(v => `
+                <div class="card" style="border-left-color: ${getCardColor(v.category)};">
+                    ${v.sign ? getSignHTML(v.sign) : ''}
+                    <div class="content">
+                        <div class="name">
+                            ${v.name}
+                            ${v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : ''}
+                            ${v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : ''}
+                        </div>
+                        <div class="article">Άρθρο: ${v.article}</div>
+                        <div class="details">
+                            <span class="fine">💰 ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                            ${v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
+                        </div>
+                    </div>
+                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})">
+                        ${favorites[v.id] ? '⭐' : '☆'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        render();
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+                document.getElementById('searchInput').select();
+            }
+        });
+    </script>
+</body>
+</html>
