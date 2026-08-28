@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ 2026 – Πλήρης Έκδοση v7.0</title>
+    <title>ΚΟΚ 2026 – Πλήρης Έκδοση v8.0</title>
     <style>
         * {
             margin: 0;
@@ -225,20 +225,6 @@
         body.dark .card .details .seco {
             color: #a78bfa;
         }
-        .badge-half {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 700;
-            color: #b45309;
-            background: #ffedd5;
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin-left: 6px;
-        }
-        body.dark .badge-half {
-            background: #451a03;
-            color: #fdba74;
-        }
         .card .favorite {
             flex-shrink: 0;
             background: none;
@@ -277,6 +263,34 @@
         body.dark .badge-criminal {
             background: #450a0a;
             color: #fca5a5;
+        }
+        .badge-half {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #b45309;
+            background: #ffedd5;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+        body.dark .badge-half {
+            background: #451a03;
+            color: #fdba74;
+        }
+        .badge-pro {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #1e40af;
+            background: #dbeafe;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+        body.dark .badge-pro {
+            background: #1e3a5f;
+            color: #93c5fd;
         }
         .empty {
             text-align: center;
@@ -377,13 +391,17 @@
                 color: #b45309 !important;
                 background: #ffedd5 !important;
             }
+            .badge-pro {
+                color: #1e40af !important;
+                background: #dbeafe !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>2026 v7.0</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>2026 v8.0</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -405,9 +423,7 @@
             <button data-filter="άδειες" onclick="setFilter('άδειες')">Άδειες</button>
             <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
             <button data-filter="μέθη" onclick="setFilter('μέθη')">Μέθη</button>
-            <button data-filter="φώτα" onclick="setFilter('φώτα')">Φώτα</button>
             <button data-filter="ειδικές" onclick="setFilter('ειδικές')">Υποτροπές</button>
-            <button data-filter="λοιπές" onclick="setFilter('λοιπές')">Λοιπές</button>
         </div>
     </div>
 
@@ -421,137 +437,136 @@
 
     <script>
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v7.0 (ΠΛΗΡΗΣ ΕΦΑΡΜΟΓΗ)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v8.0 (ΠΛΗΡΗΣ ΕΦΑΡΜΟΓΗ)
         // ΠΗΓΕΣ: Ν. 5290/2026, Ν. 3446/2006, ΚΥΑ ΣΕΣΟ
         // ============================================================
         const data = [
             // ========== 1. ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
-            { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών / ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 2, category: 'στάθμευση', name: 'Σε ράμπα ΑμεΑ', article: '38§2ιστ', fine: 30, suspend: '40 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
-            { id: 3, category: 'στάθμευση', name: 'Σε θέση φόρτισης ηλεκτρικών (χωρίς φόρτιση)', article: '38§2ιθ', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 4, category: 'στάθμευση', name: 'Σε στάση λεωφορείου (<12μ.)', article: '38§2β', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 5, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο κόμβου (<10μ.)', article: '38§2γ', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 6, category: 'στάθμευση', name: 'Σε σιδηροδρομικές / τροχιοδρομικές γραμμές', article: '38§2δ', fine: 1200, suspend: '60 ημέρες αδ. οδ.', half: false, criminal: true, seco: 9 },
-            { id: 7, category: 'στάθμευση', name: 'Σε πεζοδρόμιο / πλατεία / ποδηλατόδρομο', article: '38§2ε', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 8, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο νοσοκομείου / κλινικής', article: '38§3ζ', fine: 30, suspend: '40 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
-            { id: 9, category: 'στάθμευση', name: 'Σε θέση ΤΑΞΙ (Ρ-70)', article: '38§3θ', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 10, category: 'στάθμευση', name: 'Σε απαγορευτική κίτρινη ζιγκ-ζαγκ', article: '8§8η', fine: 150, suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 11, category: 'στάθμευση', name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης & στάθμευσης)', article: '7§3', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 12, category: 'στάθμευση', name: 'Παραβίαση Ρ-40 που εμποδίζει δημόσια συγκοινωνία', article: '38§2', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 5 },
-            { id: 13, category: 'στάθμευση', name: 'Στάθμευση σε αυτοκινητόδρομο / σήραγγα', article: '33§8', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
-            { id: 14, category: 'στάθμευση', name: 'Μη τοποθέτηση τριγωνικής πινακίδας σε αναγκαστική στάθμευση', article: '38§10', fine: 30, suspend: '10 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
-            { id: 15, category: 'στάθμευση', name: 'Φορτηγό >3,5τ. / λεωφορείο / τροχόσπιτο >7,5μ. – στάθμευση >24ωρο', article: '38§6', fine: 30, suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών / ποδηλατιστών (<5μ.)', article: '38§2α', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 2, category: 'στάθμευση', name: 'Σε ράμπα ΑμεΑ', article: '38§2ιστ', fine: '30€', suspend: '40 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
+            { id: 3, category: 'στάθμευση', name: 'Σε χώρο ΑμεΑ (Ρ-71)', article: '38§2ιζ', fine: '150€', suspend: '20 ημ. αδ. οδ. + 70 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 4, category: 'στάθμευση', name: 'Σε συγκεκριμένο χώρο ΑμεΑ (Ρ-72)', article: '38§2ιη', fine: '150€', suspend: '20 ημ. αδ. οδ. + 70 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 5, category: 'στάθμευση', name: 'Σε θέση φόρτισης ηλεκτρικών (χωρίς φόρτιση)', article: '38§2ιθ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 6, category: 'στάθμευση', name: 'Σε στάση λεωφορείου (<12μ.)', article: '38§2β', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 7, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο κόμβου (<10μ.)', article: '38§2γ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 8, category: 'στάθμευση', name: 'Σε σιδηροδρομικές γραμμές', article: '38§2δ', fine: '1.200€', suspend: '60 ημέρες αδ. οδ.', half: false, criminal: true, seco: 9 },
+            { id: 9, category: 'στάθμευση', name: 'Σε πεζοδρόμιο / πλατεία / ποδηλατόδρομο', article: '38§2ε', fine: '150€', suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 10, category: 'στάθμευση', name: 'Σε γέφυρα', article: '38§2στ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 11, category: 'στάθμευση', name: 'Σε στροφή/ράχη με περιορισμένη ορατότητα', article: '38§2ζ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 12, category: 'στάθμευση', name: 'Σε σημείο με ελεύθερο πλάτος <3μ.', article: '38§2η', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 13, category: 'στάθμευση', name: '<20μ. από σηματοδότη / <12μ. από STOP/P-1', article: '38§2θ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 14, category: 'στάθμευση', name: '<5μ. από τομή ρυμοτομικών γραμμών', article: '38§2ι', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 15, category: 'στάθμευση', name: 'Σε νησίδα ασφαλείας / διαχωριστική', article: '38§2ια', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 16, category: 'στάθμευση', name: 'Σε αυτοκινητόδρομο', article: '38§2ιβ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 17, category: 'στάθμευση', name: 'Σε λωρίδα επιτάχυνσης / επιβράδυνσης', article: '38§2ιγ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 18, category: 'στάθμευση', name: 'Σε σήραγγα', article: '38§2ιδ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 19, category: 'στάθμευση', name: 'Σε βοηθητική οδό για βραδυκίνητα', article: '38§2ιε', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 20, category: 'στάθμευση', name: 'Σε σημείο που εμποδίζει ΜΜΜ/λεωφορεία', article: '38§2κ', fine: '350€', suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 5 },
+            { id: 21, category: 'στάθμευση', name: '<15μ. από σιδηροδρομική διάβαση', article: '38§3α', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 22, category: 'στάθμευση', name: 'Μπροστά από είσοδο/έξοδο παρόδιας ιδιοκτησίας', article: '38§3β', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 23, category: 'στάθμευση', name: 'Σε θέση που εμποδίζει σταθμευμένο όχημα', article: '38§3γ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 24, category: 'στάθμευση', name: 'Σε σημείο που το υπόλοιπο της οδού δεν επαρκεί', article: '38§3δ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 25, category: 'στάθμευση', name: 'Παράπλευρα άλλου σταθμευμένου οχήματος', article: '38§3ε', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 26, category: 'στάθμευση', name: '<5μ. από πυροσβεστικό κρουνό', article: '38§3στ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 27, category: 'στάθμευση', name: 'Μπροστά από είσοδο/έξοδο νοσοκομείου', article: '38§3ζ', fine: '30€', suspend: '40 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
+            { id: 28, category: 'στάθμευση', name: 'Σε θέση που εμποδίζει χώρο στάθμευσης', article: '38§3η', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 29, category: 'στάθμευση', name: 'Σε θέση ΤΑΞΙ (Ρ-70)', article: '38§3θ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 30, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο πεζόδρομου', article: '38§3ι', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 31, category: 'στάθμευση', name: 'Σε κεντρικό οδόστρωμα τριών λωρίδων', article: '38§3ια', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 32, category: 'στάθμευση', name: 'Σε οδό προτεραιότητας (εκτός κατοικημένης)', article: '38§3ια', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 33, category: 'στάθμευση', name: 'Μη παράλληλη στάθμευση', article: '38§7', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 34, category: 'στάθμευση', name: 'Απομάκρυνση χωρίς μέτρα ασφαλείας', article: '38§8', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 35, category: 'στάθμευση', name: 'Αναγκαστική στάθμευση χωρίς τριγωνική πινακίδα', article: '38§10', fine: '30€', suspend: '10 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
+            { id: 36, category: 'στάθμευση', name: 'Σε απαγορευτική κίτρινη ζιγκ-ζαγκ', article: '8§8η', fine: '150€', suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 37, category: 'στάθμευση', name: 'Σε λεωφορειολωρίδα', article: '8§8ι', fine: '30€', suspend: '40 ημέρες αδ. οδ.', half: true, criminal: false, seco: 5 },
+            { id: 38, category: 'στάθμευση', name: 'Παραβίαση Ρ-40', article: '7§3', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
 
             // ========== 2. ΚΙΝΗΣΗ – ΣΗΜΑΤΑ – ΠΡΟΤΕΡΑΙΟΤΗΤΑ ==========
-            { id: 16, category: 'κίνηση', name: 'Παραβίαση STOP (P-2)', article: '7§11β', fine: 700, suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
-            { id: 17, category: 'κίνηση', name: 'Παραβίαση P-1 (παραχώρηση προτεραιότητας)', article: '7§11α', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
-            { id: 18, category: 'κίνηση', name: 'Παραβίαση ερυθρού σηματοδότη', article: '9§3', fine: 700, suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
-            { id: 19, category: 'κίνηση', name: 'Παραβίαση κίτρινου σηματοδότη', article: '9§1γ', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 20, category: 'κίνηση', name: 'Απαγόρευση αναστροφής (P-29)', article: '7§11β', fine: 700, suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
-            { id: 21, category: 'κίνηση', name: 'Κίνηση αντίθετα σε μονόδρομο', article: '20§7', fine: 350, suspend: '70 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
-            { id: 22, category: 'κίνηση', name: 'Κίνηση σε πεζόδρομο / πλατεία / νησίδα', article: '20§4', fine: 350, suspend: '70 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
-            { id: 23, category: 'κίνηση', name: 'Παραβίαση προτεραιότητας σε κόμβο', article: '30§5', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 7 },
-            { id: 24, category: 'κίνηση', name: 'Μη συμμόρφωση σε σήμα τροχονόμου', article: '6§1', fine: 150, suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 3 },
-            { id: 25, category: 'κίνηση', name: 'Παραβίαση σιδηροδρομικής διάβασης', article: '31§1', fine: 1200, suspend: '60 ημέρες αδ. οδ.', half: false, criminal: true, seco: 9 },
-            { id: 26, category: 'κίνηση', name: 'Κίνηση στη ΛΕΑ', article: '33§9', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
+            { id: 39, category: 'κίνηση', name: 'Παραβίαση STOP (P-2)', article: '7§11β', fine: '700€', suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 40, category: 'κίνηση', name: 'Παραβίαση P-1 (παραχώρηση προτεραιότητας)', article: '7§11α', fine: '350€', suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 41, category: 'κίνηση', name: 'Παραβίαση ερυθρού σηματοδότη', article: '9§3', fine: '700€', suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 42, category: 'κίνηση', name: 'Παραβίαση κίτρινου σηματοδότη', article: '9§1γ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 43, category: 'κίνηση', name: 'Απαγόρευση αναστροφής (P-29)', article: '7§11β', fine: '700€', suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 44, category: 'κίνηση', name: 'Κίνηση αντίθετα σε μονόδρομο', article: '20§7', fine: '350€', suspend: '70 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
+            { id: 45, category: 'κίνηση', name: 'Κίνηση σε πεζόδρομο / πλατεία / νησίδα', article: '20§4', fine: '350€', suspend: '70 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
+            { id: 46, category: 'κίνηση', name: 'Παραβίαση προτεραιότητας σε κόμβο', article: '30§5', fine: '350€', suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 7 },
+            { id: 47, category: 'κίνηση', name: 'Μη συμμόρφωση σε σήμα τροχονόμου', article: '6§1', fine: '150€', suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 3 },
+            { id: 48, category: 'κίνηση', name: 'Παραβίαση σιδηροδρομικής διάβασης', article: '31§1', fine: '1.200€', suspend: '60 ημέρες αδ. οδ.', half: false, criminal: true, seco: 9 },
+            { id: 49, category: 'κίνηση', name: 'Κίνηση στη ΛΕΑ', article: '33§9', fine: '150€', suspend: '40 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
 
             // ========== 3. ΤΑΧΥΤΗΤΑ (Άρθρο 24) ==========
-            { id: 27, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30, suspend: '-', half: false, criminal: false, seco: 3 },
-            { id: 28, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας 21-30χλμ/ω', article: '24§9αβ', fine: 150, suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 4 },
-            { id: 29, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας 31-50χλμ/ω', article: '24§9αγ', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 5 },
-            { id: 30, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας >50χλμ/ω', article: '24§9γ', fine: 700, suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
-            { id: 31, category: 'ταχύτητα', name: 'Οδήγηση >200χλμ/ω', article: '24§9δ', fine: 2000, suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 50, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: '30€', suspend: '-', half: false, criminal: false, seco: 3 },
+            { id: 51, category: 'ταχύτητα', name: 'Υπέρβαση 21-30χλμ/ω', article: '24§9αβ', fine: '150€', suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 4 },
+            { id: 52, category: 'ταχύτητα', name: 'Υπέρβαση 31-50χλμ/ω', article: '24§9αγ', fine: '350€', suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 5 },
+            { id: 53, category: 'ταχύτητα', name: 'Υπέρβαση >50χλμ/ω', article: '24§9γ', fine: '700€', suspend: '60 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 54, category: 'ταχύτητα', name: 'Οδήγηση >200χλμ/ω', article: '24§9δ', fine: '2.000€', suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 9 },
 
             // ========== 4. ΦΟΡΤΗΓΑ (Ν. 3446/2006) ==========
-            { id: 32, category: 'φορτηγά', name: 'Υπέρβαρο 5-10%', article: '4§1.2β', fine: 60, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 33, category: 'φορτηγά', name: 'Υπέρβαρο 10-20%', article: '4§1.2γ', fine: 500, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 34, category: 'φορτηγά', name: 'Υπέρβαρο >20%', article: '4§1.2δ', fine: 3000, suspend: '4 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 35, category: 'φορτηγά', name: 'Ακατάλληλη φόρτωση', article: '4§1.1', fine: '750€ (οδηγός) + 1.500€ (υπεύθ. φόρτωσης)', suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 36, category: 'φορτηγά', name: 'Κυκλοφορία χωρίς ΚΤΕΟ', article: '4§1.3', fine: 300, suspend: 'Μέχρι έκδοσης ΚΤΕΟ', half: false, criminal: false, seco: 0 },
-            { id: 37, category: 'φορτηγά', name: 'Υπέρβαση διαστάσεων', article: '4§1.4', fine: 1000, suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 38, category: 'φορτηγά', name: 'Κυκλοφορία σε ημέρες/ώρες απαγόρευσης', article: '4§1.5', fine: 200, suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 39, category: 'φορτηγά', name: 'Κυκλοφορία χωρίς άδεια κυκλοφορίας', article: '4§1.9', fine: 8000, suspend: 'Αφαίρεση στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 40, category: 'φορτηγά', name: 'Παραποίηση πινακίδων', article: '4§1.11', fine: 5000, suspend: '6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 41, category: 'φορτηγά', name: 'Οδήγηση χωρίς κατάλληλη άδεια', article: '4§1.13', fine: '2.000€ (οδηγός + ιδιοκτήτης)', suspend: '2 μήνες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 42, category: 'φορτηγά', name: 'Παράνομη μίσθωση', article: '4§1.14', fine: 300, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 43, category: 'φορτηγά', name: 'Ανασφάλιστο φορτηγό', article: 'ΠΔ 237/86', fine: 1000, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 55, category: 'φορτηγά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: '30€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 56, category: 'φορτηγά', name: 'Υπέρβαρο 5-10%', article: '4§1.2β', fine: '60€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 57, category: 'φορτηγά', name: 'Υπέρβαρο 10-20%', article: '4§1.2γ', fine: '500€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 58, category: 'φορτηγά', name: 'Υπέρβαρο >20%', article: '4§1.2δ', fine: '3.000€', suspend: '4 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 59, category: 'φορτηγά', name: 'Ακατάλληλη φόρτωση', article: '4§1.1', fine: '750€ (οδηγός) + 1.500€ (υπεύθ. φόρτωσης)', suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
+            { id: 60, category: 'φορτηγά', name: 'Χωρίς ΚΤΕΟ', article: '4§1.3', fine: '300€', suspend: 'Μέχρι έκδοσης ΚΤΕΟ', half: false, criminal: false, seco: 0 },
+            { id: 61, category: 'φορτηγά', name: 'Υπέρβαση διαστάσεων', article: '4§1.4', fine: '1.000€', suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
+            { id: 62, category: 'φορτηγά', name: 'Κυκλοφορία σε απαγορευμένες ώρες', article: '4§1.5', fine: '200€', suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
+            { id: 63, category: 'φορτηγά', name: 'Χωρίς άδεια κυκλοφορίας', article: '4§1.9', fine: '8.000€', suspend: 'Αφαίρεση στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 64, category: 'φορτηγά', name: 'Παραποίηση πινακίδων', article: '4§1.11', fine: '5.000€', suspend: '6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 65, category: 'φορτηγά', name: 'Οδήγηση χωρίς κατάλληλη άδεια', article: '4§1.13', fine: '2.000€ (οδηγός + ιδιοκτήτης)', suspend: '2 μήνες αδ. οδ.', half: false, criminal: false, seco: 0 },
 
-            // ========== 5. ΔΙΚΥΚΛΑ (Άρθρα 16, 44, 62, 78, 79) ==========
-            { id: 44, category: 'δίκυκλα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
-            { id: 45, category: 'δίκυκλα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 46, category: 'δίκυκλα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 47, category: 'δίκυκλα', name: 'Παράλληλη κίνηση', article: '44§1δ', fine: 30, suspend: '-', half: true, criminal: false, seco: 0 },
-            { id: 48, category: 'δίκυκλα', name: 'Διήθηση με ταχύτητα >20χλμ/ω', article: '21§9β', fine: 30, suspend: '10 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
-            { id: 49, category: 'δίκυκλα', name: 'Χρήση κινητού / ακουστικών (δίκυκλο)', article: '44§1στ', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 4 },
-            { id: 50, category: 'δίκυκλα', name: 'Έλλειψη φώτων (μοτοσικλέτα)', article: '78§3', fine: 150, suspend: '-', half: false, criminal: false, seco: 0 },
+            // ========== 5. ΔΙΚΥΚΛΑ ==========
+            { id: 66, category: 'δίκυκλα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: '350€', suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 5 },
+            { id: 67, category: 'δίκυκλα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: '350€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 68, category: 'δίκυκλα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1', fine: '150€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 69, category: 'δίκυκλα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ', fine: '30€ (15€ για μοτοποδήλατα)', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 70, category: 'δίκυκλα', name: 'Παράλληλη κίνηση', article: '44§1δ', fine: '30€ (15€ για μοτοποδήλατα)', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 71, category: 'δίκυκλα', name: 'Διήθηση με ταχύτητα >20χλμ/ω', article: '21§9β', fine: '30€ (15€ για μοτοποδήλατα)', suspend: '10 ημέρες αδ. οδ.', half: true, criminal: false, seco: 0 },
+            { id: 72, category: 'δίκυκλα', name: 'Χρήση κινητού / ακουστικών', article: '44§1στ', fine: '350€', suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 4 },
+            { id: 73, category: 'δίκυκλα', name: 'Ρυμούλκηση από άλλο όχημα', article: '44§1α', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
+            { id: 74, category: 'δίκυκλα', name: 'Μεταφορά αντικειμένων που εμποδίζουν', article: '44§1γ', fine: '30€', suspend: '-', half: true, criminal: false, seco: 0 },
 
-            // ========== 6. ΕΠΗΟ (Άρθρα 24§12, 38§12, 44) ==========
-            { id: 51, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12', fine: 30, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 52, category: 'ΕΠΗΟ', name: 'Είσοδος σε ποδηλατόδρομο (ΕΠΗΟ)', article: '44§7', fine: 150, suspend: '40 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 53, category: 'ΕΠΗΟ', name: 'Χρήση κινητού / ακουστικών (ΕΠΗΟ)', article: '44§1στ,ζ', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 4 },
-            { id: 54, category: 'ΕΠΗΟ', name: 'Οδήγηση ΕΠΗΟ χωρίς κράνος', article: '44§12', fine: 30, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 55, category: 'ΕΠΗΟ', name: 'Οδήγηση ΕΠΗΟ σε οδό με όριο >50χλμ/ω', article: '24§12', fine: 30, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 56, category: 'ΕΠΗΟ', name: 'Ταχύτητα ΕΠΗΟ >35χλμ/ω', article: '24§12', fine: '150€ (οδηγός) / 350€ (θέτων σε κυκλοφορία)', suspend: '-', half: false, criminal: false, seco: 0 },
+            // ========== 6. ΕΠΗΟ ==========
+            { id: 75, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12', fine: '30€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 76, category: 'ΕΠΗΟ', name: 'Είσοδος σε ποδηλατόδρομο (ΕΠΗΟ)', article: '44§7', fine: '150€', suspend: '40 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 77, category: 'ΕΠΗΟ', name: 'Χρήση κινητού / ακουστικών (ΕΠΗΟ)', article: '44§1στ,ζ', fine: '350€', suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 4 },
+            { id: 78, category: 'ΕΠΗΟ', name: 'Μη χρήση κράνους (ΕΠΗΟ)', article: '44§12', fine: '30€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 79, category: 'ΕΠΗΟ', name: 'Οδήγηση σε οδό με όριο >50χλμ/ω', article: '24§12', fine: '30€', suspend: '-', half: false, criminal: false, seco: 0 },
+            { id: 80, category: 'ΕΠΗΟ', name: 'Ταχύτητα >35χλμ/ω', article: '24§12', fine: '150€ (οδηγός) / 350€ (θέτων)', suspend: '-', half: false, criminal: false, seco: 0 },
 
-            // ========== 7. ΑΔΕΙΕΣ ΟΔΗΓΗΣΗΣ (Άρθρα 98-102) ==========
-            { id: 57, category: 'άδειες', name: 'Στέρηση άδειας οδήγησης – Ε.Ι.Χ.', article: '98§4αβ', fine: 700, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 58, category: 'άδειες', name: 'Στέρηση άδειας οδήγησης – Ε.Δ.Χ. / Λεωφορεία', article: '98§4αβ', fine: 1000, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 59, category: 'άδειες', name: 'Στέρηση άδειας οδήγησης – Μοτοσικλέτα / Μοτοποδήλατο', article: '98§4αα', fine: 500, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 60, category: 'άδειες', name: 'Οδήγηση με ληγμένη άδεια', article: '99§2', fine: 150, suspend: 'Αφαίρεση άδειας μέχρι ανανέωσης', half: false, criminal: false, seco: 0 },
-            { id: 61, category: 'άδειες', name: 'Παραχώρηση οδήγησης σε μη δικαιούχο', article: '102§1', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            // ========== 7. ΑΔΕΙΕΣ ΟΔΗΓΗΣΗΣ ==========
+            { id: 81, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: '700€', suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 82, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Δ.Χ. / Λεωφορεία', article: '98§4αβ', fine: '1.000€', suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 83, category: 'άδειες', name: 'Στέρηση άδειας – Μοτοσικλέτα / Μοτοποδήλατο', article: '98§4αα', fine: '500€', suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 84, category: 'άδειες', name: 'Οδήγηση με ληγμένη άδεια', article: '99§2', fine: '150€', suspend: 'Αφαίρεση μέχρι ανανέωσης', half: false, criminal: false, seco: 0 },
+            { id: 85, category: 'άδειες', name: 'Παραχώρηση οδήγησης σε μη δικαιούχο', article: '102§1', fine: '350€', suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
 
             // ========== 8. ΑΣΦΑΛΕΙΑ – ΚΤΕΟ ==========
-            { id: 62, category: 'ασφάλεια', name: 'Ανασφάλιστο – Δίκυκλα', article: 'ΠΔ 237/86', fine: 250, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 63, category: 'ασφάλεια', name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.', article: 'ΠΔ 237/86', fine: 500, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 64, category: 'ασφάλεια', name: 'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία', article: 'ΠΔ 237/86', fine: 1000, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 65, category: 'ασφάλεια', name: 'Ατύχημα με ανασφάλιστο (1η φορά)', article: 'ΠΔ 237/86', fine: 'ως άνω', suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 66, category: 'ασφάλεια', name: 'Κυκλοφορία χωρίς ΚΤΕΟ', article: '90', fine: 350, suspend: '30 ημ. στοιχ. κυκλ. + ακινητοποίηση', half: false, criminal: false, seco: 0 },
+            { id: 86, category: 'ασφάλεια', name: 'Ανασφάλιστο – Δίκυκλα', article: 'ΠΔ 237/86', fine: '250€', suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 87, category: 'ασφάλεια', name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.', article: 'ΠΔ 237/86', fine: '500€', suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 88, category: 'ασφάλεια', name: 'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία', article: 'ΠΔ 237/86', fine: '1.000€', suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 89, category: 'ασφάλεια', name: 'Ατύχημα με ανασφάλιστο', article: 'ΠΔ 237/86', fine: 'ως άνω', suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            { id: 90, category: 'ασφάλεια', name: 'Χωρίς ΚΤΕΟ', article: '90', fine: '350€', suspend: '30 ημ. στοιχ. κυκλ. + ακινητοποίηση', half: false, criminal: false, seco: 0 },
 
-            // ========== 9. ΘΟΡΥΒΟΣ – ΡΥΠΟΙ (Άρθρο 19) ==========
-            { id: 67, category: 'θόρυβος', name: 'Θόρυβος πέραν επιτρεπομένων ορίων', article: '19§1β', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
-            { id: 68, category: 'θόρυβος', name: 'Παρενόχληση από ηχητικό σύστημα', article: '19§3', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: false, seco: 0 },
+            // ========== 9. ΜΕΘΗ – ΑΛΚΟΟΛ (Άρθρο 46) ==========
+            { id: 91, category: 'μέθη', name: 'Αλκοόλ 0,50-0,80 (γενικός) / 0,20-0,80 (επαγγελματίες)', article: '46§7α', fine: '350€', suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 7 },
+            { id: 92, category: 'μέθη', name: 'Αλκοόλ 0,80-1,10 (γενικός) / 0,80-1,10 (επαγγελματίες)', article: '46§7β', fine: '700€', suspend: '90 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
+            { id: 93, category: 'μέθη', name: 'Αλκοόλ >1,10 (γενικός) / >1,10 (επαγγελματίες)', article: '46§7γ', fine: '1.200€', suspend: '180 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: true, seco: 9 },
+            { id: 94, category: 'μέθη', name: 'Άρνηση αλκοολομέτρησης', article: '46§6', fine: '1.200€', suspend: '180 ημ. αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: true, seco: 9 },
+            { id: 95, category: 'μέθη', name: 'Οδήγηση υπό τοξικές ουσίες', article: '46§8', fine: 'Ποινικές κυρώσεις', suspend: '3-6 μήνες αδ. οδ.', half: false, criminal: true, seco: 0 },
 
-            // ========== 10. ΜΕΘΗ – ΑΛΚΟΟΛ (Άρθρο 46) ==========
-            { id: 69, category: 'μέθη', name: 'Αλκοόλ 0,50-0,80 g/l (αίμα) / 0,25-0,40 (αέρα)', article: '46§7α', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 7 },
-            { id: 70, category: 'μέθη', name: 'Αλκοόλ 0,80-1,10 g/l (αίμα) / 0,40-0,60 (αέρα)', article: '46§7β', fine: 700, suspend: '90 ημέρες αδ. οδ.', half: false, criminal: false, seco: 9 },
-            { id: 71, category: 'μέθη', name: 'Αλκοόλ >1,10 g/l (αίμα) / >0,60 (αέρα)', article: '46§7γ', fine: 1200, suspend: '180 ημέρες αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: true, seco: 9 },
-            { id: 72, category: 'μέθη', name: 'Άρνηση αλκοολομέτρησης', article: '46§6', fine: 1200, suspend: '180 ημέρες αδ. οδ. + στοιχ. κυκλ.', half: false, criminal: true, seco: 9 },
-            { id: 73, category: 'μέθη', name: 'Οδήγηση υπό επήρεια τοξικών ουσιών', article: '46§8', fine: 'Ποινικές κυρώσεις', suspend: '3-6 μήνες αδ. οδ.', half: false, criminal: true, seco: 0 },
-
-            // ========== 11. ΥΠΟΤΡΟΠΙΕΣ (Άρθρο 110) ==========
-            { id: 74, category: 'ειδικές', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)', article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 75, category: 'ειδικές', name: 'Ερυθρός – 3η υποτροπή (χωρίς ατύχημα)', article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 76, category: 'ειδικές', name: 'Ερυθρός με ατύχημα – 2η υποτροπή', article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 77, category: 'ειδικές', name: 'STOP/P-29 – 2η υποτροπή', article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 78, category: 'ειδικές', name: 'STOP/P-29 – 3η υποτροπή', article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 79, category: 'ειδικές', name: 'STOP/P-29 με ατύχημα – 2η υποτροπή', article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 80, category: 'ειδικές', name: 'Κίνηση στη ΛΕΑ – 2η υποτροπή', article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 81, category: 'ειδικές', name: 'Κίνηση στη ΛΕΑ – 3η υποτροπή', article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 0 },
-
-            // ========== 12. ΦΩΤΑ (Άρθρα 67-84) ==========
-            { id: 82, category: 'φώτα', name: 'Έλλειψη φώτων πορείας (μεγάλα)', article: '67§1', fine: 150, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 83, category: 'φώτα', name: 'Έλλειψη φώτων διασταύρωσης (μεσαία)', article: '68§1', fine: 150, suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 84, category: 'φώτα', name: 'Έλλειψη φώτων θέσης (μικρά)', article: '69§1', fine: 150, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 85, category: 'φώτα', name: 'Έλλειψη φώτων τροχοπέδησης (STOP)', article: '72§1', fine: 150, suspend: '20 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 86, category: 'φώτα', name: 'Έλλειψη φλας', article: '75§1', fine: 150, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 87, category: 'φώτα', name: 'Έλλειψη φώτων ομίχλης (όταν απαιτούνται)', article: '73§1', fine: 30, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 88, category: 'φώτα', name: 'Έλλειψη φωτός πινακίδας κυκλοφορίας', article: '71§1', fine: 30, suspend: '10 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 89, category: 'φώτα', name: 'Αντικανονική χρήση φώτων πορείας (θάμβωση)', article: '40§1β', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-
-            // ========== 13. ΛΟΙΠΕΣ ΠΑΡΑΒΑΣΕΙΣ ==========
-            { id: 90, category: 'λοιπές', name: 'Μη χρήση ζώνης ασφαλείας (οδηγός)', article: '16§5', fine: 350, suspend: '30 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
-            { id: 91, category: 'λοιπές', name: 'Μη χρήση ζώνης (επιβάτης)', article: '16§5', fine: 150, suspend: '-', half: false, criminal: false, seco: 0 },
-            { id: 92, category: 'λοιπές', name: 'Έλλειψη ζώνης σε Ι.Χ.Ε. / φορτηγό ≤3,5τ.', article: '85§17', fine: 150, suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 93, category: 'λοιπές', name: 'Ακατάλληλη φόρτωση (γενικά)', article: '36§4', fine: 150, suspend: '3 βαθμοί + ακινητοποίηση', half: false, criminal: false, seco: 3 },
-            { id: 94, category: 'λοιπές', name: 'Πτώση / διαρροή φορτίου', article: '36§4β', fine: 150, suspend: '20 ημέρες αδ. οδ. + ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 95, category: 'λοιπές', name: 'Φθαρμένα ελαστικά (Ι.Χ.Ε. / φορτηγό ≤3,5τ.)', article: '85§13', fine: 150, suspend: '20 ημέρες αδ. οδ. + ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 96, category: 'λοιπές', name: 'Φθαρμένα ελαστικά (φορτηγό >3,5τ. / λεωφορείο)', article: '85§13', fine: 350, suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ. + ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 97, category: 'λοιπές', name: 'Έλλειψη τριγωνικής πινακίδας', article: '85§16', fine: 30, suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 },
-            { id: 98, category: 'λοιπές', name: 'Έλλειψη πυροσβεστήρα', article: '85§ια', fine: 30, suspend: 'Ακινητοποίηση', half: false, criminal: false, seco: 0 }
+            // ========== 10. ΥΠΟΤΡΟΠΙΕΣ (Άρθρο 110) ==========
+            { id: 96, category: 'ειδικές', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)', article: '110§3α', fine: '1.000€', suspend: '180 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 97, category: 'ειδικές', name: 'Ερυθρός – 3η υποτροπή (χωρίς ατύχημα)', article: '110§4α', fine: '2.000€', suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 98, category: 'ειδικές', name: 'Ερυθρός με ατύχημα – 2η υποτροπή', article: '110§3β', fine: '2.000€', suspend: '4 έτη αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 99, category: 'ειδικές', name: 'STOP/P-29 – 2η υποτροπή', article: '110§3α', fine: '1.000€', suspend: '180 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 100, category: 'ειδικές', name: 'STOP/P-29 – 3η υποτροπή', article: '110§4α', fine: '2.000€', suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 101, category: 'ειδικές', name: 'STOP/P-29 με ατύχημα – 2η υποτροπή', article: '110§3β', fine: '2.000€', suspend: '4 έτη αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 102, category: 'ειδικές', name: 'ΛΕΑ – 2η υποτροπή', article: '110§3α', fine: '1.000€', suspend: '180 ημέρες αδ. οδ.', half: false, criminal: false, seco: 0 },
+            { id: 103, category: 'ειδικές', name: 'ΛΕΑ – 3η υποτροπή', article: '110§4α', fine: '2.000€', suspend: '1 έτος αδ. οδ.', half: false, criminal: false, seco: 0 }
         ];
 
         // ============================================================
-        // SVG ΠΙΝΑΚΙΔΕΣ (μόνο για τις βασικές)
+        // SVG ΠΙΝΑΚΙΔΕΣ
         // ============================================================
         const signs = {
             stop: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="60" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
@@ -567,7 +582,7 @@
         // ============================================================
         let currentFilter = 'all';
         let showFavorites = false;
-        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v7')) || {};
+        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v8')) || {};
 
         function toggleDark() {
             document.body.classList.toggle('dark');
@@ -587,7 +602,7 @@
 
         function toggleFavorite(id) {
             favorites[id] = !favorites[id];
-            localStorage.setItem('kok_favorites_v7', JSON.stringify(favorites));
+            localStorage.setItem('kok_favorites_v8', JSON.stringify(favorites));
             render();
             showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
         }
@@ -615,10 +630,8 @@
                 'άδειες': '#8b5cf6',
                 'ασφάλεια': '#10b981',
                 'μέθη': '#dc2626',
-                'φώτα': '#3b82f6',
                 'ειδικές': '#dc2626',
-                'θόρυβος': '#f97316',
-                'λοιπές': '#64748b'
+                'θόρυβος': '#f97316'
             };
             return map[category] || '#64748b';
         }
@@ -646,12 +659,14 @@
             }
 
             container.innerHTML = filtered.map(v => {
-                const signKey = v.id === 16 ? 'stop' :
-                    v.id === 11 || v.id === 12 ? 'r40' :
-                    v.id === 17 ? 'p1' :
-                    v.id === 20 ? 'r29' :
+                const signKey = v.id === 39 ? 'stop' :
+                    v.id === 38 ? 'r40' :
+                    v.id === 40 ? 'p1' :
+                    v.id === 43 ? 'r29' :
                     v.id === 2 ? 'disabled' :
                     v.id === 1 ? 'crosswalk' : null;
+
+                const isPro = v.category === 'φορτηγά' || v.category === 'ασφάλεια' || v.id === 91 || v.id === 92 || v.id === 93 || v.id === 94;
 
                 return `
                 <div class="card" style="border-left-color: ${getCardColor(v.category)};">
@@ -661,10 +676,11 @@
                             ${v.name}
                             ${v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : ''}
                             ${v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : ''}
+                            ${isPro ? '<span class="badge-pro">Επαγγελματικό</span>' : ''}
                         </div>
                         <div class="article">Άρθρο: ${v.article}</div>
                         <div class="details">
-                            <span class="fine">💰 ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                            <span class="fine">💰 ${v.fine}</span>
                             ${v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.seco > 0 ? `<span class="seco">📊 ${v.seco} βαθμοί ΣΕΣΟ</span>` : ''}
                         </div>
