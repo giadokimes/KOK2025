@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v3</title>
+    <title>ΚΟΚ 2026 – Επίσημο v4.2</title>
     <style>
         * {
             margin: 0;
@@ -108,6 +108,7 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 12px;
+            margin-bottom: 8px;
         }
         .filters button {
             padding: 6px 14px;
@@ -217,11 +218,19 @@
         body.dark .card .details .suspend {
             color: #60a5fa;
         }
-        .card .details .points {
-            color: #7c3aed;
+        .badge-half {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #b45309;
+            background: #ffedd5;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
         }
-        body.dark .card .details .points {
-            color: #a78bfa;
+        body.dark .badge-half {
+            background: #451a03;
+            color: #fdba74;
         }
         .card .favorite {
             flex-shrink: 0;
@@ -354,13 +363,17 @@
                 color: #c00 !important;
                 background: #fee !important;
             }
+            .badge-half {
+                color: #b45309 !important;
+                background: #ffedd5 !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v3</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>2026 v4.2</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -374,12 +387,12 @@
         <div class="filters" id="filterContainer">
             <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
             <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>
-            <button data-filter="πινακίδες" onclick="setFilter('πινακίδες')">Πινακίδες</button>
             <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button>
             <button data-filter="άδειες" onclick="setFilter('άδειες')">Άδειες</button>
             <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
             <button data-filter="θόρυβος" onclick="setFilter('θόρυβος')">Θόρυβος</button>
-            <button data-filter="ΚΤΕΟ" onclick="setFilter('ΚΤΕΟ')">ΚΤΕΟ</button>
+            <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')">ΕΠΗΟ</button>
+            <button data-filter="ειδικές" onclick="setFilter('ειδικές')">Ειδικές</button>
         </div>
     </div>
 
@@ -393,371 +406,342 @@
 
     <script>
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v3.0 (ίδια δεδομένα, νέα εικονίδια)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v4.2
+        // ΠΗΓΗ: Κωδικοποίηση ΚΟΚ τροπ.2 Ν.5290-26 (30.3.2026) - ΕΠΙΣΗΜΟ
         // ============================================================
         const data = [{
             id: 1,
             category: 'στάθμευση',
-            name: 'Σε διάβαση πεζών ή ποδηλατιστών (και σε απόσταση < 5μ.)',
+            name: 'Σε διάβαση πεζών / ποδηλατιστών (<5μ.)',
             article: '38§2α',
             fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'crosswalk'
+            suspend: '-',
+            half: true,
+            criminal: false
         }, {
             id: 2,
             category: 'στάθμευση',
             name: 'Σε ράμπα ΑμεΑ',
             article: '38§2ιστ',
             fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'disabled'
+            suspend: '40 ημέρες αδ. οδ.',
+            half: true,
+            criminal: false
         }, {
             id: 3,
             category: 'στάθμευση',
-            name: 'Σε αποκλειστική θέση φόρτισης ηλεκτρικών οχημάτων',
+            name: 'Σε θέση φόρτισης ηλεκτρικών (χωρίς φόρτιση)',
             article: '38§2ιθ',
             fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
+            suspend: '-',
+            half: true,
             criminal: false
         }, {
             id: 4,
             category: 'στάθμευση',
-            name: 'Σε σημείο που εμποδίζει ΜΜΜ ή λεωφορεία',
-            article: '38§2ικα',
+            name: 'Σε στάση λεωφορείου (<12μ.)',
+            article: '38§2β',
             fine: 30,
-            suspend: '70 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
+            suspend: '-',
+            half: true,
             criminal: false
         }, {
             id: 5,
             category: 'στάθμευση',
-            name: 'Σε εισόδους ή εξόδους πεζοδρόμων ή πάνω σ\' αυτούς',
-            article: '38§3η',
+            name: 'Σε είσοδο/έξοδο κόμβου (<10μ.)',
+            article: '38§2γ',
             fine: 30,
-            suspend: 'Καμία αφαίρεση',
-            points: 0,
+            suspend: '-',
+            half: true,
             criminal: false
         }, {
             id: 6,
             category: 'στάθμευση',
-            name: 'Στάθμευση σε πεζοδρόμιο (γενικά)',
-            article: '38§?',
-            fine: 150,
-            suspend: '20 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false
+            name: 'Σε σιδηροδρομικές / τροχιοδρομικές γραμμές',
+            article: '38§2δ',
+            fine: 1200,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: true
         }, {
             id: 7,
             category: 'στάθμευση',
-            name: 'Σε θέση ΤΑΞΙ',
-            article: '38§3θ',
+            name: 'Σε πεζοδρόμιο / πλατεία / ποδηλατόδρομο',
+            article: '38§2ε',
             fine: 30,
-            suspend: 'Καμία αφαίρεση',
-            points: 0,
+            suspend: '-',
+            half: true,
             criminal: false
         }, {
             id: 8,
             category: 'στάθμευση',
-            name: 'Φορτηγά >3,5τ. / λεωφορεία / ΜΕ / ΑΜ / ρυμ/να / τροχόσπιτα μήκους >7,50μ. – στάθμευση πέραν 24ώρου',
-            article: '38§6',
+            name: 'Σε είσοδο/έξοδο νοσοκομείου / κλινικής',
+            article: '38§3ζ',
             fine: 30,
-            suspend: 'Καμία αφαίρεση',
-            points: 0,
+            suspend: '40 ημέρες αδ. οδ.',
+            half: true,
             criminal: false
         }, {
             id: 9,
-            category: 'πινακίδες',
-            name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)',
-            article: '7§3',
+            category: 'στάθμευση',
+            name: 'Σε θέση ΤΑΞΙ (Ρ-70)',
+            article: '38§3θ',
             fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'r39'
+            suspend: '-',
+            half: true,
+            criminal: false
         }, {
             id: 10,
-            category: 'πινακίδες',
-            name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
-            article: '7§3',
-            fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'r40'
+            category: 'στάθμευση',
+            name: 'Σε απαγορευτική κίτρινη ζιγκ-ζαγκ',
+            article: '8§8η',
+            fine: 150,
+            suspend: '20 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
         }, {
             id: 11,
-            category: 'πινακίδες',
-            name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
-            article: '7§3',
+            category: 'στάθμευση',
+            name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης & στάθμευσης)',
+            article: '7§3, 38§1',
             fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'r41'
+            suspend: '-',
+            half: true,
+            criminal: false
         }, {
             id: 12,
-            category: 'πινακίδες',
-            name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
-            article: '7§3',
-            fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'r42'
+            category: 'στάθμευση',
+            name: 'Παραβίαση Ρ-40 που εμποδίζει δημόσια συγκοινωνία',
+            article: '38§2',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
+            criminal: false
         }, {
             id: 13,
-            category: 'πινακίδες',
-            name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
-            article: '7§3',
-            fine: 30,
-            suspend: '10 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
-            criminal: false,
-            sign: 'r43'
+            category: 'κίνηση',
+            name: 'Παραβίαση ερυθρού σηματοδότη',
+            article: '9§3',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
         }, {
             id: 14,
-            category: 'πινακίδες',
-            name: 'Παραβίαση STOP (Ρ-2)',
-            article: '7§3',
-            fine: 150,
-            suspend: '20 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 7,
-            criminal: false,
-            sign: 'stop'
+            category: 'κίνηση',
+            name: 'Παραβίαση STOP (P-2)',
+            article: '7§11β',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
         }, {
             id: 15,
             category: 'κίνηση',
-            name: 'Παραβίαση ερυθρού σηματοδότη',
-            article: '9§1β',
-            fine: 700,
-            suspend: '60 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 9,
+            name: 'Παραβίαση P-1 (παραχώρηση προτεραιότητας)',
+            article: '7§11α',
+            fine: 350,
+            suspend: '30 ημέρες αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 16,
             category: 'κίνηση',
-            name: 'Κίνηση σε πεζόδρομο / πλατεία / νησίδα ασφαλείας',
-            article: '20§4',
+            name: 'Κίνηση αντίθετα σε μονόδρομο',
+            article: '20§8β',
             fine: 350,
-            suspend: '70 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 5,
+            suspend: '70 ημέρες αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 17,
             category: 'κίνηση',
-            name: 'Κίνηση αντίθετα σε μονόδρομο',
-            article: '20§7',
-            fine: 350,
-            suspend: '70 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 5,
+            name: 'Απαγόρευση αναστροφής (P-29)',
+            article: '7§11β',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 18,
-            category: 'κίνηση',
-            name: 'Οδηγός οχήματος άμεσης ανάγκης – κίνηση αντίθετα σε μονόδρομο',
-            article: '48§2',
-            fine: 150,
-            suspend: '40 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
+            category: 'θόρυβος',
+            name: 'Θόρυβος πέραν επιτρεπομένων ορίων',
+            article: '19§2',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
             criminal: false
         }, {
             id: 19,
             category: 'θόρυβος',
-            name: 'Πρόκληση θορύβου πέραν επιτρεπομένων ορίων',
-            article: '19§1 εδ. β',
+            name: 'Παρενόχληση από ηχητικό σύστημα',
+            article: '19§3',
             fine: 350,
-            suspend: '70 ημέρες (αφαίρεση άδειας οδήγησης) + ακινητοποίηση',
-            points: 0,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
             criminal: false
         }, {
             id: 20,
-            category: 'θόρυβος',
-            name: 'Έλλειψη σιγαστήρα (εξάτμισης)',
-            article: '85§12,26',
-            fine: 150,
-            suspend: '40 ημέρες (αφαίρεση άδειας οδήγησης) + ακινητοποίηση',
-            points: 0,
-            criminal: false
-        }, {
-            id: 21,
-            category: 'θόρυβος',
-            name: 'Παρενόχληση από ηχητικό σύστημα / μουσική',
-            article: '19§3 εδ. α',
-            fine: 350,
-            suspend: '70 ημέρες (αφαίρεση άδειας οδήγησης) + ακινητοποίηση',
-            points: 0,
-            criminal: false
-        }, {
-            id: 22,
             category: 'άδειες',
             name: 'Στέρηση άδειας οδήγησης – Ε.Ι.Χ.',
             article: '98§4αβ',
             fine: 700,
-            suspend: '1 έτος (αφαίρεση άδειας οδήγησης) + 30 ημ. στοιχ. κυκλ.',
-            points: 0,
+            suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 21,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Ε.Δ.Χ. / Λεωφορεία',
+            article: '98§4αβ',
+            fine: 1000,
+            suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 22,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Μοτοσικλέτα / Μοτοποδήλατο',
+            article: '98§4αα',
+            fine: 500,
+            suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+            half: false,
             criminal: false
         }, {
             id: 23,
-            category: 'άδειες',
-            name: 'Στέρηση άδειας οδήγησης – Ε.Δ.Χ. & Λεωφορεία',
-            article: '98§4αβ',
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Λεωφορεία / Φ.Δ.Χ.',
+            article: 'ΠΔ 237/86',
             fine: 1000,
-            suspend: '1 έτος (αφαίρεση άδειας οδήγησης) + 30 ημ. στοιχ. κυκλ.',
-            points: 0,
+            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
+            half: false,
             criminal: false
         }, {
             id: 24,
-            category: 'άδειες',
-            name: 'Στέρηση άδειας οδήγησης – Μοτοποδήλατα / Μοτοσικλέτες / Τρίκυκλα',
-            article: '98§4αα',
-            fine: 500,
-            suspend: '1 έτος (αφαίρεση άδειας οδήγησης) + 30 ημ. στοιχ. κυκλ.',
-            points: 0,
-            criminal: false
-        }, {
-            id: 25,
-            category: 'άδειες',
-            name: 'Παραχώρηση οδήγησης σε μη δικαιούχο',
-            article: '102§1',
-            fine: 350,
-            suspend: '30 ημ. αφαίρεση όλων των στοιχείων',
-            points: 0,
-            criminal: false
-        }, {
-            id: 26,
-            category: 'ΚΤΕΟ',
-            name: 'Κυκλοφορία χωρίς ισχύον ΚΤΕΟ',
-            article: '90',
-            fine: 350,
-            suspend: '30 ημ. αφαίρεση στοιχ. κυκλ. + ακινητοποίηση',
-            points: 0,
-            criminal: false
-        }, {
-            id: 27,
-            category: 'ΚΤΕΟ',
-            name: 'Πλαστό / παραποιημένο ΚΤΕΟ',
-            article: '90',
-            fine: 'ΠΛΗΜΜΕΛΗΜΑ',
-            suspend: 'Οριστική αφαίρεση στοιχ. κυκλ.',
-            points: 0,
-            criminal: true
-        }, {
-            id: 28,
-            category: 'ασφάλεια',
-            name: 'Ανασφάλιστο – Δίκυκλα',
-            article: 'ΠΔ 237/86',
-            fine: 250,
-            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
-            points: 0,
-            criminal: false
-        }, {
-            id: 29,
             category: 'ασφάλεια',
             name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.',
             article: 'ΠΔ 237/86',
             fine: 500,
             suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
-            points: 0,
+            half: false,
+            criminal: false
+        }, {
+            id: 25,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Δίκυκλα',
+            article: 'ΠΔ 237/86',
+            fine: 250,
+            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 26,
+            category: 'ασφάλεια',
+            name: 'Ατύχημα με ανασφάλιστο (1η φορά)',
+            article: 'ΠΔ 237/86',
+            fine: 'ως άνω',
+            suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 27,
+            category: 'ΕΠΗΟ',
+            name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση',
+            article: '38§4,12',
+            fine: 30,
+            suspend: '-',
+            half: false,
+            criminal: false
+        }, {
+            id: 28,
+            category: 'ΕΠΗΟ',
+            name: 'Είσοδος σε ποδηλατόδρομο (ΕΠΗΟ)',
+            article: '44§7',
+            fine: 150,
+            suspend: '40 ημέρες αδ. οδ.',
+            half: false,
+            criminal: false
+        }, {
+            id: 29,
+            category: 'ΕΠΗΟ',
+            name: 'Χρήση κινητού / ακουστικών (ΕΠΗΟ)',
+            article: '44§1στ,ζ',
+            fine: 350,
+            suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
+            half: false,
             criminal: false
         }, {
             id: 30,
-            category: 'ασφάλεια',
-            name: 'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία',
-            article: 'ΠΔ 237/86',
+            category: 'ειδικές',
+            name: 'Παραβίαση ερυθρού – Υποτροπή (2η φορά)',
+            article: '110§3α',
             fine: 1000,
-            suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
-            points: 0,
+            suspend: '180 ημέρες αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 31,
-            category: 'ασφάλεια',
-            name: 'Εμπλοκή σε ατύχημα χωρίς ασφάλιση',
-            article: 'ΠΔ 237/86',
-            fine: '-',
-            suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.',
-            points: 0,
+            category: 'ειδικές',
+            name: 'Παραβίαση ερυθρού – Υποτροπή (3η φορά)',
+            article: '110§4α',
+            fine: 2000,
+            suspend: '1 έτος αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 32,
-            category: 'ασφάλεια',
-            name: 'Μη χρήση ζώνης ασφαλείας από οδηγό',
-            article: '16§5 εδ. α',
-            fine: 350,
-            suspend: '30 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
+            category: 'ειδικές',
+            name: 'Ερυθρός με ατύχημα – Υποτροπή (2η)',
+            article: '110§3β',
+            fine: 2000,
+            suspend: '4 έτη αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 33,
-            category: 'ασφάλεια',
-            name: 'Μη χρήση ζώνης από επιβάτη',
-            article: '16§5',
-            fine: 150,
-            suspend: 'Καμία αφαίρεση (μόνο πρόστιμο)',
-            points: 0,
+            category: 'ειδικές',
+            name: 'Υπέρβαση ταχύτητας >50χλμ/ω',
+            article: '24§9γ',
+            fine: 700,
+            suspend: '60 ημέρες αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 34,
-            category: 'ασφάλεια',
-            name: 'Έλλειψη ζώνης σε Ι.Χ.Ε. ή Φορτηγό ≤3,5τ.',
-            article: '85§17',
-            fine: 150,
-            suspend: 'Ακινητοποίηση μέχρι αποκατάστασης',
-            points: 0,
+            category: 'ειδικές',
+            name: 'STOP/P-29 – Υποτροπή (2η φορά)',
+            article: '110§3α',
+            fine: 1000,
+            suspend: '180 ημέρες αδ. οδ.',
+            half: false,
             criminal: false
         }, {
             id: 35,
-            category: 'ασφάλεια',
-            name: 'Μη χρήση κράνους – Οδηγός μοτοσικλέτας / μοτοποδηλάτου',
-            article: '16§6 εδ. α',
-            fine: 350,
-            suspend: '30 ημέρες (αφαίρεση άδειας οδήγησης) + ακινητοποίηση',
-            points: 0,
-            criminal: false
-        }, {
-            id: 36,
-            category: 'ασφάλεια',
-            name: 'Μη χρήση κράνους – Επιβάτης μοτοσικλέτας / μοτοποδηλάτου',
-            article: '16§6',
-            fine: 350,
-            suspend: 'Ακινητοποίηση μέχρι εφοδιασμού με κράνος',
-            points: 0,
-            criminal: false
-        }, {
-            id: 37,
-            category: 'ασφάλεια',
-            name: 'Μη μέριμνα οδηγού για χρήση κράνους από συνεπιβάτη',
-            article: '37§3',
-            fine: 350,
-            suspend: '30 ημέρες (αφαίρεση άδειας οδήγησης)',
-            points: 0,
+            category: 'ειδικές',
+            name: 'STOP/P-29 – Υποτροπή (3η φορά)',
+            article: '110§4α',
+            fine: 2000,
+            suspend: '1 έτος αδ. οδ.',
+            half: false,
             criminal: false
         }];
 
         // ============================================================
-        // ΒΕΛΤΙΩΜΕΝΑ SVG ΠΙΝΑΚΙΔΕΣ – v3 (πιο ρεαλιστικά)
+        // SVG ΠΙΝΑΚΙΔΕΣ
         // ============================================================
         const signs = {
             stop: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="60" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
-            r39: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-39</text></svg>`,
             r40: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-40</text></svg>`,
-            r41: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-41</text></svg>`,
-            r42: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-42</text></svg>`,
-            r43: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-43</text></svg>`,
-            crosswalk: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`,
-            disabled: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`
+            disabled: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`,
+            crosswalk: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`
         };
 
         // ============================================================
-        // ΚΑΤΑΣΤΑΣΗ & ΣΥΝΑΡΤΗΣΕΙΣ (παραμένουν ίδιες)
+        // ΚΑΤΑΣΤΑΣΗ & ΣΥΝΑΡΤΗΣΕΙΣ
         // ============================================================
         let currentFilter = 'all';
         let showFavorites = false;
-        let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
+        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v4')) || {};
 
         function toggleDark() {
             document.body.classList.toggle('dark');
@@ -777,7 +761,7 @@
 
         function toggleFavorite(id) {
             favorites[id] = !favorites[id];
-            localStorage.setItem('kok_favorites', JSON.stringify(favorites));
+            localStorage.setItem('kok_favorites_v4', JSON.stringify(favorites));
             render();
             showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
         }
@@ -791,7 +775,26 @@
         }
 
         function getSignHTML(sign) {
-            return signs[sign] ? `<div class="sign">${signs[sign]}</div>` : '';
+            const signMap = {
+                'stop': signs.stop,
+                'r40': signs.r40,
+                'disabled': signs.disabled,
+                'crosswalk': signs.crosswalk
+            };
+            return signMap[sign] ? `<div class="sign">${signMap[sign]}</div>` : '';
+        }
+
+        function getCardColor(category) {
+            const map = {
+                'στάθμευση': '#f59e0b',
+                'κίνηση': '#ef4444',
+                'άδειες': '#8b5cf6',
+                'ασφάλεια': '#10b981',
+                'θόρυβος': '#f97316',
+                'ΕΠΗΟ': '#06b6d4',
+                'ειδικές': '#dc2626'
+            };
+            return map[category] || '#64748b';
         }
 
         function render() {
@@ -816,26 +819,33 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(v => `
-                <div class="card" style="border-left-color: ${v.category === 'στάθμευση' ? '#f59e0b' : v.category === 'πινακίδες' ? '#3b82f6' : v.category === 'κίνηση' ? '#ef4444' : v.category === 'άδειες' ? '#8b5cf6' : v.category === 'ασφάλεια' ? '#10b981' : v.category === 'θόρυβος' ? '#f97316' : '#64748b'};">
-                    ${v.sign ? getSignHTML(v.sign) : ''}
+            container.innerHTML = filtered.map(v => {
+                const signKey = v.id === 14 ? 'stop' :
+                    v.id === 11 ? 'r40' :
+                    v.id === 12 ? 'r40' :
+                    v.id === 2 ? 'disabled' :
+                    v.id === 1 ? 'crosswalk' : null;
+
+                return `
+                <div class="card" style="border-left-color: ${getCardColor(v.category)};">
+                    ${signKey ? getSignHTML(signKey) : ''}
                     <div class="content">
                         <div class="name">
                             ${v.name}
+                            ${v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : ''}
                             ${v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : ''}
                         </div>
                         <div class="article">Άρθρο: ${v.article}</div>
                         <div class="details">
                             <span class="fine">💰 ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
-                            <span class="suspend">⛔ ${v.suspend}</span>
-                            ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί</span>` : ''}
+                            ${v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                         </div>
                     </div>
                     <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})">
                         ${favorites[v.id] ? '⭐' : '☆'}
                     </button>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         render();
