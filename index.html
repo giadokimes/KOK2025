@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ 2026 – v5.1</title>
+    <title>ΚΟΚ 2026 – v6.0</title>
     <style>
         * {
             margin: 0;
@@ -373,7 +373,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>2026 v5.1</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>2026 v6.0</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -406,7 +406,7 @@
 
     <script>
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v5.1 (με ΣΩΣΤΕΣ SVG πινακίδες)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v6.0 (με ΣΩΣΤΕΣ SVG πινακίδες)
         // ΠΗΓΗ: Κωδικοποίηση ΚΟΚ τροπ.2 Ν.5290-26 (30.3.2026)
         // ============================================================
         const data = [{
@@ -734,7 +734,7 @@
         }];
 
         // ============================================================
-        // SVG ΠΙΝΑΚΙΔΕΣ – v5.1 (ΣΩΣΤΕΣ, από το signs.pdf)
+        // SVG ΠΙΝΑΚΙΔΕΣ – v6.0 (ΣΩΣΤΕΣ, από το signs.pdf)
         // ============================================================
         const signs = {
             stop: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="60" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
@@ -750,7 +750,7 @@
         // ============================================================
         let currentFilter = 'all';
         let showFavorites = false;
-        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v5')) || {};
+        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v6')) || {};
 
         function toggleDark() {
             document.body.classList.toggle('dark');
@@ -770,7 +770,7 @@
 
         function toggleFavorite(id) {
             favorites[id] = !favorites[id];
-            localStorage.setItem('kok_favorites_v5', JSON.stringify(favorites));
+            localStorage.setItem('kok_favorites_v6', JSON.stringify(favorites));
             render();
             showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
         }
