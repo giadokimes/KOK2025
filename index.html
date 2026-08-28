@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ 2026 – Επίσημο v4.2</title>
+    <title>ΚΟΚ 2026 – v5.0</title>
     <style>
         * {
             margin: 0;
@@ -373,7 +373,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>2026 v4.2</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>2026 v5.0</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -406,7 +406,7 @@
 
     <script>
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v4.2
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v5.0 (με SVG πινακίδες)
         // ΠΗΓΗ: Κωδικοποίηση ΚΟΚ τροπ.2 Ν.5290-26 (30.3.2026) - ΕΠΙΣΗΜΟ
         // ============================================================
         const data = [{
@@ -417,7 +417,8 @@
             fine: 30,
             suspend: '-',
             half: true,
-            criminal: false
+            criminal: false,
+            sign: 'crosswalk'
         }, {
             id: 2,
             category: 'στάθμευση',
@@ -426,7 +427,8 @@
             fine: 30,
             suspend: '40 ημέρες αδ. οδ.',
             half: true,
-            criminal: false
+            criminal: false,
+            sign: 'disabled'
         }, {
             id: 3,
             category: 'στάθμευση',
@@ -507,7 +509,8 @@
             fine: 30,
             suspend: '-',
             half: true,
-            criminal: false
+            criminal: false,
+            sign: 'r40'
         }, {
             id: 12,
             category: 'στάθμευση',
@@ -516,7 +519,8 @@
             fine: 350,
             suspend: '30 ημ. αδ. οδ. + στοιχ. κυκλ.',
             half: false,
-            criminal: false
+            criminal: false,
+            sign: 'r40'
         }, {
             id: 13,
             category: 'κίνηση',
@@ -525,7 +529,8 @@
             fine: 700,
             suspend: '60 ημέρες αδ. οδ.',
             half: false,
-            criminal: false
+            criminal: false,
+            sign: 'r32'
         }, {
             id: 14,
             category: 'κίνηση',
@@ -534,7 +539,8 @@
             fine: 700,
             suspend: '60 ημέρες αδ. οδ.',
             half: false,
-            criminal: false
+            criminal: false,
+            sign: 'stop'
         }, {
             id: 15,
             category: 'κίνηση',
@@ -543,7 +549,8 @@
             fine: 350,
             suspend: '30 ημέρες αδ. οδ.',
             half: false,
-            criminal: false
+            criminal: false,
+            sign: 'p1'
         }, {
             id: 16,
             category: 'κίνηση',
@@ -552,7 +559,8 @@
             fine: 350,
             suspend: '70 ημέρες αδ. οδ.',
             half: false,
-            criminal: false
+            criminal: false,
+            sign: 'r7'
         }, {
             id: 17,
             category: 'κίνηση',
@@ -561,7 +569,8 @@
             fine: 700,
             suspend: '60 ημέρες αδ. οδ.',
             half: false,
-            criminal: false
+            criminal: false,
+            sign: 'r29'
         }, {
             id: 18,
             category: 'θόρυβος',
@@ -727,13 +736,17 @@
         }];
 
         // ============================================================
-        // SVG ΠΙΝΑΚΙΔΕΣ
+        // SVG ΠΙΝΑΚΙΔΕΣ – v5.0 (πλήρης σχεδίαση)
         // ============================================================
         const signs = {
             stop: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="60" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
             r40: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-40</text></svg>`,
+            p1: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#cc0000" stroke-width="4"/><polygon points="50,15 80,50 50,85 20,50" fill="#fff" stroke="#cc0000" stroke-width="4"/><polygon points="50,25 70,50 50,75 30,50" fill="#cc0000"/></svg>`,
+            r7: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#cc0000" stroke="#fff" stroke-width="3"/><rect x="28" y="28" width="44" height="44" fill="#fff"/></svg>`,
+            r29: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><path d="M30,30 L70,70 M70,30 L30,70" stroke="#cc0000" stroke-width="8"/><circle cx="50" cy="50" r="20" fill="none" stroke="#cc0000" stroke-width="8"/></svg>`,
             disabled: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`,
-            crosswalk: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`
+            crosswalk: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`,
+            r32: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#fff" stroke="#cc0000" stroke-width="4"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="4"/><text x="50" y="58" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#1a202c" text-anchor="middle">50</text></svg>`
         };
 
         // ============================================================
@@ -741,7 +754,7 @@
         // ============================================================
         let currentFilter = 'all';
         let showFavorites = false;
-        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v4')) || {};
+        let favorites = JSON.parse(localStorage.getItem('kok_favorites_v5')) || {};
 
         function toggleDark() {
             document.body.classList.toggle('dark');
@@ -761,7 +774,7 @@
 
         function toggleFavorite(id) {
             favorites[id] = !favorites[id];
-            localStorage.setItem('kok_favorites_v4', JSON.stringify(favorites));
+            localStorage.setItem('kok_favorites_v5', JSON.stringify(favorites));
             render();
             showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
         }
@@ -775,13 +788,7 @@
         }
 
         function getSignHTML(sign) {
-            const signMap = {
-                'stop': signs.stop,
-                'r40': signs.r40,
-                'disabled': signs.disabled,
-                'crosswalk': signs.crosswalk
-            };
-            return signMap[sign] ? `<div class="sign">${signMap[sign]}</div>` : '';
+            return signs[sign] ? `<div class="sign">${signs[sign]}</div>` : '';
         }
 
         function getCardColor(category) {
@@ -819,16 +826,9 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(v => {
-                const signKey = v.id === 14 ? 'stop' :
-                    v.id === 11 ? 'r40' :
-                    v.id === 12 ? 'r40' :
-                    v.id === 2 ? 'disabled' :
-                    v.id === 1 ? 'crosswalk' : null;
-
-                return `
+            container.innerHTML = filtered.map(v => `
                 <div class="card" style="border-left-color: ${getCardColor(v.category)};">
-                    ${signKey ? getSignHTML(signKey) : ''}
+                    ${v.sign ? getSignHTML(v.sign) : ''}
                     <div class="content">
                         <div class="name">
                             ${v.name}
@@ -845,7 +845,7 @@
                         ${favorites[v.id] ? '⭐' : '☆'}
                     </button>
                 </div>
-            `}).join('');
+            `).join('');
         }
 
         render();
