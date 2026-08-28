@@ -1,28 +1,906 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>ΚΟΚ – Τσέπης</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f8;color:#1a202c;padding:0 0 80px 0;min-height:100vh;transition:background .3s,color .3s}body.dark{background:#0f172a;color:#e2e8f0}.header{background:#1e3a5f;color:#fff;padding:16px 20px 14px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.25)}body.dark .header{background:#0b1e33}.header-top{display:flex;justify-content:space-between;align-items:center}.header-title{font-size:20px;font-weight:700;letter-spacing:0.5px}.header-title span{font-weight:300;font-size:14px;opacity:0.8}.header-actions{display:flex;gap:10px;align-items:center}.header-actions button{background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}.header-actions button:hover{background:rgba(255,255,255,0.25)}body.dark .header-actions button{background:rgba(255,255,255,0.08)}.search-box{margin-top:12px;position:relative}.search-box input{width:100%;padding:12px 16px 12px 44px;border:none;border-radius:12px;font-size:16px;background:rgba(255,255,255,0.95);color:#1a202c;outline:none}.body.dark .search-box input{background:#1e293b;color:#e2e8f0}.search-box input:focus{box-shadow:0 0 0 3px rgba(255,255,255,0.3)}.search-box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;opacity:0.6}.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.filters button{padding:6px 14px;border:none;border-radius:20px;font-size:13px;font-weight:500;background:rgba(255,255,255,0.2);color:#fff;cursor:pointer;transition:all .2s;white-space:nowrap}.filters button.active{background:#fff;color:#1e3a5f}body.dark .filters button.active{background:#2d3748;color:#e2e8f0}.filters button:hover{background:rgba(255,255,255,0.35)}body.dark .filters button:hover{background:rgba(255,255,255,0.15)}.count{font-size:14px;color:#4a5568;padding:8px 4px 0 4px;display:flex;justify-content:space-between;align-items:center}body.dark .count{color:#94a3b8}.list{margin-top:10px;display:flex;flex-direction:column;gap:10px}.card{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.08);border-left:5px solid #e2e8f0;display:flex;gap:14px;align-items:flex-start}body.dark .card{background:#1e293b;box-shadow:0 1px 4px rgba(0,0,0,0.3);border-left-color:#334155}.card .sign{flex-shrink:0;width:56px;height:56px;display:flex;align-items:center;justify-content:center}.card .sign svg{max-width:56px;max-height:56px}.card .content{flex:1;min-width:0}.card .name{font-weight:600;font-size:15px;line-height:1.3}.card .article{font-size:13px;color:#4a5568;margin-top:2px}body.dark .card .article{color:#94a3b8}.card .details{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:6px;font-size:14px}.card .details .fine{font-weight:600;color:#dc2626}body.dark .card .details .fine{color:#f87171}.card .details .suspend{color:#2563eb}body.dark .card .details .suspend{color:#60a5fa}.card .details .points{color:#7c3aed}body.dark .card .details .points{color:#a78bfa}.card .favorite{flex-shrink:0;background:none;border:none;font-size:24px;cursor:pointer;padding:4px;opacity:0.3;transition:opacity .2s,transform .15s;line-height:1}.card .favorite.active{opacity:1;color:#f59e0b}.card .favorite:active{transform:scale(1.3)}body.dark .card .favorite{opacity:0.4}body.dark .card .favorite.active{opacity:1;color:#fbbf24}.badge-criminal{display:inline-block;font-size:11px;font-weight:700;color:#dc2626;background:#fee2e2;padding:2px 10px;border-radius:12px;margin-left:6px}body.dark .badge-criminal{background:#450a0a;color:#fca5a5}.empty{text-align:center;padding:50px 20px;color:#64748b;font-size:16px}body.dark .empty{color:#94a3b8}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a202c;color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}body.dark .toast{background:#e2e8f0;color:#0f172a}.toast.show{opacity:1}@media (max-width:480px){.header-title{font-size:17px}.card .sign{width:44px;height:44px}.card .sign svg{max-width:44px;max-height:44px}.card .name{font-size:14px}.card .details{font-size:13px;gap:4px 12px}.filters button{font-size:12px;padding:5px 12px}}.print-only{display:none}@media print{.header,.search-box,.filters,.count,.favorite,.header-actions{display:none!important}body{background:#fff!important;color:#000!important;padding:0!important}body.dark{background:#fff!important;color:#000!important}.card{border-left-color:#333!important;background:#fff!important;box-shadow:none!important;page-break-inside:avoid}.card .article{color:#333!important}.card .details .fine{color:#c00!important}.card .details .suspend{color:#00c!important}.badge-criminal{color:#c00!important;background:#fee!important}.print-only{display:block!important}}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ΚΟΚ – Τσέπης v2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f4f8;
+            color: #1a202c;
+            padding: 0 0 80px 0;
+            min-height: 100vh;
+            transition: background .3s, color .3s;
+        }
+        body.dark {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .header {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 16px 20px 14px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+        }
+        body.dark .header {
+            background: #0b1e33;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .header-title span {
+            font-weight: 300;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .header-actions button {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+        }
+        .header-actions button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        body.dark .header-actions button {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .search-box {
+            margin-top: 12px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a202c;
+            outline: none;
+        }
+        body.dark .search-box input {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .search-box input:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        .search-box .icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            opacity: 0.6;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .filters button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+        .filters button.active {
+            background: #fff;
+            color: #1e3a5f;
+        }
+        body.dark .filters button.active {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+        .filters button:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+        body.dark .filters button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .count {
+            font-size: 14px;
+            color: #4a5568;
+            padding: 8px 4px 0 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        body.dark .count {
+            color: #94a3b8;
+        }
+        .list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #e2e8f0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        body.dark .card {
+            background: #1e293b;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            border-left-color: #334155;
+        }
+        .card .sign {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card .sign svg {
+            max-width: 60px;
+            max-height: 60px;
+        }
+        .card .content {
+            flex: 1;
+            min-width: 0;
+        }
+        .card .name {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.3;
+        }
+        .card .article {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 2px;
+        }
+        body.dark .card .article {
+            color: #94a3b8;
+        }
+        .card .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+        .card .details .fine {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        body.dark .card .details .fine {
+            color: #f87171;
+        }
+        .card .details .suspend {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        body.dark .card .details .suspend {
+            color: #60a5fa;
+        }
+        .card .details .points {
+            color: #7c3aed;
+        }
+        body.dark .card .details .points {
+            color: #a78bfa;
+        }
+        .card .favorite {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.3;
+            transition: opacity .2s, transform .15s;
+            line-height: 1;
+        }
+        .card .favorite.active {
+            opacity: 1;
+            color: #f59e0b;
+        }
+        .card .favorite:active {
+            transform: scale(1.3);
+        }
+        body.dark .card .favorite {
+            opacity: 0.4;
+        }
+        body.dark .card .favorite.active {
+            opacity: 1;
+            color: #fbbf24;
+        }
+        .badge-criminal {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+        body.dark .badge-criminal {
+            background: #450a0a;
+            color: #fca5a5;
+        }
+        .badge-suspension {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #2563eb;
+            background: #dbeafe;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+        body.dark .badge-suspension {
+            background: #1e3a5f;
+            color: #93c5fd;
+        }
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+            font-size: 16px;
+        }
+        body.dark .empty {
+            color: #94a3b8;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a202c;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+            z-index: 999;
+        }
+        body.dark .toast {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 17px;
+            }
+            .card .sign {
+                width: 48px;
+                height: 48px;
+            }
+            .card .sign svg {
+                max-width: 48px;
+                max-height: 48px;
+            }
+            .card .name {
+                font-size: 14px;
+            }
+            .card .details {
+                font-size: 13px;
+                gap: 4px 12px;
+            }
+            .filters button {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+        }
+        @media print {
+            .header,
+            .search-box,
+            .filters,
+            .count,
+            .favorite,
+            .header-actions {
+                display: none !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                padding: 0 !important;
+            }
+            body.dark {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            .card {
+                border-left-color: #333 !important;
+                background: #fff !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            .card .article {
+                color: #333 !important;
+            }
+            .card .details .fine {
+                color: #c00 !important;
+            }
+            .card .details .suspend {
+                color: #00c !important;
+            }
+            .badge-criminal {
+                color: #c00 !important;
+                background: #fee !important;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="header"><div class="header-top"><div class="header-title">🚗 ΚΟΚ <span>Τσέπης</span></div><div class="header-actions"><button onclick="toggleDark()">🌙</button><button onclick="toggleFavorites()">⭐</button><button onclick="window.print()">🖨️</button></div></div><div class="search-box"><span class="icon">🔍</span><input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="render()"></div><div class="filters" id="filterContainer"><button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button><button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button><button data-filter="πινακίδες" onclick="setFilter('πινακίδες')">Πινακίδες</button><button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button><button data-filter="άδειες" onclick="setFilter('άδειες')">Άδειες</button><button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button><button data-filter="θόρυβος" onclick="setFilter('θόρυβος')">Θόρυβος</button><button data-filter="ΚΤΕΟ" onclick="setFilter('ΚΤΕΟ')">ΚΤΕΟ</button></div></div>
-<div class="count" id="countDisplay"><span id="countText">0 παραβάσεις</span><span id="favIndicator" style="display:none;">⭐ Αγαπημένα</span></div>
-<div class="list" id="listContainer"></div>
-<div class="toast" id="toast"></div>
-<script>
-const data=[{id:1,category:'στάθμευση',name:'Σε διάβαση πεζών ή ποδηλατιστών (και σε απόσταση < 5μ.)',article:'38§2α',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'crosswalk'},{id:2,category:'στάθμευση',name:'Σε ράμπα ΑμεΑ',article:'38§2ιστ',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'disabled'},{id:3,category:'στάθμευση',name:'Σε αποκλειστική θέση φόρτισης ηλεκτρικών οχημάτων',article:'38§2ιθ',fine:30,suspend:'10 ημέρες',points:0,criminal:false},{id:4,category:'στάθμευση',name:'Σε σημείο που εμποδίζει ΜΜΜ ή λεωφορεία',article:'38§2ικα',fine:30,suspend:'70 ημέρες',points:0,criminal:false},{id:5,category:'στάθμευση',name:'Σε εισόδους ή εξόδους πεζοδρόμων ή πάνω σ\' αυτούς',article:'38§3η',fine:30,suspend:'-',points:0,criminal:false},{id:6,category:'στάθμευση',name:'Στάθμευση σε πεζοδρόμιο (γενικά)',article:'38§?',fine:150,suspend:'20 ημέρες',points:0,criminal:false},{id:7,category:'στάθμευση',name:'Σε θέση ΤΑΞΙ',article:'38§3θ',fine:30,suspend:'-',points:0,criminal:false},{id:8,category:'στάθμευση',name:'Φορτηγά >3,5τ. / λεωφορεία / ΜΕ / ΑΜ / ρυμ/να / τροχόσπιτα μήκους >7,50μ. – στάθμευση πέραν 24ώρου',article:'38§6',fine:30,suspend:'-',points:0,criminal:false},{id:9,category:'πινακίδες',name:'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)',article:'7§3',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'r39'},{id:10,category:'πινακίδες',name:'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',article:'7§3',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'r40'},{id:11,category:'πινακίδες',name:'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',article:'7§3',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'r41'},{id:12,category:'πινακίδες',name:'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',article:'7§3',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'r42'},{id:13,category:'πινακίδες',name:'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',article:'7§3',fine:30,suspend:'10 ημέρες',points:0,criminal:false,sign:'r43'},{id:14,category:'πινακίδες',name:'Παραβίαση STOP (Ρ-2)',article:'7§3',fine:150,suspend:'20 ημέρες',points:7,criminal:false,sign:'stop'},{id:15,category:'κίνηση',name:'Παραβίαση ερυθρού σηματοδότη',article:'9§1β',fine:700,suspend:'60 ημέρες',points:9,criminal:false},{id:16,category:'κίνηση',name:'Κίνηση σε πεζόδρομο / πλατεία / νησίδα ασφαλείας',article:'20§4',fine:350,suspend:'70 ημέρες',points:5,criminal:false},{id:17,category:'κίνηση',name:'Κίνηση αντίθετα σε μονόδρομο',article:'20§7',fine:350,suspend:'70 ημέρες',points:5,criminal:false},{id:18,category:'κίνηση',name:'Οδηγός οχήματος άμεσης ανάγκης – κίνηση αντίθετα σε μονόδρομο',article:'48§2',fine:150,suspend:'40 ημέρες',points:0,criminal:false},{id:19,category:'θόρυβος',name:'Πρόκληση θορύβου πέραν επιτρεπομένων ορίων',article:'19§1 εδ. β',fine:350,suspend:'70 ημέρες + ακινητοποίηση',points:0,criminal:false},{id:20,category:'θόρυβος',name:'Έλλειψη σιγαστήρα (εξάτμισης)',article:'85§12,26',fine:150,suspend:'40 ημέρες + ακινητοποίηση',points:0,criminal:false},{id:21,category:'θόρυβος',name:'Παρενόχληση από ηχητικό σύστημα / μουσική',article:'19§3 εδ. α',fine:350,suspend:'70 ημέρες + ακινητοποίηση',points:0,criminal:false},{id:22,category:'άδειες',name:'Στέρηση άδειας οδήγησης – Ε.Ι.Χ.',article:'98§4αβ',fine:700,suspend:'1 έτος + 30 ημ. στοιχ. κυκλ.',points:0,criminal:false},{id:23,category:'άδειες',name:'Στέρηση άδειας οδήγησης – Ε.Δ.Χ. & Λεωφορεία',article:'98§4αβ',fine:1000,suspend:'1 έτος + 30 ημ. στοιχ. κυκλ.',points:0,criminal:false},{id:24,category:'άδειες',name:'Στέρηση άδειας οδήγησης – Μοτοποδήλατα / Μοτοσικλέτες / Τρίκυκλα',article:'98§4αα',fine:500,suspend:'1 έτος + 30 ημ. στοιχ. κυκλ.',points:0,criminal:false},{id:25,category:'άδειες',name:'Παραχώρηση οδήγησης σε μη δικαιούχο',article:'102§1',fine:350,suspend:'30 ημ. όλων των στοιχείων',points:0,criminal:false},{id:26,category:'ΚΤΕΟ',name:'Κυκλοφορία χωρίς ισχύον ΚΤΕΟ',article:'90',fine:350,suspend:'30 ημ. στοιχ. κυκλ. + ακινητοποίηση',points:0,criminal:false},{id:27,category:'ΚΤΕΟ',name:'Πλαστό / παραποιημένο ΚΤΕΟ',article:'90',fine:'ΠΛΗΜΜΕΛΗΜΑ',suspend:'Οριστική αφαίρεση στοιχ. κυκλ.',points:0,criminal:true},{id:28,category:'ασφάλεια',name:'Ανασφάλιστο – Δίκυκλα',article:'ΠΔ 237/86',fine:250,suspend:'6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',points:0,criminal:false},{id:29,category:'ασφάλεια',name:'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.',article:'ΠΔ 237/86',fine:500,suspend:'6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',points:0,criminal:false},{id:30,category:'ασφάλεια',name:'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία',article:'ΠΔ 237/86',fine:1000,suspend:'6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',points:0,criminal:false},{id:31,category:'ασφάλεια',name:'Εμπλοκή σε ατύχημα χωρίς ασφάλιση',article:'ΠΔ 237/86',fine:'-',suspend:'2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.',points:0,criminal:false},{id:32,category:'ασφάλεια',name:'Μη χρήση ζώνης ασφαλείας από οδηγό',article:'16§5 εδ. α',fine:350,suspend:'30 ημέρες',points:0,criminal:false},{id:33,category:'ασφάλεια',name:'Μη χρήση ζώνης από επιβάτη',article:'16§5',fine:150,suspend:'-',points:0,criminal:false},{id:34,category:'ασφάλεια',name:'Έλλειψη ζώνης σε Ι.Χ.Ε. ή Φορτηγό ≤3,5τ.',article:'85§17',fine:150,suspend:'ακινητοποίηση μέχρι αποκατάστασης',points:0,criminal:false},{id:35,category:'ασφάλεια',name:'Μη χρήση κράνους – Οδηγός μοτοσικλέτας / μοτοποδηλάτου',article:'16§6 εδ. α',fine:350,suspend:'30 ημέρες + ακινητοποίηση',points:0,criminal:false},{id:36,category:'ασφάλεια',name:'Μη χρήση κράνους – Επιβάτης μοτοσικλέτας / μοτοποδηλάτου',article:'16§6',fine:350,suspend:'ακινητοποίηση μέχρι εφοδιασμού',points:0,criminal:false},{id:37,category:'ασφάλεια',name:'Μη μέριμνα οδηγού για χρήση κράνους από συνεπιβάτη',article:'37§3',fine:350,suspend:'30 ημέρες',points:0,criminal:false}];
-const signs={stop:'<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="58" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>',r39:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-39</text></svg>',r40:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-40</text></svg>',r41:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-41</text></svg>',r42:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-42</text></svg>',r43:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-43</text></svg>',crosswalk:'<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>',disabled:'<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>'};
-let currentFilter='all',showFavorites=false,favorites=JSON.parse(localStorage.getItem('kok_favorites'))||{};
-function toggleDark(){document.body.classList.toggle('dark')}
-function toggleFavorites(){showFavorites=!showFavorites;document.getElementById('favIndicator').style.display=showFavorites?'inline':'none';render()}
-function setFilter(f){currentFilter=f;document.querySelectorAll('.filters button').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));render()}
-function toggleFavorite(id){favorites[id]=!favorites[id];localStorage.setItem('kok_favorites',JSON.stringify(favorites));render();showToast(favorites[id]?'⭐ Προστέθηκε στα αγαπημένα':'⭐ Αφαιρέθηκε από τα αγαπημένα')}
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timeout);t._timeout=setTimeout(()=>t.classList.remove('show'),2000)}
-function getSignHTML(s){return signs[s]?'<div class="sign">'+signs[s]+'</div>':''}
-function render(){const q=document.getElementById('searchInput').value.toLowerCase().trim(),c=document.getElementById('listContainer'),ce=document.getElementById('countText');let f=data.filter(v=>{if(showFavorites&&!favorites[v.id])return false;if(currentFilter!=='all'&&v.category!==currentFilter)return false;if(q){const s=(v.name+' '+v.article+' '+v.category).toLowerCase();if(!s.includes(q))return false}return true});ce.textContent=f.length+' παραβάσεις';if(!f.length){c.innerHTML='<div class="empty">🔍 Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>';return}c.innerHTML=f.map(v=>'<div class="card" style="border-left-color:'+(v.category==='στάθμευση'?'#f59e0b':v.category==='πινακίδες'?'#3b82f6':v.category==='κίνηση'?'#ef4444':v.category==='άδειες'?'#8b5cf6':v.category==='ασφάλεια'?'#10b981':v.category==='θόρυβος'?'#f97316':'#64748b')+';">'+(v.sign?getSignHTML(v.sign):'')+'<div class="content"><div class="name">'+v.name+(v.criminal?'<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>':'')+'</div><div class="article">Άρθρο: '+v.article+'</div><div class="details"><span class="fine">💰 '+(typeof v.fine==='number'?v.fine+'€':v.fine)+'</span><span class="suspend">⛔ '+v.suspend+'</span>'+(v.points>0?'<span class="points">📊 '+v.points+' βαθμοί</span>':'')+'</div></div><button class="favorite '+(favorites[v.id]?'active':'')+'" onclick="toggleFavorite('+v.id+')">'+(favorites[v.id]?'⭐':'☆')+'</button></div>').join('')}
-render();document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='f'){e.preventDefault();document.getElementById('searchInput').focus();document.getElementById('searchInput').select()}});
-</script>
+    <div class="header">
+        <div class="header-top">
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v2</span></div>
+            <div class="header-actions">
+                <button onclick="toggleDark()">🌙</button>
+                <button onclick="toggleFavorites()">⭐</button>
+                <button onclick="window.print()">🖨️</button>
+            </div>
+        </div>
+        <div class="search-box">
+            <span class="icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="render()">
+        </div>
+        <div class="filters" id="filterContainer">
+            <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
+            <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>
+            <button data-filter="πινακίδες" onclick="setFilter('πινακίδες')">Πινακίδες</button>
+            <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button>
+            <button data-filter="άδειες" onclick="setFilter('άδειες')">Άδειες</button>
+            <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
+            <button data-filter="θόρυβος" onclick="setFilter('θόρυβος')">Θόρυβος</button>
+            <button data-filter="ΚΤΕΟ" onclick="setFilter('ΚΤΕΟ')">ΚΤΕΟ</button>
+        </div>
+    </div>
+
+    <div class="count" id="countDisplay">
+        <span id="countText">0 παραβάσεις</span>
+        <span id="favIndicator" style="display:none;">⭐ Αγαπημένα</span>
+    </div>
+
+    <div class="list" id="listContainer"></div>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v2.0 (38 παραβάσεις)
+        // ============================================================
+        const data = [{
+            id: 1,
+            category: 'στάθμευση',
+            name: 'Σε διάβαση πεζών ή ποδηλατιστών (και σε απόσταση < 5μ.)',
+            article: '38§2α',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'crosswalk'
+        }, {
+            id: 2,
+            category: 'στάθμευση',
+            name: 'Σε ράμπα ΑμεΑ',
+            article: '38§2ιστ',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'disabled'
+        }, {
+            id: 3,
+            category: 'στάθμευση',
+            name: 'Σε αποκλειστική θέση φόρτισης ηλεκτρικών οχημάτων',
+            article: '38§2ιθ',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false
+        }, {
+            id: 4,
+            category: 'στάθμευση',
+            name: 'Σε σημείο που εμποδίζει ΜΜΜ ή λεωφορεία',
+            article: '38§2ικα',
+            fine: 30,
+            suspend: '70 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false
+        }, {
+            id: 5,
+            category: 'στάθμευση',
+            name: 'Σε εισόδους ή εξόδους πεζοδρόμων ή πάνω σ\' αυτούς',
+            article: '38§3η',
+            fine: 30,
+            suspend: '-',
+            details: 'Καμία αφαίρεση',
+            points: 0,
+            criminal: false
+        }, {
+            id: 6,
+            category: 'στάθμευση',
+            name: 'Στάθμευση σε πεζοδρόμιο (γενικά)',
+            article: '38§?',
+            fine: 150,
+            suspend: '20 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false
+        }, {
+            id: 7,
+            category: 'στάθμευση',
+            name: 'Σε θέση ΤΑΞΙ',
+            article: '38§3θ',
+            fine: 30,
+            suspend: '-',
+            details: 'Καμία αφαίρεση',
+            points: 0,
+            criminal: false
+        }, {
+            id: 8,
+            category: 'στάθμευση',
+            name: 'Φορτηγά >3,5τ. / λεωφορεία / ΜΕ / ΑΜ / ρυμ/να / τροχόσπιτα μήκους >7,50μ. – στάθμευση πέραν 24ώρου',
+            article: '38§6',
+            fine: 30,
+            suspend: '-',
+            details: 'Καμία αφαίρεση',
+            points: 0,
+            criminal: false
+        }, {
+            id: 9,
+            category: 'πινακίδες',
+            name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)',
+            article: '7§3',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'r39'
+        }, {
+            id: 10,
+            category: 'πινακίδες',
+            name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
+            article: '7§3',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'r40'
+        }, {
+            id: 11,
+            category: 'πινακίδες',
+            name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
+            article: '7§3',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'r41'
+        }, {
+            id: 12,
+            category: 'πινακίδες',
+            name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
+            article: '7§3',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'r42'
+        }, {
+            id: 13,
+            category: 'πινακίδες',
+            name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
+            article: '7§3',
+            fine: 30,
+            suspend: '10 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false,
+            sign: 'r43'
+        }, {
+            id: 14,
+            category: 'πινακίδες',
+            name: 'Παραβίαση STOP (Ρ-2)',
+            article: '7§3',
+            fine: 150,
+            suspend: '20 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 7,
+            criminal: false,
+            sign: 'stop'
+        }, {
+            id: 15,
+            category: 'κίνηση',
+            name: 'Παραβίαση ερυθρού σηματοδότη',
+            article: '9§1β',
+            fine: 700,
+            suspend: '60 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 9,
+            criminal: false
+        }, {
+            id: 16,
+            category: 'κίνηση',
+            name: 'Κίνηση σε πεζόδρομο / πλατεία / νησίδα ασφαλείας',
+            article: '20§4',
+            fine: 350,
+            suspend: '70 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 5,
+            criminal: false
+        }, {
+            id: 17,
+            category: 'κίνηση',
+            name: 'Κίνηση αντίθετα σε μονόδρομο',
+            article: '20§7',
+            fine: 350,
+            suspend: '70 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 5,
+            criminal: false
+        }, {
+            id: 18,
+            category: 'κίνηση',
+            name: 'Οδηγός οχήματος άμεσης ανάγκης – κίνηση αντίθετα σε μονόδρομο',
+            article: '48§2',
+            fine: 150,
+            suspend: '40 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false
+        }, {
+            id: 19,
+            category: 'θόρυβος',
+            name: 'Πρόκληση θορύβου πέραν επιτρεπομένων ορίων',
+            article: '19§1 εδ. β',
+            fine: 350,
+            suspend: '70 ημέρες + ακινητοποίηση',
+            details: 'Αφαίρεση άδειας οδήγησης & ακινητοποίηση οχήματος',
+            points: 0,
+            criminal: false
+        }, {
+            id: 20,
+            category: 'θόρυβος',
+            name: 'Έλλειψη σιγαστήρα (εξάτμισης)',
+            article: '85§12,26',
+            fine: 150,
+            suspend: '40 ημέρες + ακινητοποίηση',
+            details: 'Αφαίρεση άδειας οδήγησης & ακινητοποίηση οχήματος',
+            points: 0,
+            criminal: false
+        }, {
+            id: 21,
+            category: 'θόρυβος',
+            name: 'Παρενόχληση από ηχητικό σύστημα / μουσική',
+            article: '19§3 εδ. α',
+            fine: 350,
+            suspend: '70 ημέρες + ακινητοποίηση',
+            details: 'Αφαίρεση άδειας οδήγησης & ακινητοποίηση οχήματος',
+            points: 0,
+            criminal: false
+        }, {
+            id: 22,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Ε.Ι.Χ.',
+            article: '98§4αβ',
+            fine: 700,
+            suspend: '1 έτος + 30 ημ.',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 23,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Ε.Δ.Χ. & Λεωφορεία',
+            article: '98§4αβ',
+            fine: 1000,
+            suspend: '1 έτος + 30 ημ.',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 24,
+            category: 'άδειες',
+            name: 'Στέρηση άδειας οδήγησης – Μοτοποδήλατα / Μοτοσικλέτες / Τρίκυκλα',
+            article: '98§4αα',
+            fine: 500,
+            suspend: '1 έτος + 30 ημ.',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 25,
+            category: 'άδειες',
+            name: 'Παραχώρηση οδήγησης σε μη δικαιούχο',
+            article: '102§1',
+            fine: 350,
+            suspend: '30 ημ.',
+            details: 'Αφαίρεση όλων των στοιχείων (άδεια οδήγησης & στοιχεία κυκλοφορίας)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 26,
+            category: 'ΚΤΕΟ',
+            name: 'Κυκλοφορία χωρίς ισχύον ΚΤΕΟ',
+            article: '90',
+            fine: 350,
+            suspend: '30 ημ. + ακινητοποίηση',
+            details: 'Αφαίρεση στοιχείων κυκλοφορίας (πινακίδες + άδεια) & ακινητοποίηση',
+            points: 0,
+            criminal: false
+        }, {
+            id: 27,
+            category: 'ΚΤΕΟ',
+            name: 'Πλαστό / παραποιημένο ΚΤΕΟ',
+            article: '90',
+            fine: 'ΠΛΗΜΜΕΛΗΜΑ',
+            suspend: 'Οριστική αφαίρεση',
+            details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: true
+        }, {
+            id: 28,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Δίκυκλα',
+            article: 'ΠΔ 237/86',
+            fine: 250,
+            suspend: '6 μήνες',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 29,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.',
+            article: 'ΠΔ 237/86',
+            fine: 500,
+            suspend: '6 μήνες',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 30,
+            category: 'ασφάλεια',
+            name: 'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία',
+            article: 'ΠΔ 237/86',
+            fine: 1000,
+            suspend: '6 μήνες',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 31,
+            category: 'ασφάλεια',
+            name: 'Εμπλοκή σε ατύχημα χωρίς ασφάλιση',
+            article: 'ΠΔ 237/86',
+            fine: '-',
+            suspend: '2 χρόνια',
+            details: 'Αφαίρεση άδειας οδήγησης & στοιχείων κυκλοφορίας (πινακίδες + άδεια)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 32,
+            category: 'ασφάλεια',
+            name: 'Μη χρήση ζώνης ασφαλείας από οδηγό',
+            article: '16§5 εδ. α',
+            fine: 350,
+            suspend: '30 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false
+        }, {
+            id: 33,
+            category: 'ασφάλεια',
+            name: 'Μη χρήση ζώνης από επιβάτη',
+            article: '16§5',
+            fine: 150,
+            suspend: '-',
+            details: 'Πρόστιμο μόνο (χωρίς αφαίρεση)',
+            points: 0,
+            criminal: false
+        }, {
+            id: 34,
+            category: 'ασφάλεια',
+            name: 'Έλλειψη ζώνης σε Ι.Χ.Ε. ή Φορτηγό ≤3,5τ.',
+            article: '85§17',
+            fine: 150,
+            suspend: 'ακινητοποίηση',
+            details: 'Ακινητοποίηση μέχρι αποκατάστασης',
+            points: 0,
+            criminal: false
+        }, {
+            id: 35,
+            category: 'ασφάλεια',
+            name: 'Μη χρήση κράνους – Οδηγός μοτοσικλέτας / μοτοποδηλάτου',
+            article: '16§6 εδ. α',
+            fine: 350,
+            suspend: '30 ημέρες + ακινητοποίηση',
+            details: 'Αφαίρεση άδειας οδήγησης & ακινητοποίηση οχήματος',
+            points: 0,
+            criminal: false
+        }, {
+            id: 36,
+            category: 'ασφάλεια',
+            name: 'Μη χρήση κράνους – Επιβάτης μοτοσικλέτας / μοτοποδηλάτου',
+            article: '16§6',
+            fine: 350,
+            suspend: 'ακινητοποίηση',
+            details: 'Ακινητοποίηση μέχρι εφοδιασμού με κράνος',
+            points: 0,
+            criminal: false
+        }, {
+            id: 37,
+            category: 'ασφάλεια',
+            name: 'Μη μέριμνα οδηγού για χρήση κράνους από συνεπιβάτη',
+            article: '37§3',
+            fine: 350,
+            suspend: '30 ημέρες',
+            details: 'Αφαίρεση άδειας οδήγησης',
+            points: 0,
+            criminal: false
+        }];
+
+        // ============================================================
+        // SVG ΠΙΝΑΚΙΔΕΣ – v2 (βελτιωμένες)
+        // ============================================================
+        const signs = {
+            stop: `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="60" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
+            r39: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-39</text></svg>`,
+            r40: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-40</text></svg>`,
+            r41: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-41</text></svg>`,
+            r42: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-42</text></svg>`,
+            r43: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="18" fill="#0047ab" text-anchor="middle">P-43</text></svg>`,
+            crosswalk: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`,
+            disabled: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`
+        };
+
+        // ============================================================
+        // ΚΑΤΑΣΤΑΣΗ & ΣΥΝΑΡΤΗΣΕΙΣ
+        // ============================================================
+        let currentFilter = 'all';
+        let showFavorites = false;
+        let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
+
+        function toggleDark() {
+            document.body.classList.toggle('dark');
+        }
+
+        function toggleFavorites() {
+            showFavorites = !showFavorites;
+            document.getElementById('favIndicator').style.display = showFavorites ? 'inline' : 'none';
+            render();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filters button').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+            render();
+        }
+
+        function toggleFavorite(id) {
+            favorites[id] = !favorites[id];
+            localStorage.setItem('kok_favorites', JSON.stringify(favorites));
+            render();
+            showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        function getSignHTML(sign) {
+            return signs[sign] ? `<div class="sign">${signs[sign]}</div>` : '';
+        }
+
+        function render() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const container = document.getElementById('listContainer');
+            const countEl = document.getElementById('countText');
+
+            let filtered = data.filter(v => {
+                if (showFavorites && !favorites[v.id]) return false;
+                if (currentFilter !== 'all' && v.category !== currentFilter) return false;
+                if (query) {
+                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details).toLowerCase();
+                    if (!searchable.includes(query)) return false;
+                }
+                return true;
+            });
+
+            countEl.textContent = filtered.length + ' παραβάσεις';
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty">🔍 Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(v => `
+                <div class="card" style="border-left-color: ${v.category === 'στάθμευση' ? '#f59e0b' : v.category === 'πινακίδες' ? '#3b82f6' : v.category === 'κίνηση' ? '#ef4444' : v.category === 'άδειες' ? '#8b5cf6' : v.category === 'ασφάλεια' ? '#10b981' : v.category === 'θόρυβος' ? '#f97316' : '#64748b'};">
+                    ${v.sign ? getSignHTML(v.sign) : ''}
+                    <div class="content">
+                        <div class="name">
+                            ${v.name}
+                            ${v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : ''}
+                        </div>
+                        <div class="article">Άρθρο: ${v.article}</div>
+                        <div class="details">
+                            <span class="fine">💰 ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                            <span class="suspend">⛔ ${v.suspend}</span>
+                            ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί</span>` : ''}
+                        </div>
+                        <div style="font-size: 12px; color: #4a5568; margin-top: 4px; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; display: inline-block;">
+                            📌 ${v.details}
+                        </div>
+                    </div>
+                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})">
+                        ${favorites[v.id] ? '⭐' : '☆'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        render();
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+                document.getElementById('searchInput').select();
+            }
+        });
+    </script>
 </body>
 </html>
