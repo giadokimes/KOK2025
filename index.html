@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>ΚΟΚ – Τσέπης v9.2</title>
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="description" content="Εργαλείο αναφοράς παραβάσεων ΚΟΚ (Ν.5209/2025)">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <style>
         * {
             margin: 0;
@@ -12,27 +20,31 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f0f4f8;
+            background: #f3f1ec;
             color: #1a202c;
             padding: 0 0 80px 0;
             min-height: 100vh;
             transition: background .3s, color .3s;
+            font-variant-numeric: tabular-nums;
         }
         body.dark {
             background: #0b1120;
             color: #e2e8f0;
         }
         .header {
-            background: #1e3a5f;
+            background: #16324f;
+            background-image: linear-gradient(155deg, #1c3d61 0%, #12283f 100%);
             color: #fff;
             padding: 16px 20px 14px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
+            border-bottom: 3px solid #0047ab;
         }
         body.dark .header {
-            background: #0b1e33;
+            background-image: linear-gradient(155deg, #0d2038 0%, #081426 100%);
+            border-bottom-color: #2563eb;
         }
         .header-top {
             display: flex;
@@ -40,14 +52,17 @@
             align-items: center;
         }
         .header-title {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
         }
         .header-title span {
-            font-weight: 300;
-            font-size: 14px;
-            opacity: 0.8;
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: 0.2px;
+            text-transform: none;
+            opacity: 0.75;
         }
         .header-actions {
             display: flex;
@@ -184,17 +199,17 @@
         }
         .card {
             background: #fff;
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 14px 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 10px rgba(15, 23, 42, 0.05);
+            border-left: 4px solid #e2e8f0;
             display: flex;
             gap: 14px;
             align-items: flex-start;
-            transition: box-shadow .2s;
+            transition: box-shadow .2s, transform .15s;
         }
         .card:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08), 0 8px 18px rgba(15, 23, 42, 0.08);
         }
         body.dark .card {
             background: #1e293b;
@@ -205,15 +220,18 @@
             flex-shrink: 0;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 2px;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 0.2px;
         }
         .card .sign-wrapper svg {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
         }
         .card .content {
             flex: 1;
@@ -263,11 +281,18 @@
         body.dark .card .details .points {
             color: #a78bfa;
         }
+        .card .actions {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
         .card .favorite {
             flex-shrink: 0;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             padding: 4px;
             opacity: 0.3;
@@ -287,6 +312,38 @@
         body.dark .card .favorite.active {
             opacity: 1;
             color: #fbbf24;
+        }
+        .card .copy-btn {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            opacity: 0.35;
+            color: #4a5568;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .2s, background .2s, transform .1s;
+        }
+        .card .copy-btn:hover {
+            opacity: 0.9;
+            background: #f1f5f9;
+        }
+        .card .copy-btn:active {
+            transform: scale(0.9);
+        }
+        .card .copy-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        body.dark .card .copy-btn {
+            color: #94a3b8;
+            opacity: 0.5;
+        }
+        body.dark .card .copy-btn:hover {
+            background: #334155;
         }
         .badge-criminal {
             display: inline-block;
@@ -957,9 +1014,76 @@
             return categoryColors[category] || '#94a3b8';
         }
 
+        const categoryMonograms = {
+            'στάθμευση': 'ΣΤ',
+            'πινακίδες': 'ΠΙ',
+            'κίνηση': 'ΚΙ',
+            'ταχύτητα': 'ΤΧ',
+            'άδειες': 'ΑΔ',
+            'ασφάλεια': 'ΑΣ',
+            'θόρυβος': 'ΘΟ',
+            'ΚΤΕΟ': 'ΚΤ',
+            'μοτοσικλέτα': 'ΜΤ',
+            'ΕΠΗΟ': 'ΕΠ',
+            'αλκοόλ': 'ΑΛ',
+            'επαγγελματικά': 'ΕΓ',
+            'υποτροπή': 'ΥΠ'
+        };
+
+        function getCategoryMonogram(category) {
+            return categoryMonograms[category] || '•';
+        }
+
         function formatFine(fine) {
             if (typeof fine === 'number') return fine + '€';
             return fine;
+        }
+
+        const copyIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+
+        function buildViolationText(v) {
+            const lines = [
+                v.name,
+                'Άρθρο ' + v.article + ' ΚΟΚ',
+                'Πρόστιμο: ' + formatFine(v.fine)
+            ];
+            if (v.suspend && v.suspend !== '-') lines.push('Συνέπειες: ' + v.suspend);
+            if (v.points > 0) lines.push('Βαθμοί ΣΕΣΟ: ' + v.points);
+            if (v.details) lines.push(v.details);
+            if (v.criminal) lines.push('ΠΛΗΜΜΕΛΗΜΑ');
+            return lines.join('\n');
+        }
+
+        function copyViolation(id) {
+            const v = data.find(item => item.id === id);
+            if (!v) return;
+            const text = buildViolationText(v);
+
+            const done = () => showToast('📋 Αντιγράφηκε στο πρόχειρο');
+            const fail = () => showToast('⚠️ Αποτυχία αντιγραφής');
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done).catch(() => legacyCopy(text, done, fail));
+            } else {
+                legacyCopy(text, done, fail);
+            }
+        }
+
+        function legacyCopy(text, done, fail) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                const ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok ? done() : fail();
+            } catch (e) {
+                fail();
+            }
         }
 
         function onSearch() {
@@ -1012,8 +1136,8 @@
 
                 return `
                 <div class="card">
-                    <div class="sign-wrapper" style="background:${color}20; border:2px solid ${color};">
-                        ${signSvg ? `<div style="width:28px;height:28px;">${signSvg}</div>` : `<span style="font-size:18px;">${v.category === 'στάθμευση' ? '🅿' : v.category === 'ταχύτητα' ? '🏎' : v.category === 'ΕΠΗΟ' ? '🛴' : v.category === 'μοτοσικλέτα' ? '🏍' : v.category === 'αλκοόλ' ? '🍷' : v.category === 'επαγγελματικά' ? '🚛' : '📌'}</span>`}
+                    <div class="sign-wrapper" style="background:${color}20; border:2px solid ${color}; color:${color};">
+                        ${signSvg ? `<div style="width:26px;height:26px;">${signSvg}</div>` : `<span>${getCategoryMonogram(v.category)}</span>`}
                     </div>
                     <div class="content">
                         <div class="name">
@@ -1029,9 +1153,14 @@
                             📌 ${v.details}
                         </div>
                     </div>
-                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Προσθήκη/αφαίρεση αγαπημένου">
-                        ${favorites[v.id] ? '⭐' : '☆'}
-                    </button>
+                    <div class="actions">
+                        <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Προσθήκη/αφαίρεση αγαπημένου">
+                            ${favorites[v.id] ? '⭐' : '☆'}
+                        </button>
+                        <button class="copy-btn" onclick="copyViolation(${v.id})" aria-label="Αντιγραφή στοιχείων παράβασης">
+                            ${copyIcon}
+                        </button>
+                    </div>
                 </div>
             `}).join('');
         }
@@ -1039,6 +1168,15 @@
         // Εκκίνηση
         console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις');
         render();
+
+        // PWA: εγκατάσταση service worker για λειτουργία χωρίς σύνδεση
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
