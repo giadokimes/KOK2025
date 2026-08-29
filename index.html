@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v9.0</title>
+    <title>ΚΟΚ – Τσέπης v9.1</title>
     <style>
         * {
             margin: 0;
@@ -413,7 +413,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v9.0</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v9.1</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
                 <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
@@ -451,15 +451,12 @@
 
     <script>
         // ============================================================
-        // SVG ΠΙΝΑΚΙΔΕΣ – v9.0 (Ακριβή αντίγραφα από το PDF)
+        // SVG ΠΙΝΑΚΙΔΕΣ – v9.1 (Ακριβή αντίγραφα από το PDF)
         // ============================================================
         const signs = {
-            // ===== ΠΙΝΑΚΙΔΕΣ ΑΝΑΓΓΕΛΙΑΣ ΚΙΝΔΥΝΟΥ (Κ) =====
             'k15': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="30" y="20" width="40" height="60" fill="#0047ab"/><line x1="20" y1="30" x2="80" y2="30" stroke="#0047ab" stroke-width="4"/><line x1="20" y1="50" x2="80" y2="50" stroke="#0047ab" stroke-width="4"/><circle cx="50" cy="70" r="12" fill="#fff"/><circle cx="50" cy="70" r="8" fill="#0047ab"/></svg>`,
             'k31': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="20" y="30" width="60" height="40" fill="#0047ab" rx="4"/><line x1="30" y1="30" x2="30" y2="70" stroke="#fff" stroke-width="4"/><line x1="70" y1="30" x2="70" y2="70" stroke="#fff" stroke-width="4"/><circle cx="50" cy="50" r="8" fill="#fff"/></svg>`,
             'k32': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="20" y="30" width="60" height="40" fill="#0047ab" rx="4"/><line x1="30" y1="30" x2="30" y2="70" stroke="#fff" stroke-width="4" stroke-dasharray="8,4"/><line x1="70" y1="30" x2="70" y2="70" stroke="#fff" stroke-width="4" stroke-dasharray="8,4"/><circle cx="50" cy="50" r="8" fill="#fff"/></svg>`,
-
-            // ===== ΠΙΝΑΚΙΔΕΣ ΡΥΘΜΙΣΤΙΚΕΣ (Ρ) =====
             'r1': `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><polygon points="50,20 80,50 50,80 20,50" fill="#0047ab"/><polygon points="50,30 70,50 50,70 30,50" fill="#fff"/></svg>`,
             'r2': `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="55" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
             'r3': `<svg viewBox="0 0 100 100"><rect x="10" y="20" width="80" height="60" fill="#f0c040" stroke="#0047ab" stroke-width="3"/><text x="50" y="55" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#0047ab" text-anchor="middle">P-3</text></svg>`,
@@ -473,8 +470,6 @@
             'r42': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-42</text></svg>`,
             'r43': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-43</text></svg>`,
             'r71': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`,
-
-            // ===== ΠΛΗΡΟΦΟΡΙΑΚΕΣ (Π) =====
             'crosswalk': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`,
             'disabled': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`
         };
@@ -499,7 +494,7 @@
         };
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v9.0 (Πλήρης, διορθωμένη)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v9.1 (ΜΟΝΑΔΙΚΑ IDs)
         // ============================================================
         const data = [
             // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
