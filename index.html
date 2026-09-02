@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v10.1</title>
+    <title>ΚΟΚ – Τσέπης v10.3</title>
     <style>
         /* ============================================================
-               v10.1 - Πλήρως Offline & Αισθητικά Αναβαθμισμένο
+               v10.3 - Μινιμαλιστική, Χρωματική Κωδικοποίηση Βαρύτητας
+                     - Αφαίρεση πλαισίου "πινέζας" (detail-note)
                ============================================================ */
-        /* ----- Reset & Base ----- */
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +16,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f4f7fb;
             color: #1a202c;
             padding: 0 0 80px 0;
@@ -38,7 +38,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -90,8 +90,6 @@
             align-items: center;
             justify-content: center;
             transition: all .2s;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
         }
 
         .header-actions button:hover {
@@ -204,8 +202,6 @@
             transition: all .2s;
             white-space: nowrap;
             position: relative;
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
         }
 
         .filters button.active {
@@ -264,56 +260,42 @@
             color: #f59e0b;
         }
 
-        /* ----- Cards ----- */
+        /* ----- Cards (Χωρίς πλαίσιο, με χρωματικό φόντο βαρύτητας) ----- */
         .list {
             margin-top: 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .card {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 18px 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+            padding: 16px 18px;
+            border-radius: 14px;
             border-left: 6px solid #e2e8f0;
             display: flex;
-            gap: 16px;
+            gap: 14px;
             align-items: flex-start;
-            transition: all .2s;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
+            transition: all .15s;
+            background-color: #ffffff;
+            box-shadow: none;
         }
 
         body.dark .card {
-            background: #1e293b;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
             border-left-color: #334155;
         }
 
+        .card:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.97);
+        }
+
         body.dark .card:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            filter: brightness(1.1);
         }
 
-        .card .sign-wrapper {
-            flex-shrink: 0;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2px;
-            background: rgba(0, 0, 0, 0.02);
-        }
-
-        .card .sign-wrapper svg {
-            width: 30px;
-            height: 30px;
+        /* Χρώματα φόντου για dark mode (υπολογίζονται με opacity) */
+        body.dark .card {
+            background-color: rgba(255, 255, 255, 0.04);
         }
 
         .card .content {
@@ -420,7 +402,7 @@
             font-size: 11px;
             font-weight: 700;
             color: #dc2626;
-            background: #fee2e2;
+            background: rgba(220, 38, 38, 0.15);
             padding: 2px 12px;
             border-radius: 20px;
             margin-left: 4px;
@@ -429,7 +411,7 @@
         }
 
         body.dark .badge-criminal {
-            background: #450a0a;
+            background: rgba(252, 165, 165, 0.2);
             color: #fca5a5;
         }
 
@@ -437,7 +419,7 @@
             display: inline-block;
             font-size: 11px;
             color: #64748b;
-            background: #f1f5f9;
+            background: rgba(0, 0, 0, 0.05);
             padding: 2px 10px;
             border-radius: 20px;
             margin-left: 4px;
@@ -445,7 +427,7 @@
         }
 
         body.dark .badge-half {
-            background: #334155;
+            background: rgba(255, 255, 255, 0.08);
             color: #94a3b8;
         }
 
@@ -454,14 +436,14 @@
             font-size: 11px;
             font-weight: 600;
             color: #2563eb;
-            background: #dbeafe;
+            background: rgba(37, 99, 235, 0.12);
             padding: 2px 12px;
             border-radius: 20px;
             margin-left: 4px;
         }
 
         body.dark .badge-suspension {
-            background: #1e3a5f;
+            background: rgba(96, 165, 250, 0.15);
             color: #93c5fd;
         }
 
@@ -498,7 +480,7 @@
             display: none;
             font-size: 14px;
             color: #334155;
-            background: #f8fafc;
+            background: rgba(0, 0, 0, 0.04);
             padding: 12px 16px;
             border-radius: 12px;
             margin-top: 10px;
@@ -507,28 +489,13 @@
         }
 
         body.dark .card .full-description {
-            background: #2d3748;
+            background: rgba(255, 255, 255, 0.06);
             color: #e2e8f0;
             border-left-color: #60a5fa;
         }
 
         .card .full-description.open {
             display: block;
-        }
-
-        .card .detail-note {
-            font-size: 13px;
-            color: #64748b;
-            margin-top: 6px;
-            background: #f1f5f9;
-            padding: 6px 12px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        body.dark .card .detail-note {
-            background: #334155;
-            color: #94a3b8;
         }
 
         /* ----- Empty State ----- */
@@ -566,8 +533,6 @@
             pointer-events: none;
             z-index: 999;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
         }
 
         body.dark .toast {
@@ -694,16 +659,6 @@
                 font-size: 18px;
             }
 
-            .card .sign-wrapper {
-                width: 38px;
-                height: 38px;
-            }
-
-            .card .sign-wrapper svg {
-                width: 24px;
-                height: 24px;
-            }
-
             .card .name {
                 font-size: 15px;
             }
@@ -766,8 +721,8 @@
                 border-left-color: #333 !important;
                 background: #fff !important;
                 box-shadow: none !important;
-                page-break-inside: avoid;
                 transform: none !important;
+                filter: none !important;
             }
 
             .card .article {
@@ -797,18 +752,13 @@
             .card .desc-toggle {
                 display: none !important;
             }
-
-            .card .detail-note {
-                background: #f5f5f5 !important;
-                color: #333 !important;
-            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.1</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.3</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
                 <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
@@ -847,25 +797,7 @@
 
     <script>
         // ============================================================
-        // SVG ΠΙΝΑΚΙΔΕΣ
-        // ============================================================
-        const signs = {
-            'k15': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="30" y="20" width="40" height="60" fill="#0047ab"/><line x1="20" y1="30" x2="80" y2="30" stroke="#0047ab" stroke-width="4"/><line x1="20" y1="50" x2="80" y2="50" stroke="#0047ab" stroke-width="4"/><circle cx="50" cy="70" r="12" fill="#fff"/><circle cx="50" cy="70" r="8" fill="#0047ab"/></svg>`,
-            'k31': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="20" y="30" width="60" height="40" fill="#0047ab" rx="4"/><line x1="30" y1="30" x2="30" y2="70" stroke="#fff" stroke-width="4"/><line x1="70" y1="30" x2="70" y2="70" stroke="#fff" stroke-width="4"/><circle cx="50" cy="50" r="8" fill="#fff"/></svg>`,
-            'r1': `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><polygon points="50,20 80,50 50,80 20,50" fill="#0047ab"/><polygon points="50,30 70,50 50,70 30,50" fill="#fff"/></svg>`,
-            'r2': `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="55" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
-            'r39': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-39</text></svg>`,
-            'r40': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-40</text></svg>`,
-            'r41': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-41</text></svg>`,
-            'r42': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-42</text></svg>`,
-            'r43': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-43</text></svg>`,
-            'r71': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`,
-            'crosswalk': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`,
-            'disabled': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`
-        };
-
-        // ============================================================
-        // ΧΡΩΜΑΤΑ ΚΑΤΗΓΟΡΙΩΝ
+        // ΧΡΩΜΑΤΑ ΚΑΤΗΓΟΡΙΩΝ (για το αριστερό border)
         // ============================================================
         const categoryColors = {
             'στάθμευση': '#f59e0b',
@@ -884,23 +816,23 @@
         };
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.1 (πλήρης με όλες τις περιγραφές)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.3 (πλήρης, 126 παραβάσεις)
         // ============================================================
         const data = [
             // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0,
-                criminal: false, half: true, sign: 'crosswalk',
+                criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η στάση ή στάθμευση επί διάβασης πεζών ή ποδηλατιστών και σε απόσταση μικρότερη από πέντε (5) μέτρα εκατέρωθεν αυτής.' },
             { id: 2, category: 'στάθμευση', name: 'Σε ράμπα ΑμεΑ', article: '38§2ιστ', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true, sign: 'disabled',
+                criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε θέση όπου βρίσκεται κεκλιμένο επίπεδο (ράμπα) διάβασης ατόμων με αναπηρία ή οδηγός τυφλών και σε απόσταση μικρότερη από πενήντα εκατοστά (0,50 μ.) εκατέρωθεν αυτών.' },
             { id: 3, category: 'στάθμευση', name: 'Σε χώρο ΑμεΑ (Ρ-71)', article: '38§2ιζ', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true, sign: 'r71',
+                criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε ειδικούς χώρους στάθμευσης οχημάτων ατόμων με αναπηρία.' },
             { id: 4, category: 'στάθμευση', name: 'Σε συγκεκριμένο χώρο ΑμεΑ (Ρ-72)', article: '38§2ιη', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
@@ -1026,31 +958,31 @@
             // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) ==========
             { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false, sign: 'r39',
+                criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-39: Απαγορεύεται η στάθμευση.' },
             { id: 38, category: 'πινακίδες', name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r40',
+                points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-40: Απαγορεύονται η στάση και η στάθμευση.' },
             { id: 39, category: 'πινακίδες', name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r41',
+                points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-41: Απαγορεύεται η στάθμευση τους μονούς μήνες.' },
             { id: 40, category: 'πινακίδες', name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r42',
+                points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-42: Απαγορεύεται η στάθμευση τους ζυγούς μήνες.' },
             { id: 41, category: 'πινακίδες', name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r43',
+                points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-43: Περιοχή απαγόρευσης στάθμευσης (στάθμευση περιορισμένης χρονικής διάρκειας).' },
             { id: 42, category: 'πινακίδες', name: 'Παραβίαση STOP (Ρ-2)', article: '7§11β', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false, sign: 'r2',
+                half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-2: Υποχρεωτική διακοπή πορείας. Η παράβαση κατατάσσεται στην κατηγορία Ε4.' },
             { id: 43, category: 'πινακίδες', name: 'Παραβίαση Ρ-1 (παραχώρηση προτεραιότητας)',
                 article: '7§11α', fine: 350, suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 9, criminal: false, half: false, sign: 'r1',
+                points: 9, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-1: Υποχρεωτική παραχώρηση προτεραιότητας. Κατατάσσεται στην κατηγορία Ε3-Β.' },
             { id: 44, category: 'πινακίδες', name: 'Παραβίαση Ρ-29 (απαγόρευση αναστροφής)', article: '7§11β',
                 fine: 700, suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9,
@@ -1106,7 +1038,7 @@
                 fullDescription: 'Μη συμμόρφωση στις υποδείξεις και σήματα των τροχονόμων.' },
             { id: 57, category: 'κίνηση', name: 'Παραβίαση σιδηροδρομικής διάβασης', article: '31§1', fine: 1200,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥1 έτος)',
-                points: 9, criminal: true, half: false, sign: 'k31',
+                points: 9, criminal: true, half: false,
                 fullDescription: 'Παραβίαση των κανόνων σε ισόπεδη σιδηροδρομική διάβαση, π.χ. είσοδος με ερυθρό φως ή χωρίς βεβαίωση.' },
             { id: 58, category: 'κίνηση', name: 'Κίνηση στη ΛΕΑ', article: '33§9', fine: 150,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
@@ -1114,7 +1046,7 @@
                 fullDescription: 'Χρήση της Λωρίδας Έκτακτης Ανάγκης (Λ.Ε.Α.) πέραν των επιτρεπόμενων περιπτώσεων.' },
             { id: 59, category: 'κίνηση', name: 'Μη παραχώρηση προτεραιότητας σε πεζούς', article: '43§2',
                 fine: 150, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false, sign: 'k15',
+                criminal: false, half: false,
                 fullDescription: 'Μη παραχώρηση προτεραιότητας σε πεζούς σε σημασμένη διάβαση.' },
             { id: 60, category: 'κίνηση', name: 'Μη διευκόλυνση οχήματος άμεσης ανάγκης', article: '48§1',
                 fine: 150, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
@@ -1418,6 +1350,28 @@
         ];
 
         // ============================================================
+        // ΣΥΝΑΡΤΗΣΗ ΥΠΟΛΟΓΙΣΜΟΥ ΧΡΩΜΑΤΟΣ ΒΑΡΥΤΗΤΑΣ
+        // ============================================================
+        function getSeverityColor(suspend, criminal) {
+            if (criminal) return '#fee2e2'; // ανοιχτό κόκκινο για πλημμέλημα
+            if (!suspend || suspend === '-') return '#ffffff'; // λευκό: καμία αφαίρεση
+
+            const lower = suspend.toLowerCase();
+            if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) return '#fef9c3'; // πολύ ανοιχτό κίτρινο
+            if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) return '#fde68a'; // ανοιχτό κίτρινο
+            if (lower.includes('30 ημέρες') || lower.includes('30 ημ')) return '#fcd34d'; // κίτρινο
+            if (lower.includes('40 ημέρες') || lower.includes('40 ημ')) return '#fbbf24'; // πορτοκαλί
+            if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) return '#fb923c'; // έντονο πορτοκαλί
+            if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) return '#f87171'; // ανοιχτό κόκκινο
+            if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) return '#ef4444'; // κόκκινο
+            if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') || lower.includes(
+                    'μήνες')) return '#dc2626'; // σκούρο κόκκινο
+            if (lower.includes('ακινητοποίηση') || lower.includes('οριστική')) return '#fca5a5'; // ροζ
+
+            return '#ffffff'; // default
+        }
+
+        // ============================================================
         // ΚΑΤΑΣΤΑΣΗ & ΣΥΝΑΡΤΗΣΕΙΣ
         // ============================================================
         let currentFilter = 'all';
@@ -1461,10 +1415,6 @@
             t.classList.add('show');
             clearTimeout(t._timeout);
             t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
-        }
-
-        function getSignHTML(sign) {
-            return signs[sign] ? signs[sign] : '';
         }
 
         function getCategoryColor(category) {
@@ -1603,16 +1553,16 @@
 
             container.innerHTML = filtered.map(v => {
                 const color = getCategoryColor(v.category);
-                const signSvg = v.sign ? getSignHTML(v.sign) : '';
                 const halfBadge = v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : '';
                 const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
                 const isDescOpen = openDescriptions[v.id] || false;
+                const bgColor = getSeverityColor(v.suspend, v.criminal);
+                const finalBg = (bgColor === '#ffffff' || bgColor === '#f4f7fb') ? 'transparent' : bgColor;
+                const darkBg = (bgColor === '#ffffff' || bgColor === '#f4f7fb') ? 'rgba(255,255,255,0.03)' :
+                    `rgba(255,255,255,0.08)`;
 
                 return `
-                <div class="card" style="border-left-color: ${color};">
-                    <div class="sign-wrapper" style="background:${color}15; border:2px solid ${color};">
-                        ${signSvg ? `<div style="width:28px;height:28px;">${signSvg}</div>` : `<span style="font-size:20px;">${v.category === 'στάθμευση' ? '🅿' : v.category === 'ταχύτητα' ? '🏎' : v.category === 'ΕΠΗΟ' ? '🛴' : v.category === 'μοτοσικλέτα' ? '🏍' : v.category === 'αλκοόλ' ? '🍷' : v.category === 'επαγγελματικά' ? '🚛' : '📌'}</span>`}
-                    </div>
+                <div class="card" style="border-left-color: ${color}; background-color: ${finalBg};" data-dark-bg="${darkBg}">
                     <div class="content">
                         <div class="name">
                             ${v.name} ${halfBadge} ${criminalBadge}
@@ -1623,7 +1573,6 @@
                             ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                         </div>
-                        <div class="detail-note">📌 ${v.details}</div>
                         ${v.fullDescription ? `
                             <button class="desc-toggle" onclick="toggleDescription(${v.id})">
                                 ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Περιγραφή'}
@@ -1638,7 +1587,24 @@
                     </button>
                 </div>
             `}).join('');
+
+            // Εφαρμογή dark mode χρωμάτων
+            if (document.body.classList.contains('dark')) {
+                document.querySelectorAll('.card').forEach(card => {
+                    const darkBg = card.dataset.darkBg;
+                    if (darkBg) {
+                        card.style.backgroundColor = darkBg;
+                    }
+                });
+            }
         }
+
+        // Παρακολούθηση dark mode
+        const origToggleDark = toggleDark;
+        toggleDark = function() {
+            origToggleDark();
+            render();
+        };
 
         // Εκκίνηση
         console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις');
