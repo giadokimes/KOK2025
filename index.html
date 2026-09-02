@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v10.4</title>
+    <title>ΚΟΚ – Τσέπης v10.7</title>
     <style>
         /* ============================================================
-               v10.4 - Αναγνώσιμα χρώματα βαρύτητας
-                     - Παστέλ αποχρώσεις + χρωματική λωρίδα
+               v10.7 - Όλες οι πινακίδες (ακόμα και σε λίστες) με μικρογραφίες
                ============================================================ */
         * {
             margin: 0;
@@ -260,7 +259,7 @@
             color: #f59e0b;
         }
 
-        /* ----- Cards (με παστέλ φόντο και χρωματική λωρίδα) ----- */
+        /* ----- Cards ----- */
         .list {
             margin-top: 12px;
             display: flex;
@@ -294,7 +293,6 @@
             filter: brightness(1.1);
         }
 
-        /* Χρωματική λωρίδα βαρύτητας */
         .card .severity-bar {
             position: absolute;
             top: 0;
@@ -318,12 +316,31 @@
         .card .name {
             font-weight: 600;
             font-size: 16px;
-            line-height: 1.4;
+            line-height: 1.6;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 6px;
             color: #0f172a;
+        }
+
+        /* Στυλ για τις μικρογραφίες πινακίδων */
+        .card .name .sign-img {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            vertical-align: middle;
+            margin: 0 2px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 4px;
+            background: #fff;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        body.dark .card .name .sign-img {
+            border-color: rgba(255,255,255,0.2);
+            background: #1e293b;
         }
 
         body.dark .card .name {
@@ -408,7 +425,6 @@
             color: #fbbf24;
         }
 
-        /* ----- Badges ----- */
         .badge-criminal {
             display: inline-block;
             font-size: 11px;
@@ -443,7 +459,6 @@
             color: #94a3b8;
         }
 
-        /* ----- Description Toggle ----- */
         .card .desc-toggle {
             background: none;
             border: none;
@@ -494,7 +509,6 @@
             display: block;
         }
 
-        /* ----- Empty State ----- */
         .empty {
             text-align: center;
             padding: 60px 20px;
@@ -512,7 +526,6 @@
             margin-bottom: 12px;
         }
 
-        /* ----- Toast ----- */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -540,9 +553,6 @@
             opacity: 1;
         }
 
-        /* ============================================================
-               PRINT WINDOW (για εξαγωγή PDF)
-               ============================================================ */
         .print-window {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             padding: 30px;
@@ -647,45 +657,39 @@
             }
         }
 
-        /* ============================================================
-               RESPONSIVE
-               ============================================================ */
         @media (max-width: 480px) {
             .header-title {
                 font-size: 18px;
             }
-
             .card .name {
                 font-size: 15px;
             }
-
+            .card .name .sign-img {
+                width: 24px;
+                height: 24px;
+            }
             .card .details {
                 font-size: 14px;
                 gap: 4px 12px;
             }
-
             .filters button {
                 font-size: 12px;
                 padding: 5px 12px;
             }
-
             .header-actions button {
                 width: 34px;
                 height: 34px;
                 font-size: 16px;
             }
-
             .header-actions .pdf-btn {
                 font-size: 12px;
                 padding: 0 12px;
                 height: 34px;
             }
-
             .card {
                 padding: 14px 16px;
                 gap: 12px;
             }
-
             .search-box input {
                 padding: 12px 40px 12px 40px;
                 font-size: 15px;
@@ -701,18 +705,15 @@
             .header-actions {
                 display: none !important;
             }
-
             body {
                 background: #fff !important;
                 color: #000 !important;
                 padding: 0 !important;
             }
-
             body.dark {
                 background: #fff !important;
                 color: #000 !important;
             }
-
             .card {
                 border-left-color: #333 !important;
                 background: #fff !important;
@@ -720,35 +721,28 @@
                 transform: none !important;
                 filter: none !important;
             }
-
             .card .severity-bar {
                 display: none !important;
             }
-
             .card .article {
                 color: #333 !important;
             }
-
             .card .details .fine {
                 color: #c00 !important;
             }
-
             .card .details .suspend {
                 color: #00c !important;
             }
-
             .badge-criminal {
                 color: #c00 !important;
                 background: #fee !important;
             }
-
             .card .full-description {
                 display: block !important;
                 background: #f9f9f9 !important;
                 color: #333 !important;
                 border-left-color: #333 !important;
             }
-
             .card .desc-toggle {
                 display: none !important;
             }
@@ -758,7 +752,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.4</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.7</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
                 <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
@@ -797,7 +791,7 @@
 
     <script>
         // ============================================================
-        // ΧΡΩΜΑΤΑ ΚΑΤΗΓΟΡΙΩΝ (για το αριστερό border)
+        // ΧΡΩΜΑΤΑ ΚΑΤΗΓΟΡΙΩΝ
         // ============================================================
         const categoryColors = {
             'στάθμευση': '#f59e0b',
@@ -816,23 +810,132 @@
         };
 
         // ============================================================
-        // ΧΡΩΜΑΤΑ ΒΑΡΥΤΗΤΑΣ (παστέλ αποχρώσεις)
+        // ΧΡΩΜΑΤΑ ΒΑΡΥΤΗΤΑΣ (παστέλ)
         // ============================================================
         const severityColors = {
-            'none': '#e2e8f0', // καμία αφαίρεση
-            '10': '#fef9c3', // 10 ημέρες
-            '20': '#fde68a', // 20 ημέρες
-            '30': '#fcd34d', // 30 ημέρες
-            '40': '#fbbf24', // 40 ημέρες
-            '60': '#fb923c', // 60 ημέρες
-            '70': '#f87171', // 70 ημέρες
-            '90': '#ef4444', // 90 ημέρες
-            '180': '#dc2626', // 180+ ημέρες / 1 έτος
-            'criminal': '#fca5a5' // πλημμέλημα
+            'none': '#e2e8f0',
+            '10': '#fef9c3',
+            '20': '#fde68a',
+            '30': '#fcd34d',
+            '40': '#fbbf24',
+            '60': '#fb923c',
+            '70': '#f87171',
+            '90': '#ef4444',
+            '180': '#dc2626',
+            'criminal': '#fca5a5'
         };
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.4 (πλήρης, 126 παραβάσεις)
+        // ΠΙΝΑΚΑΣ ΑΝΤΙΣΤΟΙΧΙΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ (από Wikimedia Commons)
+        // ============================================================
+        const signImageMap = {
+            'Ρ-1': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-1.svg.png',
+            'Ρ-2': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-2.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-2.svg.png',
+            'Ρ-3': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-3.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-3.svg.png',
+            'Ρ-4': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-4.svg.png',
+            'Ρ-5': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-5.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-5.svg.png',
+            'Ρ-6': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-6.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-6.svg.png',
+            'Ρ-7': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-7.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-7.svg.png',
+            'Ρ-8': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-8.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-8.svg.png',
+            'Ρ-9': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-9.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-9.svg.png',
+            'Ρ-10': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-10.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-10.svg.png',
+            'Ρ-11': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-11.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-11.svg.png',
+            'Ρ-12': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-12.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-12.svg.png',
+            'Ρ-13': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-13.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-13.svg.png',
+            'Ρ-14': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-14.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-14.svg.png',
+            'Ρ-15': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-15.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-15.svg.png',
+            'Ρ-16': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-16.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-16.svg.png',
+            'Ρ-17': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-17.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-17.svg.png',
+            'Ρ-18': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-18.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-18.svg.png',
+            'Ρ-19': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-19.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-19.svg.png',
+            'Ρ-20': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-20.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-20.svg.png',
+            'Ρ-21': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-21.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-21.svg.png',
+            'Ρ-22': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-22.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-22.svg.png',
+            'Ρ-23': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-23.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-23.svg.png',
+            'Ρ-24': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-24.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-24.svg.png',
+            'Ρ-25': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-25.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-25.svg.png',
+            'Ρ-26': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-26.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-26.svg.png',
+            'Ρ-27': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-27.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-27.svg.png',
+            'Ρ-28': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-28.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-28.svg.png',
+            'Ρ-29': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-29.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-29.svg.png',
+            'Ρ-30': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-30.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-30.svg.png',
+            'Ρ-31': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-31.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-31.svg.png',
+            'Ρ-32': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-32.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-32.svg.png',
+            'Ρ-33': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-33.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-33.svg.png',
+            'Ρ-34': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-34.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-34.svg.png',
+            'Ρ-35': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-35.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-35.svg.png',
+            'Ρ-36': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-36.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-36.svg.png',
+            'Ρ-37': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-37.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-37.svg.png',
+            'Ρ-38': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-38.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-38.svg.png',
+            'Ρ-39': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-39.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-39.svg.png',
+            'Ρ-40': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-40.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-40.svg.png',
+            'Ρ-41': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-41.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-41.svg.png',
+            'Ρ-42': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-42.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-42.svg.png',
+            'Ρ-43': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-43.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-43.svg.png',
+            'Ρ-44': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-44.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-44.svg.png',
+            'Ρ-45': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-45.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-45.svg.png',
+            'Ρ-46': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-46.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-46.svg.png',
+            'Ρ-47': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-47.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-47.svg.png',
+            'Ρ-48': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-48.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-48.svg.png',
+            'Ρ-49': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-49.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-49.svg.png',
+            'Ρ-50': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50.svg.png',
+            'Ρ-50α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B1.svg.png',
+            'Ρ-50δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B4.svg.png',
+            'Ρ-51': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51.svg.png',
+            'Ρ-51α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B1.svg.png',
+            'Ρ-51δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B4.svg.png',
+            'Ρ-52': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52.svg.png',
+            'Ρ-52α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B1.svg.png',
+            'Ρ-52δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B4.svg.png',
+            'Ρ-53': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-53.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-53.svg.png',
+            'Ρ-54': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-54.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-54.svg.png',
+            'Ρ-55': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-55.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-55.svg.png',
+            'Ρ-56': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-56.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-56.svg.png',
+            'Ρ-57': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-57.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-57.svg.png',
+            'Ρ-58': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-58.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-58.svg.png',
+            'Ρ-59': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-59.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-59.svg.png',
+            'Ρ-60': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-60.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-60.svg.png',
+            'Ρ-61': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-61.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-61.svg.png',
+            'Ρ-62': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-62.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-62.svg.png',
+            'Ρ-63': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-63.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-63.svg.png',
+            'Ρ-64': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-64.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-64.svg.png',
+            'Ρ-65': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-65.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-65.svg.png',
+            'Ρ-66': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-66.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-66.svg.png',
+            'Ρ-66α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-66%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-66%CE%B1.svg.png',
+            'Ρ-67': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-67.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-67.svg.png',
+            'Ρ-67α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-67%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-67%CE%B1.svg.png',
+            'Ρ-68': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-68.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-68.svg.png',
+            'Ρ-69': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-69.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-69.svg.png',
+            'Ρ-70': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-70.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-70.svg.png',
+            'Ρ-71': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-71.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-71.svg.png',
+            'Ρ-72': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-72.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-72.svg.png',
+            'Ρ-73α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B1.svg.png',
+            'Ρ-73δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B4.svg.png',
+            'Ρ-74α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B1.svg.png',
+            'Ρ-74δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B4.svg.png',
+            'Ρ-75': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-75.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-75.svg.png',
+            'Ρ-76': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-76.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-76.svg.png',
+            'Ρ-77': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-77.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-77.svg.png'
+        };
+
+        // ============================================================
+        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ
+        // ============================================================
+        function replaceSignCodes(text) {
+            if (!text) return text;
+            // Βρίσκει όλα τα "Ρ-αριθμός" (με ή χωρίς ελληνικό "Ρ") και τα αντικαθιστά με εικόνα
+            return text.replace(/(Ρ-[\dαβδ]+)/g, function(match) {
+                const code = match.trim();
+                const imgUrl = signImageMap[code];
+                if (imgUrl) {
+                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" loading="lazy">`;
+                }
+                return match; // αν δεν έχει εικόνα, αφήνουμε τον κωδικό ως έχει
+            });
+        }
+
+        // ============================================================
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.7 (126 παραβάσεις, όμοια με πριν)
         // ============================================================
         const data = [
             // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
@@ -1534,6 +1637,9 @@
             }, 500);
         }
 
+        // ============================================================
+        // RENDER – με αντικατάσταση ΟΛΩΝ των κωδικών Ρ
+        // ============================================================
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const container = document.getElementById('listContainer');
@@ -1575,7 +1681,10 @@
                 const isDescOpen = openDescriptions[v.id] || false;
                 const severityColor = getSeverityColor(v.suspend, v.criminal);
 
-                // Υπολογισμός φόντου για την κάρτα (πολύ ανοιχτό)
+                // Αντικαθιστούμε ΟΛΟΥΣ τους κωδικούς Ρ μέσα στο όνομα
+                const nameWithImages = replaceSignCodes(v.name);
+
+                // Φόντο κάρτας (ίδιο με v10.4)
                 let bgColor = '#ffffff';
                 if (v.criminal) {
                     bgColor = '#fef2f2';
@@ -1593,7 +1702,6 @@
                     else bgColor = '#ffffff';
                 }
 
-                // Για dark mode, σκουραίνουμε ελαφρά το φόντο
                 const darkBg = document.body.classList.contains('dark') ?
                     (bgColor !== '#ffffff' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)') :
                     bgColor;
@@ -1603,7 +1711,7 @@
                     <div class="severity-bar" style="background-color: ${severityColor};"></div>
                     <div class="content">
                         <div class="name">
-                            ${v.name} ${halfBadge} ${criminalBadge}
+                            ${nameWithImages} ${halfBadge} ${criminalBadge}
                         </div>
                         <div class="article">Άρθρο: ${v.article}</div>
                         <div class="details">
@@ -1628,7 +1736,7 @@
         }
 
         // Εκκίνηση
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις');
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.7)');
         render();
 
         // Keyboard shortcuts
