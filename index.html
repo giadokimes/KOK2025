@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v9.2</title>
+    <title>ΚΟΚ – Τσέπης v10.0 (Πλήρης)</title>
     <style>
+        /* === ΒΑΣΙΚΑ STYLES === */
         * {
             margin: 0;
             padding: 0;
@@ -38,6 +39,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .header-title {
             font-size: 20px;
@@ -51,16 +54,17 @@
         }
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             align-items: center;
+            flex-wrap: wrap;
         }
         .header-actions button {
             background: rgba(255, 255, 255, 0.15);
             border: none;
             color: #fff;
-            font-size: 20px;
-            width: 40px;
-            height: 40px;
+            font-size: 18px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -71,8 +75,24 @@
         .header-actions button:hover {
             background: rgba(255, 255, 255, 0.25);
         }
+        .header-actions .pdf-btn {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0 14px;
+            border-radius: 20px;
+            width: auto;
+            gap: 6px;
+            background: #10b981;
+        }
+        .header-actions .pdf-btn:hover {
+            background: #059669;
+        }
         body.dark .header-actions button {
             background: rgba(255, 255, 255, 0.08);
+        }
+        body.dark .header-actions .pdf-btn {
+            background: #10b981;
+            color: #fff;
         }
         .search-box {
             margin-top: 12px;
@@ -172,9 +192,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
         }
         body.dark .count {
             color: #94a3b8;
+        }
+        .count .fav-count {
+            font-weight: 600;
+            color: #f59e0b;
         }
         .list {
             margin-top: 10px;
@@ -329,6 +355,44 @@
             background: #1e3a5f;
             color: #93c5fd;
         }
+        .card .desc-toggle {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0;
+            margin-top: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        body.dark .card .desc-toggle {
+            color: #60a5fa;
+        }
+        .card .desc-toggle:hover {
+            text-decoration: underline;
+        }
+        .card .full-description {
+            display: none;
+            font-size: 13px;
+            color: #4a5568;
+            background: #f1f5f9;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            line-height: 1.5;
+            border-left: 3px solid #3b82f6;
+        }
+        body.dark .card .full-description {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-left-color: #60a5fa;
+        }
+        .card .full-description.open {
+            display: block;
+        }
         .empty {
             text-align: center;
             padding: 50px 20px;
@@ -360,6 +424,100 @@
         .toast.show {
             opacity: 1;
         }
+
+        /* === STYLES ΓΙΑ ΤΟ ΠΑΡΑΘΥΡΟ ΕΚΤΥΠΩΣΗΣ === */
+        .print-window {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .print-window h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1e3a5f;
+            border-bottom: 3px solid #1e3a5f;
+            padding-bottom: 10px;
+        }
+        .print-window .subtitle {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .print-window .print-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .print-window .print-card .p-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .print-window .print-card .p-article {
+            font-size: 13px;
+            color: #4a5568;
+        }
+        .print-window .print-card .p-details {
+            font-size: 14px;
+            margin-top: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+        }
+        .print-window .print-card .p-details .p-fine {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        .print-window .print-card .p-details .p-suspend {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .print-window .print-card .p-details .p-points {
+            color: #7c3aed;
+        }
+        .print-window .print-card .p-desc {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 6px;
+            background: #f1f5f9;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+        .print-window .no-favs {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 16px;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printArea, #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .print-window .print-card {
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+            }
+            .print-window .print-card .p-desc {
+                background: #f9f9f9 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* === RESPONSIVE === */
         @media (max-width: 480px) {
             .header-title {
                 font-size: 17px;
@@ -382,6 +540,16 @@
             .filters button {
                 font-size: 12px;
                 padding: 5px 12px;
+            }
+            .header-actions button {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .header-actions .pdf-btn {
+                font-size: 12px;
+                padding: 0 10px;
+                height: 34px;
             }
         }
         @media print {
@@ -421,17 +589,27 @@
                 color: #c00 !important;
                 background: #fee !important;
             }
+            .card .full-description {
+                display: block !important;
+                background: #f9f9f9 !important;
+                color: #333 !important;
+                border-left-color: #333 !important;
+            }
+            .card .desc-toggle {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v9.2</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.0</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
                 <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
-                <button onclick="window.print()" aria-label="Εκτύπωση">🖨️</button>
+                <button class="pdf-btn" onclick="exportFavorites()" aria-label="Εξαγωγή αγαπημένων σε PDF">📄 PDF</button>
+                <button onclick="window.print()" aria-label="Εκτύπωση όλων">🖨️</button>
             </div>
         </div>
         <div class="search-box">
@@ -457,7 +635,7 @@
 
     <div class="count" id="countDisplay">
         <span id="countText">0 παραβάσεις</span>
-        <span id="favIndicator" style="display:none;">⭐ Αγαπημένα</span>
+        <span id="favIndicator" style="display:none;">⭐ Αγαπημένα (<span id="favCount">0</span>)</span>
     </div>
 
     <div class="list" id="listContainer"></div>
@@ -502,411 +680,537 @@
         };
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v9.2 (126 παραβάσεις, μοναδικά IDs)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.0 (Πλήρεις περιγραφές από τον ΚΟΚ)
         // ============================================================
         const data = [
-            // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) – 36 παραβάσεις ==========
+            // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0,
-                criminal: false, half: true, sign: 'crosswalk' },
+                criminal: false, half: true, sign: 'crosswalk',
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση επί διάβασης πεζών ή ποδηλατιστών και σε απόσταση μικρότερη από πέντε (5) μέτρα εκατέρωθεν αυτής.' },
             { id: 2, category: 'στάθμευση', name: 'Σε ράμπα ΑμεΑ', article: '38§2ιστ', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true, sign: 'disabled' },
+                criminal: false, half: true, sign: 'disabled',
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε θέση όπου βρίσκεται κεκλιμένο επίπεδο (ράμπα) διάβασης ατόμων με αναπηρία ή οδηγός τυφλών και σε απόσταση μικρότερη από πενήντα εκατοστά (0,50 μ.) εκατέρωθεν αυτών.' },
             { id: 3, category: 'στάθμευση', name: 'Σε χώρο ΑμεΑ (Ρ-71)', article: '38§2ιζ', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true, sign: 'r71' },
+                criminal: false, half: true, sign: 'r71',
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε ειδικούς χώρους στάθμευσης οχημάτων ατόμων με αναπηρία.' },
             { id: 4, category: 'στάθμευση', name: 'Σε συγκεκριμένο χώρο ΑμεΑ (Ρ-72)', article: '38§2ιη', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε χώρους στάθμευσης αποκλειστικά για συγκεκριμένο όχημα ατόμων με αναπηρία.' },
             { id: 5, category: 'στάθμευση', name: 'Σε θέση φόρτισης ηλεκτρικών (χωρίς φόρτιση)', article: '38§2ιθ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε θέση/σημείο επαναφόρτισης ηλεκτροκίνητων οχημάτων, εξαιρουμένων των ηλεκτροκίνητων οχημάτων κατά τη διάρκεια της φόρτισής τους.' },
             { id: 6, category: 'στάθμευση', name: 'Σε στάση λεωφορείου (<12μ.)', article: '38§2β', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε απόσταση μικρότερη από δώδεκα (12) μέτρα εκατέρωθεν στάσεων αστικών, υπεραστικών, ηλεκτροκίνητων λεωφορείων και τροχιοδρομικών οχημάτων.' },
             { id: 7, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο κόμβου (<10μ.)', article: '38§2γ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε εισόδους και εξόδους κόμβων και σε απόσταση μικρότερη από δέκα (10) μέτρα από τη νοητή προέκταση της πλησιέστερης οριογραμμής του κάθετου οδοστρώματος.' },
             { id: 8, category: 'στάθμευση', name: 'Σε σιδηροδρομικές γραμμές', article: '38§2δ', fine: 1200,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥1 έτος)',
-                points: 9, criminal: true, half: false },
+                points: 9, criminal: true, half: false,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε σιδηροδρομικές ή τροχιοδρομικές γραμμές ή πολύ πλησίον αυτών, ώστε να παρεμποδίζεται η κίνηση των σιδηροδρομικών ή τροχιοδρομικών οχημάτων.' },
             { id: 9, category: 'στάθμευση', name: 'Σε πεζοδρόμιο / πλατεία / ποδηλατόδρομο', article: '38§2ε',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε πεζοδρόμια, πλατείες, ειδικά ερείσματα που προορίζονται για πεζούς, καθώς και ποδηλατοδρόμους, εκτός αν επιτρέπεται με ειδική σήμανση.' },
             { id: 10, category: 'στάθμευση', name: 'Σε γέφυρα', article: '38§2στ', fine: 30, suspend: '-',
-                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση πάνω και κάτω από τις γέφυρες, εκτός αν υπάρχουν ειδικοί χώροι στάθμευσης.' },
             { id: 11, category: 'στάθμευση', name: 'Σε στροφή/ράχη με περιορισμένη ορατότητα', article: '38§2ζ',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση πλησίον και πάνω σε κυρτές καμπύλες αλλαγής των κατά μήκος κλίσεων των οδών (ράχεων) και σε στροφές ανεπαρκούς ορατότητας.' },
             { id: 12, category: 'στάθμευση', name: 'Σε σημείο με ελεύθερο πλάτος <3μ.', article: '38§2η', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε οδοστρώματα που είναι χωρισμένα σε δύο λωρίδες κυκλοφορίας, αν το εναπομένον πλάτος της λωρίδας μεταξύ οχήματος και απαγορευτικής γραμμής υπέρβασης είναι μικρότερο από τρία (3) μέτρα.' },
             { id: 13, category: 'στάθμευση', name: '<20μ. από σηματοδότη / <12μ. από STOP/P-1', article: '38§2θ',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε απόσταση μικρότερη από είκοσι (20) μέτρα από φωτεινούς σηματοδότες και δώδεκα (12) μέτρα από πινακίδες STOP (Ρ-2) ή υποχρεωτικής παραχώρησης προτεραιότητας (Ρ-1), καθώς και σε θέση που κρύβει τη θέα των πινακίδων.' },
             { id: 14, category: 'στάθμευση', name: '<5μ. από τομή ρυμοτομικών γραμμών', article: '38§2ι', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε απόσταση πέντε (5) μέτρων από την τομή ρυμοτομικών γραμμών ή των νοητών προεκτάσεων αυτών.' },
             { id: 15, category: 'στάθμευση', name: 'Σε νησίδα ασφαλείας / διαχωριστική', article: '38§2ια', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση πάνω στις νησίδες ασφαλείας καθώς και στις διαχωριστικές νησίδες.' },
             { id: 16, category: 'στάθμευση', name: 'Σε αυτοκινητόδρομο', article: '38§2ιβ', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση στους αυτοκινητοδρόμους και τις οδούς ταχείας κυκλοφορίας, εκτός των χώρων στάθμευσης που καθορίζονται με σήμανση.' },
             { id: 17, category: 'στάθμευση', name: 'Σε λωρίδα επιτάχυνσης / επιβράδυνσης', article: '38§2ιγ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε λωρίδες επιτάχυνσης και επιβράδυνσης.' },
             { id: 18, category: 'στάθμευση', name: 'Σε σήραγγα', article: '38§2ιδ', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε σήραγγες, εκτός από τους χώρους που υποδεικνύονται ειδικά για αυτόν τον σκοπό.' },
             { id: 19, category: 'στάθμευση', name: 'Σε βοηθητική οδό για βραδυκίνητα', article: '38§2ιε', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση επί σημασμένης βοηθητικής οδού που προορίζεται για οχήματα που μετακινούνται βραδέως.' },
             { id: 20, category: 'στάθμευση', name: 'Σε σημείο που εμποδίζει ΜΜΜ/λεωφορεία', article: '38§2κ',
                 fine: 350, suspend: '70 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (30+40 από Σ) + 30 ημ. στοιχ. κυκλοφορίας', points: 5,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε σημεία που παρεμποδίζουν τη διέλευση οχημάτων δημόσιας συγκοινωνίας ή αστικών, υπεραστικών και ηλεκτροκίνητων λεωφορείων.' },
             { id: 21, category: 'στάθμευση', name: '<15μ. από σιδηροδρομική διάβαση', article: '38§3α', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε απόσταση μικρότερη από δεκαπέντε (15) μέτρα προ και μετά τις ισόπεδες σιδηροδρομικές διαβάσεις.' },
             { id: 22, category: 'στάθμευση', name: 'Μπροστά από είσοδο/έξοδο παρόδιας ιδιοκτησίας',
                 article: '38§3β', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: true },
+                points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση μπροστά από την είσοδο και έξοδο οχημάτων παρόδιας ιδιοκτησίας, καθώς και απέναντι από αυτή, όταν η οδός είναι στενή και παρεμποδίζεται η είσοδος-έξοδος.' },
             { id: 23, category: 'στάθμευση', name: 'Σε θέση που εμποδίζει σταθμευμένο όχημα', article: '38§3γ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε θέση από την οποία παρεμποδίζεται όχημα που σταθμεύει κανονικά να εξέλθει από τον χώρο του.' },
             { id: 24, category: 'στάθμευση', name: 'Σε σημείο που το υπόλοιπο της οδού δεν επαρκεί',
                 article: '38§3δ', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση αν το ελεύθερο μέρος της οδού που απομένει είναι ανεπαρκές για την κυκλοφορία των οχημάτων.' },
             { id: 25, category: 'στάθμευση', name: 'Παράπλευρα άλλου σταθμευμένου οχήματος', article: '38§3ε',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση παράπλευρα άλλου οχήματος σε στάση ή στάθμευση, εκτός αν άλλως ορίζεται με ειδική σήμανση. Εξαίρεση αποτελούν τα δίτροχα μοτοποδήλατα, μοτοσικλέτες και Ε.Π.Η.Ο. υπό γωνία.' },
             { id: 26, category: 'στάθμευση', name: '<5μ. από πυροσβεστικό κρουνό', article: '38§3στ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε απόσταση μικρότερη από πέντε (5) μέτρα προ και μετά από πυροσβεστικά σημεία.' },
             { id: 27, category: 'στάθμευση', name: 'Μπροστά από είσοδο/έξοδο νοσοκομείου', article: '38§3ζ',
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
-                points: 0, criminal: false, half: true },
+                points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση προ της εισόδου και εξόδου που προορίζεται για τη διακίνηση ασθενών προς και από νοσοκομεία, κλινικές και σταθμούς πρώτων βοηθειών.' },
             { id: 28, category: 'στάθμευση', name: 'Σε θέση που εμποδίζει χώρο στάθμευσης', article: '38§3η',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση αν εμποδίζει τη χρήση χώρων στάθμευσης που σημαίνονται κατάλληλα.' },
             { id: 29, category: 'στάθμευση', name: 'Σε θέση ΤΑΞΙ (Ρ-70)', article: '38§3θ', fine: 30, suspend: '-',
-                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε ειδικούς χώρους στάθμευσης επιβατηγών αυτοκινήτων δημόσιας χρήσης (ΤΑΞΙ).' },
             { id: 30, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο πεζόδρομου', article: '38§3ι', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση στις εισόδους και εξόδους των πεζόδρομων, καθώς και πάνω σε αυτούς.' },
             { id: 31, category: 'στάθμευση', name: 'Σε κεντρικό οδόστρωμα τριών λωρίδων', article: '38§3ια',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση επί του κεντρικού οδοστρώματος οδών τριών (3) λωρίδων, καθώς και εκτός κατοικημένων περιοχών, επί των οδοστρωμάτων οδών προτεραιότητας.' },
             { id: 32, category: 'στάθμευση', name: 'Σε οδό προτεραιότητας (εκτός κατοικημένης)',
                 article: '38§3ια', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση εκτός κατοικημένων περιοχών, επί των οδοστρωμάτων οδών σημασμένων ως οδών προτεραιότητας.' },
             { id: 33, category: 'στάθμευση', name: 'Μη παράλληλη στάθμευση', article: '38§7', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Τα οχήματα σε στάση ή στάθμευση τοποθετούνται παράλληλα με την οριογραμμή του οδοστρώματος, εκτός αν ορίζεται διαφορετικά με σήμανση.' },
             { id: 34, category: 'στάθμευση', name: 'Αναγκαστική στάθμευση χωρίς τριγωνική πινακίδα',
                 article: '38§10', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: true },
+                points: 0, criminal: false, half: true,
+                fullDescription: 'Ο οδηγός που σταθμεύει σε απαγορευμένη θέση τοποθετεί πινακίδα ή συσκευή επισήμανσης σε απόσταση >20μ. εντός κατοικημένης και >50μ. εκτός.' },
             { id: 35, category: 'στάθμευση', name: 'Σε απαγορευτική κίτρινη ζιγκ-ζαγκ', article: '8§8η',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση στην πλευρά της οδού που έχει διαγραμμιστεί με κίτρινη τεθλασμένη γραμμή (ζιγκ-ζαγκ).' },
             { id: 36, category: 'στάθμευση', name: 'Κίνηση / στάθμευση σε λεωφορειολωρίδα', article: '8§8ι',
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
-                points: 5, criminal: false, half: true },
+                points: 5, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
 
-            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) – 14 παραβάσεις ==========
+            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) ==========
             { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false, sign: 'r39' },
+                criminal: false, half: false, sign: 'r39',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-39: Απαγορεύεται η στάθμευση.' },
             { id: 38, category: 'πινακίδες', name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r40' },
+                points: 0, criminal: false, half: false, sign: 'r40',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-40: Απαγορεύονται η στάση και η στάθμευση.' },
             { id: 39, category: 'πινακίδες', name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r41' },
+                points: 0, criminal: false, half: false, sign: 'r41',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-41: Απαγορεύεται η στάθμευση τους μονούς μήνες.' },
             { id: 40, category: 'πινακίδες', name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r42' },
+                points: 0, criminal: false, half: false, sign: 'r42',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-42: Απαγορεύεται η στάθμευση τους ζυγούς μήνες.' },
             { id: 41, category: 'πινακίδες', name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r43' },
+                points: 0, criminal: false, half: false, sign: 'r43',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-43: Περιοχή απαγόρευσης στάθμευσης (στάθμευση περιορισμένης χρονικής διάρκειας).' },
             { id: 42, category: 'πινακίδες', name: 'Παραβίαση STOP (Ρ-2)', article: '7§11β', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false, sign: 'r2' },
+                half: false, sign: 'r2',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-2: Υποχρεωτική διακοπή πορείας. Η παράβαση κατατάσσεται στην κατηγορία Ε4.' },
             { id: 43, category: 'πινακίδες', name: 'Παραβίαση Ρ-1 (παραχώρηση προτεραιότητας)',
                 article: '7§11α', fine: 350, suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 9, criminal: false, half: false, sign: 'r1' },
+                points: 9, criminal: false, half: false, sign: 'r1',
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-1: Υποχρεωτική παραχώρηση προτεραιότητας. Κατατάσσεται στην κατηγορία Ε3-Β.' },
             { id: 44, category: 'πινακίδες', name: 'Παραβίαση Ρ-29 (απαγόρευση αναστροφής)', article: '7§11β',
                 fine: 700, suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-29: Απαγορεύεται η αναστροφή (στροφή κατά 180 μοίρες).' },
             { id: 45, category: 'πινακίδες', name: 'Παραβίαση Ρ-3, Ρ-4, Ρ-34, Ρ-35, Ρ-69, Ρ-75',
                 article: '7§11γ', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων που κατατάσσονται στην κατηγορία Ε1-Α (μόνο πρόστιμο).' },
             { id: 46, category: 'πινακίδες', name: 'Παραβίαση Ρ-5, Ρ-6, Ρ-32, Ρ-47, Ρ-48, Ρ-49, Ρ-50, Ρ-50α, Ρ-50δ, Ρ-51α, Ρ-51δ, Ρ-52, Ρ-52α, Ρ-52δ, Ρ-53, Ρ-57, Ρ-59, Ρ-60, Ρ-63',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων που κατατάσσονται στην κατηγορία Ε1-Β (πρόστιμο + αφαίρεση 10 ημερών).' },
             { id: 47, category: 'πινακίδες', name: 'Παραβίαση Ρ-7, Ρ-8, Ρ-9, Ρ-10, Ρ-11, Ρ-12, Ρ-13, Ρ-14, Ρ-18, Ρ-19, Ρ-20, Ρ-21, Ρ-22, Ρ-23, Ρ-24, Ρ-25, Ρ-26, Ρ-27, Ρ-28, Ρ-30, Ρ-31, Ρ-45, Ρ-46, Ρ-64, Ρ-73α, Ρ-73δ, Ρ-74α, Ρ-74δ',
                 article: '7§11ε', fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση απαγορευτικών ρυθμιστικών πινακίδων (Ε2-Β).' },
             { id: 48, category: 'πινακίδες', name: 'Παραβίαση Ρ-15, Ρ-16, Ρ-17', article: '7§11στ', fine: 150,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων για πεζούς, ζωήλατα και χειράμαξες (Ε2-Α).' },
             { id: 49, category: 'πινακίδες', name: 'Παραβίαση Ρ-33, Ρ-54, Ρ-55, Ρ-56, Ρ-65, Ρ-66, Ρ-66α, Ρ-67, Ρ-67α, Ρ-76',
                 article: '7§11ζ', fine: 30, suspend: '40 ημέρες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0, criminal: false, half: false },
+                details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων με πρόσθετη κατηγορία Σ (αντικοινωνική συμπεριφορά).' },
             { id: 50, category: 'πινακίδες', name: 'Παραβίαση λοξών λωρίδων', article: '8§10α', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Παραβίαση της οριζόντιας σήμανσης που αφορά σε παράλληλες λοξές λωρίδες (Ε2-Β).' },
 
-            // ========== ΚΙΝΗΣΗ – 12 παραβάσεις ==========
+            // ========== ΚΙΝΗΣΗ ==========
             { id: 51, category: 'κίνηση', name: 'Παραβίαση ερυθρού σηματοδότη', article: '9§3', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Μη συμμόρφωση με σταθερό ερυθρό φως κυκλικής μορφής. Κατατάσσεται στην κατηγορία Ε4.' },
             { id: 52, category: 'κίνηση', name: 'Παραβίαση κίτρινου σηματοδότη', article: '9§1γ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Μη συμμόρφωση με σταθερό κίτρινο φως, εκτός αν η στάση είναι επικίνδυνη. Κατατάσσεται στην Ε1-Α.' },
             { id: 53, category: 'κίνηση', name: 'Κίνηση αντίθετα σε μονόδρομο', article: '20§7', fine: 350,
                 suspend: '70 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η οδήγηση αντίθετα προς την κατεύθυνση του μονόδρομου.' },
             { id: 54, category: 'κίνηση', name: 'Κίνηση σε πεζόδρομο / πλατεία / νησίδα', article: '20§4',
                 fine: 350, suspend: '70 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η κυκλοφορία σε πλατείες, πεζόδρομους, πεζοδρόμια, νησίδες ασφαλείας και διαχωριστικές νησίδες, εκτός από απόλυτη ανάγκη.' },
             { id: 55, category: 'κίνηση', name: 'Παραβίαση προτεραιότητας σε κόμβο', article: '30§5', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Παραβίαση των κανόνων προτεραιότητας σε ισόπεδο οδικό κόμβο.' },
             { id: 56, category: 'κίνηση', name: 'Μη συμμόρφωση σε σήμα τροχονόμου', article: '6§1', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 3, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Μη συμμόρφωση στις υποδείξεις και σήματα των τροχονόμων.' },
             { id: 57, category: 'κίνηση', name: 'Παραβίαση σιδηροδρομικής διάβασης', article: '31§1', fine: 1200,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥1 έτος)',
-                points: 9, criminal: true, half: false, sign: 'k31' },
+                points: 9, criminal: true, half: false, sign: 'k31',
+                fullDescription: 'Παραβίαση των κανόνων σε ισόπεδη σιδηροδρομική διάβαση, π.χ. είσοδος με ερυθρό φως ή χωρίς βεβαίωση.' },
             { id: 58, category: 'κίνηση', name: 'Κίνηση στη ΛΕΑ', article: '33§9', fine: 150,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Χρήση της Λωρίδας Έκτακτης Ανάγκης (Λ.Ε.Α.) πέραν των επιτρεπόμενων περιπτώσεων.' },
             { id: 59, category: 'κίνηση', name: 'Μη παραχώρηση προτεραιότητας σε πεζούς', article: '43§2',
                 fine: 150, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false, sign: 'k15' },
+                criminal: false, half: false, sign: 'k15',
+                fullDescription: 'Μη παραχώρηση προτεραιότητας σε πεζούς σε σημασμένη διάβαση.' },
             { id: 60, category: 'κίνηση', name: 'Μη διευκόλυνση οχήματος άμεσης ανάγκης', article: '48§1',
                 fine: 150, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Μη συμμόρφωση με τις υποχρεώσεις διευκόλυνσης οχημάτων άμεσης ανάγκης.' },
             { id: 61, category: 'κίνηση', name: 'Παραβίαση ακινητοποίησης', article: '50§2', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≤1 έτος)',
-                points: 0, criminal: true, half: false },
+                points: 0, criminal: true, half: false,
+                fullDescription: 'Άρνηση συμμόρφωσης με υποδείξεις αστυνομικού για ακινητοποίηση οχήματος.' },
             { id: 62, category: 'κίνηση', name: 'Εγκατάλειψη ατυχήματος', article: '47§2', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥3 μήνες)', points: 0, criminal: true,
-                half: false },
+                half: false,
+                fullDescription: 'Μη παροχή βοήθειας και μη αναγγελία τροχαίου ατυχήματος με σωματικές βλάβες ή θάνατο.' },
 
-            // ========== ΤΑΧΥΤΗΤΑ (Άρθρο 24) – 5 παραβάσεις ==========
+            // ========== ΤΑΧΥΤΗΤΑ (Άρθρο 24) ==========
             { id: 63, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του ορίου ταχύτητας έως 20 χλμ/ώρα. Κατατάσσεται στην Ε2-Α.' },
             { id: 64, category: 'ταχύτητα', name: 'Υπέρβαση 21-30χλμ/ω', article: '24§9αβ', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 4, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας από 21 έως 30 χλμ/ώρα (Ε2-Β).' },
             { id: 65, category: 'ταχύτητα', name: 'Υπέρβαση 31-50χλμ/ω', article: '24§9αγ', fine: 350,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας από 31 έως 50 χλμ/ώρα (Ε3-Β).' },
             { id: 66, category: 'ταχύτητα', name: 'Υπέρβαση >50χλμ/ω', article: '24§9γ', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας άνω των 50 χλμ/ώρα (Ε4).' },
             { id: 67, category: 'ταχύτητα', name: 'Οδήγηση >200χλμ/ω', article: '24§9δ', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
 
-            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ (Φορτηγά) – 11 παραβάσεις ==========
+            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ (Φορτηγά) ==========
             { id: 68, category: 'επαγγελματικά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: 30, suspend: '-',
-                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false },
+                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
             { id: 69, category: 'επαγγελματικά', name: 'Υπέρβαρο 5-10%', article: '4§1.2β', fine: 60, suspend: '-',
-                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false },
+                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 5-10%.' },
             { id: 70, category: 'επαγγελματικά', name: 'Υπέρβαρο 10-20%', article: '4§1.2γ', fine: 500,
-                suspend: '-', details: 'Μόνο πρόστιμο (στον ιδιοκτήτη)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Μόνο πρόστιμο (στον ιδιοκτήτη)', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 10-20%.' },
             { id: 71, category: 'επαγγελματικά', name: 'Υπέρβαρο >20%', article: '4§1.2δ', fine: 3000,
                 suspend: '4 μήνες στοιχ. κυκλ.', details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους άνω του 20%.' },
             { id: 72, category: 'επαγγελματικά', name: 'Ακατάλληλη φόρτωση', article: '4§1.1', fine: 750,
                 suspend: 'Ακινητοποίηση', details: '750€ οδηγός + 1.500€ υπεύθ. φόρτωσης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Φόρτωση φορτηγού οχήματος χωρίς να πληρούνται οι προϋποθέσεις ασφαλούς τοποθέτησης και στοιβασίας του φορτίου.' },
             { id: 73, category: 'επαγγελματικά', name: 'Χωρίς ΚΤΕΟ (επαγγελματικό)', article: '4§1.3', fine: 300,
                 suspend: 'Μέχρι έκδοσης ΚΤΕΟ', details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
             { id: 74, category: 'επαγγελματικά', name: 'Υπέρβαση διαστάσεων', article: '4§1.4', fine: 1000,
                 suspend: 'Ακινητοποίηση', details: 'Ακινητοποίηση οχήματος', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση των μέγιστων ορίων διαστάσεων φορτηγών οχημάτων.' },
             { id: 75, category: 'επαγγελματικά', name: 'Κυκλοφορία σε απαγορευμένες ώρες', article: '4§1.5',
                 fine: 200, suspend: 'Ακινητοποίηση', details: 'Ακινητοποίηση για το διάστημα απαγόρευσης',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος κατά τις ημέρες και ώρες απαγόρευσης.' },
             { id: 76, category: 'επαγγελματικά', name: 'Χωρίς άδεια κυκλοφορίας (επαγγελματικό)',
                 article: '4§1.9', fine: 8000, suspend: 'Αφαίρεση στοιχ. κυκλ.',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false },
+                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς άδεια κυκλοφορίας.' },
             { id: 77, category: 'επαγγελματικά', name: 'Παραποίηση πινακίδων (επαγγελματικό)',
                 article: '4§1.11', fine: 5000, suspend: '6 μήνες στοιχ. κυκλ.',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false },
+                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραποίηση πινακίδων κυκλοφορίας ή μετάθεσή τους από ένα όχημα σε άλλο.' },
             { id: 78, category: 'επαγγελματικά', name: 'Οδήγηση χωρίς κατάλληλη άδεια (επαγγελματικό)',
                 article: '4§1.13', fine: 2000, suspend: '2 μήνες αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης (οδηγός + ιδιοκτήτης)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
 
-            // ========== ΜΟΤΟΣΙΚΛΕΤΑ (Άρθρο 16, 44) – 9 παραβάσεις ==========
+            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ / ΜΟΤΟΠΟΔΗΛΑΤΑ (Άρθρο 16, 44) ==========
             { id: 79, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Ο οδηγός μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
             { id: 80, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350,
-                suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Ο επιβάτης μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
             { id: 81, category: 'μοτοσικλέτα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Οι οδηγοί μοτοσικλετών, αν το κράνος δεν έχει διαφανές προστατευτικό κάλυμμα, οφείλουν να φορούν γυαλιά κατά του ανέμου.' },
             { id: 82, category: 'μοτοσικλέτα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η μεταφορά επιβάτη σε μοτοσικλέτα αν δεν έχει δυνατότητα να στηρίζεται στα υποπόδια.' },
             { id: 83, category: 'μοτοσικλέτα', name: 'Παράλληλη κίνηση', article: '44§1δ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η κίνηση ποδηλάτων, μοτοποδηλάτων κ.λπ. ανά δύο ή περισσότερα παράλληλα.' },
             { id: 84, category: 'μοτοσικλέτα', name: 'Διήθηση με ταχύτητα >20χλμ/ω', article: '21§9β',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Η κίνηση δίκυκλων μοτοποδηλάτων και μοτοσικλετών μεταξύ λωρίδων (διήθηση) επιτρέπεται μόνο με ταχύτητα έως 20 χλμ/ώρα.' },
             { id: 85, category: 'μοτοσικλέτα', name: 'Χρήση κινητού / ακουστικών (μοτοσικλέτα)',
                 article: '44§1στ', fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 4, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η χρήση ακουστικών ή κινητού τηλεφώνου κατά την οδήγηση, εκτός από ειδικές εξαιρέσεις.' },
             { id: 86, category: 'μοτοσικλέτα', name: 'Ρυμούλκηση από άλλο όχημα', article: '44§1α', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η ρυμούλκηση μοτοσικλέτας, μοτοποδηλάτου κ.λπ. από άλλο όχημα.' },
             { id: 87, category: 'μοτοσικλέτα', name: 'Μεταφορά αντικειμένων που εμποδίζουν', article: '44§1γ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η μεταφορά αντικειμένων που εμποδίζουν την οδήγηση ή εκθέτουν σε κίνδυνο τους άλλους χρήστες.' },
 
-            // ========== ΕΠΗΟ (Άρθρο 24, 38, 44) – 7 παραβάσεις ==========
+            // ========== ΕΠΗΟ (Άρθρο 24, 38, 44) ==========
             { id: 88, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Ειδικοί κανόνες στάσης και στάθμευσης για Ελαφρά Προσωπικά Ηλεκτρικά Οχήματα (ΕΠΗΟ).' },
             { id: 89, category: 'ΕΠΗΟ', name: 'Είσοδος σε ποδηλατόδρομο (ΕΠΗΟ)', article: '44§7', fine: 150,
                 suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α, χωρίς αφαίρεση για ΕΠΗΟ)', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Σε ποδηλατοδρόμους που καταλαμβάνουν όλο το πλάτος της οδού απαγορεύεται η είσοδος μηχανοκίνητων οχημάτων και μοτοποδηλάτων.' },
             { id: 90, category: 'ΕΠΗΟ', name: 'Χρήση κινητού / ακουστικών (ΕΠΗΟ)', article: '44§1στ,ζ',
                 fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 4, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η χρήση ακουστικών ή κινητού τηλεφώνου κατά την οδήγηση ΕΠΗΟ.' },
             { id: 91, category: 'ΕΠΗΟ', name: 'Μη χρήση κράνους (ΕΠΗΟ)', article: '44§12', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Υποχρεωτική χρήση προστατευτικού κράνους για οδηγούς ΕΠΗΟ (εξαιρούνται αμαξίδια ΑμεΑ).' },
             { id: 92, category: 'ΕΠΗΟ', name: 'Οδήγηση ΕΠΗΟ σε οδό με όριο >50χλμ/ω', article: '24§12β',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η κυκλοφορία ΕΠΗΟ σε οδούς όπου το όριο ταχύτητας υπερβαίνει τα 50 χλμ/ώρα.' },
             { id: 93, category: 'ΕΠΗΟ', name: 'Ταχύτητα ΕΠΗΟ >35χλμ/ω (οδηγός)', article: '24§12α', fine: 150,
-                suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Οδήγηση ΕΠΗΟ με ταχύτητα άνω των 35 χλμ/ώρα (κατατάσσεται σε Ε2-Α για τον οδηγό).' },
             { id: 94, category: 'ΕΠΗΟ', name: 'Ταχύτητα ΕΠΗΟ >35χλμ/ω (θέτων σε κυκλοφορία)',
                 article: '24§12α', fine: 350, suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Θέση σε κυκλοφορία ΕΠΗΟ που μπορεί να αναπτύξει ταχύτητα άνω των 35 χλμ/ώρα (Ε3-Α για τον θέτοντα).' },
 
-            // ========== ΑΔΕΙΕΣ (Άρθρο 98, 99, 102) – 5 παραβάσεις ==========
+            // ========== ΑΔΕΙΕΣ (Άρθρο 98, 99, 102) ==========
             { id: 95, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
                 suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση επιβατηγού Ι.Χ. χωρίς ισχύουσα άδεια οδήγησης (Ε4).' },
             { id: 96, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Δ.Χ. / Λεωφορεία', article: '98§4αβ',
                 fine: 1000, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση Ε.Δ.Χ. ή λεωφορείου χωρίς ισχύουσα άδεια οδήγησης.' },
             { id: 97, category: 'άδειες', name: 'Στέρηση άδειας – Μοτοσικλέτα / Μοτοποδήλατο',
                 article: '98§4αα', fine: 500, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση μοτοσικλέτας ή μοτοποδηλάτου χωρίς την απαιτούμενη άδεια.' },
             { id: 98, category: 'άδειες', name: 'Οδήγηση με ληγμένη άδεια', article: '99§2', fine: 150,
                 suspend: 'Μέχρι ανανέωσης', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ληγμένο έντυπο άδειας οδήγησης ή ληγμένη κατηγορία.' },
             { id: 99, category: 'άδειες', name: 'Παραχώρηση οδήγησης σε μη δικαιούχο', article: '102§1',
                 fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Παραχώρηση οδήγησης οχήματος σε πρόσωπο που δεν έχει την κατάλληλη άδεια.' },
 
-            // ========== ΑΣΦΑΛΕΙΑ – 7 παραβάσεις ==========
+            // ========== ΑΣΦΑΛΕΙΑ ==========
             { id: 100, category: 'ασφάλεια', name: 'Ανασφάλιστο – Δίκυκλα', article: 'ΠΔ 237/86', fine: 250,
                 suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία δίκυκλου οχήματος χωρίς ισχύουσα ασφάλιση.' },
             { id: 101, category: 'ασφάλεια', name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.',
                 article: 'ΠΔ 237/86', fine: 500, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία Ι.Χ.Ε., Ι.Χ.Φ., Α.Μ. ή Μ.Ε. χωρίς ασφάλιση.' },
             { id: 102, category: 'ασφάλεια', name: 'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία', article: 'ΠΔ 237/86',
                 fine: 1000, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία Φ.Δ.Χ. ή λεωφορείου χωρίς ασφάλιση.' },
             { id: 103, category: 'ασφάλεια', name: 'Εμπλοκή σε ατύχημα χωρίς ασφάλιση', article: 'ΠΔ 237/86',
                 fine: 250, suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 2 χρόνια στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Εμπλοκή σε τροχαίο ατύχημα με ανασφάλιστο όχημα.' },
             { id: 104, category: 'ασφάλεια', name: 'Μη χρήση ζώνης ασφαλείας (οδηγός)', article: '16§5',
                 fine: 350, suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από τον οδηγό. Κατατάσσεται σε Ε3-Β.' },
             { id: 105, category: 'ασφάλεια', name: 'Μη χρήση ζώνης ασφαλείας (επιβάτης)', article: '16§5',
                 fine: 150, suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από επιβάτη. Κατατάσσεται σε Ε2-Α.' },
             { id: 106, category: 'ασφάλεια', name: 'Έλλειψη ζώνης σε Ι.Χ.Ε. ή Φορτηγό ≤3,5τ.',
                 article: '85§17', fine: 150, suspend: 'Ακινητοποίηση',
-                details: 'Ακινητοποίηση μέχρι αποκατάστασης', points: 0, criminal: false, half: false },
+                details: 'Ακινητοποίηση μέχρι αποκατάστασης', points: 0, criminal: false, half: false,
+                fullDescription: 'Έλλειψη ζώνης ασφαλείας σε Ι.Χ.Ε. ή φορτηγό ≤3,5 τόνους.' },
 
-            // ========== ΚΤΕΟ – 2 παραβάσεις ==========
+            // ========== ΚΤΕΟ ==========
             { id: 107, category: 'ΚΤΕΟ', name: 'Χωρίς ΚΤΕΟ', article: '90', fine: 350,
                 suspend: '30 ημέρες στοιχ. κυκλ. + ακινητοποίηση',
                 details: 'Αφαίρεση στοιχείων κυκλοφορίας + ακινητοποίηση', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
             { id: 108, category: 'ΚΤΕΟ', name: 'Πλαστό / παραποιημένο ΚΤΕΟ', article: '90',
                 fine: 'ΠΛΗΜΜΕΛΗΜΑ', suspend: 'Οριστική αφαίρεση στοιχ. κυκλ.',
-                details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: true, half: false },
+                details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: true, half: false,
+                fullDescription: 'Χρήση πλαστού ή παραποιημένου Δελτίου Τεχνικού Ελέγχου.' },
 
-            // ========== ΧΩΡΙΣ ΠΙΝΑΚΙΔΕΣ / ΑΔΕΙΑ ΚΥΚΛΟΦΟΡΙΑΣ – 2 παραβάσεις ==========
+            // ========== ΧΩΡΙΣ ΠΙΝΑΚΙΔΕΣ / ΑΔΕΙΑ ΚΥΚΛΟΦΟΡΙΑΣ ==========
             { id: 109, category: 'άδειες', name: 'Χωρίς πινακίδες κυκλοφορίας', article: '94§3', fine: 350,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≤1 έτος)', points: 0,
-                criminal: true, half: false },
+                criminal: true, half: false,
+                fullDescription: 'Κυκλοφορία οχήματος χωρίς κανονικές πινακίδες κυκλοφορίας.' },
             { id: 110, category: 'άδειες', name: 'Χωρίς άδεια κυκλοφορίας', article: '92§2', fine: 700,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία οχήματος χωρίς άδεια κυκλοφορίας.' },
 
-            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ (Άρθρο 46) – 8 παραβάσεις ==========
+            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ (Άρθρο 46) ==========
             { id: 111, category: 'αλκοόλ', name: 'Αλκοόλ 0,50-0,80 (γενικός)', article: '46§7α', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ποσοστό αλκοόλ στο αίμα 0,50-0,80 g/l (ή 0,25-0,40 mg/l εκπνεόμενου). Ε3-Β.' },
             { id: 112, category: 'αλκοόλ', name: 'Αλκοόλ 0,80-1,10 (γενικός)', article: '46§7β', fine: 700,
                 suspend: '90 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ποσοστό αλκοόλ 0,80-1,10 g/l (0,40-0,60 mg/l εκπνεόμενου). Ε4.' },
             { id: 113, category: 'αλκοόλ', name: 'Αλκοόλ >1,10 (γενικός)', article: '46§7γ', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥2 μήνες)', points: 9,
-                criminal: true, half: false },
+                criminal: true, half: false,
+                fullDescription: 'Οδήγηση με αλκοόλ >1,10 g/l (ή >0,60 mg/l εκπνεόμενου). Πλημμέλημα.' },
             { id: 114, category: 'αλκοόλ', name: 'Άρνηση αλκοολομέτρησης', article: '46§6', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
-                details: 'Τεκμαρτό αλκοόλ >1,10 + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true, half: false },
+                details: 'Τεκμαρτό αλκοόλ >1,10 + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true, half: false,
+                fullDescription: 'Άρνηση υποβολής σε έλεγχο αλκοόλης. Τεκμαίρεται αλκοόλ >1,10 g/l.' },
             { id: 115, category: 'αλκοόλ', name: 'Οδήγηση υπό τοξικές ουσίες', article: '46§8',
                 fine: 'Ποινικές κυρώσεις', suspend: '3-6 μήνες αδ. οδ.',
                 details: 'Φυλάκιση ≥2 μήνες + χρηματική ποινή ≥200€ + ΠΛΗΜΜΕΛΗΜΑ', points: 0, criminal: true,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση υπό την επίδραση τοξικών ουσιών ή φαρμάκων.' },
             { id: 116, category: 'επαγγελματικά', name: 'Αλκοόλ 0,20-0,80 (επαγγελματίες)',
                 article: '46§7α (ειδικοί οδηγοί)', fine: 350, suspend: '30 ημέρες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false, half: false },
+                details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false, half: false,
+                fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ 0,20-0,80 g/l.' },
             { id: 117, category: 'επαγγελματικά', name: 'Αλκοόλ 0,80-1,10 (επαγγελματίες)',
                 article: '46§7β (ειδικοί οδηγοί)', fine: 700, suspend: '90 ημέρες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false, half: false },
+                details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false, half: false,
+                fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ 0,80-1,10 g/l.' },
             { id: 118, category: 'επαγγελματικά', name: 'Αλκοόλ >1,10 (επαγγελματίες)',
                 article: '46§7γ (ειδικοί οδηγοί)', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ >1,10 g/l.' },
 
-            // ========== ΥΠΟΤΡΟΠΗ (Άρθρο 110) – 8 παραβάσεις ==========
+            // ========== ΥΠΟΤΡΟΠΗ (Άρθρο 110) ==========
             { id: 119, category: 'υποτροπή', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)',
                 article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση ερυθρού σηματοδότη εντός 5 ετών (χωρίς ατύχημα).' },
             { id: 120, category: 'υποτροπή', name: 'Ερυθρός – 3η υποτροπή (χωρίς ατύχημα)',
                 article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Τρίτη παράβαση ερυθρού σηματοδότη εντός 5 ετών (χωρίς ατύχημα).' },
             { id: 121, category: 'υποτροπή', name: 'Ερυθρός με ατύχημα – 2η υποτροπή', article: '110§3β',
                 fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση ερυθρού σηματοδότη εντός 5 ετών που προκάλεσε ατύχημα.' },
             { id: 122, category: 'υποτροπή', name: 'STOP/P-29 – 2η υποτροπή', article: '110§3α', fine: 1000,
                 suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση STOP ή απαγόρευσης αναστροφής (P-29) εντός 5 ετών.' },
             { id: 123, category: 'υποτροπή', name: 'STOP/P-29 – 3η υποτροπή', article: '110§4α', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Τρίτη παράβαση STOP/P-29 εντός 5 ετών.' },
             { id: 124, category: 'υποτροπή', name: 'STOP/P-29 με ατύχημα – 2η υποτροπή', article: '110§3β',
                 fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση STOP/P-29 εντός 5 ετών που προκάλεσε ατύχημα.' },
             { id: 125, category: 'υποτροπή', name: 'ΛΕΑ – 2η υποτροπή', article: '110§3α', fine: 1000,
                 suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση χρήσης ΛΕΑ εντός 5 ετών.' },
             { id: 126, category: 'υποτροπή', name: 'ΛΕΑ – 3η υποτροπή', article: '110§4α', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false }
+                half: false,
+                fullDescription: 'Τρίτη παράβαση χρήσης ΛΕΑ εντός 5 ετών.' }
         ];
 
         // ============================================================
@@ -915,6 +1219,7 @@
         let currentFilter = 'all';
         let showFavorites = false;
         let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
+        let openDescriptions = {};
 
         function toggleDark() {
             document.body.classList.toggle('dark');
@@ -939,6 +1244,11 @@
             localStorage.setItem('kok_favorites', JSON.stringify(favorites));
             render();
             showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
+        }
+
+        function toggleDescription(id) {
+            openDescriptions[id] = !openDescriptions[id];
+            render();
         }
 
         function showToast(msg) {
@@ -980,23 +1290,107 @@
             document.getElementById('searchInput').focus();
         }
 
+        function getFavorites() {
+            return data.filter(v => favorites[v.id]);
+        }
+
+        function exportFavorites() {
+            const favs = getFavorites();
+            if (favs.length === 0) {
+                showToast('⚠️ Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
+                return;
+            }
+
+            const win = window.open('', '_blank', 'width=900,height=700');
+            if (!win) {
+                showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+                return;
+            }
+
+            const html = `
+            <!DOCTYPE html>
+            <html>
+            <head><title>Αγαπημένες Παραβάσεις ΚΟΚ</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; }
+                h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
+                .sub { color: #555; margin-bottom: 20px; }
+                .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 12px; page-break-inside: avoid; }
+                .card .name { font-weight: bold; font-size: 16px; }
+                .card .article { color: #555; font-size: 14px; }
+                .card .det { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 4px; }
+                .card .det .fine { color: #c00; font-weight: bold; }
+                .card .det .suspend { color: #00c; font-weight: 500; }
+                .card .det .points { color: #7c3aed; }
+                .card .desc { margin-top: 6px; background: #f5f5f5; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
+                .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
+                @media print {
+                    .no-print { display: none; }
+                    body { padding: 20px; }
+                    .card { border-color: #ccc; }
+                    .card .desc { background: #f9f9f9; }
+                }
+            </style>
+            </head>
+            <body>
+                <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
+                <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης» — ${new Date().toLocaleDateString()}</p>
+                ${favs.map(v => `
+                    <div class="card">
+                        <div class="name">${v.name}</div>
+                        <div class="article">Άρθρο: ${v.article}</div>
+                        <div class="det">
+                            <span class="fine">💰 ${formatFine(v.fine)}</span>
+                            ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
+                            ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                        </div>
+                        ${v.fullDescription ? `<div class="desc">📖 ${v.fullDescription}</div>` : ''}
+                    </div>
+                `).join('')}
+                <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
+                <div class="no-print" style="text-align:center;margin-top:20px;">
+                    <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+                </div>
+            </body>
+            </html>
+            `;
+
+            win.document.write(html);
+            win.document.close();
+            // Δίνουμε χρόνο να φορτώσει το περιεχόμενο και μετά καλούμε print
+            setTimeout(() => {
+                win.focus();
+                win.print();
+            }, 500);
+        }
+
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const container = document.getElementById('listContainer');
             const countEl = document.getElementById('countText');
+            const favIndicator = document.getElementById('favIndicator');
+            const favCount = document.getElementById('favCount');
 
             let filtered = data.filter(v => {
                 if (showFavorites && !favorites[v.id]) return false;
                 if (currentFilter !== 'all' && v.category !== currentFilter) return false;
                 if (query) {
-                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details).toLowerCase();
+                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v
+                        .fullDescription || '')).toLowerCase();
                     if (!searchable.includes(query)) return false;
                 }
                 return true;
             });
 
             const total = data.length;
+            const favsCount = getFavorites().length;
             countEl.textContent = filtered.length + ' από ' + total + ' παραβάσεις';
+            if (showFavorites) {
+                favIndicator.style.display = 'inline';
+                favCount.textContent = favsCount;
+            } else {
+                favIndicator.style.display = 'none';
+            }
 
             if (filtered.length === 0) {
                 container.innerHTML =
@@ -1009,6 +1403,7 @@
                 const signSvg = v.sign ? getSignHTML(v.sign) : '';
                 const halfBadge = v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : '';
                 const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
+                const isDescOpen = openDescriptions[v.id] || false;
 
                 return `
                 <div class="card">
@@ -1025,9 +1420,14 @@
                             ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                         </div>
-                        <div style="font-size: 12px; color: #4a5568; margin-top: 4px; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; display: inline-block;">
-                            📌 ${v.details}
-                        </div>
+                        ${v.fullDescription ? `
+                            <button class="desc-toggle" onclick="toggleDescription(${v.id})">
+                                ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Περιγραφή'}
+                            </button>
+                            <div class="full-description ${isDescOpen ? 'open' : ''}">
+                                ${v.fullDescription}
+                            </div>
+                        ` : ''}
                     </div>
                     <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Προσθήκη/αφαίρεση αγαπημένου">
                         ${favorites[v.id] ? '⭐' : '☆'}
