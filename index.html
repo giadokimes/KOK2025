@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v10.5</title>
+    <title>ΚΟΚ – Τσέπης v10.4</title>
     <style>
         /* ============================================================
-               v10.5 - Βελτιωμένη ορατότητα βαρύτητας
-                     - Ζωηρά χρώματα, ένδειξη κειμένου, σκούρο φόντο
+               v10.4 - Αναγνώσιμα χρώματα βαρύτητας
+                     - Παστέλ αποχρώσεις + χρωματική λωρίδα
                ============================================================ */
         * {
             margin: 0;
@@ -260,7 +260,7 @@
             color: #f59e0b;
         }
 
-        /* ----- Cards (με ενισχυμένα χρώματα βαρύτητας) ----- */
+        /* ----- Cards (με παστέλ φόντο και χρωματική λωρίδα) ----- */
         .list {
             margin-top: 12px;
             display: flex;
@@ -294,30 +294,19 @@
             filter: brightness(1.1);
         }
 
-        /* Χρωματική λωρίδα βαρύτητας (πιο φαρδιά και ζωηρή) */
+        /* Χρωματική λωρίδα βαρύτητας */
         .card .severity-bar {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 6px;
+            height: 4px;
             border-radius: 14px 14px 0 0;
-            opacity: 1;
+            opacity: 0.8;
         }
 
-        /* Ένδειξη βαρύτητας με κείμενο */
-        .card .severity-label {
-            font-size: 13px;
-            font-weight: 700;
-            margin-top: 6px;
-            padding: 2px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            background: rgba(0,0,0,0.06);
-        }
-
-        body.dark .card .severity-label {
-            background: rgba(255,255,255,0.08);
+        body.dark .card .severity-bar {
+            opacity: 0.6;
         }
 
         .card .content {
@@ -552,7 +541,7 @@
         }
 
         /* ============================================================
-               PRINT WINDOW
+               PRINT WINDOW (για εξαγωγή PDF)
                ============================================================ */
         .print-window {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -769,7 +758,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.5</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.4</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
                 <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
@@ -827,23 +816,23 @@
         };
 
         // ============================================================
-        // ΧΡΩΜΑΤΑ ΒΑΡΥΤΗΤΑΣ – ΖΩΗΡΕΣ ΑΠΟΧΡΩΣΕΙΣ (v10.5)
+        // ΧΡΩΜΑΤΑ ΒΑΡΥΤΗΤΑΣ (παστέλ αποχρώσεις)
         // ============================================================
         const severityColors = {
-            'none': '#cbd5e1',          // γκρι – καμία αφαίρεση
-            '10': '#fcd34d',            // κίτρινο
-            '20': '#fbbf24',            // κίτρινο-πορτοκαλί
-            '30': '#f59e0b',            // πορτοκαλί
-            '40': '#f97316',            // σκούρο πορτοκαλί
-            '60': '#ef4444',            // κόκκινο
-            '70': '#dc2626',            // σκούρο κόκκινο
-            '90': '#b91c1c',            // πολύ σκούρο κόκκινο
-            '180': '#991b1b',           // σχεδόν μαύρο-κόκκινο
-            'criminal': '#7f1d1d'      // μπορντό για πλημμέλημα
+            'none': '#e2e8f0', // καμία αφαίρεση
+            '10': '#fef9c3', // 10 ημέρες
+            '20': '#fde68a', // 20 ημέρες
+            '30': '#fcd34d', // 30 ημέρες
+            '40': '#fbbf24', // 40 ημέρες
+            '60': '#fb923c', // 60 ημέρες
+            '70': '#f87171', // 70 ημέρες
+            '90': '#ef4444', // 90 ημέρες
+            '180': '#dc2626', // 180+ ημέρες / 1 έτος
+            'criminal': '#fca5a5' // πλημμέλημα
         };
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.5 (ίδια με πριν, 126 παραβάσεις)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.4 (πλήρης, 126 παραβάσεις)
         // ============================================================
         const data = [
             // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
@@ -1377,7 +1366,7 @@
         ];
 
         // ============================================================
-        // ΣΥΝΑΡΤΗΣΕΙΣ ΒΑΡΥΤΗΤΑΣ
+        // ΣΥΝΑΡΤΗΣΗ ΥΠΟΛΟΓΙΣΜΟΥ ΧΡΩΜΑΤΟΣ ΒΑΡΥΤΗΤΑΣ
         // ============================================================
         function getSeverityColor(suspend, criminal) {
             if (criminal) return severityColors.criminal;
@@ -1396,15 +1385,6 @@
             if (lower.includes('ακινητοποίηση') || lower.includes('οριστική')) return severityColors.criminal;
 
             return severityColors.none;
-        }
-
-        function getSeverityLabel(suspend, criminal) {
-            if (criminal) return '🔴 Πλημμέλημα';
-            if (!suspend || suspend === '-') return '🟢 Καμία αφαίρεση';
-            // Προσπάθησε να βρεις αριθμό ημερών
-            const match = suspend.match(/(\d+)\s*ημέρες/);
-            if (match) return `⚖️ ${match[1]} ημέρες`;
-            return `⚖️ ${suspend}`;
         }
 
         // ============================================================
@@ -1554,9 +1534,6 @@
             }, 500);
         }
 
-        // ============================================================
-        // RENDER – με ενισχυμένη ορατότητα βαρύτητας
-        // ============================================================
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const container = document.getElementById('listContainer');
@@ -1597,49 +1574,32 @@
                 const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
                 const isDescOpen = openDescriptions[v.id] || false;
                 const severityColor = getSeverityColor(v.suspend, v.criminal);
-                const severityLabel = getSeverityLabel(v.suspend, v.criminal);
 
-                // Ενισχυμένο φόντο κάρτας – μεγαλύτερη αντίθεση
+                // Υπολογισμός φόντου για την κάρτα (πολύ ανοιχτό)
                 let bgColor = '#ffffff';
                 if (v.criminal) {
-                    bgColor = '#fee2e2';   // ανοιχτό κόκκινο
+                    bgColor = '#fef2f2';
                 } else if (v.suspend && v.suspend !== '-') {
                     const lower = v.suspend.toLowerCase();
-                    if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) bgColor = '#fef9c3';
-                    else if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) bgColor = '#fde68a';
-                    else if (lower.includes('30 ημέρες') || lower.includes('30 ημ')) bgColor = '#fdba74';
-                    else if (lower.includes('40 ημέρες') || lower.includes('40 ημ')) bgColor = '#fca5a5';
-                    else if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) bgColor = '#f87171';
-                    else if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) bgColor = '#ef4444';
-                    else if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) bgColor = '#dc2626';
+                    if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) bgColor = '#fffbeb';
+                    else if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) bgColor = '#fffbeb';
+                    else if (lower.includes('30 ημέρες') || lower.includes('30 ημ')) bgColor = '#fef3c7';
+                    else if (lower.includes('40 ημέρες') || lower.includes('40 ημ')) bgColor = '#fef3c7';
+                    else if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) bgColor = '#fde68a';
+                    else if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) bgColor = '#fee2e2';
+                    else if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) bgColor = '#fee2e2';
                     else if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') ||
-                        lower.includes('μήνες')) bgColor = '#b91c1c';
+                        lower.includes('μήνες')) bgColor = '#fecaca';
                     else bgColor = '#ffffff';
                 }
 
-                // Προσαρμογή για dark mode – διατηρούμε την αντίθεση
-                if (document.body.classList.contains('dark')) {
-                    if (v.criminal) bgColor = '#2d1b1b';
-                    else if (bgColor !== '#ffffff') {
-                        // Σκουραίνουμε το χρώμα για dark mode
-                        const darkMap = {
-                            '#fef9c3': '#2d2a1a',
-                            '#fde68a': '#2d251a',
-                            '#fdba74': '#2d211a',
-                            '#fca5a5': '#2d1a1a',
-                            '#f87171': '#2d1818',
-                            '#ef4444': '#2d1515',
-                            '#dc2626': '#2d1212',
-                            '#b91c1c': '#2d0f0f'
-                        };
-                        bgColor = darkMap[bgColor] || '#1e293b';
-                    } else {
-                        bgColor = '#1e293b';
-                    }
-                }
+                // Για dark mode, σκουραίνουμε ελαφρά το φόντο
+                const darkBg = document.body.classList.contains('dark') ?
+                    (bgColor !== '#ffffff' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)') :
+                    bgColor;
 
                 return `
-                <div class="card" style="border-left-color: ${color}; background-color: ${bgColor};">
+                <div class="card" style="border-left-color: ${color}; background-color: ${darkBg};">
                     <div class="severity-bar" style="background-color: ${severityColor};"></div>
                     <div class="content">
                         <div class="name">
@@ -1650,10 +1610,6 @@
                             <span class="fine">💰 ${formatFine(v.fine)}</span>
                             ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
-                        </div>
-                        <!-- Ένδειξη βαρύτητας -->
-                        <div class="severity-label" style="color: ${severityColor}; background: rgba(0,0,0,0.08);">
-                            ${severityLabel}
                         </div>
                         ${v.fullDescription ? `
                             <button class="desc-toggle" onclick="toggleDescription(${v.id})">
@@ -1672,7 +1628,7 @@
         }
 
         // Εκκίνηση
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.5)');
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις');
         render();
 
         // Keyboard shortcuts
