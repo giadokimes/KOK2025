@@ -3,124 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v9.2</title>
-    <meta name="theme-color" content="#1e3a5f">
-    <meta name="description" content="Εργαλείο αναφοράς παραβάσεων ΚΟΚ (Ν.5209/2025)">
+    
+    <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
+    <meta name="theme-color" content="#1a365d">
+    
+    <title>ΚΟΚ – Τσέπης v13 (PWA)</title>
+    
     <style>
+        /* ============================================================
+               v13 - PWA Ready / Offline / Κωδικοί ΟΤΑ
+               ============================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f3f1ec;
+            background: #f4f7fb;
             color: #1a202c;
             padding: 0 0 80px 0;
             min-height: 100vh;
             transition: background .3s, color .3s;
-            font-variant-numeric: tabular-nums;
+            line-height: 1.5;
         }
+
         body.dark {
-            background: #0b1120;
+            background: #0d1524;
             color: #e2e8f0;
         }
+
         .header {
-            background: #16324f;
-            background-image: linear-gradient(155deg, #1c3d61 0%, #12283f 100%);
+            background: linear-gradient(145deg, #1a365d, #1e3a5f);
             color: #fff;
             padding: 16px 20px 14px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
-            border-bottom: 3px solid #0047ab;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         body.dark .header {
-            background-image: linear-gradient(155deg, #0d2038 0%, #081426 100%);
-            border-bottom-color: #2563eb;
+            background: linear-gradient(145deg, #0b1e33, #0f2847);
+            border-bottom-color: rgba(255, 255, 255, 0.02);
         }
+
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
+
         .header-title {
-            font-size: 19px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
+
         .header-title span {
-            font-weight: 400;
-            font-size: 13px;
-            letter-spacing: 0.2px;
-            text-transform: none;
-            opacity: 0.75;
+            font-weight: 300;
+            font-size: 14px;
+            opacity: 0.7;
         }
+
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             align-items: center;
+            flex-wrap: wrap;
         }
+
         .header-actions button {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             border: none;
             color: #fff;
-            font-size: 20px;
-            width: 40px;
-            height: 40px;
+            font-size: 18px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background .2s;
+            transition: all .2s;
         }
+
         .header-actions button:hover {
             background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
         }
+
+        .header-actions .pdf-btn {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 0 16px;
+            border-radius: 30px;
+            width: auto;
+            gap: 6px;
+            background: #10b981;
+            color: #fff;
+        }
+
+        .header-actions .pdf-btn:hover {
+            background: #059669;
+            transform: scale(1.02);
+        }
+
         body.dark .header-actions button {
             background: rgba(255, 255, 255, 0.08);
         }
+
+        body.dark .header-actions .pdf-btn {
+            background: #10b981;
+        }
+
         .search-box {
-            margin-top: 12px;
+            margin-top: 14px;
             position: relative;
         }
+
         .search-box input {
             width: 100%;
-            padding: 12px 44px 12px 44px;
+            padding: 14px 48px 14px 48px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
             background: rgba(255, 255, 255, 0.95);
             color: #1a202c;
             outline: none;
+            transition: all .2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
+
         body.dark .search-box input {
             background: #1e293b;
             color: #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
+
         .search-box input:focus {
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.08);
         }
+
         .search-box .icon {
             position: absolute;
-            left: 14px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 18px;
-            opacity: 0.6;
+            opacity: 0.5;
         }
+
         .search-box .clear-btn {
             position: absolute;
-            right: 14px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -130,33 +177,44 @@
             cursor: pointer;
             display: none;
             padding: 4px;
+            transition: color .2s;
         }
+
+        .search-box .clear-btn:hover {
+            color: #ef4444;
+        }
+
         .search-box .clear-btn.visible {
             display: block;
         }
+
         .filters {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 14px;
         }
+
         .filters button {
-            padding: 6px 14px;
+            padding: 7px 16px;
             border: none;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 13px;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.18);
             color: #fff;
             cursor: pointer;
             transition: all .2s;
             white-space: nowrap;
             position: relative;
         }
+
         .filters button.active {
             background: #fff;
             color: #1e3a5f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
+
         .filters button.active::after {
             content: '';
             position: absolute;
@@ -165,289 +223,645 @@
             width: 40%;
             height: 2px;
             background: #1e3a5f;
-            border-radius: 2px;
+            border-radius: 4px;
         }
+
         body.dark .filters button.active {
             background: #2d3748;
             color: #e2e8f0;
         }
+
         body.dark .filters button.active::after {
             background: #e2e8f0;
         }
+
         .filters button:hover {
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-1px);
         }
+
         body.dark .filters button:hover {
             background: rgba(255, 255, 255, 0.15);
         }
+
         .count {
             font-size: 14px;
             color: #4a5568;
-            padding: 8px 4px 0 4px;
+            padding: 12px 4px 4px 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
         }
+
         body.dark .count {
             color: #94a3b8;
         }
+
+        .count .fav-count {
+            font-weight: 600;
+            color: #f59e0b;
+        }
+
         .list {
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
+
         .card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 14px 16px;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 10px rgba(15, 23, 42, 0.05);
-            border-left: 4px solid #e2e8f0;
+            padding: 16px 18px;
+            border-radius: 14px;
+            border-left: 6px solid #e2e8f0;
             display: flex;
             gap: 14px;
             align-items: flex-start;
-            transition: box-shadow .2s, transform .15s;
+            transition: all .15s;
+            background-color: #ffffff;
+            box-shadow: none;
+            position: relative;
         }
-        .card:hover {
-            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08), 0 8px 18px rgba(15, 23, 42, 0.08);
-        }
+
         body.dark .card {
-            background: #1e293b;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border-left-color: #334155;
         }
-        .card .sign-wrapper {
-            flex-shrink: 0;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2px;
-            font-weight: 800;
-            font-size: 13px;
-            letter-spacing: 0.2px;
+
+        .card:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.97);
         }
-        .card .sign-wrapper svg {
-            width: 26px;
-            height: 26px;
+
+        body.dark .card:hover {
+            filter: brightness(1.1);
         }
+
+        .card .severity-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            border-radius: 14px 14px 0 0;
+            opacity: 0.8;
+        }
+
+        body.dark .card .severity-bar {
+            opacity: 0.6;
+        }
+
         .card .content {
             flex: 1;
             min-width: 0;
+            margin-top: 2px;
         }
+
         .card .name {
             font-weight: 600;
-            font-size: 15px;
-            line-height: 1.4;
+            font-size: 16px;
+            line-height: 1.6;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 6px;
+            color: #0f172a;
         }
+
+        .card .name .sign-img {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            vertical-align: middle;
+            margin: 0 2px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 4px;
+            background: #fff;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        body.dark .card .name .sign-img {
+            border-color: rgba(255,255,255,0.2);
+            background: #1e293b;
+        }
+
+        body.dark .card .name {
+            color: #f1f5f9;
+        }
+
         .card .article {
             font-size: 13px;
-            color: #4a5568;
+            color: #64748b;
             margin-top: 2px;
+            font-weight: 500;
         }
+
         body.dark .card .article {
             color: #94a3b8;
         }
+
         .card .details {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px 18px;
-            margin-top: 6px;
-            font-size: 14px;
+            gap: 6px 20px;
+            margin-top: 8px;
+            font-size: 15px;
+            align-items: center;
         }
+
         .card .details .fine {
-            font-weight: 600;
+            font-weight: 700;
             color: #dc2626;
         }
+
         body.dark .card .details .fine {
             color: #f87171;
         }
+
         .card .details .suspend {
             color: #2563eb;
-            font-weight: 500;
+            font-weight: 600;
         }
+
         body.dark .card .details .suspend {
             color: #60a5fa;
         }
+
         .card .details .points {
             color: #7c3aed;
+            font-weight: 600;
         }
+
         body.dark .card .details .points {
             color: #a78bfa;
         }
-        .card .actions {
-            flex-shrink: 0;
+
+        .card .ota-section {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.04);
+            border-radius: 8px;
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 2px;
+            gap: 10px;
+            position: relative;
         }
+
+        body.dark .card .ota-section {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .card .ota-section label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        body.dark .card .ota-section label {
+            color: #94a3b8;
+        }
+
+        .card .ota-section .ota-input {
+            flex: 1;
+            min-width: 120px;
+            padding: 6px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+            color: #1a202c;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        body.dark .card .ota-section .ota-input {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-color: #334155;
+        }
+
+        .card .ota-section .ota-input:focus {
+            border-color: #3b82f6;
+        }
+
+        .card .ota-section .ota-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+
+        body.dark .card .ota-section .ota-suggestions {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .card .ota-section .ota-suggestions.show {
+            display: block;
+        }
+
+        .card .ota-section .ota-suggestions .suggestion-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background .15s;
+        }
+
+        .card .ota-section .ota-suggestions .suggestion-item:hover {
+            background: #f1f5f9;
+        }
+
+        body.dark .card .ota-section .ota-suggestions .suggestion-item:hover {
+            background: #334155;
+        }
+
+        .card .ota-section .ota-code {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2563eb;
+            padding: 4px 10px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 4px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        body.dark .card .ota-section .ota-code {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+
         .card .favorite {
             flex-shrink: 0;
             background: none;
             border: none;
-            font-size: 22px;
+            font-size: 26px;
             cursor: pointer;
             padding: 4px;
-            opacity: 0.3;
-            transition: opacity .2s, transform .15s;
+            opacity: 0.25;
+            transition: all .2s;
             line-height: 1;
+            margin-top: -2px;
         }
+
         .card .favorite.active {
             opacity: 1;
             color: #f59e0b;
         }
+
         .card .favorite:active {
             transform: scale(1.3);
         }
+
         body.dark .card .favorite {
-            opacity: 0.4;
+            opacity: 0.3;
         }
+
         body.dark .card .favorite.active {
             opacity: 1;
             color: #fbbf24;
         }
-        .card .copy-btn {
-            flex-shrink: 0;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            opacity: 0.35;
-            color: #4a5568;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity .2s, background .2s, transform .1s;
-        }
-        .card .copy-btn:hover {
-            opacity: 0.9;
-            background: #f1f5f9;
-        }
-        .card .copy-btn:active {
-            transform: scale(0.9);
-        }
-        .card .copy-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-        body.dark .card .copy-btn {
-            color: #94a3b8;
-            opacity: 0.5;
-        }
-        body.dark .card .copy-btn:hover {
-            background: #334155;
-        }
+
         .badge-criminal {
             display: inline-block;
             font-size: 11px;
             font-weight: 700;
             color: #dc2626;
-            background: #fee2e2;
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin-left: 6px;
+            background: rgba(220, 38, 38, 0.15);
+            padding: 2px 12px;
+            border-radius: 20px;
+            margin-left: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
+
         body.dark .badge-criminal {
-            background: #450a0a;
+            background: rgba(252, 165, 165, 0.2);
             color: #fca5a5;
         }
+
         .badge-half {
             display: inline-block;
             font-size: 11px;
             color: #64748b;
-            background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 4px;
+            font-weight: 500;
         }
+
         body.dark .badge-half {
-            background: #334155;
+            background: rgba(255, 255, 255, 0.08);
             color: #94a3b8;
         }
-        .badge-suspension {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            color: #2563eb;
-            background: #dbeafe;
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin-left: 6px;
+
+        .card .desc-toggle {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: color .2s;
         }
-        body.dark .badge-suspension {
-            background: #1e3a5f;
+
+        body.dark .card .desc-toggle {
+            color: #60a5fa;
+        }
+
+        .card .desc-toggle:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        body.dark .card .desc-toggle:hover {
             color: #93c5fd;
         }
+
+        .card .full-description {
+            display: none;
+            font-size: 14px;
+            color: #334155;
+            background: rgba(0, 0, 0, 0.04);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-top: 10px;
+            line-height: 1.6;
+            border-left: 4px solid #3b82f6;
+        }
+
+        body.dark .card .full-description {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            border-left-color: #60a5fa;
+        }
+
+        .card .full-description.open {
+            display: block;
+        }
+
         .empty {
             text-align: center;
-            padding: 50px 20px;
+            padding: 60px 20px;
             color: #64748b;
             font-size: 16px;
         }
+
         body.dark .empty {
             color: #94a3b8;
         }
+
+        .empty .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
             background: #1a202c;
             color: #fff;
-            padding: 12px 24px;
-            border-radius: 12px;
+            padding: 12px 28px;
+            border-radius: 16px;
             font-size: 14px;
+            font-weight: 500;
             opacity: 0;
             transition: opacity .3s;
             pointer-events: none;
             z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
         }
+
         body.dark .toast {
             background: #e2e8f0;
             color: #0f172a;
         }
+
         .toast.show {
             opacity: 1;
         }
+
+        .print-window {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .print-window h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1e3a5f;
+            border-bottom: 3px solid #1e3a5f;
+            padding-bottom: 10px;
+        }
+
+        .print-window .subtitle {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .print-window .print-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+
+        .print-window .print-card .p-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .print-window .print-card .p-article {
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .print-window .print-card .p-details {
+            font-size: 14px;
+            margin-top: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+        }
+
+        .print-window .print-card .p-details .p-fine {
+            font-weight: 600;
+            color: #dc2626;
+        }
+
+        .print-window .print-card .p-details .p-suspend {
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .print-window .print-card .p-details .p-points {
+            color: #7c3aed;
+        }
+
+        .print-window .print-card .p-ota {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+
+        .print-window .print-card .p-desc {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 6px;
+            background: #f1f5f9;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        .print-window .no-favs {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .install-banner {
+            display: none;
+            background: #1a365d;
+            color: #fff;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .install-banner.show {
+            display: flex;
+        }
+
+        .install-banner button {
+            background: #10b981;
+            border: none;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .install-banner .close-btn {
+            background: transparent;
+            font-size: 20px;
+            padding: 4px 8px;
+            color: #94a3b8;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printArea,
+            #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .print-window .print-card {
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+            }
+            .print-window .print-card .p-desc {
+                background: #f9f9f9 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
         @media (max-width: 480px) {
             .header-title {
-                font-size: 17px;
+                font-size: 18px;
             }
-            .card .sign-wrapper {
-                width: 34px;
-                height: 34px;
+            .card .name {
+                font-size: 15px;
             }
-            .card .sign-wrapper svg {
+            .card .name .sign-img {
                 width: 24px;
                 height: 24px;
             }
-            .card .name {
-                font-size: 14px;
-            }
             .card .details {
-                font-size: 13px;
+                font-size: 14px;
                 gap: 4px 12px;
             }
             .filters button {
                 font-size: 12px;
                 padding: 5px 12px;
             }
+            .header-actions button {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .header-actions .pdf-btn {
+                font-size: 12px;
+                padding: 0 12px;
+                height: 34px;
+            }
+            .card {
+                padding: 14px 16px;
+                gap: 12px;
+            }
+            .search-box input {
+                padding: 12px 40px 12px 40px;
+                font-size: 15px;
+            }
+            .card .ota-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
+
         @media print {
             .header,
             .search-box,
             .filters,
             .count,
             .favorite,
-            .header-actions {
+            .header-actions,
+            .ota-section,
+            .install-banner {
                 display: none !important;
             }
             body {
@@ -463,7 +877,11 @@
                 border-left-color: #333 !important;
                 background: #fff !important;
                 box-shadow: none !important;
-                page-break-inside: avoid;
+                transform: none !important;
+                filter: none !important;
+            }
+            .card .severity-bar {
+                display: none !important;
             }
             .card .article {
                 color: #333 !important;
@@ -478,23 +896,33 @@
                 color: #c00 !important;
                 background: #fee !important;
             }
+            .card .full-description {
+                display: block !important;
+                background: #f9f9f9 !important;
+                color: #333 !important;
+                border-left-color: #333 !important;
+            }
+            .card .desc-toggle {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v9.2</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v13</span></div>
             <div class="header-actions">
-                <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
-                <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
-                <button onclick="window.print()" aria-label="Εκτύπωση">🖨️</button>
+                <button onclick="toggleDark()">🌙</button>
+                <button onclick="toggleFavorites()">⭐</button>
+                <button class="pdf-btn" onclick="exportFavorites()">📄 PDF</button>
+                <button onclick="window.print()">🖨️</button>
             </div>
         </div>
         <div class="search-box">
             <span class="icon">🔍</span>
             <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
-            <button class="clear-btn" id="clearBtn" onclick="clearSearch()" aria-label="Καθαρισμός αναζήτησης">✕</button>
+            <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
         </div>
         <div class="filters" id="filterContainer">
             <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
@@ -514,30 +942,162 @@
 
     <div class="count" id="countDisplay">
         <span id="countText">0 παραβάσεις</span>
-        <span id="favIndicator" style="display:none;">⭐ Αγαπημένα</span>
+        <span id="favIndicator" style="display:none;">⭐ Αγαπημένα (<span id="favCount">0</span>)</span>
     </div>
 
     <div class="list" id="listContainer"></div>
     <div class="toast" id="toast"></div>
 
+    <div class="install-banner" id="installBanner">
+        <span>📲 Εγκαταστήστε την εφαρμογή</span>
+        <div>
+            <button onclick="installApp()">Εγκατάσταση</button>
+            <button class="close-btn" onclick="dismissInstallBanner()">✕</button>
+        </div>
+    </div>
+
     <script>
         // ============================================================
-        // SVG ΠΙΝΑΚΙΔΕΣ
+        // ΛΙΣΤΑ ΚΩΔΙΚΩΝ ΟΤΑ (Καποδιστριακοί - παλιοί κωδικοί δήμων)
         // ============================================================
-        const signs = {
-            'k15': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="30" y="20" width="40" height="60" fill="#0047ab"/><line x1="20" y1="30" x2="80" y2="30" stroke="#0047ab" stroke-width="4"/><line x1="20" y1="50" x2="80" y2="50" stroke="#0047ab" stroke-width="4"/><circle cx="50" cy="70" r="12" fill="#fff"/><circle cx="50" cy="70" r="8" fill="#0047ab"/></svg>`,
-            'k31': `<svg viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><rect x="20" y="30" width="60" height="40" fill="#0047ab" rx="4"/><line x1="30" y1="30" x2="30" y2="70" stroke="#fff" stroke-width="4"/><line x1="70" y1="30" x2="70" y2="70" stroke="#fff" stroke-width="4"/><circle cx="50" cy="50" r="8" fill="#fff"/></svg>`,
-            'r1': `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#fff" stroke="#0047ab" stroke-width="3"/><polygon points="50,20 80,50 50,80 20,50" fill="#0047ab"/><polygon points="50,30 70,50 50,70 30,50" fill="#fff"/></svg>`,
-            'r2': `<svg viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill="#cc0000" stroke="#fff" stroke-width="4"/><text x="50" y="55" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#fff" text-anchor="middle">STOP</text></svg>`,
-            'r39': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-39</text></svg>`,
-            'r40': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-40</text></svg>`,
-            'r41': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-41</text></svg>`,
-            'r42': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-42</text></svg>`,
-            'r43': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0047ab" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="#cc0000" stroke-width="6"/><line x1="15" y1="50" x2="85" y2="50" stroke="#cc0000" stroke-width="6"/><text x="50" y="108" font-family="Arial,sans-serif" font-size="16" fill="#0047ab" text-anchor="middle">P-43</text></svg>`,
-            'r71': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`,
-            'crosswalk': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#2d3748" rx="8"/><line x1="10" y1="30" x2="90" y2="30" stroke="#fff" stroke-width="6"/><line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="6"/><line x1="10" y1="70" x2="90" y2="70" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="25" fill="#fff"/><circle cx="50" cy="50" r="18" fill="#2d3748"/></svg>`,
-            'disabled': `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="#0047ab" rx="8"/><circle cx="50" cy="40" r="14" fill="#fff"/><rect x="36" y="52" width="28" height="32" fill="#fff" rx="3"/><circle cx="50" cy="76" r="10" fill="#fff"/></svg>`
-        };
+        const otaList = [
+            { name: 'Αγίου Δημητρίου Αττικής', code: '0011' },
+            { name: 'Αγίου Νικολάου Κρήτης', code: '0101' },
+            { name: 'Αγρινίου Αιτωλοακαρνανίας', code: '0201' },
+            { name: 'Αθηνών', code: '0001' },
+            { name: 'Αλεξανδρούπολης Έβρου', code: '0301' },
+            { name: 'Αμφιλοχίας Αιτωλοακαρνανίας', code: '0202' },
+            { name: 'Αμφίσσης Φωκίδας', code: '0401' },
+            { name: 'Ανδραβίδας-Κυλλήνης Ηλείας', code: '0501' },
+            { name: 'Αργοστολίου Κεφαλληνίας', code: '0601' },
+            { name: 'Αρτας', code: '0701' },
+            { name: 'Αχαρνών Αττικής', code: '0012' },
+            { name: 'Βέροιας Ημαθίας', code: '0801' },
+            { name: 'Βόλου Μαγνησίας', code: '0901' },
+            { name: 'Γιαννιτσών Πέλλας', code: '1001' },
+            { name: 'Γρεβενών', code: '1101' },
+            { name: 'Δράμας', code: '1201' },
+            { name: 'Δυτικής Μάνης Μεσσηνίας', code: '1301' },
+            { name: 'Έδεσσας Πέλλας', code: '1002' },
+            { name: 'Ελασσόνας Λάρισας', code: '1401' },
+            { name: 'Ελευσίνας Αττικής', code: '0013' },
+            { name: 'Ερμιονίδας Αργολίδας', code: '1501' },
+            { name: 'Ζακύνθου', code: '1601' },
+            { name: 'Ηγουμενίτσας Θεσπρωτίας', code: '3202' },
+            { name: 'Ηρακλείου Κρήτης', code: '0102' },
+            { name: 'Θεσσαλονίκης', code: '0002' },
+            { name: 'Θήβας Βοιωτίας', code: '1701' },
+            { name: 'Ιεράπετρας Κρήτης', code: '0103' },
+            { name: 'Ιθάκης', code: '0602' },
+            { name: 'Ιωαννιτών', code: '1801' },
+            { name: 'Καβάλας', code: '1901' },
+            { name: 'Καλαμάτας Μεσσηνίας', code: '1302' },
+            { name: 'Καλαμαριάς Θεσσαλονίκης', code: '5434' },
+            { name: 'Καρδίτσας', code: '2001' },
+            { name: 'Καρπενησίου Ευρυτανίας', code: '2101' },
+            { name: 'Καστοριάς', code: '2201' },
+            { name: 'Κατερίνης Πιερίας', code: '2301' },
+            { name: 'Κέρκυρας', code: '2401' },
+            { name: 'Κερατσινίου-Δραπετσώνας Αττικής', code: '0014' },
+            { name: 'Κιλκίς', code: '2501' },
+            { name: 'Κοζάνης', code: '2601' },
+            { name: 'Κορίνθου', code: '2701' },
+            { name: 'Κω', code: '2801' },
+            { name: 'Λαγκαδά Θεσσαλονίκης', code: '0003' },
+            { name: 'Λάρισας', code: '1402' },
+            { name: 'Λασιθίου Κρήτης', code: '0104' },
+            { name: 'Λευκάδας', code: '2901' },
+            { name: 'Λιβαδειάς Βοιωτίας', code: '1702' },
+            { name: 'Λουτρακίου-Περαχώρας-Αγίων Θεοδώρων Κορινθίας', code: '2702' },
+            { name: 'Μαραθώνα Αττικής', code: '0015' },
+            { name: 'Μεγάρων Αττικής', code: '0016' },
+            { name: 'Μεσολογγίου Αιτωλοακαρνανίας', code: '0203' },
+            { name: 'Μήλου', code: '3001' },
+            { name: 'Μυτιλήνης Λέσβου', code: '3101' },
+            { name: 'Νάουσας Ημαθίας', code: '0802' },
+            { name: 'Ναυπλίου Αργολίδας', code: '1502' },
+            { name: 'Νέστου Καβάλας (πρώην Χρυσούπολης)', code: '5511' },
+            { name: 'Νίκαιας-Αγ. Ιωάννη Ρέντη Αττικής', code: '0017' },
+            { name: 'Ξάνθης', code: '3203' },
+            { name: 'Ξηρομέρου Αιτωλοακαρνανίας', code: '0204' },
+            { name: 'Ορεστιάδας Έβρου', code: '0302' },
+            { name: 'Παιανίας Αττικής', code: '0018' },
+            { name: 'Παλαιού Φαλήρου Αττικής', code: '0019' },
+            { name: 'Πάτρας Αχαΐας', code: '3301' },
+            { name: 'Πειραιά', code: '0004' },
+            { name: 'Πέλλας', code: '1003' },
+            { name: 'Πρέβεζας', code: '3401' },
+            { name: 'Πτολεμαΐδας Κοζάνης', code: '2602' },
+            { name: 'Πύργου Ηλείας', code: '0502' },
+            { name: 'Ρεθύμνου Κρήτης', code: '0105' },
+            { name: 'Ρόδου', code: '2802' },
+            { name: 'Σαλαμίνας Αττικής', code: '0020' },
+            { name: 'Σάμου', code: '3501' },
+            { name: 'Σερρών', code: '3601' },
+            { name: 'Σιάτιστας Κοζάνης', code: '2603' },
+            { name: 'Σιθωνίας Χαλκιδικής', code: '3701' },
+            { name: 'Σουλίου Θεσπρωτίας', code: '3204' },
+            { name: 'Σπάτων-Αρτέμιδος Αττικής', code: '0021' },
+            { name: 'Σπάρτης Λακωνίας', code: '3801' },
+            { name: 'Τρίπολης Αρκαδίας', code: '3901' },
+            { name: 'Τρικκαίων', code: '4001' },
+            { name: 'Φαρσάλων Λάρισας', code: '1403' },
+            { name: 'Φιλιατών Θεσπρωτίας', code: '3208' },
+            { name: 'Φλώρινας', code: '4101' },
+            { name: 'Φυλής Αττικής', code: '0022' },
+            { name: 'Χαλκίδας Εύβοιας', code: '4201' },
+            { name: 'Χανίων Κρήτης', code: '0106' },
+            { name: 'Χίου', code: '4301' },
+            { name: 'Ψυχικού Αττικής', code: '0023' },
+            { name: 'Ωραιοκάστρου Θεσσαλονίκης', code: '0005' }
+        ];
+
+        // ============================================================
+        // ΣΥΝΑΡΤΗΣΕΙΣ ΓΙΑ ΤΟ ΠΕΔΙΟ ΟΤΑ
+        // ============================================================
+        function getOtaSuggestions(query) {
+            if (!query || query.length < 2) return [];
+            const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            return otaList
+                .filter(item => {
+                    const name = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    return name.includes(q);
+                })
+                .slice(0, 8);
+        }
+
+        let otaSelections = {};
+
+        function selectOta(id, name, code) {
+            otaSelections[id] = { name, code };
+            localStorage.setItem('kok_ota', JSON.stringify(otaSelections));
+            render();
+        }
+
+        function getOtaSelection(id) {
+            return otaSelections[id] || null;
+        }
+
+        function renderOtaSuggestions(id, query) {
+            const container = document.getElementById(`ota-suggestions-${id}`);
+            if (!container) return;
+            const suggestions = getOtaSuggestions(query);
+            if (suggestions.length === 0) {
+                container.classList.remove('show');
+                return;
+            }
+            container.classList.add('show');
+            container.innerHTML = suggestions.map(item =>
+                `<div class="suggestion-item" onclick="selectOta(${id}, '${item.name}', '${item.code}')">
+                    ${item.name} (${item.code})
+                </div>`
+            ).join('');
+        }
+
+        function handleOtaInput(id, input) {
+            const val = input.value;
+            renderOtaSuggestions(id, val);
+        }
 
         // ============================================================
         // ΧΡΩΜΑΤΑ ΚΑΤΗΓΟΡΙΩΝ
@@ -558,413 +1118,643 @@
             'υποτροπή': '#dc2626'
         };
 
+        const severityColors = {
+            'none': '#e2e8f0',
+            '10': '#fef9c3',
+            '20': '#fde68a',
+            '30': '#fcd34d',
+            '40': '#fbbf24',
+            '60': '#fb923c',
+            '70': '#f87171',
+            '90': '#ef4444',
+            '180': '#dc2626',
+            'criminal': '#fca5a5'
+        };
+
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v9.2 (126 παραβάσεις, μοναδικά IDs)
+        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΝΣΩΜΑΤΩΜΕΝΑ SVG
+        // ============================================================
+        function getSignSVG(code) {
+            const num = parseInt(code.replace('Ρ-', ''));
+            if (isNaN(num)) return code;
+
+            let svg = '';
+            const size = 40;
+
+            if (num === 1) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="20,5 35,35 5,35" fill="white" stroke="#e53e3e" stroke-width="3"/>
+                    <text x="20" y="28" font-size="12" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-1</text>
+                </svg>`;
+                return svg;
+            }
+
+            if (num === 2) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="20,2 36,10 36,30 20,38 4,30 4,10" fill="#e53e3e" stroke="#c53030" stroke-width="1"/>
+                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">STOP</text>
+                </svg>`;
+                return svg;
+            }
+
+            if (num === 3 || num === 4) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="20,2 38,20 20,38 2,20" fill="#f6e05e" stroke="#d69e2e" stroke-width="2"/>
+                    <text x="20" y="24" font-size="14" font-family="sans-serif" font-weight="bold" fill="#2d3748" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            const prohibitive = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,35,39,40,41,42,43,44,45,46,64,65,66,67,68,73,74,75];
+            const mandatory = [49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,69,70,71,72,76,77];
+
+            if (prohibitive.includes(num) || num === 32 || num === 33 || num === 34 || num === 36 || num === 37 || num === 38 || num === 47 || num === 48) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="17" fill="white" stroke="#e53e3e" stroke-width="3"/>
+                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            if (mandatory.includes(num)) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="17" fill="#3182ce" stroke="#2b6cb0" stroke-width="2"/>
+                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="17" fill="#f7fafc" stroke="#718096" stroke-width="2"/>
+                <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="#2d3748" text-anchor="middle">P-${num}</text>
+            </svg>`;
+            return svg;
+        }
+
+        function replaceSignCodes(text) {
+            if (!text) return text;
+            return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
+                const code = 'Ρ-' + number;
+                const svg = getSignSVG(code);
+                if (svg === code) return match;
+                return `<img src="data:image/svg+xml;utf8,${encodeURIComponent(svg)}" class="sign-img" alt="${code}" loading="lazy">`;
+            });
+        }
+
+        // ============================================================
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v13 (126 παραβάσεις)
         // ============================================================
         const data = [
-            // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) – 36 παραβάσεις ==========
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0,
-                criminal: false, half: true, sign: 'crosswalk' },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση επί διάβασης πεζών ή ποδηλατιστών και σε απόσταση μικρότερη από πέντε (5) μέτρα εκατέρωθεν αυτής.' },
             { id: 2, category: 'στάθμευση', name: 'Σε ράμπα ΑμεΑ', article: '38§2ιστ', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true, sign: 'disabled' },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε θέση όπου βρίσκεται κεκλιμένο επίπεδο (ράμπα) διάβασης ατόμων με αναπηρία ή οδηγός τυφλών και σε απόσταση μικρότερη από πενήντα εκατοστά (0,50 μ.) εκατέρωθεν αυτών.' },
             { id: 3, category: 'στάθμευση', name: 'Σε χώρο ΑμεΑ (Ρ-71)', article: '38§2ιζ', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true, sign: 'r71' },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε ειδικούς χώρους στάθμευσης οχημάτων ατόμων με αναπηρία.' },
             { id: 4, category: 'στάθμευση', name: 'Σε συγκεκριμένο χώρο ΑμεΑ (Ρ-72)', article: '38§2ιη', fine: 150,
                 suspend: '60 ημέρες αδ. οδ. + 70 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (20+40 από Σ) + 70 ημ. στοιχ. κυκλοφορίας', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε χώρους στάθμευσης αποκλειστικά για συγκεκριμένο όχημα ατόμων με αναπηρία.' },
             { id: 5, category: 'στάθμευση', name: 'Σε θέση φόρτισης ηλεκτρικών (χωρίς φόρτιση)', article: '38§2ιθ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε θέση/σημείο επαναφόρτισης ηλεκτροκίνητων οχημάτων, εξαιρουμένων των ηλεκτροκίνητων οχημάτων κατά τη διάρκεια της φόρτισής τους.' },
             { id: 6, category: 'στάθμευση', name: 'Σε στάση λεωφορείου (<12μ.)', article: '38§2β', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε απόσταση μικρότερη από δώδεκα (12) μέτρα εκατέρωθεν στάσεων αστικών, υπεραστικών, ηλεκτροκίνητων λεωφορείων και τροχιοδρομικών οχημάτων.' },
             { id: 7, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο κόμβου (<10μ.)', article: '38§2γ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε εισόδους και εξόδους κόμβων και σε απόσταση μικρότερη από δέκα (10) μέτρα από τη νοητή προέκταση της πλησιέστερης οριογραμμής του κάθετου οδοστρώματος.' },
             { id: 8, category: 'στάθμευση', name: 'Σε σιδηροδρομικές γραμμές', article: '38§2δ', fine: 1200,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥1 έτος)',
-                points: 9, criminal: true, half: false },
+                points: 9, criminal: true, half: false,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε σιδηροδρομικές ή τροχιοδρομικές γραμμές ή πολύ πλησίον αυτών, ώστε να παρεμποδίζεται η κίνηση των σιδηροδρομικών ή τροχιοδρομικών οχημάτων.' },
             { id: 9, category: 'στάθμευση', name: 'Σε πεζοδρόμιο / πλατεία / ποδηλατόδρομο', article: '38§2ε',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε πεζοδρόμια, πλατείες, ειδικά ερείσματα που προορίζονται για πεζούς, καθώς και ποδηλατοδρόμους, εκτός αν επιτρέπεται με ειδική σήμανση.' },
             { id: 10, category: 'στάθμευση', name: 'Σε γέφυρα', article: '38§2στ', fine: 30, suspend: '-',
-                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση πάνω και κάτω από τις γέφυρες, εκτός αν υπάρχουν ειδικοί χώροι στάθμευσης.' },
             { id: 11, category: 'στάθμευση', name: 'Σε στροφή/ράχη με περιορισμένη ορατότητα', article: '38§2ζ',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση πλησίον και πάνω σε κυρτές καμπύλες αλλαγής των κατά μήκος κλίσεων των οδών (ράχεων) και σε στροφές ανεπαρκούς ορατότητας.' },
             { id: 12, category: 'στάθμευση', name: 'Σε σημείο με ελεύθερο πλάτος <3μ.', article: '38§2η', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε οδοστρώματα που είναι χωρισμένα σε δύο λωρίδες κυκλοφορίας, αν το εναπομένον πλάτος της λωρίδας μεταξύ οχήματος και απαγορευτικής γραμμής υπέρβασης είναι μικρότερο από τρία (3) μέτρα.' },
             { id: 13, category: 'στάθμευση', name: '<20μ. από σηματοδότη / <12μ. από STOP/P-1', article: '38§2θ',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε απόσταση μικρότερη από είκοσι (20) μέτρα από φωτεινούς σηματοδότες και δώδεκα (12) μέτρα από πινακίδες STOP (Ρ-2) ή υποχρεωτικής παραχώρησης προτεραιότητας (Ρ-1), καθώς και σε θέση που κρύβει τη θέα των πινακίδων.' },
             { id: 14, category: 'στάθμευση', name: '<5μ. από τομή ρυμοτομικών γραμμών', article: '38§2ι', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε απόσταση πέντε (5) μέτρων από την τομή ρυμοτομικών γραμμών ή των νοητών προεκτάσεων αυτών.' },
             { id: 15, category: 'στάθμευση', name: 'Σε νησίδα ασφαλείας / διαχωριστική', article: '38§2ια', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση πάνω στις νησίδες ασφαλείας καθώς και στις διαχωριστικές νησίδες.' },
             { id: 16, category: 'στάθμευση', name: 'Σε αυτοκινητόδρομο', article: '38§2ιβ', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση στους αυτοκινητοδρόμους και τις οδούς ταχείας κυκλοφορίας, εκτός των χώρων στάθμευσης που καθορίζονται με σήμανση.' },
             { id: 17, category: 'στάθμευση', name: 'Σε λωρίδα επιτάχυνσης / επιβράδυνσης', article: '38§2ιγ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε λωρίδες επιτάχυνσης και επιβράδυνσης.' },
             { id: 18, category: 'στάθμευση', name: 'Σε σήραγγα', article: '38§2ιδ', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε σήραγγες, εκτός από τους χώρους που υποδεικνύονται ειδικά για αυτόν τον σκοπό.' },
             { id: 19, category: 'στάθμευση', name: 'Σε βοηθητική οδό για βραδυκίνητα', article: '38§2ιε', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση επί σημασμένης βοηθητικής οδού που προορίζεται για οχήματα που μετακινούνται βραδέως.' },
             { id: 20, category: 'στάθμευση', name: 'Σε σημείο που εμποδίζει ΜΜΜ/λεωφορεία', article: '38§2κ',
                 fine: 350, suspend: '70 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης (30+40 από Σ) + 30 ημ. στοιχ. κυκλοφορίας', points: 5,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η στάση ή στάθμευση σε σημεία που παρεμποδίζουν τη διέλευση οχημάτων δημόσιας συγκοινωνίας ή αστικών, υπεραστικών και ηλεκτροκίνητων λεωφορείων.' },
             { id: 21, category: 'στάθμευση', name: '<15μ. από σιδηροδρομική διάβαση', article: '38§3α', fine: 30,
                 suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: true },
+                half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε απόσταση μικρότερη από δεκαπέντε (15) μέτρα προ και μετά τις ισόπεδες σιδηροδρομικές διαβάσεις.' },
             { id: 22, category: 'στάθμευση', name: 'Μπροστά από είσοδο/έξοδο παρόδιας ιδιοκτησίας',
                 article: '38§3β', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: true },
+                points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση μπροστά από την είσοδο και έξοδο οχημάτων παρόδιας ιδιοκτησίας, καθώς και απέναντι από αυτή, όταν η οδός είναι στενή και παρεμποδίζεται η είσοδος-έξοδος.' },
             { id: 23, category: 'στάθμευση', name: 'Σε θέση που εμποδίζει σταθμευμένο όχημα', article: '38§3γ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε θέση από την οποία παρεμποδίζεται όχημα που σταθμεύει κανονικά να εξέλθει από τον χώρο του.' },
             { id: 24, category: 'στάθμευση', name: 'Σε σημείο που το υπόλοιπο της οδού δεν επαρκεί',
                 article: '38§3δ', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση αν το ελεύθερο μέρος της οδού που απομένει είναι ανεπαρκές για την κυκλοφορία των οχημάτων.' },
             { id: 25, category: 'στάθμευση', name: 'Παράπλευρα άλλου σταθμευμένου οχήματος', article: '38§3ε',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση παράπλευρα άλλου οχήματος σε στάση ή στάθμευση, εκτός αν άλλως ορίζεται με ειδική σήμανση. Εξαίρεση αποτελούν τα δίτροχα μοτοποδήλατα, μοτοσικλέτες και Ε.Π.Η.Ο. υπό γωνία.' },
             { id: 26, category: 'στάθμευση', name: '<5μ. από πυροσβεστικό κρουνό', article: '38§3στ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε απόσταση μικρότερη από πέντε (5) μέτρα προ και μετά από πυροσβεστικά σημεία.' },
             { id: 27, category: 'στάθμευση', name: 'Μπροστά από είσοδο/έξοδο νοσοκομείου', article: '38§3ζ',
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
-                points: 0, criminal: false, half: true },
+                points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση προ της εισόδου και εξόδου που προορίζεται για τη διακίνηση ασθενών προς και από νοσοκομεία, κλινικές και σταθμούς πρώτων βοηθειών.' },
             { id: 28, category: 'στάθμευση', name: 'Σε θέση που εμποδίζει χώρο στάθμευσης', article: '38§3η',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση αν εμποδίζει τη χρήση χώρων στάθμευσης που σημαίνονται κατάλληλα.' },
             { id: 29, category: 'στάθμευση', name: 'Σε θέση ΤΑΞΙ (Ρ-70)', article: '38§3θ', fine: 30, suspend: '-',
-                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση σε ειδικούς χώρους στάθμευσης επιβατηγών αυτοκινήτων δημόσιας χρήσης (ΤΑΞΙ).' },
             { id: 30, category: 'στάθμευση', name: 'Σε είσοδο/έξοδο πεζόδρομου', article: '38§3ι', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση στις εισόδους και εξόδους των πεζόδρομων, καθώς και πάνω σε αυτούς.' },
             { id: 31, category: 'στάθμευση', name: 'Σε κεντρικό οδόστρωμα τριών λωρίδων', article: '38§3ια',
-                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση επί του κεντρικού οδοστρώματος οδών τριών (3) λωρίδων, καθώς και εκτός κατοικημένων περιοχών, επί των οδοστρωμάτων οδών προτεραιότητας.' },
             { id: 32, category: 'στάθμευση', name: 'Σε οδό προτεραιότητας (εκτός κατοικημένης)',
                 article: '38§3ια', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση εκτός κατοικημένων περιοχών, επί των οδοστρωμάτων οδών σημασμένων ως οδών προτεραιότητας.' },
             { id: 33, category: 'στάθμευση', name: 'Μη παράλληλη στάθμευση', article: '38§7', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: true,
+                fullDescription: 'Τα οχήματα σε στάση ή στάθμευση τοποθετούνται παράλληλα με την οριογραμμή του οδοστρώματος, εκτός αν ορίζεται διαφορετικά με σήμανση.' },
             { id: 34, category: 'στάθμευση', name: 'Αναγκαστική στάθμευση χωρίς τριγωνική πινακίδα',
                 article: '38§10', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: true },
+                points: 0, criminal: false, half: true,
+                fullDescription: 'Ο οδηγός που σταθμεύει σε απαγορευμένη θέση τοποθετεί πινακίδα ή συσκευή επισήμανσης σε απόσταση >20μ. εντός κατοικημένης και >50μ. εκτός.' },
             { id: 35, category: 'στάθμευση', name: 'Σε απαγορευτική κίτρινη ζιγκ-ζαγκ', article: '8§8η',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: true },
+                criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η στάθμευση στην πλευρά της οδού που έχει διαγραμμιστεί με κίτρινη τεθλασμένη γραμμή (ζιγκ-ζαγκ).' },
             { id: 36, category: 'στάθμευση', name: 'Κίνηση / στάθμευση σε λεωφορειολωρίδα', article: '8§8ι',
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
-                points: 5, criminal: false, half: true },
+                points: 5, criminal: false, half: true,
+                fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
 
-            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) – 14 παραβάσεις ==========
+            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) ==========
             { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false, sign: 'r39' },
+                criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-39: Απαγορεύεται η στάθμευση.' },
             { id: 38, category: 'πινακίδες', name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r40' },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-40: Απαγορεύονται η στάση και η στάθμευση.' },
             { id: 39, category: 'πινακίδες', name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r41' },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-41: Απαγορεύεται η στάθμευση τους μονούς μήνες.' },
             { id: 40, category: 'πινακίδες', name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r42' },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-42: Απαγορεύεται η στάθμευση τους ζυγούς μήνες.' },
             { id: 41, category: 'πινακίδες', name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false, sign: 'r43' },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-43: Περιοχή απαγόρευσης στάθμευσης (στάθμευση περιορισμένης χρονικής διάρκειας).' },
             { id: 42, category: 'πινακίδες', name: 'Παραβίαση STOP (Ρ-2)', article: '7§11β', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false, sign: 'r2' },
+                half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-2: Υποχρεωτική διακοπή πορείας. Η παράβαση κατατάσσεται στην κατηγορία Ε4.' },
             { id: 43, category: 'πινακίδες', name: 'Παραβίαση Ρ-1 (παραχώρηση προτεραιότητας)',
                 article: '7§11α', fine: 350, suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 9, criminal: false, half: false, sign: 'r1' },
+                points: 9, criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-1: Υποχρεωτική παραχώρηση προτεραιότητας. Κατατάσσεται στην κατηγορία Ε3-Β.' },
             { id: 44, category: 'πινακίδες', name: 'Παραβίαση Ρ-29 (απαγόρευση αναστροφής)', article: '7§11β',
                 fine: 700, suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-29: Απαγορεύεται η αναστροφή (στροφή κατά 180 μοίρες).' },
             { id: 45, category: 'πινακίδες', name: 'Παραβίαση Ρ-3, Ρ-4, Ρ-34, Ρ-35, Ρ-69, Ρ-75',
                 article: '7§11γ', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων που κατατάσσονται στην κατηγορία Ε1-Α (μόνο πρόστιμο).' },
             { id: 46, category: 'πινακίδες', name: 'Παραβίαση Ρ-5, Ρ-6, Ρ-32, Ρ-47, Ρ-48, Ρ-49, Ρ-50, Ρ-50α, Ρ-50δ, Ρ-51α, Ρ-51δ, Ρ-52, Ρ-52α, Ρ-52δ, Ρ-53, Ρ-57, Ρ-59, Ρ-60, Ρ-63',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων που αφορούν σε προτεραιότητα, όρια ταχύτητας, υποχρεωτικές κατευθύνσεις, διελεύσεις και ελάχιστες ταχύτητες. Κατατάσσονται στην κατηγορία Ε1-Β (πρόστιμο 30€ + αφαίρεση 10 ημερών).' },
             { id: 47, category: 'πινακίδες', name: 'Παραβίαση Ρ-7, Ρ-8, Ρ-9, Ρ-10, Ρ-11, Ρ-12, Ρ-13, Ρ-14, Ρ-18, Ρ-19, Ρ-20, Ρ-21, Ρ-22, Ρ-23, Ρ-24, Ρ-25, Ρ-26, Ρ-27, Ρ-28, Ρ-30, Ρ-31, Ρ-45, Ρ-46, Ρ-64, Ρ-73α, Ρ-73δ, Ρ-74α, Ρ-74δ',
                 article: '7§11ε', fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση απαγορευτικών ρυθμιστικών πινακίδων (π.χ. απαγόρευση εισόδου, στροφής, προσπέρασης, κ.λπ.). Κατατάσσονται στην κατηγορία Ε2-Β (πρόστιμο 150€ + αφαίρεση 20 ημερών).' },
             { id: 48, category: 'πινακίδες', name: 'Παραβίαση Ρ-15, Ρ-16, Ρ-17', article: '7§11στ', fine: 150,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων για πεζούς, ζωήλατα και χειράμαξες (Ε2-Α).' },
             { id: 49, category: 'πινακίδες', name: 'Παραβίαση Ρ-33, Ρ-54, Ρ-55, Ρ-56, Ρ-65, Ρ-66, Ρ-66α, Ρ-67, Ρ-67α, Ρ-76',
                 article: '7§11ζ', fine: 30, suspend: '40 ημέρες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0, criminal: false, half: false },
+                details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων με πρόσθετη κατηγορία Σ (αντικοινωνική συμπεριφορά).' },
             { id: 50, category: 'πινακίδες', name: 'Παραβίαση λοξών λωρίδων', article: '8§10α', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Παραβίαση της οριζόντιας σήμανσης που αφορά σε παράλληλες λοξές λωρίδες (Ε2-Β).' },
 
-            // ========== ΚΙΝΗΣΗ – 12 παραβάσεις ==========
+            // ========== ΚΙΝΗΣΗ ==========
             { id: 51, category: 'κίνηση', name: 'Παραβίαση ερυθρού σηματοδότη', article: '9§3', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Μη συμμόρφωση με σταθερό ερυθρό φως κυκλικής μορφής. Κατατάσσεται στην κατηγορία Ε4.' },
             { id: 52, category: 'κίνηση', name: 'Παραβίαση κίτρινου σηματοδότη', article: '9§1γ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Μη συμμόρφωση με σταθερό κίτρινο φως, εκτός αν η στάση είναι επικίνδυνη. Κατατάσσεται στην Ε1-Α.' },
             { id: 53, category: 'κίνηση', name: 'Κίνηση αντίθετα σε μονόδρομο', article: '20§7', fine: 350,
                 suspend: '70 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η οδήγηση αντίθετα προς την κατεύθυνση του μονόδρομου.' },
             { id: 54, category: 'κίνηση', name: 'Κίνηση σε πεζόδρομο / πλατεία / νησίδα', article: '20§4',
                 fine: 350, suspend: '70 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η κυκλοφορία σε πλατείες, πεζόδρομους, πεζοδρόμια, νησίδες ασφαλείας και διαχωριστικές νησίδες, εκτός από απόλυτη ανάγκη.' },
             { id: 55, category: 'κίνηση', name: 'Παραβίαση προτεραιότητας σε κόμβο', article: '30§5', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Παραβίαση των κανόνων προτεραιότητας σε ισόπεδο οδικό κόμβο.' },
             { id: 56, category: 'κίνηση', name: 'Μη συμμόρφωση σε σήμα τροχονόμου', article: '6§1', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 3, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Μη συμμόρφωση στις υποδείξεις και σήματα των τροχονόμων.' },
             { id: 57, category: 'κίνηση', name: 'Παραβίαση σιδηροδρομικής διάβασης', article: '31§1', fine: 1200,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥1 έτος)',
-                points: 9, criminal: true, half: false, sign: 'k31' },
+                points: 9, criminal: true, half: false,
+                fullDescription: 'Παραβίαση των κανόνων σε ισόπεδη σιδηροδρομική διάβαση, π.χ. είσοδος με ερυθρό φως ή χωρίς βεβαίωση.' },
             { id: 58, category: 'κίνηση', name: 'Κίνηση στη ΛΕΑ', article: '33§9', fine: 150,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Χρήση της Λωρίδας Έκτακτης Ανάγκης (Λ.Ε.Α.) πέραν των επιτρεπόμενων περιπτώσεων.' },
             { id: 59, category: 'κίνηση', name: 'Μη παραχώρηση προτεραιότητας σε πεζούς', article: '43§2',
                 fine: 150, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false, sign: 'k15' },
+                criminal: false, half: false,
+                fullDescription: 'Μη παραχώρηση προτεραιότητας σε πεζούς σε σημασμένη διάβαση.' },
             { id: 60, category: 'κίνηση', name: 'Μη διευκόλυνση οχήματος άμεσης ανάγκης', article: '48§1',
                 fine: 150, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Μη συμμόρφωση με τις υποχρεώσεις διευκόλυνσης οχημάτων άμεσης ανάγκης.' },
             { id: 61, category: 'κίνηση', name: 'Παραβίαση ακινητοποίησης', article: '50§2', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≤1 έτος)',
-                points: 0, criminal: true, half: false },
+                points: 0, criminal: true, half: false,
+                fullDescription: 'Άρνηση συμμόρφωσης με υποδείξεις αστυνομικού για ακινητοποίηση οχήματος.' },
             { id: 62, category: 'κίνηση', name: 'Εγκατάλειψη ατυχήματος', article: '47§2', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥3 μήνες)', points: 0, criminal: true,
-                half: false },
+                half: false,
+                fullDescription: 'Μη παροχή βοήθειας και μη αναγγελία τροχαίου ατυχήματος με σωματικές βλάβες ή θάνατο.' },
 
-            // ========== ΤΑΧΥΤΗΤΑ (Άρθρο 24) – 5 παραβάσεις ==========
+            // ========== ΤΑΧΥΤΗΤΑ ==========
             { id: 63, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του ορίου ταχύτητας έως 20 χλμ/ώρα. Κατατάσσεται στην Ε2-Α.' },
             { id: 64, category: 'ταχύτητα', name: 'Υπέρβαση 21-30χλμ/ω', article: '24§9αβ', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 4, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας από 21 έως 30 χλμ/ώρα (Ε2-Β).' },
             { id: 65, category: 'ταχύτητα', name: 'Υπέρβαση 31-50χλμ/ω', article: '24§9αγ', fine: 350,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας από 31 έως 50 χλμ/ώρα (Ε3-Β).' },
             { id: 66, category: 'ταχύτητα', name: 'Υπέρβαση >50χλμ/ω', article: '24§9γ', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας άνω των 50 χλμ/ώρα (Ε4).' },
             { id: 67, category: 'ταχύτητα', name: 'Οδήγηση >200χλμ/ω', article: '24§9δ', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
 
-            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ (Φορτηγά) – 11 παραβάσεις ==========
+            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ ==========
             { id: 68, category: 'επαγγελματικά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: 30, suspend: '-',
-                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false },
+                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
             { id: 69, category: 'επαγγελματικά', name: 'Υπέρβαρο 5-10%', article: '4§1.2β', fine: 60, suspend: '-',
-                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false },
+                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 5-10%.' },
             { id: 70, category: 'επαγγελματικά', name: 'Υπέρβαρο 10-20%', article: '4§1.2γ', fine: 500,
-                suspend: '-', details: 'Μόνο πρόστιμο (στον ιδιοκτήτη)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Μόνο πρόστιμο (στον ιδιοκτήτη)', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 10-20%.' },
             { id: 71, category: 'επαγγελματικά', name: 'Υπέρβαρο >20%', article: '4§1.2δ', fine: 3000,
                 suspend: '4 μήνες στοιχ. κυκλ.', details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους άνω του 20%.' },
             { id: 72, category: 'επαγγελματικά', name: 'Ακατάλληλη φόρτωση', article: '4§1.1', fine: 750,
                 suspend: 'Ακινητοποίηση', details: '750€ οδηγός + 1.500€ υπεύθ. φόρτωσης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Φόρτωση φορτηγού οχήματος χωρίς να πληρούνται οι προϋποθέσεις ασφαλούς τοποθέτησης και στοιβασίας του φορτίου.' },
             { id: 73, category: 'επαγγελματικά', name: 'Χωρίς ΚΤΕΟ (επαγγελματικό)', article: '4§1.3', fine: 300,
                 suspend: 'Μέχρι έκδοσης ΚΤΕΟ', details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
             { id: 74, category: 'επαγγελματικά', name: 'Υπέρβαση διαστάσεων', article: '4§1.4', fine: 1000,
                 suspend: 'Ακινητοποίηση', details: 'Ακινητοποίηση οχήματος', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Υπέρβαση των μέγιστων ορίων διαστάσεων φορτηγών οχημάτων.' },
             { id: 75, category: 'επαγγελματικά', name: 'Κυκλοφορία σε απαγορευμένες ώρες', article: '4§1.5',
                 fine: 200, suspend: 'Ακινητοποίηση', details: 'Ακινητοποίηση για το διάστημα απαγόρευσης',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος κατά τις ημέρες και ώρες απαγόρευσης.' },
             { id: 76, category: 'επαγγελματικά', name: 'Χωρίς άδεια κυκλοφορίας (επαγγελματικό)',
                 article: '4§1.9', fine: 8000, suspend: 'Αφαίρεση στοιχ. κυκλ.',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false },
+                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς άδεια κυκλοφορίας.' },
             { id: 77, category: 'επαγγελματικά', name: 'Παραποίηση πινακίδων (επαγγελματικό)',
                 article: '4§1.11', fine: 5000, suspend: '6 μήνες στοιχ. κυκλ.',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false },
+                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραποίηση πινακίδων κυκλοφορίας ή μετάθεσή τους από ένα όχημα σε άλλο.' },
             { id: 78, category: 'επαγγελματικά', name: 'Οδήγηση χωρίς κατάλληλη άδεια (επαγγελματικό)',
                 article: '4§1.13', fine: 2000, suspend: '2 μήνες αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης (οδηγός + ιδιοκτήτης)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
 
-            // ========== ΜΟΤΟΣΙΚΛΕΤΑ (Άρθρο 16, 44) – 9 παραβάσεις ==========
+            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ ==========
             { id: 79, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Ο οδηγός μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
             { id: 80, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350,
-                suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Ο επιβάτης μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
             { id: 81, category: 'μοτοσικλέτα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Οι οδηγοί μοτοσικλετών, αν το κράνος δεν έχει διαφανές προστατευτικό κάλυμμα, οφείλουν να φορούν γυαλιά κατά του ανέμου.' },
             { id: 82, category: 'μοτοσικλέτα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η μεταφορά επιβάτη σε μοτοσικλέτα αν δεν έχει δυνατότητα να στηρίζεται στα υποπόδια.' },
             { id: 83, category: 'μοτοσικλέτα', name: 'Παράλληλη κίνηση', article: '44§1δ', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η κίνηση ποδηλάτων, μοτοποδηλάτων κ.λπ. ανά δύο ή περισσότερα παράλληλα.' },
             { id: 84, category: 'μοτοσικλέτα', name: 'Διήθηση με ταχύτητα >20χλμ/ω', article: '21§9β',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Η κίνηση δίκυκλων μοτοποδηλάτων και μοτοσικλετών μεταξύ λωρίδων (διήθηση) επιτρέπεται μόνο με ταχύτητα έως 20 χλμ/ώρα.' },
             { id: 85, category: 'μοτοσικλέτα', name: 'Χρήση κινητού / ακουστικών (μοτοσικλέτα)',
                 article: '44§1στ', fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 4, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η χρήση ακουστικών ή κινητού τηλεφώνου κατά την οδήγηση, εκτός από ειδικές εξαιρέσεις.' },
             { id: 86, category: 'μοτοσικλέτα', name: 'Ρυμούλκηση από άλλο όχημα', article: '44§1α', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Απαγορεύεται η ρυμούλκηση μοτοσικλέτας, μοτοποδηλάτου κ.λπ. από άλλο όχημα.' },
             { id: 87, category: 'μοτοσικλέτα', name: 'Μεταφορά αντικειμένων που εμποδίζουν', article: '44§1γ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η μεταφορά αντικειμένων που εμποδίζουν την οδήγηση ή εκθέτουν σε κίνδυνο τους άλλους χρήστες.' },
 
-            // ========== ΕΠΗΟ (Άρθρο 24, 38, 44) – 7 παραβάσεις ==========
+            // ========== ΕΠΗΟ ==========
             { id: 88, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Ειδικοί κανόνες στάσης και στάθμευσης για Ελαφρά Προσωπικά Ηλεκτρικά Οχήματα (ΕΠΗΟ).' },
             { id: 89, category: 'ΕΠΗΟ', name: 'Είσοδος σε ποδηλατόδρομο (ΕΠΗΟ)', article: '44§7', fine: 150,
                 suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α, χωρίς αφαίρεση για ΕΠΗΟ)', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Σε ποδηλατοδρόμους που καταλαμβάνουν όλο το πλάτος της οδού απαγορεύεται η είσοδος μηχανοκίνητων οχημάτων και μοτοποδηλάτων.' },
             { id: 90, category: 'ΕΠΗΟ', name: 'Χρήση κινητού / ακουστικών (ΕΠΗΟ)', article: '44§1στ,ζ',
                 fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 4, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η χρήση ακουστικών ή κινητού τηλεφώνου κατά την οδήγηση ΕΠΗΟ.' },
             { id: 91, category: 'ΕΠΗΟ', name: 'Μη χρήση κράνους (ΕΠΗΟ)', article: '44§12', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Υποχρεωτική χρήση προστατευτικού κράνους για οδηγούς ΕΠΗΟ (εξαιρούνται αμαξίδια ΑμεΑ).' },
             { id: 92, category: 'ΕΠΗΟ', name: 'Οδήγηση ΕΠΗΟ σε οδό με όριο >50χλμ/ω', article: '24§12β',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Απαγορεύεται η κυκλοφορία ΕΠΗΟ σε οδούς όπου το όριο ταχύτητας υπερβαίνει τα 50 χλμ/ώρα.' },
             { id: 93, category: 'ΕΠΗΟ', name: 'Ταχύτητα ΕΠΗΟ >35χλμ/ω (οδηγός)', article: '24§12α', fine: 150,
-                suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false, half: false },
+                suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Οδήγηση ΕΠΗΟ με ταχύτητα άνω των 35 χλμ/ώρα (κατατάσσεται σε Ε2-Α για τον οδηγό).' },
             { id: 94, category: 'ΕΠΗΟ', name: 'Ταχύτητα ΕΠΗΟ >35χλμ/ω (θέτων σε κυκλοφορία)',
                 article: '24§12α', fine: 350, suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Θέση σε κυκλοφορία ΕΠΗΟ που μπορεί να αναπτύξει ταχύτητα άνω των 35 χλμ/ώρα (Ε3-Α για τον θέτοντα).' },
 
-            // ========== ΑΔΕΙΕΣ (Άρθρο 98, 99, 102) – 5 παραβάσεις ==========
+            // ========== ΑΔΕΙΕΣ ==========
             { id: 95, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
                 suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση επιβατηγού Ι.Χ. χωρίς ισχύουσα άδεια οδήγησης (Ε4).' },
             { id: 96, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Δ.Χ. / Λεωφορεία', article: '98§4αβ',
                 fine: 1000, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση Ε.Δ.Χ. ή λεωφορείου χωρίς ισχύουσα άδεια οδήγησης.' },
             { id: 97, category: 'άδειες', name: 'Στέρηση άδειας – Μοτοσικλέτα / Μοτοποδήλατο',
                 article: '98§4αα', fine: 500, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση μοτοσικλέτας ή μοτοποδηλάτου χωρίς την απαιτούμενη άδεια.' },
             { id: 98, category: 'άδειες', name: 'Οδήγηση με ληγμένη άδεια', article: '99§2', fine: 150,
                 suspend: 'Μέχρι ανανέωσης', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ληγμένο έντυπο άδειας οδήγησης ή ληγμένη κατηγορία.' },
             { id: 99, category: 'άδειες', name: 'Παραχώρηση οδήγησης σε μη δικαιούχο', article: '102§1',
                 fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Παραχώρηση οδήγησης οχήματος σε πρόσωπο που δεν έχει την κατάλληλη άδεια.' },
 
-            // ========== ΑΣΦΑΛΕΙΑ – 7 παραβάσεις ==========
+            // ========== ΑΣΦΑΛΕΙΑ ==========
             { id: 100, category: 'ασφάλεια', name: 'Ανασφάλιστο – Δίκυκλα', article: 'ΠΔ 237/86', fine: 250,
                 suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία δίκυκλου οχήματος χωρίς ισχύουσα ασφάλιση.' },
             { id: 101, category: 'ασφάλεια', name: 'Ανασφάλιστο – Ι.Χ.Ε. / Ι.Χ.Φ. / Α.Μ. / Μ.Ε.',
                 article: 'ΠΔ 237/86', fine: 500, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία Ι.Χ.Ε., Ι.Χ.Φ., Α.Μ. ή Μ.Ε. χωρίς ασφάλιση.' },
             { id: 102, category: 'ασφάλεια', name: 'Ανασφάλιστο – Φ.Δ.Χ. / Λεωφορεία', article: 'ΠΔ 237/86',
                 fine: 1000, suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία Φ.Δ.Χ. ή λεωφορείου χωρίς ασφάλιση.' },
             { id: 103, category: 'ασφάλεια', name: 'Εμπλοκή σε ατύχημα χωρίς ασφάλιση', article: 'ΠΔ 237/86',
                 fine: 250, suspend: '2 χρόνια αδ. οδ. + 2 χρόνια στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 2 χρόνια στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Εμπλοκή σε τροχαίο ατύχημα με ανασφάλιστο όχημα.' },
             { id: 104, category: 'ασφάλεια', name: 'Μη χρήση ζώνης ασφαλείας (οδηγός)', article: '16§5',
                 fine: 350, suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από τον οδηγό. Κατατάσσεται σε Ε3-Β.' },
             { id: 105, category: 'ασφάλεια', name: 'Μη χρήση ζώνης ασφαλείας (επιβάτης)', article: '16§5',
                 fine: 150, suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από επιβάτη. Κατατάσσεται σε Ε2-Α.' },
             { id: 106, category: 'ασφάλεια', name: 'Έλλειψη ζώνης σε Ι.Χ.Ε. ή Φορτηγό ≤3,5τ.',
                 article: '85§17', fine: 150, suspend: 'Ακινητοποίηση',
-                details: 'Ακινητοποίηση μέχρι αποκατάστασης', points: 0, criminal: false, half: false },
+                details: 'Ακινητοποίηση μέχρι αποκατάστασης', points: 0, criminal: false, half: false,
+                fullDescription: 'Έλλειψη ζώνης ασφαλείας σε Ι.Χ.Ε. ή φορτηγό ≤3,5 τόνους.' },
 
-            // ========== ΚΤΕΟ – 2 παραβάσεις ==========
+            // ========== ΚΤΕΟ ==========
             { id: 107, category: 'ΚΤΕΟ', name: 'Χωρίς ΚΤΕΟ', article: '90', fine: 350,
                 suspend: '30 ημέρες στοιχ. κυκλ. + ακινητοποίηση',
                 details: 'Αφαίρεση στοιχείων κυκλοφορίας + ακινητοποίηση', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
             { id: 108, category: 'ΚΤΕΟ', name: 'Πλαστό / παραποιημένο ΚΤΕΟ', article: '90',
                 fine: 'ΠΛΗΜΜΕΛΗΜΑ', suspend: 'Οριστική αφαίρεση στοιχ. κυκλ.',
-                details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: true, half: false },
+                details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: true, half: false,
+                fullDescription: 'Χρήση πλαστού ή παραποιημένου Δελτίου Τεχνικού Ελέγχου.' },
 
-            // ========== ΧΩΡΙΣ ΠΙΝΑΚΙΔΕΣ / ΑΔΕΙΑ ΚΥΚΛΟΦΟΡΙΑΣ – 2 παραβάσεις ==========
+            // ========== ΧΩΡΙΣ ΠΙΝΑΚΙΔΕΣ / ΑΔΕΙΑ ΚΥΚΛΟΦΟΡΙΑΣ ==========
             { id: 109, category: 'άδειες', name: 'Χωρίς πινακίδες κυκλοφορίας', article: '94§3', fine: 350,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≤1 έτος)', points: 0,
-                criminal: true, half: false },
+                criminal: true, half: false,
+                fullDescription: 'Κυκλοφορία οχήματος χωρίς κανονικές πινακίδες κυκλοφορίας.' },
             { id: 110, category: 'άδειες', name: 'Χωρίς άδεια κυκλοφορίας', article: '92§2', fine: 700,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Κυκλοφορία οχήματος χωρίς άδεια κυκλοφορίας.' },
 
-            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ (Άρθρο 46) – 8 παραβάσεις ==========
+            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ ==========
             { id: 111, category: 'αλκοόλ', name: 'Αλκοόλ 0,50-0,80 (γενικός)', article: '46§7α', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ποσοστό αλκοόλ στο αίμα 0,50-0,80 g/l (ή 0,25-0,40 mg/l εκπνεόμενου). Ε3-Β.' },
             { id: 112, category: 'αλκοόλ', name: 'Αλκοόλ 0,80-1,10 (γενικός)', article: '46§7β', fine: 700,
                 suspend: '90 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση με ποσοστό αλκοόλ 0,80-1,10 g/l (0,40-0,60 mg/l εκπνεόμενου). Ε4.' },
             { id: 113, category: 'αλκοόλ', name: 'Αλκοόλ >1,10 (γενικός)', article: '46§7γ', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥2 μήνες)', points: 9,
-                criminal: true, half: false },
+                criminal: true, half: false,
+                fullDescription: 'Οδήγηση με αλκοόλ >1,10 g/l (ή >0,60 mg/l εκπνεόμενου). Πλημμέλημα.' },
             { id: 114, category: 'αλκοόλ', name: 'Άρνηση αλκοολομέτρησης', article: '46§6', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
-                details: 'Τεκμαρτό αλκοόλ >1,10 + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true, half: false },
+                details: 'Τεκμαρτό αλκοόλ >1,10 + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true, half: false,
+                fullDescription: 'Άρνηση υποβολής σε έλεγχο αλκοόλης. Τεκμαίρεται αλκοόλ >1,10 g/l.' },
             { id: 115, category: 'αλκοόλ', name: 'Οδήγηση υπό τοξικές ουσίες', article: '46§8',
                 fine: 'Ποινικές κυρώσεις', suspend: '3-6 μήνες αδ. οδ.',
                 details: 'Φυλάκιση ≥2 μήνες + χρηματική ποινή ≥200€ + ΠΛΗΜΜΕΛΗΜΑ', points: 0, criminal: true,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση υπό την επίδραση τοξικών ουσιών ή φαρμάκων.' },
             { id: 116, category: 'επαγγελματικά', name: 'Αλκοόλ 0,20-0,80 (επαγγελματίες)',
                 article: '46§7α (ειδικοί οδηγοί)', fine: 350, suspend: '30 ημέρες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false, half: false },
+                details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false, half: false,
+                fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ 0,20-0,80 g/l.' },
             { id: 117, category: 'επαγγελματικά', name: 'Αλκοόλ 0,80-1,10 (επαγγελματίες)',
                 article: '46§7β (ειδικοί οδηγοί)', fine: 700, suspend: '90 ημέρες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false, half: false },
+                details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false, half: false,
+                fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ 0,80-1,10 g/l.' },
             { id: 118, category: 'επαγγελματικά', name: 'Αλκοόλ >1,10 (επαγγελματίες)',
                 article: '46§7γ (ειδικοί οδηγοί)', fine: 1200,
                 suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true,
-                half: false },
+                half: false,
+                fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ >1,10 g/l.' },
 
-            // ========== ΥΠΟΤΡΟΠΗ (Άρθρο 110) – 8 παραβάσεις ==========
+            // ========== ΥΠΟΤΡΟΠΗ ==========
             { id: 119, category: 'υποτροπή', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)',
                 article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση ερυθρού σηματοδότη εντός 5 ετών (χωρίς ατύχημα).' },
             { id: 120, category: 'υποτροπή', name: 'Ερυθρός – 3η υποτροπή (χωρίς ατύχημα)',
                 article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη',
-                points: 0, criminal: false, half: false },
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Τρίτη παράβαση ερυθρού σηματοδότη εντός 5 ετών (χωρίς ατύχημα).' },
             { id: 121, category: 'υποτροπή', name: 'Ερυθρός με ατύχημα – 2η υποτροπή', article: '110§3β',
                 fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση ερυθρού σηματοδότη εντός 5 ετών που προκάλεσε ατύχημα.' },
             { id: 122, category: 'υποτροπή', name: 'STOP/P-29 – 2η υποτροπή', article: '110§3α', fine: 1000,
                 suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση STOP ή απαγόρευσης αναστροφής (P-29) εντός 5 ετών.' },
             { id: 123, category: 'υποτροπή', name: 'STOP/P-29 – 3η υποτροπή', article: '110§4α', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Τρίτη παράβαση STOP/P-29 εντός 5 ετών.' },
             { id: 124, category: 'υποτροπή', name: 'STOP/P-29 με ατύχημα – 2η υποτροπή', article: '110§3β',
                 fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα', points: 0,
-                criminal: false, half: false },
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση STOP/P-29 εντός 5 ετών που προκάλεσε ατύχημα.' },
             { id: 125, category: 'υποτροπή', name: 'ΛΕΑ – 2η υποτροπή', article: '110§3α', fine: 1000,
                 suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false },
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση χρήσης ΛΕΑ εντός 5 ετών.' },
             { id: 126, category: 'υποτροπή', name: 'ΛΕΑ – 3η υποτροπή', article: '110§4α', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
-                half: false }
+                half: false,
+                fullDescription: 'Τρίτη παράβαση χρήσης ΛΕΑ εντός 5 ετών.' }
         ];
+
+        // ============================================================
+        // ΣΥΝΑΡΤΗΣΗ ΥΠΟΛΟΓΙΣΜΟΥ ΧΡΩΜΑΤΟΣ ΒΑΡΥΤΗΤΑΣ
+        // ============================================================
+        function getSeverityColor(suspend, criminal) {
+            if (criminal) return severityColors.criminal;
+            if (!suspend || suspend === '-') return severityColors.none;
+
+            const lower = suspend.toLowerCase();
+            if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) return severityColors['10'];
+            if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) return severityColors['20'];
+            if (lower.includes('30 ημέρες') || lower.includes('30 ημ')) return severityColors['30'];
+            if (lower.includes('40 ημέρες') || lower.includes('40 ημ')) return severityColors['40'];
+            if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) return severityColors['60'];
+            if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) return severityColors['70'];
+            if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) return severityColors['90'];
+            if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') || lower.includes(
+                    'μήνες')) return severityColors['180'];
+            if (lower.includes('ακινητοποίηση') || lower.includes('οριστική')) return severityColors.criminal;
+
+            return severityColors.none;
+        }
 
         // ============================================================
         // ΚΑΤΑΣΤΑΣΗ & ΣΥΝΑΡΤΗΣΕΙΣ
@@ -972,9 +1762,52 @@
         let currentFilter = 'all';
         let showFavorites = false;
         let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
+        let openDescriptions = {};
+
+        // Φόρτωση αποθηκευμένων OTA
+        try {
+            const savedOta = JSON.parse(localStorage.getItem('kok_ota'));
+            if (savedOta) otaSelections = savedOta;
+        } catch (e) {}
+
+        // PWA Install
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('show');
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    document.getElementById('installBanner').classList.remove('show');
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        function dismissInstallBanner() {
+            document.getElementById('installBanner').classList.remove('show');
+        }
+
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('installBanner').classList.remove('show');
+            showToast('✅ Εφαρμογή εγκαταστάθηκε!');
+        });
+
+        // Εγγραφή Service Worker (PWA Offline)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(() => console.log('✅ Service Worker εγγεγραμμένος'))
+                .catch(err => console.log('❌ Σφάλμα SW:', err));
+        }
 
         function toggleDark() {
             document.body.classList.toggle('dark');
+            render();
         }
 
         function toggleFavorites() {
@@ -998,6 +1831,11 @@
             showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
         }
 
+        function toggleDescription(id) {
+            openDescriptions[id] = !openDescriptions[id];
+            render();
+        }
+
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.textContent = msg;
@@ -1006,84 +1844,13 @@
             t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
         }
 
-        function getSignHTML(sign) {
-            return signs[sign] ? signs[sign] : '';
-        }
-
         function getCategoryColor(category) {
             return categoryColors[category] || '#94a3b8';
-        }
-
-        const categoryMonograms = {
-            'στάθμευση': 'ΣΤ',
-            'πινακίδες': 'ΠΙ',
-            'κίνηση': 'ΚΙ',
-            'ταχύτητα': 'ΤΧ',
-            'άδειες': 'ΑΔ',
-            'ασφάλεια': 'ΑΣ',
-            'θόρυβος': 'ΘΟ',
-            'ΚΤΕΟ': 'ΚΤ',
-            'μοτοσικλέτα': 'ΜΤ',
-            'ΕΠΗΟ': 'ΕΠ',
-            'αλκοόλ': 'ΑΛ',
-            'επαγγελματικά': 'ΕΓ',
-            'υποτροπή': 'ΥΠ'
-        };
-
-        function getCategoryMonogram(category) {
-            return categoryMonograms[category] || '•';
         }
 
         function formatFine(fine) {
             if (typeof fine === 'number') return fine + '€';
             return fine;
-        }
-
-        const copyIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
-
-        function buildViolationText(v) {
-            const lines = [
-                v.name,
-                'Άρθρο ' + v.article + ' ΚΟΚ',
-                'Πρόστιμο: ' + formatFine(v.fine)
-            ];
-            if (v.suspend && v.suspend !== '-') lines.push('Συνέπειες: ' + v.suspend);
-            if (v.points > 0) lines.push('Βαθμοί ΣΕΣΟ: ' + v.points);
-            if (v.details) lines.push(v.details);
-            if (v.criminal) lines.push('ΠΛΗΜΜΕΛΗΜΑ');
-            return lines.join('\n');
-        }
-
-        function copyViolation(id) {
-            const v = data.find(item => item.id === id);
-            if (!v) return;
-            const text = buildViolationText(v);
-
-            const done = () => showToast('📋 Αντιγράφηκε στο πρόχειρο');
-            const fail = () => showToast('⚠️ Αποτυχία αντιγραφής');
-
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).then(done).catch(() => legacyCopy(text, done, fail));
-            } else {
-                legacyCopy(text, done, fail);
-            }
-        }
-
-        function legacyCopy(text, done, fail) {
-            try {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.focus();
-                ta.select();
-                const ok = document.execCommand('copy');
-                document.body.removeChild(ta);
-                ok ? done() : fail();
-            } catch (e) {
-                fail();
-            }
         }
 
         function onSearch() {
@@ -1104,44 +1871,160 @@
             document.getElementById('searchInput').focus();
         }
 
+        function getFavorites() {
+            return data.filter(v => favorites[v.id]);
+        }
+
+        function exportFavorites() {
+            const favs = getFavorites();
+            if (favs.length === 0) {
+                showToast('⚠️ Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
+                return;
+            }
+
+            const win = window.open('', '_blank', 'width=900,height=700');
+            if (!win) {
+                showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+                return;
+            }
+
+            const html = `
+            <!DOCTYPE html>
+            <html>
+            <head><title>Αγαπημένες Παραβάσεις ΚΟΚ</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; }
+                h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
+                .sub { color: #555; margin-bottom: 20px; }
+                .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 12px; page-break-inside: avoid; }
+                .card .name { font-weight: bold; font-size: 16px; }
+                .card .article { color: #555; font-size: 14px; }
+                .card .det { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 4px; }
+                .card .det .fine { color: #c00; font-weight: bold; }
+                .card .det .suspend { color: #00c; font-weight: 500; }
+                .card .det .points { color: #7c3aed; }
+                .card .p-ota { font-size: 13px; color: #555; margin-top: 4px; }
+                .card .desc { margin-top: 6px; background: #f5f5f5; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
+                .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
+                @media print {
+                    .no-print { display: none; }
+                    body { padding: 20px; }
+                    .card { border-color: #ccc; }
+                    .card .desc { background: #f9f9f9; }
+                }
+            </style>
+            </head>
+            <body>
+                <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
+                <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v13» — ${new Date().toLocaleDateString()}</p>
+                ${favs.map(v => {
+                    const ota = getOtaSelection(v.id);
+                    return `
+                    <div class="card">
+                        <div class="name">${v.name}</div>
+                        <div class="article">Άρθρο: ${v.article}</div>
+                        <div class="det">
+                            <span class="fine">💰 ${formatFine(v.fine)}</span>
+                            ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
+                            ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                        </div>
+                        ${ota ? `<div class="p-ota">🏛️ Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
+                        ${v.fullDescription ? `<div class="desc">📖 ${v.fullDescription}</div>` : ''}
+                    </div>
+                `}).join('')}
+                <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
+                <div class="no-print" style="text-align:center;margin-top:20px;">
+                    <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+                </div>
+            </body>
+            </html>
+            `;
+
+            win.document.write(html);
+            win.document.close();
+            setTimeout(() => {
+                win.focus();
+                win.print();
+            }, 500);
+        }
+
+        // ============================================================
+        // RENDER
+        // ============================================================
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const container = document.getElementById('listContainer');
             const countEl = document.getElementById('countText');
+            const favIndicator = document.getElementById('favIndicator');
+            const favCount = document.getElementById('favCount');
 
             let filtered = data.filter(v => {
                 if (showFavorites && !favorites[v.id]) return false;
                 if (currentFilter !== 'all' && v.category !== currentFilter) return false;
                 if (query) {
-                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details).toLowerCase();
+                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v
+                        .fullDescription || '')).toLowerCase();
                     if (!searchable.includes(query)) return false;
                 }
                 return true;
             });
 
             const total = data.length;
+            const favsCount = getFavorites().length;
             countEl.textContent = filtered.length + ' από ' + total + ' παραβάσεις';
+            if (showFavorites) {
+                favIndicator.style.display = 'inline';
+                favCount.textContent = favsCount;
+            } else {
+                favIndicator.style.display = 'none';
+            }
 
             if (filtered.length === 0) {
                 container.innerHTML =
-                    `<div class="empty">🔍 Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+                    `<div class="empty"><span class="icon">🔍</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
                 return;
             }
 
             container.innerHTML = filtered.map(v => {
                 const color = getCategoryColor(v.category);
-                const signSvg = v.sign ? getSignHTML(v.sign) : '';
                 const halfBadge = v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : '';
                 const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
+                const isDescOpen = openDescriptions[v.id] || false;
+                const severityColor = getSeverityColor(v.suspend, v.criminal);
+
+                const nameWithImages = replaceSignCodes(v.name);
+
+                let bgColor = '#ffffff';
+                if (v.criminal) {
+                    bgColor = '#fef2f2';
+                } else if (v.suspend && v.suspend !== '-') {
+                    const lower = v.suspend.toLowerCase();
+                    if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) bgColor = '#fffbeb';
+                    else if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) bgColor = '#fffbeb';
+                    else if (lower.includes('30 ημέρες') || lower.includes('30 ημ')) bgColor = '#fef3c7';
+                    else if (lower.includes('40 ημέρες') || lower.includes('40 ημ')) bgColor = '#fef3c7';
+                    else if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) bgColor = '#fde68a';
+                    else if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) bgColor = '#fee2e2';
+                    else if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) bgColor = '#fee2e2';
+                    else if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') ||
+                        lower.includes('μήνες')) bgColor = '#fecaca';
+                    else bgColor = '#ffffff';
+                }
+
+                const darkBg = document.body.classList.contains('dark') ?
+                    (bgColor !== '#ffffff' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)') :
+                    bgColor;
+
+                const ota = getOtaSelection(v.id);
+                const otaDisplay = ota ? `<span class="ota-code">${ota.code}</span>` :
+                    `<span class="ota-code" style="color:#94a3b8;">—</span>`;
 
                 return `
-                <div class="card">
-                    <div class="sign-wrapper" style="background:${color}20; border:2px solid ${color}; color:${color};">
-                        ${signSvg ? `<div style="width:26px;height:26px;">${signSvg}</div>` : `<span>${getCategoryMonogram(v.category)}</span>`}
-                    </div>
+                <div class="card" style="border-left-color: ${color}; background-color: ${darkBg};">
+                    <div class="severity-bar" style="background-color: ${severityColor};"></div>
                     <div class="content">
                         <div class="name">
-                            ${v.name} ${halfBadge} ${criminalBadge}
+                            ${nameWithImages} ${halfBadge} ${criminalBadge}
                         </div>
                         <div class="article">Άρθρο: ${v.article}</div>
                         <div class="details">
@@ -1149,36 +2032,46 @@
                             ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                         </div>
-                        <div style="font-size: 12px; color: #4a5568; margin-top: 4px; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; display: inline-block;">
-                            📌 ${v.details}
+                        <div class="ota-section">
+                            <label>🏛️ Κωδικός ΟΤΑ:</label>
+                            <input type="text" class="ota-input" 
+                                   id="ota-input-${v.id}"
+                                   placeholder="Αναζήτησε δήμο..."
+                                   value="${ota ? ota.name : ''}"
+                                   oninput="handleOtaInput(${v.id}, this)"
+                                   onfocus="renderOtaSuggestions(${v.id}, this.value)"
+                                   autocomplete="off">
+                            <div class="ota-suggestions" id="ota-suggestions-${v.id}"></div>
+                            ${otaDisplay}
                         </div>
+                        ${v.fullDescription ? `
+                            <button class="desc-toggle" onclick="toggleDescription(${v.id})">
+                                ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Περιγραφή'}
+                            </button>
+                            <div class="full-description ${isDescOpen ? 'open' : ''}">
+                                ${v.fullDescription}
+                            </div>
+                        ` : ''}
                     </div>
-                    <div class="actions">
-                        <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Προσθήκη/αφαίρεση αγαπημένου">
-                            ${favorites[v.id] ? '⭐' : '☆'}
-                        </button>
-                        <button class="copy-btn" onclick="copyViolation(${v.id})" aria-label="Αντιγραφή στοιχείων παράβασης">
-                            ${copyIcon}
-                        </button>
-                    </div>
+                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Προσθήκη/αφαίρεση αγαπημένου">
+                        ${favorites[v.id] ? '⭐' : '☆'}
+                    </button>
                 </div>
             `}).join('');
-        }
 
-        // Εκκίνηση
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις');
-        render();
-
-        // PWA: εγκατάσταση service worker για λειτουργία χωρίς σύνδεση
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(err => {
-                    console.warn('Service worker registration failed:', err);
-                });
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.ota-section')) {
+                    document.querySelectorAll('.ota-suggestions').forEach(el => el.classList.remove('show'));
+                }
             });
         }
 
-        // Keyboard shortcuts
+        // ============================================================
+        // ΕΚΚΙΝΗΣΗ
+        // ============================================================
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v13 - PWA Ready)');
+        render();
+
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
                 e.preventDefault();
