@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v10.8</title>
+    <title>ΚΟΚ – Τσέπης v10.9</title>
     <style>
         * {
             margin: 0;
@@ -743,7 +743,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.8</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.9</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -907,27 +907,30 @@
         };
 
         // ============================================================
-        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ
-        // - Αναγνωρίζει ΕΛΛΗΝΙΚΟ «Ρ» και ΛΑΤΙΝΙΚΟ «P»
-        // - Βρίσκει κάθε «Ρ-αριθμός» ή «P-αριθμός» σε όλο το κείμενο
+        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ (ΔΙΟΡΘΩΜΕΝΗ)
         // ============================================================
         function replaceSignCodes(text) {
             if (!text) return text;
-            // Βρίσκει όλους τους κωδικούς: ξεκινά με Ρ ή P, παύλα, αριθμούς και ελληνικούς χαρακτήρες
-            return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
-                // Φτιάχνουμε τον κανονικό κωδικό με ελληνικό Ρ
-                const code = 'Ρ-' + number;
-                const imgUrl = signImageMap[code];
-                if (imgUrl) {
-                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" loading="lazy">`;
+            // Βρίσκει όλα τα "Ρ-αριθμός" ή "P-αριθμός" (με ή χωρίς αριθμό)
+            return text.replace(/([ΡP])-([\dαβδ]*)/g, function(match, prefix, number) {
+                if (number) {
+                    // Αν υπάρχει αριθμός, φτιάχνουμε τον κωδικό με ελληνικό Ρ
+                    const code = 'Ρ-' + number;
+                    const imgUrl = signImageMap[code];
+                    if (imgUrl) {
+                        return `<img src="${imgUrl}" class="sign-img" alt="${code}" loading="lazy">`;
+                    }
+                    // Αν δεν υπάρχει εικόνα, επιστρέφουμε τον αρχικό κωδικό (με το γράμμα που είχε)
+                    return 'Ρ-' + number;
+                } else {
+                    // Δεν υπάρχει αριθμός – αφήνουμε τον κωδικό ως έχει
+                    return match;
                 }
-                // Αν δεν βρεθεί, επιστρέφουμε τον αρχικό κωδικό (με το Ρ που είχε)
-                return 'Ρ-' + number;
             });
         }
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.8 (126 παραβάσεις, πλήρης)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.9 (126 παραβάσεις)
         // ============================================================
         const data = [
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
@@ -1065,7 +1068,7 @@
                 points: 5, criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
 
-            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) – όλες οι παραβάσεις ==========
+            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) ==========
             { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
@@ -1728,7 +1731,7 @@
         // ============================================================
         // ΕΚΚΙΝΗΣΗ
         // ============================================================
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.8)');
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.9)');
         render();
 
         document.addEventListener('keydown', (e) => {
