@@ -1,6 +1,6 @@
 // ΚΟΚ Τσέπης — Service Worker
 // Ανεβάζοντας νέα έκδοση: άλλαξε το CACHE_VERSION ώστε οι συσκευές να πάρουν τα νέα αρχεία.
-const CACHE_VERSION = 'kok-v13';
+const CACHE_VERSION = 'kok-v14';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -8,7 +8,9 @@ const PRECACHE_URLS = [
   './icon-192.png',
   './icon-512.png',
   './icon-192-maskable.png',
-  './icon-512-maskable.png'
+  './icon-512-maskable.png',
+  './signs-data.json',
+  './ota-data.json'
 ];
 
 self.addEventListener('install', (event) => {
