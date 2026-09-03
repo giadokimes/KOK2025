@@ -1,6 +1,6 @@
 // ΚΟΚ Τσέπης — Service Worker
 // Ανεβάζοντας νέα έκδοση: άλλαξε το CACHE_VERSION ώστε οι συσκευές να πάρουν τα νέα αρχεία.
-const CACHE_VERSION = 'kok-v9.2-1';
+const CACHE_VERSION = 'kok-v13';
 const PRECACHE_URLS = [
   './',
   './index.html',
