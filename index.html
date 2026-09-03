@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v10.7</title>
+    <title>ΚΟΚ – Τσέπης v10.8</title>
     <style>
-        /* ============================================================
-               v10.7 - Όλες οι πινακίδες (ακόμα και σε λίστες) με μικρογραφίες
-               ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +26,6 @@
             color: #e2e8f0;
         }
 
-        /* ----- Header ----- */
         .header {
             background: linear-gradient(145deg, #1a365d, #1e3a5f);
             color: #fff;
@@ -120,7 +116,6 @@
             background: #10b981;
         }
 
-        /* ----- Search Box ----- */
         .search-box {
             margin-top: 14px;
             position: relative;
@@ -181,7 +176,6 @@
             display: block;
         }
 
-        /* ----- Filters ----- */
         .filters {
             display: flex;
             flex-wrap: wrap;
@@ -238,7 +232,6 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
-        /* ----- Count ----- */
         .count {
             font-size: 14px;
             color: #4a5568;
@@ -259,7 +252,6 @@
             color: #f59e0b;
         }
 
-        /* ----- Cards ----- */
         .list {
             margin-top: 12px;
             display: flex;
@@ -324,7 +316,6 @@
             color: #0f172a;
         }
 
-        /* Στυλ για τις μικρογραφίες πινακίδων */
         .card .name .sign-img {
             display: inline-block;
             width: 32px;
@@ -752,18 +743,18 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.7</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.8</span></div>
             <div class="header-actions">
-                <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
-                <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
-                <button class="pdf-btn" onclick="exportFavorites()" aria-label="Εξαγωγή αγαπημένων σε PDF">📄 PDF</button>
-                <button onclick="window.print()" aria-label="Εκτύπωση όλων">🖨️</button>
+                <button onclick="toggleDark()">🌙</button>
+                <button onclick="toggleFavorites()">⭐</button>
+                <button class="pdf-btn" onclick="exportFavorites()">📄 PDF</button>
+                <button onclick="window.print()">🖨️</button>
             </div>
         </div>
         <div class="search-box">
             <span class="icon">🔍</span>
             <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
-            <button class="clear-btn" id="clearBtn" onclick="clearSearch()" aria-label="Καθαρισμός αναζήτησης">✕</button>
+            <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
         </div>
         <div class="filters" id="filterContainer">
             <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
@@ -809,9 +800,6 @@
             'υποτροπή': '#dc2626'
         };
 
-        // ============================================================
-        // ΧΡΩΜΑΤΑ ΒΑΡΥΤΗΤΑΣ (παστέλ)
-        // ============================================================
         const severityColors = {
             'none': '#e2e8f0',
             '10': '#fef9c3',
@@ -826,7 +814,7 @@
         };
 
         // ============================================================
-        // ΠΙΝΑΚΑΣ ΑΝΤΙΣΤΟΙΧΙΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ (από Wikimedia Commons)
+        // ΠΙΝΑΚΑΣ ΑΝΤΙΣΤΟΙΧΙΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ
         // ============================================================
         const signImageMap = {
             'Ρ-1': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-1.svg.png',
@@ -920,25 +908,28 @@
 
         // ============================================================
         // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ
+        // - Αναγνωρίζει ΕΛΛΗΝΙΚΟ «Ρ» και ΛΑΤΙΝΙΚΟ «P»
+        // - Βρίσκει κάθε «Ρ-αριθμός» ή «P-αριθμός» σε όλο το κείμενο
         // ============================================================
         function replaceSignCodes(text) {
             if (!text) return text;
-            // Βρίσκει όλα τα "Ρ-αριθμός" (με ή χωρίς ελληνικό "Ρ") και τα αντικαθιστά με εικόνα
-            return text.replace(/(Ρ-[\dαβδ]+)/g, function(match) {
-                const code = match.trim();
+            // Βρίσκει όλους τους κωδικούς: ξεκινά με Ρ ή P, παύλα, αριθμούς και ελληνικούς χαρακτήρες
+            return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
+                // Φτιάχνουμε τον κανονικό κωδικό με ελληνικό Ρ
+                const code = 'Ρ-' + number;
                 const imgUrl = signImageMap[code];
                 if (imgUrl) {
                     return `<img src="${imgUrl}" class="sign-img" alt="${code}" loading="lazy">`;
                 }
-                return match; // αν δεν έχει εικόνα, αφήνουμε τον κωδικό ως έχει
+                // Αν δεν βρεθεί, επιστρέφουμε τον αρχικό κωδικό (με το Ρ που είχε)
+                return 'Ρ-' + number;
             });
         }
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.7 (126 παραβάσεις, όμοια με πριν)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.8 (126 παραβάσεις, πλήρης)
         // ============================================================
         const data = [
-            // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0,
                 criminal: false, half: true,
@@ -1074,7 +1065,7 @@
                 points: 5, criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
 
-            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) ==========
+            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) – όλες οι παραβάσεις ==========
             { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
@@ -1181,7 +1172,7 @@
                 half: false,
                 fullDescription: 'Μη παροχή βοήθειας και μη αναγγελία τροχαίου ατυχήματος με σωματικές βλάβες ή θάνατο.' },
 
-            // ========== ΤΑΧΥΤΗΤΑ (Άρθρο 24) ==========
+            // ========== ΤΑΧΥΤΗΤΑ ==========
             { id: 63, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του ορίου ταχύτητας έως 20 χλμ/ώρα. Κατατάσσεται στην Ε2-Α.' },
@@ -1203,7 +1194,7 @@
                 half: false,
                 fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
 
-            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ (Φορτηγά) ==========
+            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ ==========
             { id: 68, category: 'επαγγελματικά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: 30, suspend: '-',
                 details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
@@ -1247,7 +1238,7 @@
                 half: false,
                 fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
 
-            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ / ΜΟΤΟΠΟΔΗΛΑΤΑ (Άρθρο 16, 44) ==========
+            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ ==========
             { id: 79, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
                 half: false,
@@ -1283,7 +1274,7 @@
                 half: false,
                 fullDescription: 'Απαγορεύεται η μεταφορά αντικειμένων που εμποδίζουν την οδήγηση ή εκθέτουν σε κίνδυνο τους άλλους χρήστες.' },
 
-            // ========== ΕΠΗΟ (Άρθρο 24, 38, 44) ==========
+            // ========== ΕΠΗΟ ==========
             { id: 88, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
@@ -1312,7 +1303,7 @@
                 criminal: false, half: false,
                 fullDescription: 'Θέση σε κυκλοφορία ΕΠΗΟ που μπορεί να αναπτύξει ταχύτητα άνω των 35 χλμ/ώρα (Ε3-Α για τον θέτοντα).' },
 
-            // ========== ΑΔΕΙΕΣ (Άρθρο 98, 99, 102) ==========
+            // ========== ΑΔΕΙΕΣ ==========
             { id: 95, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
                 suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
@@ -1395,7 +1386,7 @@
                 half: false,
                 fullDescription: 'Κυκλοφορία οχήματος χωρίς άδεια κυκλοφορίας.' },
 
-            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ (Άρθρο 46) ==========
+            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ ==========
             { id: 111, category: 'αλκοόλ', name: 'Αλκοόλ 0,50-0,80 (γενικός)', article: '46§7α', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
                 half: false,
@@ -1433,7 +1424,7 @@
                 half: false,
                 fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ >1,10 g/l.' },
 
-            // ========== ΥΠΟΤΡΟΠΗ (Άρθρο 110) ==========
+            // ========== ΥΠΟΤΡΟΠΗ ==========
             { id: 119, category: 'υποτροπή', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)',
                 article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
                 points: 0, criminal: false, half: false,
@@ -1638,7 +1629,7 @@
         }
 
         // ============================================================
-        // RENDER – με αντικατάσταση ΟΛΩΝ των κωδικών Ρ
+        // RENDER
         // ============================================================
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1681,10 +1672,9 @@
                 const isDescOpen = openDescriptions[v.id] || false;
                 const severityColor = getSeverityColor(v.suspend, v.criminal);
 
-                // Αντικαθιστούμε ΟΛΟΥΣ τους κωδικούς Ρ μέσα στο όνομα
+                // Αντικαθιστούμε ΟΛΟΥΣ τους κωδικούς Ρ (ελληνικό και λατινικό)
                 const nameWithImages = replaceSignCodes(v.name);
 
-                // Φόντο κάρτας (ίδιο με v10.4)
                 let bgColor = '#ffffff';
                 if (v.criminal) {
                     bgColor = '#fef2f2';
@@ -1735,11 +1725,12 @@
             `}).join('');
         }
 
-        // Εκκίνηση
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.7)');
+        // ============================================================
+        // ΕΚΚΙΝΗΣΗ
+        // ============================================================
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.8)');
         render();
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
                 e.preventDefault();
