@@ -3,26 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    
-    <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#1a365d">
-    
-    <title>ΚΟΚ – Τσέπης v13 (PWA)</title>
-    
+    <title>ΚΟΚ – Τσέπης v14 (PWA)</title>
     <style>
-        /* ============================================================
-               v13 - PWA Ready / Offline / Κωδικοί ΟΤΑ
-               ============================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f4f7fb;
@@ -32,12 +24,10 @@
             transition: background .3s, color .3s;
             line-height: 1.5;
         }
-
         body.dark {
             background: #0d1524;
             color: #e2e8f0;
         }
-
         .header {
             background: linear-gradient(145deg, #1a365d, #1e3a5f);
             color: #fff;
@@ -48,12 +38,10 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         body.dark .header {
             background: linear-gradient(145deg, #0b1e33, #0f2847);
             border-bottom-color: rgba(255, 255, 255, 0.02);
         }
-
         .header-top {
             display: flex;
             justify-content: space-between;
@@ -61,7 +49,6 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-
         .header-title {
             font-size: 21px;
             font-weight: 700;
@@ -70,20 +57,17 @@
             align-items: center;
             gap: 6px;
         }
-
         .header-title span {
             font-weight: 300;
             font-size: 14px;
             opacity: 0.7;
         }
-
         .header-actions {
             display: flex;
             gap: 6px;
             align-items: center;
             flex-wrap: wrap;
         }
-
         .header-actions button {
             background: rgba(255, 255, 255, 0.12);
             border: none;
@@ -98,12 +82,10 @@
             justify-content: center;
             transition: all .2s;
         }
-
         .header-actions button:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);
         }
-
         .header-actions .pdf-btn {
             font-size: 13px;
             font-weight: 600;
@@ -114,25 +96,20 @@
             background: #10b981;
             color: #fff;
         }
-
         .header-actions .pdf-btn:hover {
             background: #059669;
             transform: scale(1.02);
         }
-
         body.dark .header-actions button {
             background: rgba(255, 255, 255, 0.08);
         }
-
         body.dark .header-actions .pdf-btn {
             background: #10b981;
         }
-
         .search-box {
             margin-top: 14px;
             position: relative;
         }
-
         .search-box input {
             width: 100%;
             padding: 14px 48px 14px 48px;
@@ -145,17 +122,14 @@
             transition: all .2s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
-
         body.dark .search-box input {
             background: #1e293b;
             color: #e2e8f0;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
-
         .search-box input:focus {
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.08);
         }
-
         .search-box .icon {
             position: absolute;
             left: 16px;
@@ -164,7 +138,6 @@
             font-size: 18px;
             opacity: 0.5;
         }
-
         .search-box .clear-btn {
             position: absolute;
             right: 16px;
@@ -179,22 +152,18 @@
             padding: 4px;
             transition: color .2s;
         }
-
         .search-box .clear-btn:hover {
             color: #ef4444;
         }
-
         .search-box .clear-btn.visible {
             display: block;
         }
-
         .filters {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 14px;
         }
-
         .filters button {
             padding: 7px 16px;
             border: none;
@@ -208,13 +177,11 @@
             white-space: nowrap;
             position: relative;
         }
-
         .filters button.active {
             background: #fff;
             color: #1e3a5f;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
-
         .filters button.active::after {
             content: '';
             position: absolute;
@@ -225,25 +192,97 @@
             background: #1e3a5f;
             border-radius: 4px;
         }
-
         body.dark .filters button.active {
             background: #2d3748;
             color: #e2e8f0;
         }
-
         body.dark .filters button.active::after {
             background: #e2e8f0;
         }
-
         .filters button:hover {
             background: rgba(255, 255, 255, 0.32);
             transform: translateY(-1px);
         }
-
         body.dark .filters button:hover {
             background: rgba(255, 255, 255, 0.15);
         }
-
+        .ota-search-box {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.06);
+            padding: 10px 14px;
+            border-radius: 12px;
+            position: relative;
+        }
+        body.dark .ota-search-box {
+            background: rgba(255,255,255,0.04);
+        }
+        .ota-search-box label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .ota-search-box input {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.9);
+            color: #1a202c;
+            outline: none;
+        }
+        body.dark .ota-search-box input {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .ota-search-box .ota-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            max-height: 160px;
+            overflow-y: auto;
+            z-index: 60;
+            display: none;
+            margin-top: 4px;
+        }
+        body.dark .ota-search-box .ota-suggestions {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        .ota-search-box .ota-suggestions.show {
+            display: block;
+        }
+        .ota-search-box .ota-suggestions .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background .15s;
+        }
+        .ota-search-box .ota-suggestions .suggestion-item:hover {
+            background: #f1f5f9;
+        }
+        body.dark .ota-search-box .ota-suggestions .suggestion-item:hover {
+            background: #334155;
+        }
+        .ota-search-box .ota-code-display {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fbbf24;
+            padding: 4px 12px;
+            background: rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            min-width: 70px;
+            text-align: center;
+        }
         .count {
             font-size: 14px;
             color: #4a5568;
@@ -254,23 +293,19 @@
             flex-wrap: wrap;
             gap: 4px;
         }
-
         body.dark .count {
             color: #94a3b8;
         }
-
         .count .fav-count {
             font-weight: 600;
             color: #f59e0b;
         }
-
         .list {
             margin-top: 12px;
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-
         .card {
             padding: 16px 18px;
             border-radius: 14px;
@@ -283,20 +318,16 @@
             box-shadow: none;
             position: relative;
         }
-
         body.dark .card {
             border-left-color: #334155;
         }
-
         .card:hover {
             transform: translateY(-1px);
             filter: brightness(0.97);
         }
-
         body.dark .card:hover {
             filter: brightness(1.1);
         }
-
         .card .severity-bar {
             position: absolute;
             top: 0;
@@ -306,17 +337,14 @@
             border-radius: 14px 14px 0 0;
             opacity: 0.8;
         }
-
         body.dark .card .severity-bar {
             opacity: 0.6;
         }
-
         .card .content {
             flex: 1;
             min-width: 0;
             margin-top: 2px;
         }
-
         .card .name {
             font-weight: 600;
             font-size: 16px;
@@ -327,7 +355,6 @@
             gap: 6px;
             color: #0f172a;
         }
-
         .card .name .sign-img {
             display: inline-block;
             width: 32px;
@@ -340,27 +367,22 @@
             object-fit: contain;
             flex-shrink: 0;
         }
-
         body.dark .card .name .sign-img {
             border-color: rgba(255,255,255,0.2);
             background: #1e293b;
         }
-
         body.dark .card .name {
             color: #f1f5f9;
         }
-
         .card .article {
             font-size: 13px;
             color: #64748b;
             margin-top: 2px;
             font-weight: 500;
         }
-
         body.dark .card .article {
             color: #94a3b8;
         }
-
         .card .details {
             display: flex;
             flex-wrap: wrap;
@@ -369,137 +391,46 @@
             font-size: 15px;
             align-items: center;
         }
-
         .card .details .fine {
             font-weight: 700;
             color: #dc2626;
         }
-
         body.dark .card .details .fine {
             color: #f87171;
         }
-
         .card .details .suspend {
             color: #2563eb;
             font-weight: 600;
         }
-
         body.dark .card .details .suspend {
             color: #60a5fa;
         }
-
         .card .details .points {
             color: #7c3aed;
             font-weight: 600;
         }
-
         body.dark .card .details .points {
             color: #a78bfa;
         }
-
-        .card .ota-section {
-            margin-top: 10px;
-            padding: 8px 12px;
+        .card .ota-badge {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #64748b;
+            padding: 4px 10px;
             background: rgba(0,0,0,0.04);
-            border-radius: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            position: relative;
+            border-radius: 6px;
+            display: inline-block;
         }
-
-        body.dark .card .ota-section {
+        body.dark .card .ota-badge {
+            color: #94a3b8;
             background: rgba(255,255,255,0.06);
         }
-
-        .card .ota-section label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #64748b;
-        }
-
-        body.dark .card .ota-section label {
-            color: #94a3b8;
-        }
-
-        .card .ota-section .ota-input {
-            flex: 1;
-            min-width: 120px;
-            padding: 6px 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
-            background: #fff;
-            color: #1a202c;
-            outline: none;
-            transition: border-color .2s;
-        }
-
-        body.dark .card .ota-section .ota-input {
-            background: #1e293b;
-            color: #e2e8f0;
-            border-color: #334155;
-        }
-
-        .card .ota-section .ota-input:focus {
-            border-color: #3b82f6;
-        }
-
-        .card .ota-section .ota-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 50;
-            display: none;
-        }
-
-        body.dark .card .ota-section .ota-suggestions {
-            background: #1e293b;
-            border-color: #334155;
-        }
-
-        .card .ota-section .ota-suggestions.show {
-            display: block;
-        }
-
-        .card .ota-section .ota-suggestions .suggestion-item {
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background .15s;
-        }
-
-        .card .ota-section .ota-suggestions .suggestion-item:hover {
-            background: #f1f5f9;
-        }
-
-        body.dark .card .ota-section .ota-suggestions .suggestion-item:hover {
-            background: #334155;
-        }
-
-        .card .ota-section .ota-code {
-            font-size: 14px;
-            font-weight: 700;
+        .card .ota-badge strong {
             color: #2563eb;
-            padding: 4px 10px;
-            background: rgba(37, 99, 235, 0.1);
-            border-radius: 4px;
-            min-width: 60px;
-            text-align: center;
         }
-
-        body.dark .card .ota-section .ota-code {
+        body.dark .card .ota-badge strong {
             color: #60a5fa;
-            background: rgba(96, 165, 250, 0.1);
         }
-
         .card .favorite {
             flex-shrink: 0;
             background: none;
@@ -512,25 +443,20 @@
             line-height: 1;
             margin-top: -2px;
         }
-
         .card .favorite.active {
             opacity: 1;
             color: #f59e0b;
         }
-
         .card .favorite:active {
             transform: scale(1.3);
         }
-
         body.dark .card .favorite {
             opacity: 0.3;
         }
-
         body.dark .card .favorite.active {
             opacity: 1;
             color: #fbbf24;
         }
-
         .badge-criminal {
             display: inline-block;
             font-size: 11px;
@@ -543,12 +469,10 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
-
         body.dark .badge-criminal {
             background: rgba(252, 165, 165, 0.2);
             color: #fca5a5;
         }
-
         .badge-half {
             display: inline-block;
             font-size: 11px;
@@ -559,12 +483,10 @@
             margin-left: 4px;
             font-weight: 500;
         }
-
         body.dark .badge-half {
             background: rgba(255, 255, 255, 0.08);
             color: #94a3b8;
         }
-
         .card .desc-toggle {
             background: none;
             border: none;
@@ -579,20 +501,16 @@
             gap: 4px;
             transition: color .2s;
         }
-
         body.dark .card .desc-toggle {
             color: #60a5fa;
         }
-
         .card .desc-toggle:hover {
             color: #1d4ed8;
             text-decoration: underline;
         }
-
         body.dark .card .desc-toggle:hover {
             color: #93c5fd;
         }
-
         .card .full-description {
             display: none;
             font-size: 14px;
@@ -604,34 +522,28 @@
             line-height: 1.6;
             border-left: 4px solid #3b82f6;
         }
-
         body.dark .card .full-description {
             background: rgba(255, 255, 255, 0.06);
             color: #e2e8f0;
             border-left-color: #60a5fa;
         }
-
         .card .full-description.open {
             display: block;
         }
-
         .empty {
             text-align: center;
             padding: 60px 20px;
             color: #64748b;
             font-size: 16px;
         }
-
         body.dark .empty {
             color: #94a3b8;
         }
-
         .empty .icon {
             font-size: 48px;
             display: block;
             margin-bottom: 12px;
         }
-
         .toast {
             position: fixed;
             bottom: 24px;
@@ -649,99 +561,13 @@
             z-index: 999;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
         }
-
         body.dark .toast {
             background: #e2e8f0;
             color: #0f172a;
         }
-
         .toast.show {
             opacity: 1;
         }
-
-        .print-window {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            padding: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .print-window h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
-            color: #1e3a5f;
-            border-bottom: 3px solid #1e3a5f;
-            padding-bottom: 10px;
-        }
-
-        .print-window .subtitle {
-            color: #4a5568;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .print-window .print-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            page-break-inside: avoid;
-        }
-
-        .print-window .print-card .p-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .print-window .print-card .p-article {
-            font-size: 13px;
-            color: #4a5568;
-        }
-
-        .print-window .print-card .p-details {
-            font-size: 14px;
-            margin-top: 4px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 18px;
-        }
-
-        .print-window .print-card .p-details .p-fine {
-            font-weight: 600;
-            color: #dc2626;
-        }
-
-        .print-window .print-card .p-details .p-suspend {
-            color: #2563eb;
-            font-weight: 500;
-        }
-
-        .print-window .print-card .p-details .p-points {
-            color: #7c3aed;
-        }
-
-        .print-window .print-card .p-ota {
-            font-size: 13px;
-            color: #4a5568;
-            margin-top: 4px;
-        }
-
-        .print-window .print-card .p-desc {
-            font-size: 13px;
-            color: #4a5568;
-            margin-top: 6px;
-            background: #f1f5f9;
-            padding: 8px 10px;
-            border-radius: 6px;
-        }
-
-        .print-window .no-favs {
-            text-align: center;
-            padding: 40px;
-            color: #64748b;
-            font-size: 16px;
-        }
-
         .install-banner {
             display: none;
             background: #1a365d;
@@ -760,11 +586,9 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .install-banner.show {
             display: flex;
         }
-
         .install-banner button {
             background: #10b981;
             border: none;
@@ -775,39 +599,81 @@
             font-weight: 600;
             cursor: pointer;
         }
-
         .install-banner .close-btn {
             background: transparent;
             font-size: 20px;
             padding: 4px 8px;
             color: #94a3b8;
         }
-
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printArea,
-            #printArea * {
-                visibility: visible;
-            }
-            #printArea {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 20px;
-            }
-            .print-window .print-card {
-                border: 1px solid #ccc !important;
-                page-break-inside: avoid;
-            }
-            .print-window .print-card .p-desc {
-                background: #f9f9f9 !important;
-            }
-            .no-print {
-                display: none !important;
-            }
+        .print-window {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .print-window h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1e3a5f;
+            border-bottom: 3px solid #1e3a5f;
+            padding-bottom: 10px;
+        }
+        .print-window .subtitle {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .print-window .print-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .print-window .print-card .p-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .print-window .print-card .p-article {
+            font-size: 13px;
+            color: #4a5568;
+        }
+        .print-window .print-card .p-details {
+            font-size: 14px;
+            margin-top: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+        }
+        .print-window .print-card .p-details .p-fine {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        .print-window .print-card .p-details .p-suspend {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .print-window .print-card .p-details .p-points {
+            color: #7c3aed;
+        }
+        .print-window .print-card .p-ota {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+        .print-window .print-card .p-desc {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 6px;
+            background: #f1f5f9;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+        .print-window .no-favs {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 16px;
         }
 
         @media (max-width: 480px) {
@@ -847,21 +713,18 @@
                 padding: 12px 40px 12px 40px;
                 font-size: 15px;
             }
-            .card .ota-section {
+            .ota-search-box {
                 flex-direction: column;
                 align-items: stretch;
+            }
+            .ota-search-box .ota-suggestions {
+                left: 0;
+                right: 0;
             }
         }
 
         @media print {
-            .header,
-            .search-box,
-            .filters,
-            .count,
-            .favorite,
-            .header-actions,
-            .ota-section,
-            .install-banner {
+            .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner {
                 display: none !important;
             }
             body {
@@ -911,7 +774,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v13</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v14</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -923,6 +786,12 @@
             <span class="icon">🔍</span>
             <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
             <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
+        </div>
+        <div class="ota-search-box" id="otaSearchBox">
+            <label>🏛️ Κωδικός ΟΤΑ:</label>
+            <input type="text" id="otaSearchInput" placeholder="Αναζήτησε δήμο..." oninput="onOtaSearch()" autocomplete="off">
+            <span class="ota-code-display" id="otaCodeDisplay">—</span>
+            <div class="ota-suggestions" id="otaSuggestions"></div>
         </div>
         <div class="filters" id="filterContainer">
             <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
@@ -958,7 +827,7 @@
 
     <script>
         // ============================================================
-        // ΛΙΣΤΑ ΚΩΔΙΚΩΝ ΟΤΑ (Καποδιστριακοί - παλιοί κωδικοί δήμων)
+        // ΛΙΣΤΑ ΚΩΔΙΚΩΝ ΟΤΑ
         // ============================================================
         const otaList = [
             { name: 'Αγίου Δημητρίου Αττικής', code: '0011' },
@@ -1053,8 +922,10 @@
         ];
 
         // ============================================================
-        // ΣΥΝΑΡΤΗΣΕΙΣ ΓΙΑ ΤΟ ΠΕΔΙΟ ΟΤΑ
+        // ΣΥΝΑΡΤΗΣΕΙΣ ΟΤΑ
         // ============================================================
+        let selectedOta = null;
+
         function getOtaSuggestions(query) {
             if (!query || query.length < 2) return [];
             const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1063,44 +934,154 @@
                     const name = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
                     return name.includes(q);
                 })
-                .slice(0, 8);
+                .slice(0, 10);
         }
 
-        let otaSelections = {};
-
-        function selectOta(id, name, code) {
-            otaSelections[id] = { name, code };
-            localStorage.setItem('kok_ota', JSON.stringify(otaSelections));
-            render();
-        }
-
-        function getOtaSelection(id) {
-            return otaSelections[id] || null;
-        }
-
-        function renderOtaSuggestions(id, query) {
-            const container = document.getElementById(`ota-suggestions-${id}`);
-            if (!container) return;
-            const suggestions = getOtaSuggestions(query);
+        function onOtaSearch() {
+            const input = document.getElementById('otaSearchInput');
+            const suggestionsDiv = document.getElementById('otaSuggestions');
+            const val = input.value;
+            const suggestions = getOtaSuggestions(val);
             if (suggestions.length === 0) {
-                container.classList.remove('show');
+                suggestionsDiv.classList.remove('show');
                 return;
             }
-            container.classList.add('show');
-            container.innerHTML = suggestions.map(item =>
-                `<div class="suggestion-item" onclick="selectOta(${id}, '${item.name}', '${item.code}')">
+            suggestionsDiv.classList.add('show');
+            suggestionsDiv.innerHTML = suggestions.map(item =>
+                `<div class="suggestion-item" onclick="selectOta('${item.name}', '${item.code}')">
                     ${item.name} (${item.code})
                 </div>`
             ).join('');
         }
 
-        function handleOtaInput(id, input) {
-            const val = input.value;
-            renderOtaSuggestions(id, val);
+        function selectOta(name, code) {
+            selectedOta = { name, code };
+            document.getElementById('otaSearchInput').value = name;
+            document.getElementById('otaCodeDisplay').textContent = code;
+            document.getElementById('otaSuggestions').classList.remove('show');
+            localStorage.setItem('kok_selected_ota', JSON.stringify(selectedOta));
+            render();
+            showToast('🏛️ Επιλέχθηκε: ' + name + ' (' + code + ')');
+        }
+
+        function loadOtaSelection() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('kok_selected_ota'));
+                if (saved) {
+                    selectedOta = saved;
+                    document.getElementById('otaSearchInput').value = saved.name || '';
+                    document.getElementById('otaCodeDisplay').textContent = saved.code || '—';
+                }
+            } catch (e) {}
         }
 
         // ============================================================
-        // ΧΡΩΜΑΤΑ ΚΑΤΗΓΟΡΙΩΝ
+        // ΠΙΝΑΚΙΔΕΣ – ΠΡΑΓΜΑΤΙΚΕΣ ΕΙΚΟΝΕΣ ΑΠΟ WIKIMEDIA (ΟΠΩΣ Ο CLAUDE)
+        // ============================================================
+        const signImageMap = {
+            'Ρ-1': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-1.svg.png',
+            'Ρ-2': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-2.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-2.svg.png',
+            'Ρ-3': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-3.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-3.svg.png',
+            'Ρ-4': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-4.svg.png',
+            'Ρ-5': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-5.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-5.svg.png',
+            'Ρ-6': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-6.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-6.svg.png',
+            'Ρ-7': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-7.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-7.svg.png',
+            'Ρ-8': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-8.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-8.svg.png',
+            'Ρ-9': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-9.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-9.svg.png',
+            'Ρ-10': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-10.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-10.svg.png',
+            'Ρ-11': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-11.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-11.svg.png',
+            'Ρ-12': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-12.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-12.svg.png',
+            'Ρ-13': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-13.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-13.svg.png',
+            'Ρ-14': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-14.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-14.svg.png',
+            'Ρ-15': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-15.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-15.svg.png',
+            'Ρ-16': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-16.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-16.svg.png',
+            'Ρ-17': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-17.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-17.svg.png',
+            'Ρ-18': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-18.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-18.svg.png',
+            'Ρ-19': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-19.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-19.svg.png',
+            'Ρ-20': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-20.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-20.svg.png',
+            'Ρ-21': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-21.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-21.svg.png',
+            'Ρ-22': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-22.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-22.svg.png',
+            'Ρ-23': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-23.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-23.svg.png',
+            'Ρ-24': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-24.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-24.svg.png',
+            'Ρ-25': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-25.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-25.svg.png',
+            'Ρ-26': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-26.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-26.svg.png',
+            'Ρ-27': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-27.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-27.svg.png',
+            'Ρ-28': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-28.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-28.svg.png',
+            'Ρ-29': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-29.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-29.svg.png',
+            'Ρ-30': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-30.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-30.svg.png',
+            'Ρ-31': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-31.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-31.svg.png',
+            'Ρ-32': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-32.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-32.svg.png',
+            'Ρ-33': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-33.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-33.svg.png',
+            'Ρ-34': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-34.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-34.svg.png',
+            'Ρ-35': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-35.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-35.svg.png',
+            'Ρ-36': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-36.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-36.svg.png',
+            'Ρ-37': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-37.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-37.svg.png',
+            'Ρ-38': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-38.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-38.svg.png',
+            'Ρ-39': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-39.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-39.svg.png',
+            'Ρ-40': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-40.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-40.svg.png',
+            'Ρ-41': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-41.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-41.svg.png',
+            'Ρ-42': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-42.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-42.svg.png',
+            'Ρ-43': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-43.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-43.svg.png',
+            'Ρ-44': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-44.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-44.svg.png',
+            'Ρ-45': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-45.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-45.svg.png',
+            'Ρ-46': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-46.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-46.svg.png',
+            'Ρ-47': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-47.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-47.svg.png',
+            'Ρ-48': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-48.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-48.svg.png',
+            'Ρ-49': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-49.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-49.svg.png',
+            'Ρ-50': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50.svg.png',
+            'Ρ-50α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B1.svg.png',
+            'Ρ-50δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B4.svg.png',
+            'Ρ-51': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51.svg.png',
+            'Ρ-51α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B1.svg.png',
+            'Ρ-51δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B4.svg.png',
+            'Ρ-52': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52.svg.png',
+            'Ρ-52α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B1.svg.png',
+            'Ρ-52δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B4.svg.png',
+            'Ρ-53': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-53.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-53.svg.png',
+            'Ρ-54': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-54.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-54.svg.png',
+            'Ρ-55': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-55.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-55.svg.png',
+            'Ρ-56': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-56.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-56.svg.png',
+            'Ρ-57': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-57.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-57.svg.png',
+            'Ρ-58': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-58.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-58.svg.png',
+            'Ρ-59': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-59.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-59.svg.png',
+            'Ρ-60': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-60.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-60.svg.png',
+            'Ρ-61': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-61.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-61.svg.png',
+            'Ρ-62': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-62.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-62.svg.png',
+            'Ρ-63': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-63.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-63.svg.png',
+            'Ρ-64': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-64.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-64.svg.png',
+            'Ρ-65': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-65.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-65.svg.png',
+            'Ρ-66': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-66.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-66.svg.png',
+            'Ρ-66α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-66%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-66%CE%B1.svg.png',
+            'Ρ-67': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-67.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-67.svg.png',
+            'Ρ-67α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-67%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-67%CE%B1.svg.png',
+            'Ρ-68': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-68.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-68.svg.png',
+            'Ρ-69': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-69.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-69.svg.png',
+            'Ρ-70': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-70.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-70.svg.png',
+            'Ρ-71': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-71.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-71.svg.png',
+            'Ρ-72': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-72.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-72.svg.png',
+            'Ρ-73α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B1.svg.png',
+            'Ρ-73δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B4.svg.png',
+            'Ρ-74α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B1.svg.png',
+            'Ρ-74δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B4.svg.png',
+            'Ρ-75': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-75.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-75.svg.png',
+            'Ρ-76': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-76.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-76.svg.png',
+            'Ρ-77': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-77.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-77.svg.png'
+        };
+
+        function replaceSignCodes(text) {
+            if (!text) return text;
+            return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
+                const code = 'Ρ-' + number;
+                const imgUrl = signImageMap[code];
+                if (imgUrl) {
+                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" loading="lazy">`;
+                }
+                return match;
+            });
+        }
+
+        // ============================================================
+        // ΧΡΩΜΑΤΑ
         // ============================================================
         const categoryColors = {
             'στάθμευση': '#f59e0b',
@@ -1132,77 +1113,7 @@
         };
 
         // ============================================================
-        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΝΣΩΜΑΤΩΜΕΝΑ SVG
-        // ============================================================
-        function getSignSVG(code) {
-            const num = parseInt(code.replace('Ρ-', ''));
-            if (isNaN(num)) return code;
-
-            let svg = '';
-            const size = 40;
-
-            if (num === 1) {
-                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="20,5 35,35 5,35" fill="white" stroke="#e53e3e" stroke-width="3"/>
-                    <text x="20" y="28" font-size="12" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-1</text>
-                </svg>`;
-                return svg;
-            }
-
-            if (num === 2) {
-                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="20,2 36,10 36,30 20,38 4,30 4,10" fill="#e53e3e" stroke="#c53030" stroke-width="1"/>
-                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">STOP</text>
-                </svg>`;
-                return svg;
-            }
-
-            if (num === 3 || num === 4) {
-                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="20,2 38,20 20,38 2,20" fill="#f6e05e" stroke="#d69e2e" stroke-width="2"/>
-                    <text x="20" y="24" font-size="14" font-family="sans-serif" font-weight="bold" fill="#2d3748" text-anchor="middle">P-${num}</text>
-                </svg>`;
-                return svg;
-            }
-
-            const prohibitive = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,35,39,40,41,42,43,44,45,46,64,65,66,67,68,73,74,75];
-            const mandatory = [49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,69,70,71,72,76,77];
-
-            if (prohibitive.includes(num) || num === 32 || num === 33 || num === 34 || num === 36 || num === 37 || num === 38 || num === 47 || num === 48) {
-                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="17" fill="white" stroke="#e53e3e" stroke-width="3"/>
-                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-${num}</text>
-                </svg>`;
-                return svg;
-            }
-
-            if (mandatory.includes(num)) {
-                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="17" fill="#3182ce" stroke="#2b6cb0" stroke-width="2"/>
-                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">P-${num}</text>
-                </svg>`;
-                return svg;
-            }
-
-            svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="17" fill="#f7fafc" stroke="#718096" stroke-width="2"/>
-                <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="#2d3748" text-anchor="middle">P-${num}</text>
-            </svg>`;
-            return svg;
-        }
-
-        function replaceSignCodes(text) {
-            if (!text) return text;
-            return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
-                const code = 'Ρ-' + number;
-                const svg = getSignSVG(code);
-                if (svg === code) return match;
-                return `<img src="data:image/svg+xml;utf8,${encodeURIComponent(svg)}" class="sign-img" alt="${code}" loading="lazy">`;
-            });
-        }
-
-        // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v13 (126 παραβάσεις)
+        // ΔΕΔΟΜΕΝΑ – v14 (126 παραβάσεις, πλήρης λίστα)
         // ============================================================
         const data = [
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
@@ -1339,8 +1250,6 @@
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
                 points: 5, criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
-
-            // ========== ΠΙΝΑΚΙΔΕΣ (Άρθρο 7) ==========
             { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
@@ -1396,8 +1305,6 @@
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Παραβίαση της οριζόντιας σήμανσης που αφορά σε παράλληλες λοξές λωρίδες (Ε2-Β).' },
-
-            // ========== ΚΙΝΗΣΗ ==========
             { id: 51, category: 'κίνηση', name: 'Παραβίαση ερυθρού σηματοδότη', article: '9§3', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
                 half: false,
@@ -1446,8 +1353,6 @@
                 details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥3 μήνες)', points: 0, criminal: true,
                 half: false,
                 fullDescription: 'Μη παροχή βοήθειας και μη αναγγελία τροχαίου ατυχήματος με σωματικές βλάβες ή θάνατο.' },
-
-            // ========== ΤΑΧΥΤΗΤΑ ==========
             { id: 63, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του ορίου ταχύτητας έως 20 χλμ/ώρα. Κατατάσσεται στην Ε2-Α.' },
@@ -1468,8 +1373,6 @@
                 suspend: '1 έτος αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
-
-            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ ==========
             { id: 68, category: 'επαγγελματικά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: 30, suspend: '-',
                 details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
@@ -1512,8 +1415,6 @@
                 details: 'Αφαίρεση άδειας οδήγησης (οδηγός + ιδιοκτήτης)', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
-
-            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ ==========
             { id: 79, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
                 half: false,
@@ -1548,8 +1449,6 @@
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Απαγορεύεται η μεταφορά αντικειμένων που εμποδίζουν την οδήγηση ή εκθέτουν σε κίνδυνο τους άλλους χρήστες.' },
-
-            // ========== ΕΠΗΟ ==========
             { id: 88, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
@@ -1577,8 +1476,6 @@
                 article: '24§12α', fine: 350, suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Θέση σε κυκλοφορία ΕΠΗΟ που μπορεί να αναπτύξει ταχύτητα άνω των 35 χλμ/ώρα (Ε3-Α για τον θέτοντα).' },
-
-            // ========== ΑΔΕΙΕΣ ==========
             { id: 95, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
                 suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
@@ -1603,8 +1500,6 @@
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Παραχώρηση οδήγησης οχήματος σε πρόσωπο που δεν έχει την κατάλληλη άδεια.' },
-
-            // ========== ΑΣΦΑΛΕΙΑ ==========
             { id: 100, category: 'ασφάλεια', name: 'Ανασφάλιστο – Δίκυκλα', article: 'ΠΔ 237/86', fine: 250,
                 suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
@@ -1637,8 +1532,6 @@
                 article: '85§17', fine: 150, suspend: 'Ακινητοποίηση',
                 details: 'Ακινητοποίηση μέχρι αποκατάστασης', points: 0, criminal: false, half: false,
                 fullDescription: 'Έλλειψη ζώνης ασφαλείας σε Ι.Χ.Ε. ή φορτηγό ≤3,5 τόνους.' },
-
-            // ========== ΚΤΕΟ ==========
             { id: 107, category: 'ΚΤΕΟ', name: 'Χωρίς ΚΤΕΟ', article: '90', fine: 350,
                 suspend: '30 ημέρες στοιχ. κυκλ. + ακινητοποίηση',
                 details: 'Αφαίρεση στοιχείων κυκλοφορίας + ακινητοποίηση', points: 0, criminal: false,
@@ -1648,8 +1541,6 @@
                 fine: 'ΠΛΗΜΜΕΛΗΜΑ', suspend: 'Οριστική αφαίρεση στοιχ. κυκλ.',
                 details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: true, half: false,
                 fullDescription: 'Χρήση πλαστού ή παραποιημένου Δελτίου Τεχνικού Ελέγχου.' },
-
-            // ========== ΧΩΡΙΣ ΠΙΝΑΚΙΔΕΣ / ΑΔΕΙΑ ΚΥΚΛΟΦΟΡΙΑΣ ==========
             { id: 109, category: 'άδειες', name: 'Χωρίς πινακίδες κυκλοφορίας', article: '94§3', fine: 350,
                 suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≤1 έτος)', points: 0,
@@ -1660,8 +1551,6 @@
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Κυκλοφορία οχήματος χωρίς άδεια κυκλοφορίας.' },
-
-            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ ==========
             { id: 111, category: 'αλκοόλ', name: 'Αλκοόλ 0,50-0,80 (γενικός)', article: '46§7α', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
                 half: false,
@@ -1698,8 +1587,6 @@
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true,
                 half: false,
                 fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ >1,10 g/l.' },
-
-            // ========== ΥΠΟΤΡΟΠΗ ==========
             { id: 119, category: 'υποτροπή', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)',
                 article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
                 points: 0, criminal: false, half: false,
@@ -1735,12 +1622,11 @@
         ];
 
         // ============================================================
-        // ΣΥΝΑΡΤΗΣΗ ΥΠΟΛΟΓΙΣΜΟΥ ΧΡΩΜΑΤΟΣ ΒΑΡΥΤΗΤΑΣ
+        // ΣΥΝΑΡΤΗΣΕΙΣ ΒΑΡΥΤΗΤΑΣ
         // ============================================================
         function getSeverityColor(suspend, criminal) {
             if (criminal) return severityColors.criminal;
             if (!suspend || suspend === '-') return severityColors.none;
-
             const lower = suspend.toLowerCase();
             if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) return severityColors['10'];
             if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) return severityColors['20'];
@@ -1749,10 +1635,8 @@
             if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) return severityColors['60'];
             if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) return severityColors['70'];
             if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) return severityColors['90'];
-            if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') || lower.includes(
-                    'μήνες')) return severityColors['180'];
+            if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') || lower.includes('μήνες')) return severityColors['180'];
             if (lower.includes('ακινητοποίηση') || lower.includes('οριστική')) return severityColors.criminal;
-
             return severityColors.none;
         }
 
@@ -1764,15 +1648,10 @@
         let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
         let openDescriptions = {};
 
-        // Φόρτωση αποθηκευμένων OTA
-        try {
-            const savedOta = JSON.parse(localStorage.getItem('kok_ota'));
-            if (savedOta) otaSelections = savedOta;
-        } catch (e) {}
+        loadOtaSelection();
 
         // PWA Install
         let deferredPrompt = null;
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -1798,7 +1677,6 @@
             showToast('✅ Εφαρμογή εγκαταστάθηκε!');
         });
 
-        // Εγγραφή Service Worker (PWA Offline)
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
                 .then(() => console.log('✅ Service Worker εγγεγραμμένος'))
@@ -1881,13 +1759,11 @@
                 showToast('⚠️ Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
                 return;
             }
-
             const win = window.open('', '_blank', 'width=900,height=700');
             if (!win) {
                 showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
                 return;
             }
-
             const html = `
             <!DOCTYPE html>
             <html>
@@ -1916,9 +1792,9 @@
             </head>
             <body>
                 <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-                <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v13» — ${new Date().toLocaleDateString()}</p>
+                <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v14» — ${new Date().toLocaleDateString()}</p>
                 ${favs.map(v => {
-                    const ota = getOtaSelection(v.id);
+                    const ota = selectedOta;
                     return `
                     <div class="card">
                         <div class="name">${v.name}</div>
@@ -1939,13 +1815,9 @@
             </body>
             </html>
             `;
-
             win.document.write(html);
             win.document.close();
-            setTimeout(() => {
-                win.focus();
-                win.print();
-            }, 500);
+            setTimeout(() => { win.focus(); win.print(); }, 500);
         }
 
         // ============================================================
@@ -1962,8 +1834,7 @@
                 if (showFavorites && !favorites[v.id]) return false;
                 if (currentFilter !== 'all' && v.category !== currentFilter) return false;
                 if (query) {
-                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v
-                        .fullDescription || '')).toLowerCase();
+                    const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v.fullDescription || '')).toLowerCase();
                     if (!searchable.includes(query)) return false;
                 }
                 return true;
@@ -1980,8 +1851,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML =
-                    `<div class="empty"><span class="icon">🔍</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+                container.innerHTML = `<div class="empty"><span class="icon">🔍</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:14px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
                 return;
             }
 
@@ -2006,8 +1876,7 @@
                     else if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) bgColor = '#fde68a';
                     else if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) bgColor = '#fee2e2';
                     else if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) bgColor = '#fee2e2';
-                    else if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') ||
-                        lower.includes('μήνες')) bgColor = '#fecaca';
+                    else if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') || lower.includes('μήνες')) bgColor = '#fecaca';
                     else bgColor = '#ffffff';
                 }
 
@@ -2015,9 +1884,9 @@
                     (bgColor !== '#ffffff' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)') :
                     bgColor;
 
-                const ota = getOtaSelection(v.id);
-                const otaDisplay = ota ? `<span class="ota-code">${ota.code}</span>` :
-                    `<span class="ota-code" style="color:#94a3b8;">—</span>`;
+                const otaBadge = selectedOta ?
+                    `<div class="ota-badge">🏛️ <strong>${selectedOta.code}</strong> — ${selectedOta.name}</div>` :
+                    '';
 
                 return `
                 <div class="card" style="border-left-color: ${color}; background-color: ${darkBg};">
@@ -2032,18 +1901,7 @@
                             ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                         </div>
-                        <div class="ota-section">
-                            <label>🏛️ Κωδικός ΟΤΑ:</label>
-                            <input type="text" class="ota-input" 
-                                   id="ota-input-${v.id}"
-                                   placeholder="Αναζήτησε δήμο..."
-                                   value="${ota ? ota.name : ''}"
-                                   oninput="handleOtaInput(${v.id}, this)"
-                                   onfocus="renderOtaSuggestions(${v.id}, this.value)"
-                                   autocomplete="off">
-                            <div class="ota-suggestions" id="ota-suggestions-${v.id}"></div>
-                            ${otaDisplay}
-                        </div>
+                        ${otaBadge}
                         ${v.fullDescription ? `
                             <button class="desc-toggle" onclick="toggleDescription(${v.id})">
                                 ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Περιγραφή'}
@@ -2060,8 +1918,8 @@
             `}).join('');
 
             document.addEventListener('click', function(e) {
-                if (!e.target.closest('.ota-section')) {
-                    document.querySelectorAll('.ota-suggestions').forEach(el => el.classList.remove('show'));
+                if (!e.target.closest('.ota-search-box')) {
+                    document.getElementById('otaSuggestions').classList.remove('show');
                 }
             });
         }
@@ -2069,7 +1927,7 @@
         // ============================================================
         // ΕΚΚΙΝΗΣΗ
         // ============================================================
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v13 - PWA Ready)');
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v14 - PWA Ready)');
         render();
 
         document.addEventListener('keydown', (e) => {
