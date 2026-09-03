@@ -158,54 +158,6 @@
         .search-box .clear-btn.visible {
             display: block;
         }
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-        }
-        .filters button {
-            padding: 7px 16px;
-            border: none;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.18);
-            color: #fff;
-            cursor: pointer;
-            transition: all .2s;
-            white-space: nowrap;
-            position: relative;
-        }
-        .filters button.active {
-            background: #fff;
-            color: #1e3a5f;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        .filters button.active::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 30%;
-            width: 40%;
-            height: 2px;
-            background: #1e3a5f;
-            border-radius: 4px;
-        }
-        body.dark .filters button.active {
-            background: #2d3748;
-            color: #e2e8f0;
-        }
-        body.dark .filters button.active::after {
-            background: #e2e8f0;
-        }
-        .filters button:hover {
-            background: rgba(255, 255, 255, 0.32);
-            transform: translateY(-1px);
-        }
-        body.dark .filters button:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
         .ota-search-box {
             margin-top: 10px;
             display: flex;
@@ -282,6 +234,54 @@
             border-radius: 6px;
             min-width: 70px;
             text-align: center;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .filters button {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            white-space: nowrap;
+            position: relative;
+        }
+        .filters button.active {
+            background: #fff;
+            color: #1e3a5f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .filters button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 30%;
+            width: 40%;
+            height: 2px;
+            background: #1e3a5f;
+            border-radius: 4px;
+        }
+        body.dark .filters button.active {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+        body.dark .filters button.active::after {
+            background: #e2e8f0;
+        }
+        .filters button:hover {
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-1px);
+        }
+        body.dark .filters button:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
         .count {
             font-size: 14px;
@@ -411,6 +411,25 @@
         }
         body.dark .card .details .points {
             color: #a78bfa;
+        }
+        .card .ota-badge {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #64748b;
+            padding: 4px 10px;
+            background: rgba(0,0,0,0.04);
+            border-radius: 6px;
+            display: inline-block;
+        }
+        body.dark .card .ota-badge {
+            color: #94a3b8;
+            background: rgba(255,255,255,0.06);
+        }
+        .card .ota-badge strong {
+            color: #2563eb;
+        }
+        body.dark .card .ota-badge strong {
+            color: #60a5fa;
         }
         .card .favorite {
             flex-shrink: 0;
@@ -810,7 +829,97 @@
         // ============================================================
         // ΛΙΣΤΑ ΚΩΔΙΚΩΝ ΟΤΑ
         // ============================================================
-        let otaList = []; // Φορτώνεται από ota-data.json (βλ. loadExternalData)
+        const otaList = [
+            { name: 'Αγίου Δημητρίου Αττικής', code: '0011' },
+            { name: 'Αγίου Νικολάου Κρήτης', code: '0101' },
+            { name: 'Αγρινίου Αιτωλοακαρνανίας', code: '0201' },
+            { name: 'Αθηνών', code: '0001' },
+            { name: 'Αλεξανδρούπολης Έβρου', code: '0301' },
+            { name: 'Αμφιλοχίας Αιτωλοακαρνανίας', code: '0202' },
+            { name: 'Αμφίσσης Φωκίδας', code: '0401' },
+            { name: 'Ανδραβίδας-Κυλλήνης Ηλείας', code: '0501' },
+            { name: 'Αργοστολίου Κεφαλληνίας', code: '0601' },
+            { name: 'Αρτας', code: '0701' },
+            { name: 'Αχαρνών Αττικής', code: '0012' },
+            { name: 'Βέροιας Ημαθίας', code: '0801' },
+            { name: 'Βόλου Μαγνησίας', code: '0901' },
+            { name: 'Γιαννιτσών Πέλλας', code: '1001' },
+            { name: 'Γρεβενών', code: '1101' },
+            { name: 'Δράμας', code: '1201' },
+            { name: 'Δυτικής Μάνης Μεσσηνίας', code: '1301' },
+            { name: 'Έδεσσας Πέλλας', code: '1002' },
+            { name: 'Ελασσόνας Λάρισας', code: '1401' },
+            { name: 'Ελευσίνας Αττικής', code: '0013' },
+            { name: 'Ερμιονίδας Αργολίδας', code: '1501' },
+            { name: 'Ζακύνθου', code: '1601' },
+            { name: 'Ηγουμενίτσας Θεσπρωτίας', code: '3202' },
+            { name: 'Ηρακλείου Κρήτης', code: '0102' },
+            { name: 'Θεσσαλονίκης', code: '0002' },
+            { name: 'Θήβας Βοιωτίας', code: '1701' },
+            { name: 'Ιεράπετρας Κρήτης', code: '0103' },
+            { name: 'Ιθάκης', code: '0602' },
+            { name: 'Ιωαννιτών', code: '1801' },
+            { name: 'Καβάλας', code: '1901' },
+            { name: 'Καλαμάτας Μεσσηνίας', code: '1302' },
+            { name: 'Καλαμαριάς Θεσσαλονίκης', code: '5434' },
+            { name: 'Καρδίτσας', code: '2001' },
+            { name: 'Καρπενησίου Ευρυτανίας', code: '2101' },
+            { name: 'Καστοριάς', code: '2201' },
+            { name: 'Κατερίνης Πιερίας', code: '2301' },
+            { name: 'Κέρκυρας', code: '2401' },
+            { name: 'Κερατσινίου-Δραπετσώνας Αττικής', code: '0014' },
+            { name: 'Κιλκίς', code: '2501' },
+            { name: 'Κοζάνης', code: '2601' },
+            { name: 'Κορίνθου', code: '2701' },
+            { name: 'Κω', code: '2801' },
+            { name: 'Λαγκαδά Θεσσαλονίκης', code: '0003' },
+            { name: 'Λάρισας', code: '1402' },
+            { name: 'Λασιθίου Κρήτης', code: '0104' },
+            { name: 'Λευκάδας', code: '2901' },
+            { name: 'Λιβαδειάς Βοιωτίας', code: '1702' },
+            { name: 'Λουτρακίου-Περαχώρας-Αγίων Θεοδώρων Κορινθίας', code: '2702' },
+            { name: 'Μαραθώνα Αττικής', code: '0015' },
+            { name: 'Μεγάρων Αττικής', code: '0016' },
+            { name: 'Μεσολογγίου Αιτωλοακαρνανίας', code: '0203' },
+            { name: 'Μήλου', code: '3001' },
+            { name: 'Μυτιλήνης Λέσβου', code: '3101' },
+            { name: 'Νάουσας Ημαθίας', code: '0802' },
+            { name: 'Ναυπλίου Αργολίδας', code: '1502' },
+            { name: 'Νέστου Καβάλας (πρώην Χρυσούπολης)', code: '5511' },
+            { name: 'Νίκαιας-Αγ. Ιωάννη Ρέντη Αττικής', code: '0017' },
+            { name: 'Ξάνθης', code: '3203' },
+            { name: 'Ξηρομέρου Αιτωλοακαρνανίας', code: '0204' },
+            { name: 'Ορεστιάδας Έβρου', code: '0302' },
+            { name: 'Παιανίας Αττικής', code: '0018' },
+            { name: 'Παλαιού Φαλήρου Αττικής', code: '0019' },
+            { name: 'Πάτρας Αχαΐας', code: '3301' },
+            { name: 'Πειραιά', code: '0004' },
+            { name: 'Πέλλας', code: '1003' },
+            { name: 'Πρέβεζας', code: '3401' },
+            { name: 'Πτολεμαΐδας Κοζάνης', code: '2602' },
+            { name: 'Πύργου Ηλείας', code: '0502' },
+            { name: 'Ρεθύμνου Κρήτης', code: '0105' },
+            { name: 'Ρόδου', code: '2802' },
+            { name: 'Σαλαμίνας Αττικής', code: '0020' },
+            { name: 'Σάμου', code: '3501' },
+            { name: 'Σερρών', code: '3601' },
+            { name: 'Σιάτιστας Κοζάνης', code: '2603' },
+            { name: 'Σιθωνίας Χαλκιδικής', code: '3701' },
+            { name: 'Σουλίου Θεσπρωτίας', code: '3204' },
+            { name: 'Σπάτων-Αρτέμιδος Αττικής', code: '0021' },
+            { name: 'Σπάρτης Λακωνίας', code: '3801' },
+            { name: 'Τρίπολης Αρκαδίας', code: '3901' },
+            { name: 'Τρικκαίων', code: '4001' },
+            { name: 'Φαρσάλων Λάρισας', code: '1403' },
+            { name: 'Φιλιατών Θεσπρωτίας', code: '3208' },
+            { name: 'Φλώρινας', code: '4101' },
+            { name: 'Φυλής Αττικής', code: '0022' },
+            { name: 'Χαλκίδας Εύβοιας', code: '4201' },
+            { name: 'Χανίων Κρήτης', code: '0106' },
+            { name: 'Χίου', code: '4301' },
+            { name: 'Ψυχικού Αττικής', code: '0023' },
+            { name: 'Ωραιοκάστρου Θεσσαλονίκης', code: '0005' }
+        ];
 
         // ============================================================
         // ΣΥΝΑΡΤΗΣΕΙΣ ΟΤΑ
@@ -823,8 +932,7 @@
             return otaList
                 .filter(item => {
                     const name = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                    const code = item.code.toLowerCase();
-                    return name.includes(q) || code.includes(q);
+                    return name.includes(q);
                 })
                 .slice(0, 10);
         }
@@ -868,9 +976,97 @@
         }
 
         // ============================================================
-        // ΠΙΝΑΚΙΔΕΣ – ΠΡΑΓΜΑΤΙΚΕΣ ΕΙΚΟΝΕΣ ΑΠΟ WIKIMEDIA (ΟΠΩΣ Ο CLAUDE)
+        // ΠΙΝΑΚΙΔΕΣ – ΑΚΡΙΒΩΣ ΟΠΩΣ ΤΟ CLAUDE
         // ============================================================
-        let signImageMap = {}; // Φορτώνεται από signs-data.json (βλ. loadExternalData)
+        const signImageMap = {
+            'Ρ-1': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-1.svg.png',
+            'Ρ-2': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-2.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-2.svg.png',
+            'Ρ-3': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-3.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-3.svg.png',
+            'Ρ-4': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-4.svg.png',
+            'Ρ-5': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-5.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-5.svg.png',
+            'Ρ-6': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-6.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-6.svg.png',
+            'Ρ-7': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-7.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-7.svg.png',
+            'Ρ-8': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-8.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-8.svg.png',
+            'Ρ-9': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-9.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-9.svg.png',
+            'Ρ-10': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-10.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-10.svg.png',
+            'Ρ-11': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-11.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-11.svg.png',
+            'Ρ-12': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-12.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-12.svg.png',
+            'Ρ-13': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-13.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-13.svg.png',
+            'Ρ-14': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-14.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-14.svg.png',
+            'Ρ-15': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-15.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-15.svg.png',
+            'Ρ-16': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-16.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-16.svg.png',
+            'Ρ-17': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-17.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-17.svg.png',
+            'Ρ-18': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-18.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-18.svg.png',
+            'Ρ-19': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-19.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-19.svg.png',
+            'Ρ-20': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-20.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-20.svg.png',
+            'Ρ-21': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-21.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-21.svg.png',
+            'Ρ-22': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-22.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-22.svg.png',
+            'Ρ-23': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-23.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-23.svg.png',
+            'Ρ-24': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-24.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-24.svg.png',
+            'Ρ-25': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-25.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-25.svg.png',
+            'Ρ-26': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-26.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-26.svg.png',
+            'Ρ-27': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-27.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-27.svg.png',
+            'Ρ-28': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-28.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-28.svg.png',
+            'Ρ-29': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-29.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-29.svg.png',
+            'Ρ-30': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-30.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-30.svg.png',
+            'Ρ-31': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-31.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-31.svg.png',
+            'Ρ-32': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-32.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-32.svg.png',
+            'Ρ-33': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-33.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-33.svg.png',
+            'Ρ-34': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-34.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-34.svg.png',
+            'Ρ-35': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-35.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-35.svg.png',
+            'Ρ-36': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-36.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-36.svg.png',
+            'Ρ-37': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-37.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-37.svg.png',
+            'Ρ-38': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-38.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-38.svg.png',
+            'Ρ-39': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-39.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-39.svg.png',
+            'Ρ-40': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-40.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-40.svg.png',
+            'Ρ-41': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-41.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-41.svg.png',
+            'Ρ-42': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-42.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-42.svg.png',
+            'Ρ-43': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-43.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-43.svg.png',
+            'Ρ-44': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-44.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-44.svg.png',
+            'Ρ-45': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-45.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-45.svg.png',
+            'Ρ-46': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-46.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-46.svg.png',
+            'Ρ-47': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-47.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-47.svg.png',
+            'Ρ-48': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-48.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-48.svg.png',
+            'Ρ-49': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-49.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-49.svg.png',
+            'Ρ-50': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50.svg.png',
+            'Ρ-50α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B1.svg.png',
+            'Ρ-50δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-50%CE%B4.svg.png',
+            'Ρ-51': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51.svg.png',
+            'Ρ-51α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B1.svg.png',
+            'Ρ-51δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-51%CE%B4.svg.png',
+            'Ρ-52': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52.svg.png',
+            'Ρ-52α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B1.svg.png',
+            'Ρ-52δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-52%CE%B4.svg.png',
+            'Ρ-53': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-53.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-53.svg.png',
+            'Ρ-54': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-54.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-54.svg.png',
+            'Ρ-55': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-55.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-55.svg.png',
+            'Ρ-56': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-56.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-56.svg.png',
+            'Ρ-57': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-57.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-57.svg.png',
+            'Ρ-58': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-58.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-58.svg.png',
+            'Ρ-59': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-59.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-59.svg.png',
+            'Ρ-60': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-60.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-60.svg.png',
+            'Ρ-61': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-61.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-61.svg.png',
+            'Ρ-62': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-62.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-62.svg.png',
+            'Ρ-63': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-63.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-63.svg.png',
+            'Ρ-64': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-64.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-64.svg.png',
+            'Ρ-65': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-65.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-65.svg.png',
+            'Ρ-66': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-66.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-66.svg.png',
+            'Ρ-66α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-66%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-66%CE%B1.svg.png',
+            'Ρ-67': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-67.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-67.svg.png',
+            'Ρ-67α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-67%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-67%CE%B1.svg.png',
+            'Ρ-68': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-68.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-68.svg.png',
+            'Ρ-69': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-69.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-69.svg.png',
+            'Ρ-70': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-70.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-70.svg.png',
+            'Ρ-71': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-71.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-71.svg.png',
+            'Ρ-72': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-72.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-72.svg.png',
+            'Ρ-73α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B1.svg.png',
+            'Ρ-73δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-73%CE%B4.svg.png',
+            'Ρ-74α': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B1.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B1.svg.png',
+            'Ρ-74δ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B4.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-74%CE%B4.svg.png',
+            'Ρ-75': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-75.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-75.svg.png',
+            'Ρ-76': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-76.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-76.svg.png',
+            'Ρ-77': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Traffic_Sign_GR_-_KOK_2009_-_R-77.svg/40px-Traffic_Sign_GR_-_KOK_2009_-_R-77.svg.png'
+        };
 
         function replaceSignCodes(text) {
             if (!text) return text;
@@ -878,7 +1074,7 @@
                 const code = 'Ρ-' + number;
                 const imgUrl = signImageMap[code];
                 if (imgUrl) {
-                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onerror="this.outerHTML='${code}';">`;
+                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" loading="lazy">`;
                 }
                 return match;
             });
@@ -1688,6 +1884,10 @@
                     (bgColor !== '#ffffff' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)') :
                     bgColor;
 
+                const otaBadge = selectedOta ?
+                    `<div class="ota-badge">🏛️ <strong>${selectedOta.code}</strong> — ${selectedOta.name}</div>` :
+                    '';
+
                 return `
                 <div class="card" style="border-left-color: ${color}; background-color: ${darkBg};">
                     <div class="severity-bar" style="background-color: ${severityColor};"></div>
@@ -1701,6 +1901,7 @@
                             ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
                             ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                         </div>
+                        ${otaBadge}
                         ${v.fullDescription ? `
                             <button class="desc-toggle" onclick="toggleDescription(${v.id})">
                                 ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Περιγραφή'}
@@ -1724,24 +1925,10 @@
         }
 
         // ============================================================
-        // ΕΚΚΙΝΗΣΗ — φόρτωση εξωτερικών δεδομένων (πινακίδες / ΟΤΑ)
+        // ΕΚΚΙΝΗΣΗ
         // ============================================================
-        async function loadExternalData() {
-            try {
-                const [signsRes, otaRes] = await Promise.all([
-                    fetch('signs-data.json'),
-                    fetch('ota-data.json')
-                ]);
-                if (signsRes.ok) signImageMap = await signsRes.json();
-                if (otaRes.ok) otaList = await otaRes.json();
-            } catch (e) {
-                console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία δεδομένων (signs-data.json / ota-data.json):', e);
-            }
-            render();
-        }
-
         console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v14 - PWA Ready)');
-        loadExternalData();
+        render();
 
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
