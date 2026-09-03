@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ΚΟΚ – Τσέπης v10.7</title>
+    <title>ΚΟΚ – Τσέπης v11 (Offline)</title>
     <style>
-        /* ============================================================
-               v10.7 - Όλες οι πινακίδες (ακόμα και σε λίστες) με μικρογραφίες
-               ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +26,6 @@
             color: #e2e8f0;
         }
 
-        /* ----- Header ----- */
         .header {
             background: linear-gradient(145deg, #1a365d, #1e3a5f);
             color: #fff;
@@ -120,7 +116,6 @@
             background: #10b981;
         }
 
-        /* ----- Search Box ----- */
         .search-box {
             margin-top: 14px;
             position: relative;
@@ -181,7 +176,6 @@
             display: block;
         }
 
-        /* ----- Filters ----- */
         .filters {
             display: flex;
             flex-wrap: wrap;
@@ -238,7 +232,6 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
-        /* ----- Count ----- */
         .count {
             font-size: 14px;
             color: #4a5568;
@@ -259,7 +252,6 @@
             color: #f59e0b;
         }
 
-        /* ----- Cards ----- */
         .list {
             margin-top: 12px;
             display: flex;
@@ -324,7 +316,6 @@
             color: #0f172a;
         }
 
-        /* Στυλ για τις μικρογραφίες πινακίδων */
         .card .name .sign-img {
             display: inline-block;
             width: 32px;
@@ -752,18 +743,18 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v10.7</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v11 (Offline)</span></div>
             <div class="header-actions">
-                <button onclick="toggleDark()" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
-                <button onclick="toggleFavorites()" aria-label="Εμφάνιση αγαπημένων">⭐</button>
-                <button class="pdf-btn" onclick="exportFavorites()" aria-label="Εξαγωγή αγαπημένων σε PDF">📄 PDF</button>
-                <button onclick="window.print()" aria-label="Εκτύπωση όλων">🖨️</button>
+                <button onclick="toggleDark()">🌙</button>
+                <button onclick="toggleFavorites()">⭐</button>
+                <button class="pdf-btn" onclick="exportFavorites()">📄 PDF</button>
+                <button onclick="window.print()">🖨️</button>
             </div>
         </div>
         <div class="search-box">
             <span class="icon">🔍</span>
             <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
-            <button class="clear-btn" id="clearBtn" onclick="clearSearch()" aria-label="Καθαρισμός αναζήτησης">✕</button>
+            <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
         </div>
         <div class="filters" id="filterContainer">
             <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
@@ -809,9 +800,6 @@
             'υποτροπή': '#dc2626'
         };
 
-        // ============================================================
-        // ΧΡΩΜΑΤΑ ΒΑΡΥΤΗΤΑΣ (παστέλ)
-        // ============================================================
         const severityColors = {
             'none': '#e2e8f0',
             '10': '#fef9c3',
@@ -826,119 +814,116 @@
         };
 
         // ============================================================
-        // ΠΙΝΑΚΑΣ ΑΝΤΙΣΤΟΙΧΙΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ (από Wikimedia Commons)
+        // ΕΝΣΩΜΑΤΩΜΕΝΑ SVG ΕΙΚΟΝΙΔΙΑ (OFFLINE)
         // ============================================================
-        const signImageMap = {
-            'Ρ-1': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-1.svg',
-            'Ρ-2': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-2.svg',
-            'Ρ-3': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-3.svg',
-            'Ρ-4': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-4.svg',
-            'Ρ-5': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-5.svg',
-            'Ρ-6': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-6.svg',
-            'Ρ-7': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-7.svg',
-            'Ρ-8': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-8.svg',
-            'Ρ-9': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-9.svg',
-            'Ρ-10': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-10.svg',
-            'Ρ-11': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-11.svg',
-            'Ρ-12': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-12.svg',
-            'Ρ-13': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-13.svg',
-            'Ρ-14': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-14.svg',
-            'Ρ-15': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-15.svg',
-            'Ρ-16': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-16.svg',
-            'Ρ-17': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-17.svg',
-            'Ρ-18': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-18.svg',
-            'Ρ-19': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-19.svg',
-            'Ρ-20': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-20.svg',
-            'Ρ-21': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-21.svg',
-            'Ρ-22': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-22.svg',
-            'Ρ-23': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-23.svg',
-            'Ρ-24': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-24.svg',
-            'Ρ-25': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-25.svg',
-            'Ρ-26': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-26.svg',
-            'Ρ-27': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-27.svg',
-            'Ρ-28': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-28.svg',
-            'Ρ-29': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-29.svg',
-            'Ρ-30': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-30.svg',
-            'Ρ-31': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-31.svg',
-            'Ρ-32': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-32.svg',
-            'Ρ-33': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-33.svg',
-            'Ρ-34': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-34.svg',
-            'Ρ-35': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-35.svg',
-            'Ρ-36': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-36.svg',
-            'Ρ-37': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-37.svg',
-            'Ρ-38': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-38.svg',
-            'Ρ-39': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-39.svg',
-            'Ρ-40': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-40.svg',
-            'Ρ-41': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-41.svg',
-            'Ρ-42': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-42.svg',
-            'Ρ-43': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-43.svg',
-            'Ρ-44': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-44.svg',
-            'Ρ-45': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-45.svg',
-            'Ρ-46': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-46.svg',
-            'Ρ-47': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-47.svg',
-            'Ρ-48': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-48.svg',
-            'Ρ-49': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-49.svg',
-            'Ρ-50': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-50.svg',
-            'Ρ-50α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-50a.svg',
-            'Ρ-50δ': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-50d.svg',
-            'Ρ-51': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-51.svg',
-            'Ρ-51α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-51a.svg',
-            'Ρ-51δ': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-51d.svg',
-            'Ρ-52': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-52.svg',
-            'Ρ-52α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-52a.svg',
-            'Ρ-52δ': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-52d.svg',
-            'Ρ-53': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-53.svg',
-            'Ρ-54': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-54.svg',
-            'Ρ-55': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-55.svg',
-            'Ρ-56': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-56.svg',
-            'Ρ-57': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-57.svg',
-            'Ρ-58': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-58.svg',
-            'Ρ-59': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-59.svg',
-            'Ρ-60': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-60.svg',
-            'Ρ-61': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-61.svg',
-            'Ρ-62': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-62.svg',
-            'Ρ-63': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-63.svg',
-            'Ρ-64': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-64.svg',
-            'Ρ-65': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-65.svg',
-            'Ρ-66': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-66.svg',
-            'Ρ-66α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-66a.svg',
-            'Ρ-67': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-67.svg',
-            'Ρ-67α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-67a.svg',
-            'Ρ-68': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-68.svg',
-            'Ρ-69': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-69.svg',
-            'Ρ-70': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-70.svg',
-            'Ρ-71': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-71.svg',
-            'Ρ-72': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-72.svg',
-            'Ρ-73α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-73a.svg',
-            'Ρ-73δ': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-73d.svg',
-            'Ρ-74α': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-74a.svg',
-            'Ρ-74δ': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-74d.svg',
-            'Ρ-75': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-75.svg',
-            'Ρ-76': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-76.svg',
-            'Ρ-77': 'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic%20Sign%20GR%20-%20KOK%202009%20-%20R-77.svg'
-        };
+        function getSignSVG(code) {
+            // code: "Ρ-1", "Ρ-2", ... "Ρ-77"
+            const num = parseInt(code.replace('Ρ-', ''));
+            if (isNaN(num)) return code;
+
+            // Χρώματα και σχήματα ανάλογα με τον τύπο
+            let svg = '';
+            const size = 40;
+            const stroke = '#333';
+            const strokeWidth = 2;
+
+            // Ειδικές περιπτώσεις
+            if (num === 1) {
+                // Ρ-1: Παραχώρηση προτεραιότητας (ανάποδο τρίγωνο)
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="20,5 35,35 5,35" fill="white" stroke="#e53e3e" stroke-width="3"/>
+                    <text x="20" y="28" font-size="12" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-1</text>
+                </svg>`;
+                return svg;
+            }
+
+            if (num === 2) {
+                // Ρ-2: STOP (οκτάγωνο)
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="20,2 36,10 36,30 20,38 4,30 4,10" fill="#e53e3e" stroke="#c53030" stroke-width="1"/>
+                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">STOP</text>
+                </svg>`;
+                return svg;
+            }
+
+            // Ρ-3, Ρ-4: Οδός προτεραιότητας (κίτρινο διαμάντι)
+            if (num === 3 || num === 4) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="20,2 38,20 20,38 2,20" fill="#f6e05e" stroke="#d69e2e" stroke-width="2"/>
+                    <text x="20" y="24" font-size="14" font-family="sans-serif" font-weight="bold" fill="#2d3748" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            // Ρ-5, Ρ-6: Στενότητα (κόκκινο-λευκό)
+            if (num === 5 || num === 6) {
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="36" height="36" rx="4" fill="white" stroke="#e53e3e" stroke-width="3"/>
+                    <text x="20" y="24" font-size="14" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            // Απαγορευτικές (κόκκινος κύκλος): Ρ-7 έως Ρ-31, Ρ-35, Ρ-39-46, Ρ-64-68, Ρ-73-75
+            const prohibitive = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,35,39,40,41,42,43,44,45,46,64,65,66,67,68,73,74,75];
+            // Υποχρεωτικές (μπλε κύκλος): Ρ-49 έως Ρ-63, Ρ-69-72, Ρ-76, Ρ-77
+            const mandatory = [49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,69,70,71,72,76,77];
+            // Ειδικές: Ρ-33, Ρ-34, Ρ-36, Ρ-37, Ρ-38 (κόκκινος κύκλος με αριθμό)
+            const specialRed = [33,34,36,37,38];
+            // Ρ-32 (κόκκινος κύκλος με όριο ταχύτητας)
+            // Ρ-47, Ρ-48 (κόκκινος κύκλος)
+            // Ρ-35 (κόκκινος κύκλος)
+            // Λοιπές: Ρ-3, Ρ-4, Ρ-5, Ρ-6 ήδη καλυμμένες
+
+            let bgColor = '#fff';
+            let strokeColor = '#e53e3e';
+            let textColor = '#e53e3e';
+            let shape = 'circle';
+
+            if (prohibitive.includes(num) || specialRed.includes(num) || num === 32 || num === 47 || num === 48) {
+                // Κόκκινος κύκλος
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="17" fill="white" stroke="#e53e3e" stroke-width="3"/>
+                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="#e53e3e" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            if (mandatory.includes(num)) {
+                // Μπλε κύκλος
+                svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="17" fill="#3182ce" stroke="#2b6cb0" stroke-width="2"/>
+                    <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">P-${num}</text>
+                </svg>`;
+                return svg;
+            }
+
+            // Default: λευκός κύκλος με μαύρο κείμενο (για όσες δεν ταιριάζουν)
+            svg = `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="17" fill="#f7fafc" stroke="#718096" stroke-width="2"/>
+                <text x="20" y="25" font-size="12" font-family="sans-serif" font-weight="bold" fill="#2d3748" text-anchor="middle">P-${num}</text>
+            </svg>`;
+            return svg;
+        }
 
         // ============================================================
-        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ Ρ ΜΕ ΕΙΚΟΝΕΣ
+        // ΣΥΝΑΡΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΣΗΣ ΚΩΔΙΚΩΝ ΜΕ ΕΝΣΩΜΑΤΩΜΕΝΑ SVG
         // ============================================================
         function replaceSignCodes(text) {
             if (!text) return text;
-            // Βρίσκει όλα τα "Ρ-αριθμός" (με ή χωρίς ελληνικό "Ρ") και τα αντικαθιστά με εικόνα
-            return text.replace(/(Ρ-[\dαβδ]+)/g, function(match) {
-                const code = match.trim();
-                const imgUrl = signImageMap[code];
-                if (imgUrl) {
-                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onerror="this.outerHTML='${code}';">`;
-                }
-                return match; // αν δεν έχει εικόνα, αφήνουμε τον κωδικό ως έχει
+            return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
+                const code = 'Ρ-' + number;
+                const svg = getSignSVG(code);
+                // Αν η getSignSVG επιστρέψει τον ίδιο τον κωδικό (σφάλμα), τον αφήνουμε
+                if (svg === code) return match;
+                return `<img src="data:image/svg+xml;utf8,${encodeURIComponent(svg)}" class="sign-img" alt="${code}" loading="lazy">`;
             });
         }
 
         // ============================================================
-        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v10.7 (126 παραβάσεις, όμοια με πριν)
+        // ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ – v11 (ακριβώς ίδια με v10.9)
         // ============================================================
         const data = [
-            // ========== ΣΤΑΘΜΕΥΣΗ (Άρθρο 38) ==========
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0,
                 criminal: false, half: true,
@@ -1181,7 +1166,7 @@
                 half: false,
                 fullDescription: 'Μη παροχή βοήθειας και μη αναγγελία τροχαίου ατυχήματος με σωματικές βλάβες ή θάνατο.' },
 
-            // ========== ΤΑΧΥΤΗΤΑ (Άρθρο 24) ==========
+            // ========== ΤΑΧΥΤΗΤΑ ==========
             { id: 63, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του ορίου ταχύτητας έως 20 χλμ/ώρα. Κατατάσσεται στην Ε2-Α.' },
@@ -1203,7 +1188,7 @@
                 half: false,
                 fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
 
-            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ (Φορτηγά) ==========
+            // ========== ΕΠΑΓΓΕΛΜΑΤΙΚΑ ==========
             { id: 68, category: 'επαγγελματικά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: 30, suspend: '-',
                 details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
@@ -1247,7 +1232,7 @@
                 half: false,
                 fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
 
-            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ / ΜΟΤΟΠΟΔΗΛΑΤΑ (Άρθρο 16, 44) ==========
+            // ========== ΜΟΤΟΣΙΚΛΕΤΕΣ ==========
             { id: 79, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
                 half: false,
@@ -1283,7 +1268,7 @@
                 half: false,
                 fullDescription: 'Απαγορεύεται η μεταφορά αντικειμένων που εμποδίζουν την οδήγηση ή εκθέτουν σε κίνδυνο τους άλλους χρήστες.' },
 
-            // ========== ΕΠΗΟ (Άρθρο 24, 38, 44) ==========
+            // ========== ΕΠΗΟ ==========
             { id: 88, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
@@ -1312,7 +1297,7 @@
                 criminal: false, half: false,
                 fullDescription: 'Θέση σε κυκλοφορία ΕΠΗΟ που μπορεί να αναπτύξει ταχύτητα άνω των 35 χλμ/ώρα (Ε3-Α για τον θέτοντα).' },
 
-            // ========== ΑΔΕΙΕΣ (Άρθρο 98, 99, 102) ==========
+            // ========== ΑΔΕΙΕΣ ==========
             { id: 95, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
                 suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
@@ -1395,7 +1380,7 @@
                 half: false,
                 fullDescription: 'Κυκλοφορία οχήματος χωρίς άδεια κυκλοφορίας.' },
 
-            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ (Άρθρο 46) ==========
+            // ========== ΑΛΚΟΟΛ / ΤΟΞΙΚΕΣ ==========
             { id: 111, category: 'αλκοόλ', name: 'Αλκοόλ 0,50-0,80 (γενικός)', article: '46§7α', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
                 half: false,
@@ -1433,7 +1418,7 @@
                 half: false,
                 fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ >1,10 g/l.' },
 
-            // ========== ΥΠΟΤΡΟΠΗ (Άρθρο 110) ==========
+            // ========== ΥΠΟΤΡΟΠΗ ==========
             { id: 119, category: 'υποτροπή', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)',
                 article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
                 points: 0, criminal: false, half: false,
@@ -1638,7 +1623,7 @@
         }
 
         // ============================================================
-        // RENDER – με αντικατάσταση ΟΛΩΝ των κωδικών Ρ
+        // RENDER
         // ============================================================
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1681,10 +1666,9 @@
                 const isDescOpen = openDescriptions[v.id] || false;
                 const severityColor = getSeverityColor(v.suspend, v.criminal);
 
-                // Αντικαθιστούμε ΟΛΟΥΣ τους κωδικούς Ρ μέσα στο όνομα
+                // Αντικαθιστούμε ΟΛΟΥΣ τους κωδικούς Ρ (ελληνικό και λατινικό)
                 const nameWithImages = replaceSignCodes(v.name);
 
-                // Φόντο κάρτας (ίδιο με v10.4)
                 let bgColor = '#ffffff';
                 if (v.criminal) {
                     bgColor = '#fef2f2';
@@ -1735,11 +1719,12 @@
             `}).join('');
         }
 
-        // Εκκίνηση
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v10.7)');
+        // ============================================================
+        // ΕΚΚΙΝΗΣΗ
+        // ============================================================
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v11 Offline)');
         render();
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
                 e.preventDefault();
