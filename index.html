@@ -110,18 +110,29 @@
         body.dark .header-actions .pdf-btn {
             background: #10b981;
         }
+        /* Κουμπί εγκατάστασης – πάντα ορατό, γκρι αρχικά */
         #installBtn {
-            display: none;
+            display: flex !important;
             font-size: 14px;
             font-weight: 600;
             padding: 0 14px;
             border-radius: 30px;
             width: auto;
             gap: 6px;
-            background: #3b82f6;
+            background: #94a3b8;
             color: #fff;
+            cursor: not-allowed;
+            opacity: 0.6;
+            border: none;
+            align-items: center;
+            justify-content: center;
         }
-        #installBtn:hover {
+        #installBtn.ready {
+            background: #3b82f6;
+            cursor: pointer;
+            opacity: 1;
+        }
+        #installBtn.ready:hover {
             background: #2563eb;
         }
         .search-box {
@@ -686,8 +697,7 @@
         .header.shrink .header-actions,
         .header.shrink .filters,
         .header.shrink .ota-search-box,
-        .header.shrink .header-title span,
-        .header.shrink #installBtn {
+        .header.shrink .header-title span {
             opacity: 0;
             pointer-events: none;
             max-height: 0;
@@ -696,6 +706,12 @@
             overflow: hidden;
             transform: scaleY(0);
             transform-origin: top center;
+        }
+        /* Το κουμπί εγκατάστασης παραμένει ορατό αλλά σμικρύνεται */
+        .header.shrink #installBtn {
+            font-size: 12px;
+            padding: 0 10px;
+            height: 30px;
         }
         .header.shrink .search-box {
             margin-top: 4px;
@@ -1516,7 +1532,9 @@
             e.preventDefault();
             deferredPrompt = e;
             document.getElementById('installBanner').classList.add('show');
-            document.getElementById('installBtn').style.display = 'flex';
+            const btn = document.getElementById('installBtn');
+            btn.classList.add('ready');
+            btn.style.display = 'flex';
         });
 
         function installApp() {
@@ -1524,7 +1542,7 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(() => {
                     document.getElementById('installBanner').classList.remove('show');
-                    document.getElementById('installBtn').style.display = 'none';
+                    document.getElementById('installBtn').classList.remove('ready');
                     deferredPrompt = null;
                 });
             }
@@ -1536,7 +1554,7 @@
 
         window.addEventListener('appinstalled', () => {
             document.getElementById('installBanner').classList.remove('show');
-            document.getElementById('installBtn').style.display = 'none';
+            document.getElementById('installBtn').classList.remove('ready');
             showToast('✅ Εφαρμογή εγκαταστάθηκε!');
         });
 
