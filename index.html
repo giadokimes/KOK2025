@@ -194,37 +194,37 @@
         }
         .filters button {
             padding: 6px 14px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
-            background: rgba(0, 0, 0, 0.04);
-            color: #1a365d;
+            background: #e2e8f0;
+            color: #0f172a;
             cursor: pointer;
             transition: all .2s;
             white-space: nowrap;
         }
         body.dark .filters button {
-            background: rgba(255, 255, 255, 0.08);
-            color: #e2e8f0;
-            border-color: rgba(255, 255, 255, 0.08);
+            background: #334155;
+            color: #f1f5f9;
+            border-color: rgba(255, 255, 255, 0.1);
         }
         .filters button.active {
             background: #1a365d;
-            color: #fff;
+            color: #ffffff;
             border-color: #1a365d;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         body.dark .filters button.active {
-            background: #2d3748;
+            background: #4a5568;
             color: #e2e8f0;
-            border-color: #2d3748;
+            border-color: #4a5568;
         }
         .filters button:hover {
-            background: rgba(0, 0, 0, 0.08);
+            background: #cbd5e1;
         }
         body.dark .filters button:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #475569;
         }
         .filters .filter-divider {
             width: 100%;
@@ -1012,7 +1012,7 @@
         let signImageMap = {};
 
         // ============================================================
-        // ΠΕΡΙΓΡΑΦΕΣ ΠΙΝΑΚΙΔΩΝ (για το modal)
+        // ΠΕΡΙΓΡΑΦΕΣ ΠΙΝΑΚΙΔΩΝ (για το modal) – ΟΛΕΣ ΜΕ ΕΛΛΗΝΙΚΟ "Ρ"
         // ============================================================
         const signDescriptions = {
             'Ρ-1': 'Υποχρεωτική παραχώρηση προτεραιότητας',
@@ -1117,7 +1117,7 @@
         }
 
         // ============================================================
-        // MODAL ΠΡΟΒΟΛΗΣ ΠΙΝΑΚΙΔΑΣ
+        // MODAL ΠΡΟΒΟΛΗΣ ΠΙΝΑΚΙΔΑΣ – ΔΙΟΡΘΩΜΕΝΟ
         // ============================================================
         function openSignModal(imgSrc, signCode) {
             const modal = document.getElementById('signModal');
@@ -1128,8 +1128,10 @@
             modalImg.src = imgSrc;
             modalImg.alt = signCode;
 
+            // 1. Περιγραφή: από το signDescriptions με βάση τον κωδικό
             const description = signDescriptions[signCode] || signCode;
 
+            // 2. Ποινές: βρίσκουμε την ΠΡΩΤΗ παράβαση που περιέχει τον κωδικό
             const violation = data.find(v => v.name.includes(signCode));
             if (violation) {
                 modalName.textContent = signCode + ' – ' + description;
@@ -1335,7 +1337,7 @@
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
                 points: 5, criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
-            // ===== ΣΗΜΑΝΣΗ (37-50) =====
+            // ===== ΣΗΜΑΝΣΗ (37-50) – ΠΑΡΑΜΕΝΟΥΝ ΟΙ ΠΕΡΙΓΡΑΦΕΣ ΩΣ ΕΧΟΥΝ =====
             { id: 37, category: 'σήμανση', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
