@@ -110,7 +110,6 @@
         body.dark .header-actions .pdf-btn {
             background: #10b981;
         }
-        /* Κουμπί εγκατάστασης – πάντα ορατό, γκρι αρχικά */
         #installBtn {
             display: flex !important;
             font-size: 14px;
@@ -398,6 +397,7 @@
             background: #fff;
             object-fit: contain;
             flex-shrink: 0;
+            cursor: pointer;
         }
         body.dark .card .name .sign-img {
             border-color: rgba(255,255,255,0.2);
@@ -707,7 +707,6 @@
             transform: scaleY(0);
             transform-origin: top center;
         }
-        /* Το κουμπί εγκατάστασης παραμένει ορατό αλλά σμικρύνεται */
         .header.shrink #installBtn {
             font-size: 12px;
             padding: 0 10px;
@@ -721,6 +720,69 @@
             padding: 8px 40px 8px 40px;
             font-size: 14px;
             border-radius: 10px;
+        }
+
+        /* --- Modal προβολής πινακίδας --- */
+        #signModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        #signModal .modal-box {
+            background: #1a202c;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        }
+        body.dark #signModal .modal-box {
+            background: #0f172a;
+        }
+        #signModal .modal-box img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            background: #fff;
+            padding: 8px;
+        }
+        #signModal .modal-box h3 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        #signModal .modal-box .modal-details {
+            color: #f1f5f9;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        #signModal .modal-box .close-modal-btn {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         @media (max-width: 480px) {
@@ -773,10 +835,16 @@
                 left: 0;
                 right: 0;
             }
+            #signModal .modal-box {
+                padding: 16px;
+            }
+            #signModal .modal-box h3 {
+                font-size: 17px;
+            }
         }
 
         @media print {
-            .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn {
+            .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn, #signModal {
                 display: none !important;
             }
             body {
@@ -878,6 +946,16 @@
         </div>
     </div>
 
+    <!-- Modal προβολής πινακίδας -->
+    <div id="signModal">
+        <div class="modal-box">
+            <img id="modalSignImg" src="" alt="Πινακίδα">
+            <h3 id="modalSignName"></h3>
+            <div class="modal-details" id="modalSignDetails"></div>
+            <button class="close-modal-btn" onclick="closeSignModal()">✕ Κλείσιμο</button>
+        </div>
+    </div>
+
     <script>
         // ============================================================
         // ΛΙΣΤΑ ΚΩΔΙΚΩΝ ΟΤΑ
@@ -950,11 +1028,60 @@
                 const code = 'Ρ-' + number;
                 const imgUrl = signImageMap[code];
                 if (imgUrl) {
-                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onerror="this.outerHTML='${code}';">`;
+                    return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onclick="openSignModal('${imgUrl}', '${code}')">`;
                 }
                 return match;
             });
         }
+
+        // ============================================================
+        // MODAL ΠΡΟΒΟΛΗΣ ΠΙΝΑΚΙΔΑΣ
+        // ============================================================
+        function openSignModal(imgSrc, signCode) {
+            const modal = document.getElementById('signModal');
+            const modalImg = document.getElementById('modalSignImg');
+            const modalName = document.getElementById('modalSignName');
+            const modalDetails = document.getElementById('modalSignDetails');
+
+            modalImg.src = imgSrc;
+            modalImg.alt = signCode;
+
+            // Βρες την παράβαση που περιέχει αυτό τον κωδικό
+            const violation = data.find(v => v.name.includes(signCode));
+            if (violation) {
+                modalName.textContent = signCode + ' – ' + violation.name;
+                let details = '';
+                if (violation.fine) details += '💰 Πρόστιμο: ' + formatFine(violation.fine);
+                if (violation.suspend && violation.suspend !== '-') {
+                    if (details) details += ' | ';
+                    details += '⛔ ' + violation.suspend;
+                }
+                if (violation.points > 0) {
+                    if (details) details += ' | ';
+                    details += '📊 ' + violation.points + ' βαθμοί ΣΕΣΟ';
+                }
+                modalDetails.textContent = details || 'Δεν υπάρχουν διαθέσιμες πληροφορίες ποινών.';
+            } else {
+                modalName.textContent = signCode;
+                modalDetails.textContent = 'Πινακίδα χωρίς αντιστοιχισμένη παράβαση.';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeSignModal() {
+            document.getElementById('signModal').style.display = 'none';
+        }
+
+        // Κλείσιμο με Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSignModal();
+        });
+
+        // Κλείσιμο κάνοντας κλικ έξω από το modal-box
+        document.getElementById('signModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeSignModal();
+        });
 
         // ============================================================
         // ΧΡΩΜΑΤΑ
