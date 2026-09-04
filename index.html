@@ -37,6 +37,10 @@
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: padding 0.25s ease;
+        }
+        .header * {
+            transition: opacity 0.25s ease, transform 0.25s ease, height 0.25s ease, margin 0.25s ease, padding 0.25s ease, max-height 0.25s ease;
         }
         body.dark .header {
             background: linear-gradient(145deg, #0b1e33, #0f2847);
@@ -106,6 +110,20 @@
         body.dark .header-actions .pdf-btn {
             background: #10b981;
         }
+        #installBtn {
+            display: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0 14px;
+            border-radius: 30px;
+            width: auto;
+            gap: 6px;
+            background: #3b82f6;
+            color: #fff;
+        }
+        #installBtn:hover {
+            background: #2563eb;
+        }
         .search-box {
             margin-top: 14px;
             position: relative;
@@ -163,6 +181,7 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 14px;
+            overflow: hidden;
         }
         .filters button {
             padding: 7px 16px;
@@ -216,6 +235,7 @@
             padding: 10px 14px;
             border-radius: 12px;
             position: relative;
+            overflow: hidden;
         }
         body.dark .ota-search-box {
             background: rgba(255,255,255,0.04);
@@ -658,6 +678,35 @@
             font-size: 16px;
         }
 
+        /* --- Σμίκρυνση header κατά το scroll --- */
+        .header.shrink {
+            padding: 6px 12px 4px 12px;
+        }
+        .header.shrink .header-title,
+        .header.shrink .header-actions,
+        .header.shrink .filters,
+        .header.shrink .ota-search-box,
+        .header.shrink .header-title span,
+        .header.shrink #installBtn {
+            opacity: 0;
+            pointer-events: none;
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            transform: scaleY(0);
+            transform-origin: top center;
+        }
+        .header.shrink .search-box {
+            margin-top: 4px;
+            margin-bottom: 2px;
+        }
+        .header.shrink .search-box input {
+            padding: 8px 40px 8px 40px;
+            font-size: 14px;
+            border-radius: 10px;
+        }
+
         @media (max-width: 480px) {
             .header-title {
                 font-size: 18px;
@@ -687,6 +736,11 @@
                 padding: 0 12px;
                 height: 34px;
             }
+            #installBtn {
+                font-size: 12px;
+                padding: 0 10px;
+                height: 34px;
+            }
             .card {
                 padding: 14px 16px;
                 gap: 12px;
@@ -706,7 +760,7 @@
         }
 
         @media print {
-            .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner {
+            .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn {
                 display: none !important;
             }
             body {
@@ -762,6 +816,7 @@
                 <button onclick="toggleFavorites()">⭐</button>
                 <button class="pdf-btn" onclick="exportFavorites()">📄 PDF</button>
                 <button onclick="window.print()">🖨️</button>
+                <button id="installBtn" onclick="installApp()">📲 Εγκατάσταση</button>
             </div>
         </div>
         <div class="search-box">
@@ -811,7 +866,7 @@
         // ============================================================
         // ΛΙΣΤΑ ΚΩΔΙΚΩΝ ΟΤΑ
         // ============================================================
-        let otaList = []; // Φορτώνεται από ota-data.json (βλ. loadExternalData)
+        let otaList = [];
 
         // ============================================================
         // ΣΥΝΑΡΤΗΣΕΙΣ ΟΤΑ
@@ -869,9 +924,9 @@
         }
 
         // ============================================================
-        // ΠΙΝΑΚΙΔΕΣ – ΠΡΑΓΜΑΤΙΚΕΣ ΕΙΚΟΝΕΣ ΑΠΟ WIKIMEDIA (ΟΠΩΣ Ο CLAUDE)
+        // ΠΙΝΑΚΙΔΕΣ – ΠΡΑΓΜΑΤΙΚΕΣ ΕΙΚΟΝΕΣ ΑΠΟ WIKIMEDIA
         // ============================================================
-        let signImageMap = {}; // Φορτώνεται από signs-data.json (βλ. loadExternalData)
+        let signImageMap = {};
 
         function replaceSignCodes(text) {
             if (!text) return text;
@@ -918,7 +973,7 @@
         };
 
         // ============================================================
-        // ΔΕΔΟΜΕΝΑ – v14 (126 παραβάσεις, πλήρης λίστα)
+        // ΔΕΔΟΜΕΝΑ – v14 (126 παραβάσεις)
         // ============================================================
         const data = [
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
@@ -1461,6 +1516,7 @@
             e.preventDefault();
             deferredPrompt = e;
             document.getElementById('installBanner').classList.add('show');
+            document.getElementById('installBtn').style.display = 'flex';
         });
 
         function installApp() {
@@ -1468,6 +1524,7 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(() => {
                     document.getElementById('installBanner').classList.remove('show');
+                    document.getElementById('installBtn').style.display = 'none';
                     deferredPrompt = null;
                 });
             }
@@ -1479,6 +1536,7 @@
 
         window.addEventListener('appinstalled', () => {
             document.getElementById('installBanner').classList.remove('show');
+            document.getElementById('installBtn').style.display = 'none';
             showToast('✅ Εφαρμογή εγκαταστάθηκε!');
         });
 
@@ -1739,11 +1797,26 @@
                 console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία δεδομένων (signs-data.json / ota-data.json):', e);
             }
             render();
-            // Αν ο χρήστης είχε ήδη γράψει κάτι στην αναζήτηση ΟΤΑ πριν προλάβει να
-            // φορτώσει η λίστα δήμων (π.χ. αργό δίκτυο), ξαναδείξε τα αποτελέσματα τώρα.
             const otaInput = document.getElementById('otaSearchInput');
             if (otaInput && otaInput.value) onOtaSearch();
         }
+
+        // ============================================================
+        // ΣΜΙΚΡΥΝΣΗ HEADER ΣΤΟ SCROLL
+        // ============================================================
+        const header = document.querySelector('.header');
+        let isShrunk = false;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            if (scrollY > 40 && !isShrunk) {
+                header.classList.add('shrink');
+                isShrunk = true;
+            } else if (scrollY <= 40 && isShrunk) {
+                header.classList.remove('shrink');
+                isShrunk = false;
+            }
+        }, { passive: true });
 
         console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v14 - PWA Ready)');
         loadExternalData();
