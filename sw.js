@@ -1,12 +1,13 @@
-const CACHE_VERSION = 'kok-v15';
+const CACHE_VERSION = 'kok-v16';
 const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-192-maskable.png',
-  './icon-512-maskable.png',
+  './icon-192-v2.png',
+  './icon-512-v2.png',
+  './apple-touch-icon.png',
+  './favicon-v2.png',
+  './logo-48-v2.png',
   './signs-data.json',
   './ota-data.json',
   // Εικόνες πινακίδων από Wikimedia
