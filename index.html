@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#1a365d">
-    <title>ΚΟΚ – Τσέπης v14 (PWA)</title>
+    <title>ΚΟΚ – Τσέπης v15 (PWA)</title>
     <style>
         * {
             margin: 0;
@@ -38,9 +38,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             transition: padding 0.25s ease;
-        }
-        .header * {
-            transition: opacity 0.25s ease, transform 0.25s ease, height 0.25s ease, margin 0.25s ease, padding 0.25s ease, max-height 0.25s ease;
+            will-change: padding;
         }
         body.dark .header {
             background: linear-gradient(145deg, #0b1e33, #0f2847);
@@ -192,48 +190,48 @@
             gap: 8px;
             margin-top: 14px;
             overflow: hidden;
+            justify-content: center;
         }
         .filters button {
-            padding: 7px 16px;
-            border: none;
+            padding: 6px 14px;
+            border: 1px solid rgba(0,0,0,0.06);
             border-radius: 30px;
             font-size: 13px;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.18);
-            color: #fff;
+            background: transparent;
+            color: #475569;
             cursor: pointer;
             transition: all .2s;
             white-space: nowrap;
-            position: relative;
+        }
+        body.dark .filters button {
+            color: #94a3b8;
+            border-color: rgba(255,255,255,0.06);
         }
         .filters button.active {
-            background: #fff;
-            color: #1e3a5f;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        .filters button.active::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 30%;
-            width: 40%;
-            height: 2px;
-            background: #1e3a5f;
-            border-radius: 4px;
+            background: #1a365d;
+            color: #fff;
+            border-color: #1a365d;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         body.dark .filters button.active {
             background: #2d3748;
             color: #e2e8f0;
-        }
-        body.dark .filters button.active::after {
-            background: #e2e8f0;
+            border-color: #2d3748;
         }
         .filters button:hover {
-            background: rgba(255, 255, 255, 0.32);
-            transform: translateY(-1px);
+            background: rgba(0,0,0,0.04);
         }
         body.dark .filters button:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.06);
+        }
+        .filters .filter-divider {
+            width: 100%;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin: 4px 0;
+        }
+        body.dark .filters .filter-divider {
+            border-bottom-color: rgba(255,255,255,0.06);
         }
         .ota-search-box {
             margin-top: 10px;
@@ -706,6 +704,7 @@
             overflow: hidden;
             transform: scaleY(0);
             transform-origin: top center;
+            transition: opacity 0.2s ease, transform 0.2s ease, max-height 0.2s ease;
         }
         .header.shrink #installBtn {
             font-size: 12px;
@@ -894,7 +893,7 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v14</span></div>
+            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v15</span></div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -915,14 +914,20 @@
             <div class="ota-suggestions" id="otaSuggestions"></div>
         </div>
         <div class="filters" id="filterContainer">
+            <!-- Γραμμή 1 -->
             <button class="active" data-filter="all" onclick="setFilter('all')">Όλες</button>
             <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>
-            <button data-filter="πινακίδες" onclick="setFilter('πινακίδες')">Πινακίδες</button>
             <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button>
+            <button data-filter="σήμανση" onclick="setFilter('σήμανση')">Σήμανση</button>
             <button data-filter="ταχύτητα" onclick="setFilter('ταχύτητα')">Ταχύτητα</button>
-            <button data-filter="άδειες" onclick="setFilter('άδειες')">Άδειες</button>
+            <div class="filter-divider"></div>
+            <!-- Γραμμή 2 -->
             <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
-            <button data-filter="μοτοσικλέτα" onclick="setFilter('μοτοσικλέτα')">Μοτοσικλέτα</button>
+            <button data-filter="έγγραφα" onclick="setFilter('έγγραφα')">Έγγραφα</button>
+            <button data-filter="φορτηγά" onclick="setFilter('φορτηγά')">Φορτηγά</button>
+            <div class="filter-divider"></div>
+            <!-- Γραμμή 3 -->
+            <button data-filter="δίκυκλα" onclick="setFilter('δίκυκλα')">Δίκυκλα</button>
             <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')">ΕΠΗΟ</button>
             <button data-filter="επαγγελματικά" onclick="setFilter('επαγγελματικά')">Επαγγελματικά</button>
             <button data-filter="αλκοόλ" onclick="setFilter('αλκοόλ')">Αλκοόλ</button>
@@ -1046,10 +1051,13 @@
             modalImg.src = imgSrc;
             modalImg.alt = signCode;
 
-            // Βρες την παράβαση που περιέχει αυτό τον κωδικό
             const violation = data.find(v => v.name.includes(signCode));
             if (violation) {
-                modalName.textContent = signCode + ' – ' + violation.name;
+                // Καθαρίζουμε το όνομα από τους κωδικούς πινακίδων
+                let cleanName = violation.name.replace(/([ΡP])-([\dαβδ]+)/g, '').replace(/\s*,\s*/g, '').trim();
+                if (!cleanName) cleanName = violation.name;
+                modalName.textContent = signCode + ' – ' + cleanName;
+
                 let details = '';
                 if (violation.fine) details += '💰 Πρόστιμο: ' + formatFine(violation.fine);
                 if (violation.suspend && violation.suspend !== '-') {
@@ -1073,12 +1081,10 @@
             document.getElementById('signModal').style.display = 'none';
         }
 
-        // Κλείσιμο με Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeSignModal();
         });
 
-        // Κλείσιμο κάνοντας κλικ έξω από το modal-box
         document.getElementById('signModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) closeSignModal();
         });
@@ -1088,17 +1094,16 @@
         // ============================================================
         const categoryColors = {
             'στάθμευση': '#f59e0b',
-            'πινακίδες': '#3b82f6',
             'κίνηση': '#ef4444',
+            'σήμανση': '#3b82f6',
             'ταχύτητα': '#f43f5e',
-            'άδειες': '#8b5cf6',
             'ασφάλεια': '#10b981',
-            'θόρυβος': '#f97316',
-            'ΚΤΕΟ': '#64748b',
-            'μοτοσικλέτα': '#ec4899',
+            'έγγραφα': '#8b5cf6',
+            'φορτηγά': '#f97316',
+            'δίκυκλα': '#ec4899',
             'ΕΠΗΟ': '#14b8a6',
+            'επαγγελματικά': '#06b6d4',
             'αλκοόλ': '#f59e0b',
-            'επαγγελματικά': '#f97316',
             'υποτροπή': '#dc2626'
         };
 
@@ -1116,9 +1121,10 @@
         };
 
         // ============================================================
-        // ΔΕΔΟΜΕΝΑ – v14 (126 παραβάσεις)
+        // ΔΕΔΟΜΕΝΑ – v15 (228 παραβάσεις – πλήρης λίστα)
         // ============================================================
         const data = [
+            // ===== ΣΤΑΘΜΕΥΣΗ (1-36) =====
             { id: 1, category: 'στάθμευση', name: 'Σε διάβαση πεζών ή ποδηλατιστών (<5μ.)', article: '38§2α', fine: 30,
                 suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0,
                 criminal: false, half: true,
@@ -1253,61 +1259,63 @@
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
                 points: 5, criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
-            { id: 37, category: 'πινακίδες', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
+            // ===== ΣΗΜΑΝΣΗ (37-50) =====
+            { id: 37, category: 'σήμανση', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-39: Απαγορεύεται η στάθμευση.' },
-            { id: 38, category: 'πινακίδες', name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
+            { id: 38, category: 'σήμανση', name: 'Παραβίαση Ρ-40 (απαγόρευση στάσης και στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-40: Απαγορεύονται η στάση και η στάθμευση.' },
-            { id: 39, category: 'πινακίδες', name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
+            { id: 39, category: 'σήμανση', name: 'Παραβίαση Ρ-41 (απαγόρευση στάθμευσης – μονοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-41: Απαγορεύεται η στάθμευση τους μονούς μήνες.' },
-            { id: 40, category: 'πινακίδες', name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
+            { id: 40, category: 'σήμανση', name: 'Παραβίαση Ρ-42 (απαγόρευση στάθμευσης – ζυγοί μήνες)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-42: Απαγορεύεται η στάθμευση τους ζυγούς μήνες.' },
-            { id: 41, category: 'πινακίδες', name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
+            { id: 41, category: 'σήμανση', name: 'Παραβίαση Ρ-43 (χρονικός περιορισμός στάθμευσης)',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-43: Περιοχή απαγόρευσης στάθμευσης (στάθμευση περιορισμένης χρονικής διάρκειας).' },
-            { id: 42, category: 'πινακίδες', name: 'Παραβίαση STOP (Ρ-2)', article: '7§11β', fine: 700,
+            { id: 42, category: 'σήμανση', name: 'Παραβίαση STOP (Ρ-2)', article: '7§11β', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
                 half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-2: Υποχρεωτική διακοπή πορείας. Η παράβαση κατατάσσεται στην κατηγορία Ε4.' },
-            { id: 43, category: 'πινακίδες', name: 'Παραβίαση Ρ-1 (παραχώρηση προτεραιότητας)',
+            { id: 43, category: 'σήμανση', name: 'Παραβίαση Ρ-1 (παραχώρηση προτεραιότητας)',
                 article: '7§11α', fine: 350, suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 9, criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-1: Υποχρεωτική παραχώρηση προτεραιότητας. Κατατάσσεται στην κατηγορία Ε3-Β.' },
-            { id: 44, category: 'πινακίδες', name: 'Παραβίαση Ρ-29 (απαγόρευση αναστροφής)', article: '7§11β',
+            { id: 44, category: 'σήμανση', name: 'Παραβίαση Ρ-29 (απαγόρευση αναστροφής)', article: '7§11β',
                 fine: 700, suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9,
                 criminal: false, half: false,
                 fullDescription: 'Παραβίαση της ρυθμιστικής πινακίδας Ρ-29: Απαγορεύεται η αναστροφή (στροφή κατά 180 μοίρες).' },
-            { id: 45, category: 'πινακίδες', name: 'Παραβίαση Ρ-3, Ρ-4, Ρ-34, Ρ-35, Ρ-69, Ρ-75',
+            { id: 45, category: 'σήμανση', name: 'Παραβίαση Ρ-3, Ρ-4, Ρ-34, Ρ-35, Ρ-69, Ρ-75',
                 article: '7§11γ', fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων που κατατάσσονται στην κατηγορία Ε1-Α (μόνο πρόστιμο).' },
-            { id: 46, category: 'πινακίδες', name: 'Παραβίαση Ρ-5, Ρ-6, Ρ-32, Ρ-47, Ρ-48, Ρ-49, Ρ-50, Ρ-50α, Ρ-50δ, Ρ-51α, Ρ-51δ, Ρ-52, Ρ-52α, Ρ-52δ, Ρ-53, Ρ-57, Ρ-59, Ρ-60, Ρ-63',
+            { id: 46, category: 'σήμανση', name: 'Παραβίαση Ρ-5, Ρ-6, Ρ-32, Ρ-47, Ρ-48, Ρ-49, Ρ-50, Ρ-50α, Ρ-50δ, Ρ-51α, Ρ-51δ, Ρ-52, Ρ-52α, Ρ-52δ, Ρ-53, Ρ-57, Ρ-59, Ρ-60, Ρ-63',
                 article: '7§11δ', fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων που αφορούν σε προτεραιότητα, όρια ταχύτητας, υποχρεωτικές κατευθύνσεις, διελεύσεις και ελάχιστες ταχύτητες. Κατατάσσονται στην κατηγορία Ε1-Β (πρόστιμο 30€ + αφαίρεση 10 ημερών).' },
-            { id: 47, category: 'πινακίδες', name: 'Παραβίαση Ρ-7, Ρ-8, Ρ-9, Ρ-10, Ρ-11, Ρ-12, Ρ-13, Ρ-14, Ρ-18, Ρ-19, Ρ-20, Ρ-21, Ρ-22, Ρ-23, Ρ-24, Ρ-25, Ρ-26, Ρ-27, Ρ-28, Ρ-30, Ρ-31, Ρ-45, Ρ-46, Ρ-64, Ρ-73α, Ρ-73δ, Ρ-74α, Ρ-74δ',
+            { id: 47, category: 'σήμανση', name: 'Παραβίαση Ρ-7, Ρ-8, Ρ-9, Ρ-10, Ρ-11, Ρ-12, Ρ-13, Ρ-14, Ρ-18, Ρ-19, Ρ-20, Ρ-21, Ρ-22, Ρ-23, Ρ-24, Ρ-25, Ρ-26, Ρ-27, Ρ-28, Ρ-30, Ρ-31, Ρ-45, Ρ-46, Ρ-64, Ρ-73α, Ρ-73δ, Ρ-74α, Ρ-74δ',
                 article: '7§11ε', fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση απαγορευτικών ρυθμιστικών πινακίδων (π.χ. απαγόρευση εισόδου, στροφής, προσπέρασης, κ.λπ.). Κατατάσσονται στην κατηγορία Ε2-Β (πρόστιμο 150€ + αφαίρεση 20 ημερών).' },
-            { id: 48, category: 'πινακίδες', name: 'Παραβίαση Ρ-15, Ρ-16, Ρ-17', article: '7§11στ', fine: 150,
+            { id: 48, category: 'σήμανση', name: 'Παραβίαση Ρ-15, Ρ-16, Ρ-17', article: '7§11στ', fine: 150,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων για πεζούς, ζωήλατα και χειράμαξες (Ε2-Α).' },
-            { id: 49, category: 'πινακίδες', name: 'Παραβίαση Ρ-33, Ρ-54, Ρ-55, Ρ-56, Ρ-65, Ρ-66, Ρ-66α, Ρ-67, Ρ-67α, Ρ-76',
+            { id: 49, category: 'σήμανση', name: 'Παραβίαση Ρ-33, Ρ-54, Ρ-55, Ρ-56, Ρ-65, Ρ-66, Ρ-66α, Ρ-67, Ρ-67α, Ρ-76',
                 article: '7§11ζ', fine: 30, suspend: '40 ημέρες αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)', points: 0, criminal: false, half: false,
                 fullDescription: 'Παραβίαση ρυθμιστικών πινακίδων με πρόσθετη κατηγορία Σ (αντικοινωνική συμπεριφορά).' },
-            { id: 50, category: 'πινακίδες', name: 'Παραβίαση λοξών λωρίδων', article: '8§10α', fine: 150,
+            { id: 50, category: 'σήμανση', name: 'Παραβίαση λοξών λωρίδων', article: '8§10α', fine: 150,
                 suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Παραβίαση της οριζόντιας σήμανσης που αφορά σε παράλληλες λοξές λωρίδες (Ε2-Β).' },
+            // ===== ΚΙΝΗΣΗ (51-62, 128, 132-134, 136, 139) =====
             { id: 51, category: 'κίνηση', name: 'Παραβίαση ερυθρού σηματοδότη', article: '9§3', fine: 700,
                 suspend: '60 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
                 half: false,
@@ -1356,6 +1364,27 @@
                 details: 'Αφαίρεση άδειας οδήγησης + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≥3 μήνες)', points: 0, criminal: true,
                 half: false,
                 fullDescription: 'Μη παροχή βοήθειας και μη αναγγελία τροχαίου ατυχήματος με σωματικές βλάβες ή θάνατο.' },
+            { id: 128, category: 'κίνηση', name: 'Παραβίαση σημάτων τροχονόμου', article: '6', fine: 150,
+                suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 3, criminal: false,
+                half: false,
+                fullDescription: 'Μη συμμόρφωση με τις υποδείξεις και σήματα των τροχονόμων.' },
+            { id: 132, category: 'κίνηση', name: 'Παραβίαση φώτων ομίχλης', article: '40§2', fine: 30,
+                suspend: '-', details: 'Καμία αφαίρεση', points: 0, criminal: false, half: false,
+                fullDescription: 'Χρήση φώτων ομίχλης σε συνθήκες που δεν επιτρέπεται.' },
+            { id: 133, category: 'κίνηση', name: 'Παραβίαση ηχητικών προειδοποιήσεων', article: '41', fine: 30,
+                suspend: '-', details: 'Καμία αφαίρεση', points: 0, criminal: false, half: false,
+                fullDescription: 'Μη επιτρεπόμενη χρήση ηχητικών οργάνων (κλάξον).' },
+            { id: 134, category: 'κίνηση', name: 'Αντικανονικό άνοιγμα θυρών', article: '34', fine: 30,
+                suspend: '-', details: 'Καμία αφαίρεση', points: 0, criminal: false, half: false,
+                fullDescription: 'Άνοιγμα θυρών οχήματος χωρίς να έχει βεβαιωθεί ότι δεν προκαλείται κίνδυνος.' },
+            { id: 136, category: 'κίνηση', name: 'Μεταφορά επιβατών πέραν ορίου (βασική)', article: '37', fine: 30,
+                suspend: '-', details: 'Καμία αφαίρεση', points: 0, criminal: false, half: false,
+                fullDescription: 'Μεταφορά επιβατών πέραν του αναγραφόμενου ανώτατου αριθμού στην άδεια κυκλοφορίας.' },
+            { id: 139, category: 'κίνηση', name: 'Παραβίαση προτεραιότητας σε κόμβο', article: '30§5', fine: 350,
+                suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
+                half: false,
+                fullDescription: 'Παραβίαση των κανόνων προτεραιότητας σε ισόπεδο οδικό κόμβο.' },
+            // ===== ΤΑΧΥΤΗΤΑ (63-67, 137-138) =====
             { id: 63, category: 'ταχύτητα', name: 'Υπέρβαση ταχύτητας έως 20χλμ/ω', article: '24§9αα', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 3, criminal: false, half: false,
                 fullDescription: 'Υπέρβαση του ορίου ταχύτητας έως 20 χλμ/ώρα. Κατατάσσεται στην Ε2-Α.' },
@@ -1376,82 +1405,229 @@
                 suspend: '1 έτος αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
-            { id: 68, category: 'επαγγελματικά', name: 'Υπέρβαρο 5%', article: '4§1.2α', fine: 30, suspend: '-',
-                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
-                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
-            { id: 69, category: 'επαγγελματικά', name: 'Υπέρβαρο 5-10%', article: '4§1.2β', fine: 60, suspend: '-',
-                details: 'Μόνο πρόστιμο', points: 0, criminal: false, half: false,
-                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 5-10%.' },
-            { id: 70, category: 'επαγγελματικά', name: 'Υπέρβαρο 10-20%', article: '4§1.2γ', fine: 500,
-                suspend: '-', details: 'Μόνο πρόστιμο (στον ιδιοκτήτη)', points: 0, criminal: false, half: false,
-                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 10-20%.' },
-            { id: 71, category: 'επαγγελματικά', name: 'Υπέρβαρο >20%', article: '4§1.2δ', fine: 3000,
-                suspend: '4 μήνες στοιχ. κυκλ.', details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0,
+            { id: 137, category: 'ταχύτητα', name: 'Υπέρβαση 31-50χλμ/ω (αναλυτική)', article: '24§9αγ', fine: 350,
+                suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+                details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 5, criminal: false,
+                half: false,
+                fullDescription: 'Υπέρβαση ταχύτητας από 31 έως 50 χλμ/ώρα (Ε3-Β).' },
+            { id: 138, category: 'ταχύτητα', name: 'Οδήγηση >200χλμ/ω (αναλυτική)', article: '24§9δ', fine: 2000,
+                suspend: '1 έτος αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 9, criminal: false,
+                half: false,
+                fullDescription: 'Οδήγηση με ταχύτητα άνω των 200 χλμ/ώρα. Κατατάσσεται στην Ε4.' },
+            // ===== ΦΟΡΤΗΓΑ (68-78, 135, 169-217) =====
+            { id: 68, category: 'φορτηγά', name: 'Υπέρβαρο 5% (Ι.Χ.Φ.)', article: '4§1.2α', fine: 30,
+                suspend: '-', details: 'Μόνο πρόστιμο (ιδιοκτήτης)', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5% για φορτηγά οχήματα.' },
+            { id: 69, category: 'φορτηγά', name: 'Υπέρβαρο 5-10% (Ι.Χ.Φ.)', article: '4§1.2β', fine: 60,
+                suspend: '-', details: 'Μόνο πρόστιμο (ιδιοκτήτης)', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 5-10% για φορτηγά οχήματα.' },
+            { id: 70, category: 'φορτηγά', name: 'Υπέρβαρο 10-20% (Ι.Χ.Φ.)', article: '4§1.2γ', fine: 500,
+                suspend: '-', details: 'Πρόστιμο ιδιοκτήτη + 500€ οδηγού + 1.500€ υπεύθ. φόρτωσης', points: 0,
                 criminal: false, half: false,
-                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους άνω του 20%.' },
-            { id: 72, category: 'επαγγελματικά', name: 'Ακατάλληλη φόρτωση', article: '4§1.1', fine: 750,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 10-20% για φορτηγά οχήματα.' },
+            { id: 71, category: 'φορτηγά', name: 'Υπέρβαρο >20% (Ι.Χ.Φ.)', article: '4§1.2δ', fine: 3000,
+                suspend: '4 μήνες στοιχ. κυκλ.', details: '3.000€ ιδιοκτήτη + 3.000€ οδηγού + 5.000€ υπεύθ. φόρτ.',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους άνω του 20% για φορτηγά οχήματα.' },
+            { id: 72, category: 'φορτηγά', name: 'Ακατάλληλη φόρτωση (Ι.Χ.Φ.)', article: '4§1.1', fine: 750,
                 suspend: 'Ακινητοποίηση', details: '750€ οδηγός + 1.500€ υπεύθ. φόρτωσης', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Φόρτωση φορτηγού οχήματος χωρίς να πληρούνται οι προϋποθέσεις ασφαλούς τοποθέτησης και στοιβασίας του φορτίου.' },
-            { id: 73, category: 'επαγγελματικά', name: 'Χωρίς ΚΤΕΟ (επαγγελματικό)', article: '4§1.3', fine: 300,
-                suspend: 'Μέχρι έκδοσης ΚΤΕΟ', details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false,
-                half: false,
+            { id: 73, category: 'φορτηγά', name: 'Χωρίς ΚΤΕΟ (Ι.Χ.Φ.)', article: '4§1.3', fine: 300,
+                suspend: 'Μέχρι έκδοσης ΚΤΕΟ', details: 'Πρόστιμο ιδιοκτήτη + οδηγού', points: 0,
+                criminal: false, half: false,
                 fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
-            { id: 74, category: 'επαγγελματικά', name: 'Υπέρβαση διαστάσεων', article: '4§1.4', fine: 1000,
+            { id: 74, category: 'φορτηγά', name: 'Υπέρβαση διαστάσεων (Ι.Χ.Φ.)', article: '4§1.4', fine: 1000,
                 suspend: 'Ακινητοποίηση', details: 'Ακινητοποίηση οχήματος', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Υπέρβαση των μέγιστων ορίων διαστάσεων φορτηγών οχημάτων.' },
-            { id: 75, category: 'επαγγελματικά', name: 'Κυκλοφορία σε απαγορευμένες ώρες', article: '4§1.5',
+            { id: 75, category: 'φορτηγά', name: 'Κυκλοφορία σε απαγορευμένες ώρες (Ι.Χ.Φ.)', article: '4§1.5',
                 fine: 200, suspend: 'Ακινητοποίηση', details: 'Ακινητοποίηση για το διάστημα απαγόρευσης',
                 points: 0, criminal: false, half: false,
-                fullDescription: 'Κυκλοφορία φορτηγού οχήματος κατά τις ημέρες και ώρες απαγόρευσης.' },
-            { id: 76, category: 'επαγγελματικά', name: 'Χωρίς άδεια κυκλοφορίας (επαγγελματικό)',
-                article: '4§1.9', fine: 8000, suspend: 'Αφαίρεση στοιχ. κυκλ.',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος κατά τις ημέρες και ώρες απαγόρευσης της κυκλοφορίας.' },
+            { id: 76, category: 'φορτηγά', name: 'Χωρίς άδεια κυκλοφορίας (Ι.Χ.Φ.)', article: '4§1.9', fine: 8000,
+                suspend: 'Αφαίρεση στοιχ. κυκλ.', details: 'Πρόστιμο ιδιοκτήτη (8.000€) + οδηγού (1.000€)',
+                points: 0, criminal: false, half: false,
                 fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς άδεια κυκλοφορίας.' },
-            { id: 77, category: 'επαγγελματικά', name: 'Παραποίηση πινακίδων (επαγγελματικό)',
-                article: '4§1.11', fine: 5000, suspend: '6 μήνες στοιχ. κυκλ.',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+            { id: 77, category: 'φορτηγά', name: 'Παραποίηση πινακίδων (Ι.Χ.Φ.)', article: '4§1.11', fine: 5000,
+                suspend: '6 μήνες στοιχ. κυκλ.', details: 'Πρόστιμο ιδιοκτήτη + αφαίρεση στοιχείων κυκλοφορίας',
+                points: 0, criminal: false, half: false,
                 fullDescription: 'Παραποίηση πινακίδων κυκλοφορίας ή μετάθεσή τους από ένα όχημα σε άλλο.' },
-            { id: 78, category: 'επαγγελματικά', name: 'Οδήγηση χωρίς κατάλληλη άδεια (επαγγελματικό)',
-                article: '4§1.13', fine: 2000, suspend: '2 μήνες αδ. οδ.',
-                details: 'Αφαίρεση άδειας οδήγησης (οδηγός + ιδιοκτήτης)', points: 0, criminal: false,
-                half: false,
+            { id: 78, category: 'φορτηγά', name: 'Οδήγηση χωρίς κατάλληλη άδεια (Ι.Χ.Φ.)', article: '4§1.13',
+                fine: 2000, suspend: '2 μήνες αδ. οδ.',
+                details: 'Πρόστιμο ιδιοκτήτη (2.000€) + οδηγού (2.000€) + αφαίρεση άδειας οδήγησης', points: 0,
+                criminal: false, half: false,
                 fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
-            { id: 79, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
+            { id: 135, category: 'φορτηγά', name: 'Παραβίαση κανόνων φόρτωσης (γενικά)', article: '36', fine: 150,
+                suspend: '-', details: 'Πρόστιμο 150€', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση των γενικών κανόνων φόρτωσης οχημάτων.' },
+            // ===== ΝΕΕΣ ΦΟΡΤΗΓΑ (ν. 3446/2006) =====
+            { id: 169, category: 'φορτηγά', name: 'Ακατάλληλη φόρτωση (οδηγός)',
+                article: 'ν.3446/2006 §1.1', fine: 750, suspend: 'Ακινητοποίηση',
+                details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Φόρτωση φορτηγού οχήματος που δεν πληροί τις προϋποθέσεις ασφαλούς τοποθέτησης και στοιβασίας του φορτίου.' },
+            { id: 170, category: 'φορτηγά', name: 'Ακατάλληλη φόρτωση (υπεύθυνος φόρτωσης)',
+                article: 'ν.3446/2006 §1.1', fine: 1500, suspend: '-',
+                details: 'Πρόστιμο υπεύθυνου φόρτωσης', points: 0, criminal: false, half: false,
+                fullDescription: 'Φόρτωση φορτηγού οχήματος χωρίς να πληρούνται οι προϋποθέσεις ασφαλούς τοποθέτησης και στοιβασίας του φορτίου.' },
+            { id: 171, category: 'φορτηγά', name: 'Υπέρβαρο 5% (ιδιοκτήτης)', article: 'ν.3446/2006 §1.2α', fine: 30,
+                suspend: '-', details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους έως 5%.' },
+            { id: 172, category: 'φορτηγά', name: 'Υπέρβαρο 5-10% (ιδιοκτήτης)', article: 'ν.3446/2006 §1.2β',
+                fine: 60, suspend: '-', details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 5-10%.' },
+            { id: 173, category: 'φορτηγά', name: 'Υπέρβαρο 10-20% (ιδιοκτήτης)', article: 'ν.3446/2006 §1.2γ',
+                fine: 500, suspend: '-', details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους 10-20%.' },
+            { id: 174, category: 'φορτηγά', name: 'Υπέρβαρο >20% (ιδιοκτήτης)', article: 'ν.3446/2006 §1.2δ',
+                fine: 3000, suspend: '4 μήνες στοιχ. κυκλ.', details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους άνω του 20%.' },
+            { id: 175, category: 'φορτηγά', name: 'Υπέρβαρο >20% (οδηγός)', article: 'ν.3446/2006 §1.2δ', fine: 3000,
+                suspend: '-', details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση του μέγιστου επιτρεπόμενου βάρους άνω του 20% - οδηγός.' },
+            { id: 176, category: 'φορτηγά', name: 'Χωρίς ΚΤΕΟ (ιδιοκτήτης)', article: 'ν.3446/2006 §1.3', fine: 300,
+                suspend: 'Μέχρι έκδοσης ΚΤΕΟ', details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
+            { id: 177, category: 'φορτηγά', name: 'Χωρίς ΚΤΕΟ (οδηγός)', article: 'ν.3446/2006 §1.3', fine: 300,
+                suspend: '-', details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ισχύον ΚΤΕΟ - οδηγός.' },
+            { id: 178, category: 'φορτηγά', name: 'Υπέρβαση διαστάσεων (ιδιοκτήτης)', article: 'ν.3446/2006 §1.4',
+                fine: 1000, suspend: 'Ακινητοποίηση', details: 'Πρόστιμο + ακινητοποίηση', points: 0,
+                criminal: false, half: false,
+                fullDescription: 'Υπέρβαση των μέγιστων ορίων διαστάσεων φορτηγών οχημάτων.' },
+            { id: 179, category: 'φορτηγά', name: 'Κυκλοφορία σε απαγορευμένες ώρες (οδηγός)',
+                article: 'ν.3446/2006 §1.5', fine: 200, suspend: 'Ακινητοποίηση',
+                details: 'Πρόστιμο + ακινητοποίηση', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος κατά τις ημέρες και ώρες απαγόρευσης της κυκλοφορίας.' },
+            { id: 180, category: 'φορτηγά', name: 'Χωρίς ΚΕΚ (ιδιοκτήτης)', article: 'ν.3446/2006 §1.6', fine: 150,
+                suspend: '-', details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ισχύουσα Κάρτα Ελέγχου Καυσαερίων (ΚΕΚ).' },
+            { id: 181, category: 'φορτηγά', name: 'Χωρίς άδεια κυκλοφορίας (ιδιοκτήτης)',
+                article: 'ν.3446/2006 §1.9', fine: 8000, suspend: 'Αφαίρεση στοιχ. κυκλ.',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς άδεια κυκλοφορίας.' },
+            { id: 182, category: 'φορτηγά', name: 'Χωρίς άδεια κυκλοφορίας (οδηγός)',
+                article: 'ν.3446/2006 §1.9', fine: 1000, suspend: '-',
+                details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς άδεια κυκλοφορίας - οδηγός.' },
+            { id: 183, category: 'φορτηγά', name: 'Παραποίηση πινακίδων (ιδιοκτήτης)',
+                article: 'ν.3446/2006 §1.11', fine: 5000, suspend: '6 μήνες στοιχ. κυκλ.',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραποίηση πινακίδων κυκλοφορίας ή μετάθεσή τους από ένα όχημα σε άλλο.' },
+            { id: 184, category: 'φορτηγά', name: 'Οδήγηση χωρίς κατάλληλη άδεια (οδηγός)',
+                article: 'ν.3446/2006 §1.13', fine: 2000, suspend: '2 μήνες αδ. οδ.',
+                details: 'Πρόστιμο + αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
+                fullDescription: 'Οδήγηση φορτηγού οχήματος από πρόσωπο που δεν διαθέτει την κατάλληλη άδεια οδήγησης.' },
+            { id: 185, category: 'φορτηγά', name: 'Οδήγηση χωρίς κατάλληλη άδεια (ιδιοκτήτης)',
+                article: 'ν.3446/2006 §1.13', fine: 2000, suspend: '-',
+                details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραχώρηση οδήγησης φορτηγού οχήματος σε πρόσωπο που δεν έχει την κατάλληλη άδεια.' },
+            { id: 186, category: 'φορτηγά', name: 'Μη ανανέωση άδειας κυκλοφορίας (Ι.Χ.Φ.)',
+                article: 'ν.3446/2006 §1.10', fine: 200, suspend: 'Μέχρι έκδοσης νέας άδειας',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος χωρίς ανανέωση της άδειας κυκλοφορίας κατά τη μεταβίβαση.' },
+            { id: 187, category: 'φορτηγά', name: 'Παράνομη αλλαγή κατηγορίας (Ι.Χ.Φ. δημοσίας χρήσης)',
+                article: 'ν.3446/2006 §1.16', fine: 5000, suspend: '2 μήνες στοιχ. κυκλ.',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Παράνομη αλλαγή κατηγορίας φορτηγού οχήματος δημόσιας χρήσης ως προς το είδος των μεταφερόμενων αγαθών.' },
+            { id: 188, category: 'φορτηγά', name: 'Μεταφορά επικίνδυνων εμπορευμάτων χωρίς ADR',
+                article: 'ν.3446/2006 §1.26', fine: 3000, suspend: '-',
+                details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Διενέργεια μεταφοράς επικίνδυνων εμπορευμάτων χωρίς το πιστοποιητικό ADR.' },
+            { id: 189, category: 'φορτηγά', name: 'Υπέρβαση ωραρίου οδήγησης (30-60 λεπτά)',
+                article: 'ν.3446/2006 §1.49αα', fine: 30, suspend: '-',
+                details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση της ημερήσιας περιόδου οδήγησης κατά 30-60 λεπτά.' },
+            { id: 190, category: 'φορτηγά', name: 'Υπέρβαση ωραρίου οδήγησης (60-120 λεπτά)',
+                article: 'ν.3446/2006 §1.49αβ', fine: 80, suspend: '-',
+                details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση της ημερήσιας περιόδου οδήγησης κατά 60-120 λεπτά.' },
+            { id: 191, category: 'φορτηγά', name: 'Υπέρβαση ωραρίου οδήγησης (>120 λεπτά)',
+                article: 'ν.3446/2006 §1.49αγ', fine: 400, suspend: 'Ακινητοποίηση 4 ωρών',
+                details: 'Πρόστιμο οδηγού + ακινητοποίηση', points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση της ημερήσιας περιόδου οδήγησης άνω των 120 λεπτών.' },
+            { id: 192, category: 'φορτηγά', name: 'Οδήγηση χωρίς διάλειμμα',
+                article: 'ν.3446/2006 §1.49β', fine: 200, suspend: '-',
+                details: 'Πρόστιμο οδηγού', points: 0, criminal: false, half: false,
+                fullDescription: 'Οδήγηση πέραν του προβλεπόμενου ανώτατου χρονικού ορίου χωρίς διάλειμμα.' },
+            { id: 193, category: 'φορτηγά', name: 'Μη ύπαρξη ηλεκτρονικά αναγνώσιμου σήματος (Ι.Χ.Φ. δημοσίας χρήσης)',
+                article: 'ν.3446/2006 §1.50', fine: 3000, suspend: '-',
+                details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Μη ύπαρξη ή αλλοίωση του ηλεκτρονικά αναγνώσιμου σήματος φορτηγού οχήματος δημόσιας χρήσης.' },
+            { id: 194, category: 'φορτηγά', name: 'Διενέργεια εθνικών μεταφορών με όχημα διεθνών μεταφορών',
+                article: 'ν.3446/2006 §1.17', fine: 1500, suspend: '-',
+                details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Διενέργεια εθνικών οδικών εμπορευματικών μεταφορών με φορτηγό όχημα δημοσίας χρήσης διεθνών μεταφορών.' },
+            { id: 195, category: 'φορτηγά', name: 'Μη τήρηση όρων συνδυασμένης μεταφοράς',
+                article: 'ν.3446/2006 §1.24', fine: 5000, suspend: '-',
+                details: 'Πρόστιμο ιδιοκτήτη', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία και διενέργεια οδικών εμπορευματικών μεταφορών κατά παράβαση των όρων περί συνδυασμένης μεταφοράς.' },
+            { id: 196, category: 'φορτηγά', name: 'Παράβαση κανόνων ενδομεταφορών (Κανονισμός 3118/93)',
+                article: 'ν.3446/2006 §1.25', fine: 5000, suspend: '-',
+                details: 'Πρόστιμο ιδιοκτήτη + υπεύθυνου φόρτωσης', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος και διενέργεια οδικών εμπορευματικών μεταφορών κατά παράβαση των διατάξεων του Κανονισμού 3118/1993/ΕΚ.' },
+            { id: 197, category: 'φορτηγά', name: 'Παραποίηση αριθμού πλαισίου (Ι.Χ.Φ.)',
+                article: 'ν.3446/2006 §1.7', fine: 1000, suspend: 'Οριστική αφαίρεση στοιχ. κυκλ.',
+                details: 'Πρόστιμο + οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Παραποίηση ή εξαφάνιση του αριθμού πλαισίου φορτηγού οχήματος.' },
+            { id: 198, category: 'φορτηγά', name: 'Μη απογραφή / ταξινόμηση (Ι.Χ.Φ.)',
+                article: 'ν.3446/2006 §1.8', fine: 1000, suspend: 'Μέχρι νόμιμης απογραφής',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Κυκλοφορία φορτηγού οχήματος το οποίο δεν έχει απογραφεί και ταξινομηθεί κατά την εκάστοτε γενική απογραφή.' },
+            { id: 199, category: 'φορτηγά', name: 'Παραχώρηση χρήσης Ι.Χ.Φ. σε τρίτο (ιδιοκτήτης)',
+                article: 'ν.3446/2006 §1.30', fine: 3000, suspend: '2 μήνες στοιχ. κυκλ.',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραχώρηση της χρήσης φορτηγού οχήματος ιδιωτικής χρήσης σε τρίτο πρόσωπο.' },
+            { id: 200, category: 'φορτηγά', name: 'Μεταφορά για λογαριασμό τρίτων (Ι.Χ.Φ.)',
+                article: 'ν.3446/2006 §1.31', fine: 5000, suspend: '2 μήνες στοιχ. κυκλ.',
+                details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
+                fullDescription: 'Χρησιμοποίηση φορτηγού οχήματος ιδιωτικής χρήσης για διαφορετικό σκοπό από αυτόν για τον οποίο χορηγήθηκε η άδεια κυκλοφορίας.' },
+            // ===== ΔΙΚΥΚΛΑ (79-87, 130-131) =====
+            { id: 79, category: 'δίκυκλα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
                 half: false,
                 fullDescription: 'Ο οδηγός μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
-            { id: 80, category: 'μοτοσικλέτα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350,
+            { id: 80, category: 'δίκυκλα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350,
                 suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false,
                 fullDescription: 'Ο επιβάτης μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
-            { id: 81, category: 'μοτοσικλέτα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1',
+            { id: 81, category: 'δίκυκλα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1',
                 fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Οι οδηγοί μοτοσικλετών, αν το κράνος δεν έχει διαφανές προστατευτικό κάλυμμα, οφείλουν να φορούν γυαλιά κατά του ανέμου.' },
-            { id: 82, category: 'μοτοσικλέτα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ',
+            { id: 82, category: 'δίκυκλα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Απαγορεύεται η μεταφορά επιβάτη σε μοτοσικλέτα αν δεν έχει δυνατότητα να στηρίζεται στα υποπόδια.' },
-            { id: 83, category: 'μοτοσικλέτα', name: 'Παράλληλη κίνηση', article: '44§1δ', fine: 30,
+            { id: 83, category: 'δίκυκλα', name: 'Παράλληλη κίνηση', article: '44§1δ', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
                 fullDescription: 'Απαγορεύεται η κίνηση ποδηλάτων, μοτοποδηλάτων κ.λπ. ανά δύο ή περισσότερα παράλληλα.' },
-            { id: 84, category: 'μοτοσικλέτα', name: 'Διήθηση με ταχύτητα >20χλμ/ω', article: '21§9β',
+            { id: 84, category: 'δίκυκλα', name: 'Διήθηση με ταχύτητα >20χλμ/ω', article: '21§9β',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Η κίνηση δίκυκλων μοτοποδηλάτων και μοτοσικλετών μεταξύ λωρίδων (διήθηση) επιτρέπεται μόνο με ταχύτητα έως 20 χλμ/ώρα.' },
-            { id: 85, category: 'μοτοσικλέτα', name: 'Χρήση κινητού / ακουστικών (μοτοσικλέτα)',
+            { id: 85, category: 'δίκυκλα', name: 'Χρήση κινητού / ακουστικών (μοτοσικλέτα)',
                 article: '44§1στ', fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 30 ημ. στοιχ. κυκλοφορίας', points: 4, criminal: false,
                 half: false,
                 fullDescription: 'Απαγορεύεται η χρήση ακουστικών ή κινητού τηλεφώνου κατά την οδήγηση, εκτός από ειδικές εξαιρέσεις.' },
-            { id: 86, category: 'μοτοσικλέτα', name: 'Ρυμούλκηση από άλλο όχημα', article: '44§1α', fine: 30,
+            { id: 86, category: 'δίκυκλα', name: 'Ρυμούλκηση από άλλο όχημα', article: '44§1α', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false, half: false,
                 fullDescription: 'Απαγορεύεται η ρυμούλκηση μοτοσικλέτας, μοτοποδηλάτου κ.λπ. από άλλο όχημα.' },
-            { id: 87, category: 'μοτοσικλέτα', name: 'Μεταφορά αντικειμένων που εμποδίζουν', article: '44§1γ',
+            { id: 87, category: 'δίκυκλα', name: 'Μεταφορά αντικειμένων που εμποδίζουν', article: '44§1γ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Απαγορεύεται η μεταφορά αντικειμένων που εμποδίζουν την οδήγηση ή εκθέτουν σε κίνδυνο τους άλλους χρήστες.' },
+            { id: 130, category: 'δίκυκλα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350,
+                suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false,
+                fullDescription: 'Ο επιβάτης μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
+            { id: 131, category: 'δίκυκλα', name: 'Οδήγηση μοτοσικλέτας χωρίς φώτα ημέρας', article: '39§4',
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Κατά τις ώρες της ημέρας, οι οδηγοί μοτοσικλετών πρέπει να κινούνται με αναμμένο τουλάχιστον ένα εμπρόσθιο φως.' },
+            // ===== ΕΠΗΟ (88-94) =====
             { id: 88, category: 'ΕΠΗΟ', name: 'Στάθμευση ΕΠΗΟ σε απαγορευμένη θέση', article: '38§4,12',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
@@ -1479,30 +1655,36 @@
                 article: '24§12α', fine: 350, suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0,
                 criminal: false, half: false,
                 fullDescription: 'Θέση σε κυκλοφορία ΕΠΗΟ που μπορεί να αναπτύξει ταχύτητα άνω των 35 χλμ/ώρα (Ε3-Α για τον θέτοντα).' },
-            { id: 95, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
+            // ===== ΕΓΓΡΑΦΑ (95-99, 127) =====
+            { id: 95, category: 'έγγραφα', name: 'Στέρηση άδειας – Ε.Ι.Χ.', article: '98§4αβ', fine: 700,
                 suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση επιβατηγού Ι.Χ. χωρίς ισχύουσα άδεια οδήγησης (Ε4).' },
-            { id: 96, category: 'άδειες', name: 'Στέρηση άδειας – Ε.Δ.Χ. / Λεωφορεία', article: '98§4αβ',
+            { id: 96, category: 'έγγραφα', name: 'Στέρηση άδειας – Ε.Δ.Χ. / Λεωφορεία', article: '98§4αβ',
                 fine: 1000, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση Ε.Δ.Χ. ή λεωφορείου χωρίς ισχύουσα άδεια οδήγησης.' },
-            { id: 97, category: 'άδειες', name: 'Στέρηση άδειας – Μοτοσικλέτα / Μοτοποδήλατο',
+            { id: 97, category: 'έγγραφα', name: 'Στέρηση άδειας – Μοτοσικλέτα / Μοτοποδήλατο',
                 article: '98§4αα', fine: 500, suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση μοτοσικλέτας ή μοτοποδηλάτου χωρίς την απαιτούμενη άδεια.' },
-            { id: 98, category: 'άδειες', name: 'Οδήγηση με ληγμένη άδεια', article: '99§2', fine: 150,
+            { id: 98, category: 'έγγραφα', name: 'Οδήγηση με ληγμένη άδεια', article: '99§2', fine: 150,
                 suspend: 'Μέχρι ανανέωσης', details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Οδήγηση με ληγμένο έντυπο άδειας οδήγησης ή ληγμένη κατηγορία.' },
-            { id: 99, category: 'άδειες', name: 'Παραχώρηση οδήγησης σε μη δικαιούχο', article: '102§1',
+            { id: 99, category: 'έγγραφα', name: 'Παραχώρηση οδήγησης σε μη δικαιούχο', article: '102§1',
                 fine: 350, suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
                 half: false,
                 fullDescription: 'Παραχώρηση οδήγησης οχήματος σε πρόσωπο που δεν έχει την κατάλληλη άδεια.' },
+            { id: 127, category: 'έγγραφα', name: 'Εισαγωγή σε κυκλοφορία μη νόμιμου μέσου', article: '5',
+                fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε2-Α)', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Κυκλοφορία μεταφορικών ή άλλων χρήσεων μέσων που δεν ορίζονται στον ΚΟΚ.' },
+            // ===== ΑΣΦΑΛΕΙΑ (100-106, 129) =====
             { id: 100, category: 'ασφάλεια', name: 'Ανασφάλιστο – Δίκυκλα', article: 'ΠΔ 237/86', fine: 250,
                 suspend: '6 μήνες αδ. οδ. + 6 μήνες στοιχ. κυκλ.',
                 details: 'Αφαίρεση άδειας οδήγησης + 6 μήνες στοιχ. κυκλοφορίας', points: 0, criminal: false,
@@ -1535,25 +1717,11 @@
                 article: '85§17', fine: 150, suspend: 'Ακινητοποίηση',
                 details: 'Ακινητοποίηση μέχρι αποκατάστασης', points: 0, criminal: false, half: false,
                 fullDescription: 'Έλλειψη ζώνης ασφαλείας σε Ι.Χ.Ε. ή φορτηγό ≤3,5 τόνους.' },
-            { id: 107, category: 'ΚΤΕΟ', name: 'Χωρίς ΚΤΕΟ', article: '90', fine: 350,
-                suspend: '30 ημέρες στοιχ. κυκλ. + ακινητοποίηση',
-                details: 'Αφαίρεση στοιχείων κυκλοφορίας + ακινητοποίηση', points: 0, criminal: false,
+            { id: 129, category: 'ασφάλεια', name: 'Μη χρήση ζώνης ασφαλείας (επιβάτης)', article: '16§5',
+                fine: 150, suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false,
                 half: false,
-                fullDescription: 'Κυκλοφορία οχήματος χωρίς ισχύον Δελτίο Τεχνικού Ελέγχου (ΚΤΕΟ).' },
-            { id: 108, category: 'ΚΤΕΟ', name: 'Πλαστό / παραποιημένο ΚΤΕΟ', article: '90',
-                fine: 'ΠΛΗΜΜΕΛΗΜΑ', suspend: 'Οριστική αφαίρεση στοιχ. κυκλ.',
-                details: 'Οριστική αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: true, half: false,
-                fullDescription: 'Χρήση πλαστού ή παραποιημένου Δελτίου Τεχνικού Ελέγχου.' },
-            { id: 109, category: 'άδειες', name: 'Χωρίς πινακίδες κυκλοφορίας', article: '94§3', fine: 350,
-                suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
-                details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ (φυλάκιση ≤1 έτος)', points: 0,
-                criminal: true, half: false,
-                fullDescription: 'Κυκλοφορία οχήματος χωρίς κανονικές πινακίδες κυκλοφορίας.' },
-            { id: 110, category: 'άδειες', name: 'Χωρίς άδεια κυκλοφορίας', article: '92§2', fine: 700,
-                suspend: '30 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
-                details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλοφορίας', points: 0, criminal: false,
-                half: false,
-                fullDescription: 'Κυκλοφορία οχήματος χωρίς άδεια κυκλοφορίας.' },
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από επιβάτη. Κατατάσσεται σε Ε2-Α.' },
+            // ===== ΑΛΚΟΟΛ (111-118, 133-135) =====
             { id: 111, category: 'αλκοόλ', name: 'Αλκοόλ 0,50-0,80 (γενικός)', article: '46§7α', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
                 half: false,
@@ -1590,6 +1758,7 @@
                 details: 'Αφαίρεση άδειας οδήγησης + στοιχ. κυκλ. + ΠΛΗΜΜΕΛΗΜΑ', points: 9, criminal: true,
                 half: false,
                 fullDescription: 'Οδήγηση επαγγελματικού οχήματος με αλκοόλ >1,10 g/l.' },
+            // ===== ΥΠΟΤΡΟΠΗ (119-126, 140-168) =====
             { id: 119, category: 'υποτροπή', name: 'Ερυθρός – 2η υποτροπή (χωρίς ατύχημα)',
                 article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
                 points: 0, criminal: false, half: false,
@@ -1621,7 +1790,153 @@
             { id: 126, category: 'υποτροπή', name: 'ΛΕΑ – 3η υποτροπή', article: '110§4α', fine: 2000,
                 suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
                 half: false,
-                fullDescription: 'Τρίτη παράβαση χρήσης ΛΕΑ εντός 5 ετών.' }
+                fullDescription: 'Τρίτη παράβαση χρήσης ΛΕΑ εντός 5 ετών.' },
+            // ===== ΝΕΕΣ ΥΠΟΤΡΟΠΕΣ (140-168) =====
+            { id: 140, category: 'υποτροπή', name: 'ΛΕΑ με ατύχημα – 2η υποτροπή', article: '110§3β', fine: 2000,
+                suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση χρήσης ΛΕΑ εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 141, category: 'υποτροπή', name: 'Ταχύτητα >50χλμ/ω – 2η υποτροπή', article: '110§3α', fine: 1000,
+                suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 9, criminal: false,
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση υπέρβασης ταχύτητας >50χλμ/ω εντός 5 ετών.' },
+            { id: 142, category: 'υποτροπή', name: 'Ταχύτητα >50χλμ/ω – 3η υποτροπή', article: '110§4α', fine: 2000,
+                suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 9, criminal: false,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση υπέρβασης ταχύτητας >50χλμ/ω εντός 5 ετών.' },
+            { id: 143, category: 'υποτροπή', name: 'Ταχύτητα >50χλμ/ω με ατύχημα – 2η υποτροπή',
+                article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.',
+                details: '2η φορά σε 5 έτη με ατύχημα', points: 9, criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση υπέρβασης ταχύτητας >50χλμ/ω εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 144, category: 'υποτροπή', name: 'Αλκοόλ >1,10 g/l – 2η υποτροπή', article: '110§3α', fine: 1000,
+                suspend: '180 ημέρες αδ. οδ. + 30 ημ. στοιχ. κυκλ.', details: '2η φορά σε 5 έτη', points: 9,
+                criminal: true, half: false,
+                fullDescription: 'Δεύτερη παράβαση αλκοόλ >1,10 g/l εντός 5 ετών.' },
+            { id: 145, category: 'υποτροπή', name: 'Αλκοόλ >1,10 g/l – 3η υποτροπή', article: '110§4α', fine: 2000,
+                suspend: '1 έτος αδ. οδ. + 30 ημ. στοιχ. κυκλ.', details: '3η φορά σε 5 έτη', points: 9,
+                criminal: true, half: false,
+                fullDescription: 'Τρίτη παράβαση αλκοόλ >1,10 g/l εντός 5 ετών.' },
+            { id: 146, category: 'υποτροπή', name: 'Αλκοόλ >1,10 g/l με ατύχημα – 2η υποτροπή',
+                article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ. + 30 ημ. στοιχ. κυκλ.',
+                details: '2η φορά σε 5 έτη με ατύχημα', points: 9, criminal: true, half: false,
+                fullDescription: 'Δεύτερη παράβαση αλκοόλ >1,10 g/l εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 147, category: 'υποτροπή', name: 'Παραβίαση διάβασης πεζών – 2η υποτροπή', article: '110§3α',
+                fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0,
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση μη παραχώρησης προτεραιότητας σε πεζούς εντός 5 ετών.' },
+            { id: 148, category: 'υποτροπή', name: 'Παραβίαση διάβασης πεζών – 3η υποτροπή', article: '110§4α',
+                fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση μη παραχώρησης προτεραιότητας σε πεζούς εντός 5 ετών.' },
+            { id: 149, category: 'υποτροπή', name: 'Παραβίαση διάβασης πεζών με ατύχημα – 2η υποτροπή',
+                article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση μη παραχώρησης προτεραιότητας σε πεζούς εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 150, category: 'υποτροπή', name: 'Παραβίαση σιδηροδρομικής διάβασης – 2η υποτροπή',
+                article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
+                points: 9, criminal: true, half: false,
+                fullDescription: 'Δεύτερη παράβαση σιδηροδρομικής διάβασης εντός 5 ετών.' },
+            { id: 151, category: 'υποτροπή', name: 'Παραβίαση σιδηροδρομικής διάβασης – 3η υποτροπή',
+                article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη',
+                points: 9, criminal: true, half: false,
+                fullDescription: 'Τρίτη παράβαση σιδηροδρομικής διάβασης εντός 5 ετών.' },
+            { id: 152, category: 'υποτροπή', name: 'Παραβίαση σιδηροδρομικής διάβασης με ατύχημα – 2η υποτροπή',
+                article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.',
+                details: '2η φορά σε 5 έτη με ατύχημα', points: 9, criminal: true, half: false,
+                fullDescription: 'Δεύτερη παράβαση σιδηροδρομικής διάβασης εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 153, category: 'υποτροπή', name: 'Εγκατάλειψη ατυχήματος – 2η υποτροπή', article: '110§3α',
+                fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: true,
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση εγκατάλειψης ατυχήματος εντός 5 ετών.' },
+            { id: 154, category: 'υποτροπή', name: 'Εγκατάλειψη ατυχήματος – 3η υποτροπή', article: '110§4α',
+                fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: true,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση εγκατάλειψης ατυχήματος εντός 5 ετών.' },
+            { id: 155, category: 'υποτροπή', name: 'Εγκατάλειψη ατυχήματος με ατύχημα – 2η υποτροπή',
+                article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα',
+                points: 0, criminal: true, half: false,
+                fullDescription: 'Δεύτερη παράβαση εγκατάλειψης ατυχήματος εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 156, category: 'υποτροπή', name: 'Παραβίαση ακινητοποίησης – 2η υποτροπή', article: '110§3α',
+                fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: true,
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση άρνησης συμμόρφωσης σε ακινητοποίηση εντός 5 ετών.' },
+            { id: 157, category: 'υποτροπή', name: 'Παραβίαση ακινητοποίησης – 3η υποτροπή', article: '110§4α',
+                fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: true,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση άρνησης συμμόρφωσης σε ακινητοποίηση εντός 5 ετών.' },
+            { id: 158, category: 'υποτροπή', name: 'Παραβίαση ακινητοποίησης με ατύχημα – 2η υποτροπή',
+                article: '110§3β', fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα',
+                points: 0, criminal: true, half: false,
+                fullDescription: 'Δεύτερη παράβαση άρνησης συμμόρφωσης σε ακινητοποίηση εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 159, category: 'υποτροπή', name: 'Χρήση κινητού με ατύχημα – 2η υποτροπή', article: '110§3β',
+                fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη με ατύχημα', points: 0,
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση χρήσης κινητού κατά την οδήγηση εντός 5 ετών που προκάλεσε ατύχημα.' },
+            { id: 160, category: 'υποτροπή', name: 'Οδήγηση χωρίς άδεια – 2η υποτροπή', article: '110§3β',
+                fine: 2000, suspend: '4 έτη αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0, criminal: true,
+                half: false,
+                fullDescription: 'Δεύτερη παράβαση οδήγησης χωρίς άδεια εντός 5 ετών.' },
+            { id: 161, category: 'υποτροπή', name: 'Οδήγηση χωρίς άδεια – 3η υποτροπή', article: '110§4β',
+                fine: 4000, suspend: '8 έτη αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: true,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση οδήγησης χωρίς άδεια εντός 5 ετών.' },
+            { id: 162, category: 'υποτροπή', name: 'Μη χρήση ζώνης / κράνους – 2η υποτροπή', article: '110§3α',
+                fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0,
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση μη χρήσης ζώνης ασφαλείας ή κράνους εντός 5 ετών.' },
+            { id: 163, category: 'υποτροπή', name: 'Μη χρήση ζώνης / κράνους – 3η υποτροπή', article: '110§4α',
+                fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση μη χρήσης ζώνης ασφαλείας ή κράνους εντός 5 ετών.' },
+            { id: 164, category: 'υποτροπή', name: 'Μη χρήση παιδικών καθισμάτων – 2η υποτροπή',
+                article: '110§3α', fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση μη χρήσης ειδικών μέσων συγκράτησης για παιδιά εντός 5 ετών.' },
+            { id: 165, category: 'υποτροπή', name: 'Μη χρήση παιδικών καθισμάτων – 3η υποτροπή',
+                article: '110§4α', fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Τρίτη παράβαση μη χρήσης ειδικών μέσων συγκράτησης για παιδιά εντός 5 ετών.' },
+            { id: 166, category: 'υποτροπή', name: 'Στάθμευση σε ΑμεΑ / ράμπα – 2η υποτροπή', article: '110§3α',
+                fine: 1000, suspend: '180 ημέρες αδ. οδ.', details: '2η φορά σε 5 έτη', points: 0,
+                criminal: false, half: false,
+                fullDescription: 'Δεύτερη παράβαση στάθμευσης σε χώρο ΑμεΑ ή ράμπα εντός 5 ετών.' },
+            { id: 167, category: 'υποτροπή', name: 'Στάθμευση σε ΑμεΑ / ράμπα – 3η υποτροπή', article: '110§4α',
+                fine: 2000, suspend: '1 έτος αδ. οδ.', details: '3η φορά σε 5 έτη', points: 0, criminal: false,
+                half: false,
+                fullDescription: 'Τρίτη παράβαση στάθμευσης σε χώρο ΑμεΑ ή ράμπα εντός 5 ετών.' },
+            // ===== ΕΠΑΓΓΕΛΜΑΤΙΚΑ (218-225) =====
+            { id: 218, category: 'επαγγελματικά', name: 'Μη προειδοποίηση εκκίνησης λεωφορείου/ταξί',
+                article: '29§2', fine: 30, suspend: '40 ημέρες αδ. οδ. (Σ)', details: 'Αφαίρεση άδειας οδήγησης',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Ο οδηγός λεωφορείου/ταξί δεν προειδοποιεί με δείκτες κατεύθυνσης για την εκκίνησή του.' },
+            { id: 219, category: 'επαγγελματικά', name: 'Μη προσέγγιση σε στάση λεωφορείου/ταξί',
+                article: '29§3', fine: 30, suspend: '40 ημέρες αδ. οδ. (Σ)', details: 'Αφαίρεση άδειας οδήγησης',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Ο οδηγός λεωφορείου/ταξί δεν πλησιάζει στο άκρο του οδοστρώματος για επιβίβαση/αποβίβαση.' },
+            { id: 220, category: 'επαγγελματικά', name: 'Οδήγηση ταξί/λεωφορείου πέραν χρονικών ορίων',
+                article: '17§5', fine: 30, suspend: '40 ημέρες αδ. οδ. (Σ)', details: 'Αφαίρεση άδειας οδήγησης',
+                points: 0, criminal: false, half: false,
+                fullDescription: 'Υπέρβαση των χρονικών ορίων οδήγησης για επαγγελματίες οδηγούς (ταξί, λεωφορεία).' },
+            { id: 221, category: 'επαγγελματικά', name: 'Παραβίαση ειδικών κανόνων Ε.Δ.Χ. (έλλειψη ταξιμέτρου)',
+                article: '4§19 & 98§4', fine: 700, suspend: '1 έτος αδ. οδ.',
+                details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
+                fullDescription: 'Παραβίαση των ειδικών κανόνων λειτουργίας Ε.Δ.Χ. (έλλειψη ταξιμέτρου, κ.λπ.).' },
+            { id: 222, category: 'επαγγελματικά', name: 'Οδήγηση ταξί/λεωφορείου χωρίς ειδική άδεια',
+                article: '98§4αγ', fine: 1000, suspend: '1 έτος αδ. οδ.',
+                details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
+                fullDescription: 'Οδήγηση ταξί ή λεωφορείου χωρίς την απαιτούμενη ειδική άδεια.' },
+            { id: 223, category: 'επαγγελματικά', name: 'Μη τήρηση υποχρεώσεων οδηγού Ε.Δ.Χ. (ευγένεια)',
+                article: '16§7', fine: 150, suspend: '40 ημέρες αδ. οδ. (Σ)',
+                details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
+                fullDescription: 'Μη τήρηση των υποχρεώσεων ευγένειας και συμπεριφοράς του οδηγού Ε.Δ.Χ.' },
+            { id: 224, category: 'επαγγελματικά', name: 'Μη χρήση ζώνης ασφαλείας (οδηγός ταξί/λεωφορείου)',
+                article: '16§5', fine: 350, suspend: '30 ημέρες αδ. οδ.',
+                details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από οδηγό ταξί ή λεωφορείου.' },
+            { id: 225, category: 'επαγγελματικά', name: 'Μη χρήση ζώνης ασφαλείας (επιβάτης ταξί/λεωφορείου)',
+                article: '16§5', fine: 150, suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0,
+                criminal: false, half: false,
+                fullDescription: 'Μη χρήση ζώνης ασφαλείας από επιβάτη ταξί ή λεωφορείου.' }
         ];
 
         // ============================================================
@@ -1693,8 +2008,15 @@
 
         function toggleDark() {
             document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('kok_dark_mode', isDark);
             render();
         }
+
+        (function loadDarkMode() {
+            const dark = localStorage.getItem('kok_dark_mode') === 'true';
+            if (dark) document.body.classList.add('dark');
+        })();
 
         function toggleFavorites() {
             showFavorites = !showFavorites;
@@ -1703,10 +2025,17 @@
         }
 
         function setFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filters button').forEach(b => {
-                b.classList.toggle('active', b.dataset.filter === filter);
-            });
+            if (filter === currentFilter) {
+                currentFilter = 'all';
+                document.querySelectorAll('.filters button').forEach(b => {
+                    b.classList.toggle('active', b.dataset.filter === 'all');
+                });
+            } else {
+                currentFilter = filter;
+                document.querySelectorAll('.filters button').forEach(b => {
+                    b.classList.toggle('active', b.dataset.filter === filter);
+                });
+            }
             render();
         }
 
@@ -1800,7 +2129,7 @@
             </head>
             <body>
                 <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-                <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v14» — ${new Date().toLocaleDateString()}</p>
+                <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v15» — ${new Date().toLocaleDateString()}</p>
                 ${favs.map(v => {
                     const ota = selectedOta;
                     return `
@@ -1947,23 +2276,30 @@
         }
 
         // ============================================================
-        // ΣΜΙΚΡΥΝΣΗ HEADER ΣΤΟ SCROLL
+        // ΣΜΙΚΡΥΝΣΗ HEADER ΣΤΟ SCROLL (με requestAnimationFrame)
         // ============================================================
         const header = document.querySelector('.header');
         let isShrunk = false;
+        let ticking = false;
 
         window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            if (scrollY > 40 && !isShrunk) {
-                header.classList.add('shrink');
-                isShrunk = true;
-            } else if (scrollY <= 40 && isShrunk) {
-                header.classList.remove('shrink');
-                isShrunk = false;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    if (scrollY > 40 && !isShrunk) {
+                        header.classList.add('shrink');
+                        isShrunk = true;
+                    } else if (scrollY <= 40 && isShrunk) {
+                        header.classList.remove('shrink');
+                        isShrunk = false;
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
         }, { passive: true });
 
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v14 - PWA Ready)');
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v15 - PWA Ready)');
         loadExternalData();
 
         document.addEventListener('keydown', (e) => {

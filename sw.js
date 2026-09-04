@@ -1,5 +1,4 @@
-// ΚΟΚ Τσέπης — Service Worker
-const CACHE_VERSION = 'kok-v16';
+const CACHE_VERSION = 'kok-v15';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -118,7 +117,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// stale-while-revalidate
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
