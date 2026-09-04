@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" href="favicon-v2.png" type="image/png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
@@ -58,6 +60,12 @@
             display: flex;
             align-items: center;
             gap: 6px;
+        }
+        .header-title img {
+            height: 32px;
+            width: 32px;
+            vertical-align: middle;
+            margin-right: 6px;
         }
         .header-title span {
             font-weight: 300;
@@ -776,6 +784,11 @@
             .header-title {
                 font-size: 18px;
             }
+            .header-title img {
+                height: 24px;
+                width: 24px;
+                margin-right: 4px;
+            }
             .card .name {
                 font-size: 16px;
             }
@@ -878,7 +891,10 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="header-title">🚗 ΚΟΚ <span>Τσέπης v15</span></div>
+            <div class="header-title">
+                <img src="logo-48-v2.png" alt="ΚΟΚ Τσέπης">
+                ΚΟΚ <span>Τσέπης v15</span>
+            </div>
             <div class="header-actions">
                 <button onclick="toggleDark()">🌙</button>
                 <button onclick="toggleFavorites()">⭐</button>
@@ -1337,7 +1353,7 @@
                 fine: 30, suspend: '40 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (κατηγορία Σ)',
                 points: 5, criminal: false, half: true,
                 fullDescription: 'Απαγορεύεται η κίνηση σε λωρίδα κυκλοφορίας που έχει σήμανση λεωφορείων, ταξί ή ποδηλάτων, αν δεν οδηγείται όχημα της αντίστοιχης κατηγορίας.' },
-            // ===== ΣΗΜΑΝΣΗ (37-50) – ΠΑΡΑΜΕΝΟΥΝ ΟΙ ΠΕΡΙΓΡΑΦΕΣ ΩΣ ΕΧΟΥΝ =====
+            // ===== ΣΗΜΑΝΣΗ (37-50) =====
             { id: 37, category: 'σήμανση', name: 'Παραβίαση Ρ-39 (απαγόρευση στάθμευσης)', article: '7§11δ',
                 fine: 30, suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
                 criminal: false, half: false,
