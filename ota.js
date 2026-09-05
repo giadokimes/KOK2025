@@ -90,7 +90,7 @@ async function reverseGeocode(lat, lon) {
             return;
         }
 
-        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e &language=el`;
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language=el`;
         const response = await fetch(url);
         if (!response.ok) {
             showToast('⚠️ Σφάλμα επικοινωνίας με τον server.');
