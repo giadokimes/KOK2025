@@ -18,9 +18,9 @@
 <!-- Header -->
 <div class="header">
     <div class="header-top">
-        <div class="header-title">
-            <img src="logo-48-v2.png" alt="ΚΟΚ Τσέπης">
-            ΚΟΚ <span>Τσέπης v17</span>
+        <div class="header-logo-wrapper">
+            <img src="logo-48-v2.png" alt="ΚΟΚ Τσέπης" class="header-logo">
+            <div class="header-title">ΚΟΚ <span>Τσέπης v17</span></div>
         </div>
         <div class="header-actions">
             <button onclick="toggleDark()" title="Σκοτεινή λειτουργία">🌙</button>
@@ -30,39 +30,27 @@
             <button id="installBtn" onclick="installApp()">📲 Εγκατάσταση</button>
         </div>
     </div>
-</div>
-
-<!-- Search -->
-<div class="search-section">
     <div class="search-box">
         <span class="icon">🔍</span>
         <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
         <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
     </div>
-</div>
-
-<!-- OTA -->
-<div class="ota-section">
-    <label>ΚΩΔΙΚΟΣ ΟΤΑ</label>
-    <div class="ota-input-wrap">
+    <div class="ota-search-box" id="otaSearchBox">
+        <label>🏛️ Κωδικός ΟΤΑ:</label>
         <input type="text" id="otaSearchInput" placeholder="Αναζήτησε δήμο..." oninput="onOtaSearch()" autocomplete="off">
-        <button class="location-btn" onclick="detectLocation()" title="Αυτόματος εντοπισμός τοποθεσίας">📍</button>
+        <span class="ota-code-display" id="otaCodeDisplay">—</span>
         <div class="ota-suggestions" id="otaSuggestions"></div>
     </div>
-    <span class="ota-code-display" id="otaCodeDisplay">—</span>
-</div>
-
-<!-- Filters -->
-<div class="filters-section">
     <div class="filters" id="filterContainer">
-        <button data-filter="all" onclick="setFilter('all')" class="active">Όλες</button>
-        <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κυκλοφορία</button>
         <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>
-        <button data-filter="σήμανση" onclick="setFilter('σήμανση')">Πινακίδες</button>
+        <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button>
+        <button data-filter="σήμανση" onclick="setFilter('σήμανση')">Σήμανση</button>
         <button data-filter="ταχύτητα" onclick="setFilter('ταχύτητα')">Ταχύτητα</button>
+        <div class="filter-divider"></div>
         <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
         <button data-filter="έγγραφα" onclick="setFilter('έγγραφα')">Έγγραφα</button>
         <button data-filter="φορτηγά" onclick="setFilter('φορτηγά')">Φορτηγά</button>
+        <div class="filter-divider"></div>
         <button data-filter="δίκυκλα" onclick="setFilter('δίκυκλα')">Δίκυκλα</button>
         <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')">ΕΠΗΟ</button>
         <button data-filter="επαγγελματικά" onclick="setFilter('επαγγελματικά')">Επαγγελματικά</button>
@@ -71,17 +59,39 @@
     </div>
 </div>
 
-<!-- Count & List -->
 <div class="count" id="countDisplay">
     <span id="countText">0 παραβάσεις</span>
     <span id="favIndicator" style="display:none;">⭐ Αγαπημένα (<span id="favCount">0</span>)</span>
 </div>
+
 <div class="list" id="listContainer"></div>
 
 <!-- Copyright Footer -->
-<div class="copyright-footer">
-    <p>© 2026 Siakos Filaretos. All rights reserved.</p>
-    <p class="copyright-sub">Εφαρμογή ΚΟΚ Τσέπης v17 — Πνευματική Ιδιοκτησία</p>
+<div style="text-align: center; padding: 20px 15px 10px 15px; font-size: 13px; color: #94a3b8; border-top: 1px solid rgba(0, 0, 0, 0.06); margin-top: 20px;">
+    <p>© 2026 Siakos Filaretos . All rights reserved.</p>
+    <p style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">
+        Εφαρμογή ΚΟΚ Τσέπης v17 — Πνευματική Ιδιοκτησία
+    </p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="install-banner" id="installBanner">
+    <span>📲 Εγκαταστήστε την εφαρμογή</span>
+    <div>
+        <button onclick="installApp()">Εγκατάσταση</button>
+        <button class="close-btn" onclick="dismissInstallBanner()">✕</button>
+    </div>
+</div>
+
+<!-- Modal προβολής πινακίδας -->
+<div id="signModal">
+    <div class="modal-box">
+        <img id="modalSignImg" src="" alt="Πινακίδα">
+        <h3 id="modalSignName"></h3>
+        <div class="modal-details" id="modalSignDetails"></div>
+        <button class="close-modal-btn" onclick="closeSignModal()">✕ Κλείσιμο</button>
+    </div>
 </div>
 
 <!-- Selection Footer -->
@@ -94,25 +104,6 @@
     <div class="actions">
         <button class="clear-btn" onclick="clearSelection()">✕ Καθαρισμός</button>
         <button class="pdf-btn" onclick="exportSelectedToPDF()">📄 PDF κλήσης</button>
-    </div>
-</div>
-
-<div class="toast" id="toast"></div>
-<div class="install-banner" id="installBanner">
-    <span>📲 Εγκαταστήστε την εφαρμογή</span>
-    <div>
-        <button onclick="installApp()">Εγκατάσταση</button>
-        <button class="close-btn" onclick="dismissInstallBanner()">✕</button>
-    </div>
-</div>
-
-<!-- Modal Πινακίδων -->
-<div id="signModal">
-    <div class="modal-box">
-        <img id="modalSignImg" src="" alt="Πινακίδα">
-        <h3 id="modalSignName"></h3>
-        <div class="modal-details" id="modalSignDetails"></div>
-        <button class="close-modal-btn" onclick="closeSignModal()">✕ Κλείσιμο</button>
     </div>
 </div>
 

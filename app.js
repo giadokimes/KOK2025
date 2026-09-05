@@ -336,6 +336,7 @@ function exportSelectedToPDF() {
     const totalFine = calculateTotalFine(selected);
     const { daysLicense, daysDocuments } = calculateSuspension(selected);
     const totalPoints = calculateTotalPoints(selected);
+    const otaText = selectedOta ? `🏛️ Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
 
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
@@ -368,6 +369,7 @@ function exportSelectedToPDF() {
     <body>
         <h1>🚔 Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
         <p class="sub">Ημερομηνία: ${new Date().toLocaleDateString()} - Ώρα: ${new Date().toLocaleTimeString()}</p>
+        ${otaText ? `<p class="sub">${otaText}</p>` : ''}
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
         ${selected.map(v => `
             <div class="card">

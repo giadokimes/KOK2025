@@ -34,24 +34,33 @@ body.dark .header {
 }
 .header-top {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    padding: 4px 0;
+}
+.header-logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.header-logo {
+    height: 48px;
+    width: 48px;
+    background: transparent !important;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    display: block;
 }
 .header-title {
-    font-size: 21px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 0.3px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.header-title img {
-    height: 32px;
-    width: 32px;
-    vertical-align: middle;
-    margin-right: 6px;
+    color: #fff;
+    text-align: center;
 }
 .header-title span {
     font-weight: 300;
@@ -63,6 +72,8 @@ body.dark .header {
     gap: 6px;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4px;
 }
 .header-actions button {
     background: rgba(255, 255, 255, 0.12);
@@ -178,20 +189,15 @@ body.dark .search-box input {
 .search-box .clear-btn.visible {
     display: block;
 }
-
-/* ===== FILTERS - HORIZONTAL SCROLL (παλιό στυλ) ===== */
 .filters {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 14px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    padding: 4px 2px 10px 2px;
+    overflow: hidden;
+    justify-content: center;
 }
 .filters button {
-    flex: 0 0 auto;
     padding: 6px 14px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 30px;
@@ -225,20 +231,14 @@ body.dark .filters button.active {
 body.dark .filters button:hover {
     background: #475569;
 }
-.filters::-webkit-scrollbar {
-    height: 4px;
+.filters .filter-divider {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    margin: 4px 0;
 }
-.filters::-webkit-scrollbar-track {
-    background: transparent;
+body.dark .filters .filter-divider {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
 }
-.filters::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
-}
-body.dark .filters::-webkit-scrollbar-thumb {
-    background: #475569;
-}
-
 .ota-search-box {
     margin-top: 10px;
     display: flex;
@@ -250,6 +250,7 @@ body.dark .filters::-webkit-scrollbar-thumb {
     border-radius: 12px;
     position: relative;
     overflow: hidden;
+    justify-content: center;
 }
 body.dark .ota-search-box {
     background: rgba(255,255,255,0.04);
@@ -269,6 +270,7 @@ body.dark .ota-search-box {
     background: rgba(255,255,255,0.9);
     color: #1a202c;
     outline: none;
+    text-align: center;
 }
 body.dark .ota-search-box input {
     background: #1e293b;
@@ -679,8 +681,6 @@ body.dark .toast {
     color: #64748b;
     font-size: 16px;
 }
-
-/* --- Σμίκρυνση header κατά το scroll --- */
 .header.shrink {
     padding: 6px 12px 4px 12px;
 }
@@ -688,7 +688,8 @@ body.dark .toast {
 .header.shrink .header-actions,
 .header.shrink .filters,
 .header.shrink .ota-search-box,
-.header.shrink .header-title span {
+.header.shrink .header-title span,
+.header.shrink .header-logo-wrapper {
     opacity: 0;
     pointer-events: none;
     max-height: 0;
@@ -713,8 +714,6 @@ body.dark .toast {
     font-size: 14px;
     border-radius: 10px;
 }
-
-/* --- Modal προβολής πινακίδας --- */
 #signModal {
     display: none;
     position: fixed;
@@ -776,21 +775,6 @@ body.dark #signModal .modal-box {
     font-weight: 600;
     cursor: pointer;
 }
-
-/* --- Selection checkbox --- */
-.card .select-check {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    margin-right: 6px;
-    accent-color: #1a365d;
-    cursor: pointer;
-}
-body.dark .card .select-check {
-    accent-color: #60a5fa;
-}
-
-/* ===== SELECTION FOOTER ===== */
 .selection-footer {
     position: fixed;
     bottom: 0;
@@ -801,11 +785,12 @@ body.dark .card .select-check {
     padding: 8px 14px;
     display: none;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 6px 12px;
     z-index: 150;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+    text-align: center;
 }
 body.dark .selection-footer {
     background: #1e293b;
@@ -824,6 +809,8 @@ body.dark .selection-footer {
     color: #334155;
     flex: 1 1 auto;
     min-width: 100px;
+    justify-content: center;
+    text-align: center;
 }
 body.dark .selection-footer .info {
     color: #e2e8f0;
@@ -855,6 +842,7 @@ body.dark .selection-footer .info .names {
     display: flex;
     gap: 6px;
     flex: 0 0 auto;
+    justify-content: center;
 }
 .selection-footer .actions button {
     padding: 5px 14px;
@@ -888,28 +876,15 @@ body.dark .selection-footer .actions .clear-btn:hover {
     background: #475569;
 }
 @media (max-width: 480px) {
+    .header-logo {
+        height: 36px;
+        width: 36px;
+    }
     .header-title {
         font-size: 18px;
     }
-    .header-title img {
-        height: 24px;
-        width: 24px;
-        margin-right: 4px;
-    }
-    .card .name {
-        font-size: 16px;
-    }
-    .card .name .sign-img {
-        width: 24px;
-        height: 24px;
-    }
-    .card .details {
-        font-size: 15px;
-        gap: 4px 12px;
-    }
-    .filters button {
+    .header-title span {
         font-size: 12px;
-        padding: 5px 12px;
     }
     .header-actions button {
         width: 34px;
@@ -925,6 +900,21 @@ body.dark .selection-footer .actions .clear-btn:hover {
         font-size: 12px;
         padding: 0 10px;
         height: 34px;
+    }
+    .card .name {
+        font-size: 16px;
+    }
+    .card .name .sign-img {
+        width: 24px;
+        height: 24px;
+    }
+    .card .details {
+        font-size: 15px;
+        gap: 4px 12px;
+    }
+    .filters button {
+        font-size: 12px;
+        padding: 5px 12px;
     }
     .card {
         padding: 14px 16px;
@@ -967,7 +957,6 @@ body.dark .selection-footer .actions .clear-btn:hover {
         padding: 6px 10px;
     }
 }
-
 @media print {
     .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn, #signModal, .selection-footer {
         display: none !important;
