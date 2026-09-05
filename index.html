@@ -165,22 +165,41 @@ function detectLocation() {
 }
 async function reverseGeocode(lat, lon) {
     try {
-        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1&accept-language=el`;
+       const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language =el`;
         const response = await fetch(url);
         const data = await response.json();
         if (data && data.address) {
-            const municipality = data.address.city || data.address.town || data.address.village || data.address.municipality;
+            // Προσπάθησε να πάρεις τον δήμο από διάφορα πεδία
+            const municipality = data.address.city ||
+                                data.address.town ||
+                                data.address.village ||
+                                data.address.municipality ||
+                                data.address.city_district ||
+                                data.address.suburb;
+
             if (municipality) {
                 const normalized = municipality.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                const found = otaList.find(item =>
-                    item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalized) ||
-                    normalized.includes(item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
+                // Αναζήτηση στη λίστα ΟΤΑ (πιο ευέλικτη)
+                let found = null;
+
+                // 1. Πρώτα προσπάθησε με ακριβή αντιστοίχιση
+                found = otaList.find(item =>
+                    item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normalized
                 );
+
+                // 2. Αν δεν βρεθεί, δοκίμασε με partial match
+                if (!found) {
+                    found = otaList.find(item =>
+                        item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalized) ||
+                        normalized.includes(item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
+                    );
+                }
+
                 if (found) {
                     selectOta(found.name, found.code);
                     showToast('✅ Εντοπίστηκε: ' + found.name + ' (' + found.code + ')');
                 } else {
-                    showToast('📍 Εντοπίστηκε περιοχή: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
+                    showToast('📍 Βρέθηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
                 }
             } else {
                 showToast('⚠️ Δεν βρέθηκε δήμος στην τοποθεσία σου.');
@@ -190,7 +209,7 @@ async function reverseGeocode(lat, lon) {
         }
     } catch (error) {
         console.warn('Reverse geocode error:', error);
-        showToast('⚠️ Σφάλμα κατά τον εντοπισμό. Δοκίμασε ξανά.');
+        showToast('⚠️ Σφάλμα κατά τον εντοπισμό.');
     }
 }
 
