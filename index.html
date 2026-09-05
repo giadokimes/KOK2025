@@ -163,7 +163,6 @@ function detectLocation() {
         { enableHighAccuracy: true, timeout: 10000 }
     );
 }
-
 async function reverseGeocode(lat, lon) {
     try {
         const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1&accept-language=el`;
@@ -194,6 +193,7 @@ async function reverseGeocode(lat, lon) {
         showToast('⚠️ Σφάλμα κατά τον εντοπισμό. Δοκίμασε ξανά.');
     }
 }
+
 
 // ============================================================
 // ΠΙΝΑΚΙΔΕΣ
