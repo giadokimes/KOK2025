@@ -147,7 +147,7 @@ function loadOtaSelection() {
 // ============================================================
 function detectLocation() {
     if (!navigator.geolocation) {
-        showToast('⚠️ Το πρόγραμμα περιήγησής σου δεν υποστηρίζει γεωτοποθεσία.');
+        showToast('⚠️ Η συσκευή σου δεν υποστηρίζει γεωτοποθεσία.');
         return;
     }
     showToast('📍 Εντοπισμός τοποθεσίας...');
@@ -157,49 +157,49 @@ function detectLocation() {
             await reverseGeocode(latitude, longitude);
         },
         (error) => {
-            console.warn('Geolocation error:', error);
-            showToast('⚠️ Δεν ήταν δυνατός ο εντοπισμός. Παρακαλώ επίλεξε ΟΤΑ χειροκίνητα.');
+            console.error('Geolocation error:', error);
+            showToast('⚠️ Δεν ήταν δυνατός ο εντοπισμός. Επίλεξε ΟΤΑ χειροκίνητα.');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
 }
 async function reverseGeocode(lat, lon) {
     try {
-       const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language =el`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data && data.address) {
-            // Προσπάθησε να πάρεις τον δήμο από διάφορα πεδία
-            const municipality = data.address.city ||
-                                data.address.town ||
-                                data.address.village ||
-                                data.address.municipality ||
-                                data.address.city_district ||
-                                data.address.suburb;
+        // 1. Περίμενε να φορτωθεί η λίστα ΟΤΑ (αν χρειαστεί)
+        let retries = 0;
+        while (otaList.length === 0 && retries < 20) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            retries++;
+        }
+        if (otaList.length === 0) {
+            showToast('⚠️ Η λίστα ΟΤΑ δεν φορτώθηκε. Δοκίμασε ξανά.');
+            return;
+        }
 
+        // 2. Κάνε το αίτημα στο OpenCage
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language=el`;
+        const response = await fetch(url);
+        if (!response.ok) {
+            showToast('⚠️ Σφάλμα επικοινωνίας με τον server.');
+            return;
+        }
+        const data = await response.json();
+
+        // 3. Βρες τον δήμο από το αποτέλεσμα
+        if (data && data.results && data.results.length > 0) {
+            const components = data.results[0].components;
+            const municipality = components.city || components.town || components.village || components.municipality || components.city_district || components.suburb;
             if (municipality) {
                 const normalized = municipality.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                // Αναζήτηση στη λίστα ΟΤΑ (πιο ευέλικτη)
-                let found = null;
-
-                // 1. Πρώτα προσπάθησε με ακριβή αντιστοίχιση
-                found = otaList.find(item =>
-                    item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normalized
-                );
-
-                // 2. Αν δεν βρεθεί, δοκίμασε με partial match
-                if (!found) {
-                    found = otaList.find(item =>
-                        item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalized) ||
-                        normalized.includes(item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
-                    );
-                }
-
+                let found = otaList.find(item => {
+                    const itemNorm = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    return itemNorm.includes(normalized) || normalized.includes(itemNorm);
+                });
                 if (found) {
                     selectOta(found.name, found.code);
                     showToast('✅ Εντοπίστηκε: ' + found.name + ' (' + found.code + ')');
                 } else {
-                    showToast('📍 Βρέθηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
+                    showToast('📍 Εντοπίστηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
                 }
             } else {
                 showToast('⚠️ Δεν βρέθηκε δήμος στην τοποθεσία σου.');
@@ -208,12 +208,10 @@ async function reverseGeocode(lat, lon) {
             showToast('⚠️ Δεν βρέθηκε τοποθεσία.');
         }
     } catch (error) {
-        console.warn('Reverse geocode error:', error);
+        console.error('reverseGeocode error:', error);
         showToast('⚠️ Σφάλμα κατά τον εντοπισμό.');
     }
 }
-
-
 // ============================================================
 // ΠΙΝΑΚΙΔΕΣ
 // ============================================================
