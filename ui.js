@@ -77,19 +77,21 @@ async function loadExternalData() {
             fetch('ota-data.json')
         ]);
         if (signsRes.ok) signImageMap = await signsRes.json();
-        if (otaRes.ok) otaList = await otaRes.json();
+        if (otaRes.ok) {
+            otaList = await otaRes.json();
+            // Η γεωτοποίηση καλείται ΜΟΝΟ αφού φορτωθεί η λίστα ΟΤΑ
+            if (!selectedOta) {
+                setTimeout(() => {
+                    detectLocation();
+                }, 500);
+            }
+        }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
     }
     render();
     const otaInput = document.getElementById('otaSearchInput');
     if (otaInput && otaInput.value) onOtaSearch();
-
-    if (!selectedOta) {
-        setTimeout(() => {
-            detectLocation();
-        }, 2500);
-    }
 }
 
 // Σμίκρυνση header
