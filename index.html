@@ -192,55 +192,47 @@
         .search-box .clear-btn.visible {
             display: block;
         }
+        /* ===== FILTERS - 3 ROWS OF 4 ===== */
         .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-            overflow: hidden;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+            padding: 8px 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
         }
         .filters button {
-            padding: 6px 14px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 30px;
-            font-size: 13px;
+            padding: 8px 4px;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
             font-weight: 600;
-            background: #e2e8f0;
-            color: #0f172a;
+            background: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
             cursor: pointer;
-            transition: all .2s;
-            white-space: nowrap;
-        }
-        body.dark .filters button {
-            background: #334155;
-            color: #f1f5f9;
-            border-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+            text-align: center;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
         }
         .filters button.active {
             background: #1a365d;
             color: #ffffff;
-            border-color: #1a365d;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.3);
+            transform: scale(1.02);
+        }
+        body.dark .filters {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        body.dark .filters button {
+            background: rgba(255, 255, 255, 0.04);
+            color: #94a3b8;
         }
         body.dark .filters button.active {
-            background: #4a5568;
-            color: #e2e8f0;
-            border-color: #4a5568;
-        }
-        .filters button:hover {
-            background: #cbd5e1;
-        }
-        body.dark .filters button:hover {
-            background: #475569;
-        }
-        .filters .filter-divider {
-            width: 100%;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            margin: 4px 0;
-        }
-        body.dark .filters .filter-divider {
-            border-bottom-color: rgba(255, 255, 255, 0.08);
+            background: #2d4a7a;
+            color: #f1f5f9;
+            box-shadow: 0 4px 12px rgba(45, 74, 122, 0.4);
         }
         .ota-search-box {
             margin-top: 10px;
@@ -801,8 +793,8 @@
                 gap: 4px 12px;
             }
             .filters button {
-                font-size: 12px;
-                padding: 5px 12px;
+                font-size: 11px;
+                padding: 6px 2px;
             }
             .header-actions button {
                 width: 34px;
@@ -915,19 +907,19 @@
             <div class="ota-suggestions" id="otaSuggestions"></div>
         </div>
         <div class="filters" id="filterContainer">
-            <!-- Γραμμή 1 -->
+            <!-- Σειρά 1 -->
             <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>
             <button data-filter="κίνηση" onclick="setFilter('κίνηση')">Κίνηση</button>
             <button data-filter="σήμανση" onclick="setFilter('σήμανση')">Σήμανση</button>
             <button data-filter="ταχύτητα" onclick="setFilter('ταχύτητα')">Ταχύτητα</button>
-            <div class="filter-divider"></div>
-            <!-- Γραμμή 2 -->
+
+            <!-- Σειρά 2 -->
             <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">Ασφάλεια</button>
             <button data-filter="έγγραφα" onclick="setFilter('έγγραφα')">Έγγραφα</button>
             <button data-filter="φορτηγά" onclick="setFilter('φορτηγά')">Φορτηγά</button>
-            <div class="filter-divider"></div>
-            <!-- Γραμμή 3 -->
             <button data-filter="δίκυκλα" onclick="setFilter('δίκυκλα')">Δίκυκλα</button>
+
+            <!-- Σειρά 3 -->
             <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')">ΕΠΗΟ</button>
             <button data-filter="επαγγελματικά" onclick="setFilter('επαγγελματικά')">Επαγγελματικά</button>
             <button data-filter="αλκοόλ" onclick="setFilter('αλκοόλ')">Αλκοόλ</button>
@@ -941,21 +933,13 @@
     </div>
 
     <div class="list" id="listContainer"></div>
-    <!-- Copyright Footer -->
-<div style="
-    text-align: center;
-    padding: 20px 15px 10px 15px;
-    font-size: 13px;
-    color: #94a3b8;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
-    margin-top: 20px;
-">
-    <p>© 2026 Siakos Filaretos . All rights reserved.</p>
-    <p style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">
-        Εφαρμογή ΚΟΚ Τσέπης v17 — Πνευματική Ιδιοκτησία
-    </p>
-</div>
     <div class="toast" id="toast"></div>
+
+    <!-- Copyright Footer -->
+    <div class="copyright-footer">
+        <p>© 2026 Siakos Filaretos . All rights reserved.</p>
+        <p class="copyright-sub">Εφαρμογή ΚΟΚ Τσέπης v17 — Πνευματική Ιδιοκτησία</p>
+    </div>
 
     <div class="install-banner" id="installBanner">
         <span>📲 Εγκαταστήστε την εφαρμογή</span>
@@ -1225,7 +1209,7 @@
         };
 
         // ============================================================
-        // ΔΕΔΟΜΕΝΑ – v15 (225 παραβάσεις με 4 διορθώσεις)
+        // ΔΕΔΟΜΕΝΑ – v17 (225 παραβάσεις με 4 διορθώσεις)
         // ============================================================
         const data = [
             // ===== ΣΤΑΘΜΕΥΣΗ (1-36) =====
@@ -2479,7 +2463,7 @@
             }
         }, { passive: true });
 
-        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v15 - PWA Ready)');
+        console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v17 - PWA Ready)');
         loadExternalData();
 
         document.addEventListener('keydown', (e) => {
