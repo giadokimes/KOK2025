@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v16';
+const CACHE_VERSION = 'kok-v17';
 const PRECACHE_URLS = [
   './',
   './index.html',
