@@ -1144,14 +1144,10 @@
             modalImg.src = imgSrc;
             modalImg.alt = signCode;
 
-            // 1. Περιγραφή: από το signDescriptions με βάση τον κωδικό
             const description = signDescriptions[signCode] || signCode;
-
-            // 2. Ποινές: βρίσκουμε την ΠΡΩΤΗ παράβαση που περιέχει τον κωδικό
             const violation = data.find(v => v.name.includes(signCode));
             if (violation) {
                 modalName.textContent = signCode + ' – ' + description;
-
                 let details = '';
                 if (violation.fine) details += '💰 Πρόστιμο: ' + formatFine(violation.fine);
                 if (violation.suspend && violation.suspend !== '-') {
@@ -1215,7 +1211,7 @@
         };
 
         // ============================================================
-        // ΔΕΔΟΜΕΝΑ – v15 (228 παραβάσεις)
+        // ΔΕΔΟΜΕΝΑ – v15 (225 παραβάσεις με 4 διορθώσεις)
         // ============================================================
         const data = [
             // ===== ΣΤΑΘΜΕΥΣΗ (1-36) =====
@@ -1471,8 +1467,9 @@
             { id: 134, category: 'κίνηση', name: 'Αντικανονικό άνοιγμα θυρών', article: '34', fine: 30,
                 suspend: '-', details: 'Καμία αφαίρεση', points: 0, criminal: false, half: false,
                 fullDescription: 'Άνοιγμα θυρών οχήματος χωρίς να έχει βεβαιωθεί ότι δεν προκαλείται κίνδυνος.' },
+            /* ΔΙΟΡΘΩΣΗ ID 136: Από Ε1-Α (μόνο 30€) σε Ε1-Β (30€ + 10 ημέρες αφαίρεση) */
             { id: 136, category: 'κίνηση', name: 'Μεταφορά επιβατών πέραν ορίου (βασική)', article: '37', fine: 30,
-                suspend: '-', details: 'Καμία αφαίρεση', points: 0, criminal: false, half: false,
+                suspend: '10 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (Ε1-Β)', points: 0, criminal: false, half: false,
                 fullDescription: 'Μεταφορά επιβατών πέραν του αναγραφόμενου ανώτατου αριθμού στην άδεια κυκλοφορίας.' },
             { id: 139, category: 'κίνηση', name: 'Παραβίαση προτεραιότητας σε κόμβο', article: '30§5', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 7, criminal: false,
@@ -1680,6 +1677,8 @@
                 details: 'Πρόστιμο + αφαίρεση στοιχείων κυκλοφορίας', points: 0, criminal: false, half: false,
                 fullDescription: 'Χρησιμοποίηση φορτηγού οχήματος ιδιωτικής χρήσης για διαφορετικό σκοπό από αυτόν για τον οποίο χορηγήθηκε η άδεια κυκλοφορίας.' },
             // ===== ΔΙΚΥΚΛΑ (79-87, 130-131) =====
+            /* ΔΙΟΡΘΩΣΗ ID 81: Από Ε2-Β (150€ + 20 ημέρες) σε Ε2-Α (150€, χωρίς αφαίρεση) */
+            { id: 81, category: 'δίκυκλα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1', fine: 150, suspend: '-', details: 'Πρόστιμο μόνο (Ε2-Α)', points: 0, criminal: false, half: false, fullDescription: 'Οι οδηγοί μοτοσικλετών, αν το κράνος δεν έχει διαφανές προστατευτικό κάλυμμα, οφείλουν να φορούν γυαλιά κατά του ανέμου.' },
             { id: 79, category: 'δίκυκλα', name: 'Μη χρήση κράνους (οδηγός)', article: '16§6', fine: 350,
                 suspend: '30 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 5, criminal: false,
                 half: false,
@@ -1687,10 +1686,6 @@
             { id: 80, category: 'δίκυκλα', name: 'Μη χρήση κράνους (επιβάτης)', article: '16§6', fine: 350,
                 suspend: '-', details: 'Πρόστιμο μόνο (Ε3-Α)', points: 0, criminal: false, half: false,
                 fullDescription: 'Ο επιβάτης μοτοποδηλάτου, μοτοσικλέτας ή τρίτροχου οχήματος χωρίς κουβούκλιο οφείλει να φοράει προστατευτικό κράνος.' },
-            { id: 81, category: 'δίκυκλα', name: 'Μη χρήση γυαλιών (μοτοσικλέτα)', article: '104§1',
-                fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης', points: 0,
-                criminal: false, half: false,
-                fullDescription: 'Οι οδηγοί μοτοσικλετών, αν το κράνος δεν έχει διαφανές προστατευτικό κάλυμμα, οφείλουν να φορούν γυαλιά κατά του ανέμου.' },
             { id: 82, category: 'δίκυκλα', name: 'Μεταφορά επιβάτη χωρίς υποπόδια', article: '44§1δ',
                 fine: 30, suspend: '-', details: 'Καμία αφαίρεση (Ε1-Α)', points: 0, criminal: false,
                 half: false,
@@ -2007,10 +2002,8 @@
                 article: '29§3', fine: 30, suspend: '40 ημέρες αδ. οδ. (Σ)', details: 'Αφαίρεση άδειας οδήγησης',
                 points: 0, criminal: false, half: false,
                 fullDescription: 'Ο οδηγός λεωφορείου/ταξί δεν πλησιάζει στο άκρο του οδοστρώματος για επιβίβαση/αποβίβαση.' },
-            { id: 220, category: 'επαγγελματικά', name: 'Οδήγηση ταξί/λεωφορείου πέραν χρονικών ορίων',
-                article: '17§5', fine: 30, suspend: '40 ημέρες αδ. οδ. (Σ)', details: 'Αφαίρεση άδειας οδήγησης',
-                points: 0, criminal: false, half: false,
-                fullDescription: 'Υπέρβαση των χρονικών ορίων οδήγησης για επαγγελματίες οδηγούς (ταξί, λεωφορεία).' },
+            /* ΔΙΟΡΘΩΣΗ ID 220: Από Ε1-Α+Σ (30€ + 40 ημ.) σε Ε2-Α (150€ + 20 ημ., χωρίς Σ) */
+            { id: 220, category: 'επαγγελματικά', name: 'Οδήγηση ταξί/λεωφορείου πέραν χρονικών ορίων', article: '17§5', fine: 150, suspend: '20 ημέρες αδ. οδ.', details: 'Αφαίρεση άδειας οδήγησης (Ε2-Α)', points: 0, criminal: false, half: false, fullDescription: 'Υπέρβαση των χρονικών ορίων οδήγησης για επαγγελματίες οδηγούς (ταξί, λεωφορεία).' },
             { id: 221, category: 'επαγγελματικά', name: 'Παραβίαση ειδικών κανόνων Ε.Δ.Χ. (έλλειψη ταξιμέτρου)',
                 article: '4§19 & 98§4', fine: 700, suspend: '1 έτος αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
@@ -2019,10 +2012,8 @@
                 article: '98§4αγ', fine: 1000, suspend: '1 έτος αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
                 fullDescription: 'Οδήγηση ταξί ή λεωφορείου χωρίς την απαιτούμενη ειδική άδεια.' },
-            { id: 223, category: 'επαγγελματικά', name: 'Μη τήρηση υποχρεώσεων οδηγού Ε.Δ.Χ. (ευγένεια)',
-                article: '16§7', fine: 150, suspend: '40 ημέρες αδ. οδ. (Σ)',
-                details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
-                fullDescription: 'Μη τήρηση των υποχρεώσεων ευγένειας και συμπεριφοράς του οδηγού Ε.Δ.Χ.' },
+            /* ΔΙΟΡΘΩΣΗ ID 223: Από Ε3-Α (150€ + 40 ημ.) σε Ε2-Α + Σ (150€ + 20 ημ. + 40 ημ. Σ) */
+            { id: 223, category: 'επαγγελματικά', name: 'Μη τήρηση υποχρεώσεων οδηγού Ε.Δ.Χ. (ευγένεια)', article: '16§7', fine: 150, suspend: '20 ημέρες αδ. οδ. + 40 ημέρες (Σ)', details: 'Αφαίρεση άδειας οδήγησης (Ε2-Α + Σ)', points: 0, criminal: false, half: false, fullDescription: 'Μη τήρηση των υποχρεώσεων ευγένειας και συμπεριφοράς του οδηγού Ε.Δ.Χ.' },
             { id: 224, category: 'επαγγελματικά', name: 'Μη χρήση ζώνης ασφαλείας (οδηγός ταξί/λεωφορείου)',
                 article: '16§5', fine: 350, suspend: '30 ημέρες αδ. οδ.',
                 details: 'Αφαίρεση άδειας οδήγησης', points: 0, criminal: false, half: false,
