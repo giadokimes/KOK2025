@@ -39,7 +39,6 @@ let openDescriptions = {};
 // RENDER
 // ============================================================
 function render() {
-    // ΕΛΕΓΧΟΣ: Βεβαιώσου ότι το data υπάρχει και είναι πίνακας
     if (typeof data === 'undefined' || !Array.isArray(data) || data.length === 0) {
         const container = document.getElementById('listContainer');
         if (container) {
@@ -346,6 +345,7 @@ function exportSelectedToPDF() {
     const { daysLicense, daysDocuments } = calculateSuspension(selected);
     const totalPoints = calculateTotalPoints(selected);
     const otaText = selectedOta ? `🏛️ Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
+    const addressText = localStorage.getItem('kok_last_address') || '';
 
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
@@ -379,6 +379,7 @@ function exportSelectedToPDF() {
         <h1>🚔 Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
         <p class="sub">Ημερομηνία: ${new Date().toLocaleDateString()} - Ώρα: ${new Date().toLocaleTimeString()}</p>
         ${otaText ? `<p class="sub">${otaText}</p>` : ''}
+        ${addressText ? `<p class="sub">📍 Σημείο ελέγχου: ${addressText}</p>` : ''}
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
         ${selected.map(v => `
             <div class="card">
