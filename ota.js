@@ -60,6 +60,8 @@ function loadOtaSelection() {
 // ============================================================
 function updateAddress(components) {
     const addressSpan = document.getElementById('addressText');
+    if (!addressSpan) return; // Ασφάλεια αν το πεδίο λείπει
+
     const road = components.road || components.pedestrian || components.path || components.street || '';
     const houseNumber = components.house_number || '';
 
@@ -81,8 +83,10 @@ function loadSavedAddress() {
     const saved = localStorage.getItem('kok_last_address');
     if (saved) {
         const addressSpan = document.getElementById('addressText');
-        addressSpan.textContent = saved;
-        addressSpan.className = 'address-found';
+        if (addressSpan) {
+            addressSpan.textContent = saved;
+            addressSpan.className = 'address-found';
+        }
     }
 }
 
@@ -92,8 +96,11 @@ function loadSavedAddress() {
 function detectLocation() {
     if (!navigator.geolocation) {
         showToast('⚠️ Η συσκευή σου δεν υποστηρίζει γεωτοποθεσία.');
-        document.getElementById('addressText').textContent = 'Η συσκευή δεν υποστηρίζει γεωτοποθεσία';
-        document.getElementById('addressText').className = 'address-placeholder';
+        const addressSpan = document.getElementById('addressText');
+        if (addressSpan) {
+            addressSpan.textContent = 'Η συσκευή δεν υποστηρίζει γεωτοποθεσία';
+            addressSpan.className = 'address-placeholder';
+        }
         return;
     }
     showToast('📍 Εντοπισμός τοποθεσίας...');
@@ -105,8 +112,11 @@ function detectLocation() {
         (error) => {
             console.error('Geolocation error:', error);
             showToast('⚠️ Δεν ήταν δυνατός ο εντοπισμός. Επίλεξε ΟΤΑ χειροκίνητα.');
-            document.getElementById('addressText').textContent = 'Η τοποθεσία δεν είναι διαθέσιμη';
-            document.getElementById('addressText').className = 'address-placeholder';
+            const addressSpan = document.getElementById('addressText');
+            if (addressSpan) {
+                addressSpan.textContent = 'Η τοποθεσία δεν είναι διαθέσιμη';
+                addressSpan.className = 'address-placeholder';
+            }
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -122,6 +132,11 @@ async function reverseGeocode(lat, lon) {
         }
         if (otaList.length === 0) {
             showToast('⚠️ Η λίστα ΟΤΑ δεν φορτώθηκε. Δοκίμασε ξανά.');
+            const addressSpan = document.getElementById('addressText');
+            if (addressSpan) {
+                addressSpan.textContent = 'Η λίστα ΟΤΑ δεν φορτώθηκε';
+                addressSpan.className = 'address-placeholder';
+            }
             return;
         }
 
@@ -129,6 +144,11 @@ async function reverseGeocode(lat, lon) {
         const response = await fetch(url);
         if (!response.ok) {
             showToast('⚠️ Σφάλμα επικοινωνίας με τον server.');
+            const addressSpan = document.getElementById('addressText');
+            if (addressSpan) {
+                addressSpan.textContent = 'Σφάλμα επικοινωνίας με τον server';
+                addressSpan.className = 'address-placeholder';
+            }
             return;
         }
         const data = await response.json();
@@ -164,13 +184,19 @@ async function reverseGeocode(lat, lon) {
             updateAddress(components);
         } else {
             showToast('⚠️ Δεν βρέθηκε τοποθεσία.');
-            document.getElementById('addressText').textContent = 'Δεν βρέθηκε διεύθυνση για αυτή την τοποθεσία';
-            document.getElementById('addressText').className = 'address-placeholder';
+            const addressSpan = document.getElementById('addressText');
+            if (addressSpan) {
+                addressSpan.textContent = 'Δεν βρέθηκε διεύθυνση για αυτή την τοποθεσία';
+                addressSpan.className = 'address-placeholder';
+            }
         }
     } catch (error) {
         console.error('reverseGeocode error:', error);
         showToast('⚠️ Σφάλμα κατά τον εντοπισμό.');
-        document.getElementById('addressText').textContent = 'Σφάλμα κατά την ανάκτηση διεύθυνσης';
-        document.getElementById('addressText').className = 'address-placeholder';
+        const addressSpan = document.getElementById('addressText');
+        if (addressSpan) {
+            addressSpan.textContent = 'Σφάλμα κατά την ανάκτηση διεύθυνσης';
+            addressSpan.className = 'address-placeholder';
+        }
     }
 }

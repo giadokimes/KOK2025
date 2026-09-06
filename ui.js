@@ -89,12 +89,12 @@ async function loadExternalData() {
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
     }
+    // Φόρτωση αποθηκευμένης διεύθυνσης
+    loadSavedAddress();
+    // ΚΛΗΣΗ RENDER ΜΕΤΑ ΤΗ ΦΟΡΤΩΣΗ
     render();
     const otaInput = document.getElementById('otaSearchInput');
     if (otaInput && otaInput.value) onOtaSearch();
-    
-    // Φόρτωση αποθηκευμένης διεύθυνσης
-    loadSavedAddress();
 }
 
 // Σμίκρυνση header
