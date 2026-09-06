@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="icon" href="favicon-v2.png" type="image/png">
+    <link rel="icon" href="favicon-v2.ico" type="image/x-icon">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#1a365d">
-    <title>ΚΟΚ – Τσέπης v17 (PWA)</title>
+    <title>ΚΟΚ – Τσέπης v19 (PWA)</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
     <div class="header-top">
         <div class="header-logo-wrapper">
             <img src="logo-48-v2.png" alt="ΚΟΚ Τσέπης" class="header-logo">
-            <div class="header-title">ΚΟΚ <span>Τσέπης v17</span></div>
+            <div class="header-title">ΚΟΚ <span>Τσέπης v19</span></div>
         </div>
         <div class="header-actions">
             <button onclick="toggleDark()" title="Σκοτεινή λειτουργία">🌙</button>
@@ -38,6 +38,7 @@
     <div class="ota-search-box" id="otaSearchBox">
         <label>🏛️ Κωδικός ΟΤΑ:</label>
         <input type="text" id="otaSearchInput" placeholder="Αναζήτησε δήμο..." oninput="onOtaSearch()" autocomplete="off">
+        <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Εντοπισμός τρέχουσας τοποθεσίας">📍</button>
         <span class="ota-code-display" id="otaCodeDisplay">—</span>
         <div class="ota-suggestions" id="otaSuggestions"></div>
     </div>
@@ -70,7 +71,7 @@
 <div style="text-align: center; padding: 20px 15px 10px 15px; font-size: 13px; color: #94a3b8; border-top: 1px solid rgba(0, 0, 0, 0.06); margin-top: 20px;">
     <p>© 2026 Siakos Filaretos . All rights reserved.</p>
     <p style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">
-        Εφαρμογή ΚΟΚ Τσέπης v17 — Πνευματική Ιδιοκτησία
+        Εφαρμογή ΚΟΚ Τσέπης v19 — Πνευματική Ιδιοκτησία
     </p>
 </div>
 

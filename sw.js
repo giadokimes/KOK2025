@@ -1,16 +1,31 @@
-const CACHE_VERSION = 'kok-v17';
-const PRECACHE_URLS = [
+const CACHE_VERSION = 'kok-v19';
+
+// Βασικά αρχεία της εφαρμογής — ΠΡΕΠΕΙ να επιτύχουν όλα, αλλιώς η εγκατάσταση
+// του service worker αποτυγχάνει σκόπιμα (καλύτερα να ξέρουμε αμέσως).
+const CORE_URLS = [
   './',
   './index.html',
   './manifest.json',
+  './styles.css',
+  './data.js',
+  './signs.js',
+  './ota.js',
+  './app.js',
+  './ui.js',
   './icon-192-v2.png',
   './icon-512-v2.png',
+  './icon-maskable-512.png',
   './apple-touch-icon.png',
-  './favicon-v2.png',
+  './favicon-v2.ico',
   './logo-48-v2.png',
   './signs-data.json',
-  './ota-data.json',
-  // Εικόνες πινακίδων από Wikimedia
+  './ota-data.json'
+];
+
+// Εικόνες πινακίδων από Wikimedia — προαιρετικές (best-effort). Αν κάποια
+// αποτύχει (δικτυακό πρόβλημα, αλλαγή αρχείου κ.λπ.) ΔΕΝ πρέπει να μπλοκάρει
+// την υπόλοιπη εγκατάσταση, γιατί είναι εξωτερικά, μη κρίσιμα αρχεία.
+const SIGN_URLS = [
   'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic_Sign_GR_-_KOK_2009_-_R-1.svg',
   'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic_Sign_GR_-_KOK_2009_-_R-2.svg',
   'https://commons.wikimedia.org/wiki/Special:FilePath/Traffic_Sign_GR_-_KOK_2009_-_R-3.svg',
@@ -102,9 +117,24 @@ const PRECACHE_URLS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_VERSION).then((cache) => {
+      // Τα βασικά αρχεία ΠΡΕΠΕΙ να επιτύχουν όλα.
+      return cache.addAll(CORE_URLS).then(() => {
+        // Οι πινακίδες είναι best-effort: caching ένα-ένα, χωρίς να
+        // μπλοκάρουν ή να ακυρώνουν την εγκατάσταση αν κάποια αποτύχει.
+        // mode:'no-cors' αποφεύγει σφάλματα CORS σε cross-origin αιτήματα
+        // (η απάντηση αποθηκεύεται ως opaque, αρκετό για offline εμφάνιση εικόνας).
+        return Promise.allSettled(
+          SIGN_URLS.map((url) =>
+            fetch(new Request(url, { mode: 'no-cors' }))
+              .then((response) => cache.put(url, response))
+              .catch(() => {
+                // Αγνοούμε σιωπηλά — η πινακίδα απλά δεν θα είναι διαθέσιμη offline.
+              })
+          )
+        );
+      });
+    }).then(() => self.skipWaiting())
   );
 });
 

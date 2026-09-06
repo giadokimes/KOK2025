@@ -326,6 +326,38 @@ body.dark .ota-search-box .ota-suggestions .suggestion-item {
 body.dark .ota-search-box .ota-suggestions .suggestion-item:hover {
     background: #334155;
 }
+.ota-search-box .geo-btn {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, transform .15s;
+}
+.ota-search-box .geo-btn:hover {
+    background: #fff;
+    transform: scale(1.05);
+}
+.ota-search-box .geo-btn:disabled {
+    cursor: default;
+    transform: none;
+}
+.ota-search-box .geo-btn.loading {
+    animation: geo-pulse 1s ease-in-out infinite;
+}
+@keyframes geo-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+body.dark .ota-search-box .geo-btn {
+    background: #1e293b;
+}
 .ota-search-box .ota-code-display {
     font-size: 14px;
     font-weight: 700;

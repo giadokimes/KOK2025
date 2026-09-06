@@ -79,12 +79,6 @@ async function loadExternalData() {
         if (signsRes.ok) signImageMap = await signsRes.json();
         if (otaRes.ok) {
             otaList = await otaRes.json();
-            // Η γεωτοποίηση καλείται ΜΟΝΟ αφού φορτωθεί η λίστα ΟΤΑ
-            if (!selectedOta) {
-                setTimeout(() => {
-                    detectLocation();
-                }, 500);
-            }
         }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
@@ -116,7 +110,7 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v17 - modular)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v19 - modular)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
