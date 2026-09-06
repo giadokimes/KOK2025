@@ -99,10 +99,13 @@ window.addEventListener('scroll', () => {
     if (!ticking) {
         window.requestAnimationFrame(() => {
             const scrollY = window.scrollY;
-            if (scrollY > 40 && !isShrunk) {
+            // Υστέρηση (διαφορετικό threshold για shrink/unshrink) ώστε
+            // μικρές διακυμάνσεις γύρω από ένα ενιαίο σημείο να μην
+            // προκαλούν επαναλαμβανόμενο shrink/unshrink.
+            if (scrollY > 56 && !isShrunk) {
                 header.classList.add('shrink');
                 isShrunk = true;
-            } else if (scrollY <= 40 && isShrunk) {
+            } else if (scrollY < 24 && isShrunk) {
                 header.classList.remove('shrink');
                 isShrunk = false;
             }

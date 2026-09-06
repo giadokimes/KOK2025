@@ -94,19 +94,19 @@ const signDescriptions = {
     'Ρ-77': 'Λήξη απαγόρευσης στάσης και στάθμευσης'
 };
 
-function replaceSignCodes(text) {
+function replaceSignCodes(text, violationId) {
     if (!text) return text;
     return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
         const code = 'Ρ-' + number;
         const imgUrl = signImageMap[code];
         if (imgUrl) {
-            return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onclick="openSignModal('${imgUrl}', '${code}')">`;
+            return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onclick="openSignModal('${imgUrl}', '${code}', ${violationId})">`;
         }
         return match;
     });
 }
 
-function openSignModal(imgSrc, signCode) {
+function openSignModal(imgSrc, signCode, violationId) {
     const modal = document.getElementById('signModal');
     const modalImg = document.getElementById('modalSignImg');
     const modalName = document.getElementById('modalSignName');
@@ -116,7 +116,10 @@ function openSignModal(imgSrc, signCode) {
     modalImg.alt = signCode;
 
     const description = signDescriptions[signCode] || signCode;
-    const violation = data.find(v => v.name.includes(signCode));
+    // Χρησιμοποιούμε το ΣΥΓΚΕΚΡΙΜΕΝΟ id της κάρτας που πατήθηκε — όχι
+    // αναζήτηση με includes() σε όλη τη βάση, που έδινε λάθος αποτέλεσμα
+    // σε κάρτες με πολλαπλές πινακίδες.
+    const violation = data.find(v => v.id === violationId);
     if (violation) {
         modalName.textContent = signCode + ' – ' + description;
         let details = '';

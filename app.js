@@ -36,6 +36,32 @@ let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
 let openDescriptions = {};
 
 // ============================================================
+// ΑΝΑΖΗΤΗΣΗ — ελαφριά ανοχή σε κλίσεις ελληνικών λέξεων
+// ============================================================
+// Απλό .includes() αποτυγχάνει σε ζεύγη όπως "μονόδρομος" (ονομαστική,
+// όπως γράφει ο χρήστης) vs "μονόδρομο" (αιτιατική, όπως εμφανίζεται
+// συχνά στο κείμενο) — η ονομαστική δεν είναι substring της αιτιατικής.
+// Παράγουμε μερικές εναλλακτικές μορφές της λέξης-κλειδί, κόβοντας
+// συνηθισμένες καταλήξεις, και ελέγχουμε αν ΚΑΠΟΙΑ από αυτές ταιριάζει.
+function queryVariants(word) {
+    const variants = new Set([word]);
+    if (word.length >= 5) {
+        variants.add(word.replace(/ς$/, ''));                    // -ος -> -ο, -ας -> -α κλπ.
+        variants.add(word.replace(/(ος|ης|ας|ων|ού|οί|ές)$/, '')); // αφαίρεση συνηθισμένης κατάληξης
+    }
+    return [...variants].filter(v => v.length >= 3);
+}
+
+function matchesQuery(searchableText, rawQuery) {
+    // Κάθε λέξη του query πρέπει να ταιριάζει (με κάποια εναλλακτική μορφή)
+    // κάπου στο κείμενο — έτσι δουλεύουν σωστά και πολυλεκτικές αναζητήσεις.
+    const words = rawQuery.split(/\s+/).filter(Boolean);
+    return words.every(word =>
+        queryVariants(word).some(variant => searchableText.includes(variant))
+    );
+}
+
+// ============================================================
 // RENDER
 // ============================================================
 function render() {
@@ -50,7 +76,7 @@ function render() {
         if (currentFilter !== 'all' && v.category !== currentFilter) return false;
         if (query) {
             const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v.fullDescription || '')).toLowerCase();
-            if (!searchable.includes(query)) return false;
+            if (!matchesQuery(searchable, query)) return false;
         }
         return true;
     });
@@ -75,7 +101,7 @@ function render() {
         const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
         const isDescOpen = openDescriptions[v.id] || false;
 
-        const nameWithImages = replaceSignCodes(v.name);
+        const nameWithImages = replaceSignCodes(v.name, v.id);
 
         let bgColor = '#ffffff';
         if (v.criminal) {

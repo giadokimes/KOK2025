@@ -27,6 +27,15 @@ body.dark {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: padding 0.25s ease;
     will-change: padding;
+    overflow-anchor: none;
+}
+html {
+    /* Αποτρέπει το scroll-anchoring loop: όταν το sticky header αλλάζει
+       ύψος (shrink/unshrink), ο browser προσπαθούσε να "αντισταθμίσει"
+       το scroll ώστε το περιεχόμενο να μη μετακινείται οπτικά — αυτό
+       ξαναπερνούσε το threshold και ξανα-προκαλούσε shrink/unshrink σε
+       loop (το "τρεμόπαιγμα" στην αρχή του scroll). */
+    overflow-anchor: none;
 }
 body.dark .header {
     background: linear-gradient(145deg, #0b1e33, #0f2847);
