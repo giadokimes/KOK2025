@@ -27,15 +27,6 @@ body.dark {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: padding 0.25s ease;
     will-change: padding;
-    overflow-anchor: none;
-}
-html {
-    /* Αποτρέπει το scroll-anchoring loop: όταν το sticky header αλλάζει
-       ύψος (shrink/unshrink), ο browser προσπαθούσε να "αντισταθμίσει"
-       το scroll ώστε το περιεχόμενο να μη μετακινείται οπτικά — αυτό
-       ξαναπερνούσε το threshold και ξανα-προκαλούσε shrink/unshrink σε
-       loop (το "τρεμόπαιγμα" στην αρχή του scroll). */
-    overflow-anchor: none;
 }
 body.dark .header {
     background: linear-gradient(145deg, #0b1e33, #0f2847);
@@ -84,91 +75,73 @@ body.dark .header {
     justify-content: center;
     margin-top: 4px;
 }
-.icon-svg {
-    width: 19px;
-    height: 19px;
-    flex-shrink: 0;
-    display: inline-block;
-    vertical-align: middle;
-}
-.icon-inline {
-    width: 15px;
-    height: 15px;
-    margin-right: 2px;
-    position: relative;
-    top: -1px;
-}
 .header-actions button {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
     color: #fff;
+    font-size: 16px;
     width: 38px;
     height: 38px;
-    border-radius: 10px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background .15s, border-color .15s;
+    transition: all .2s;
 }
 .header-actions button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
 }
 .header-actions .pdf-btn {
     font-size: 13px;
     font-weight: 600;
-    padding: 0 14px;
-    border-radius: 10px;
+    padding: 0 16px;
+    border-radius: 30px;
     width: auto;
     gap: 6px;
-    background: rgba(197, 165, 92, 0.16);
-    border: 1px solid rgba(197, 165, 92, 0.55);
-    color: #f0dfb4;
-}
-.header-actions .pdf-btn .icon-svg {
-    width: 17px;
-    height: 17px;
+    background: #10b981;
+    color: #fff;
 }
 .header-actions .pdf-btn:hover {
-    background: rgba(197, 165, 92, 0.28);
-    border-color: #c5a55c;
+    background: #059669;
+    transform: scale(1.02);
+}
+.header-actions .pdf-btn i {
+    font-size: 14px;
 }
 body.dark .header-actions button {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
 }
 body.dark .header-actions .pdf-btn {
-    background: rgba(197, 165, 92, 0.14);
-    border-color: rgba(197, 165, 92, 0.45);
+    background: #10b981;
 }
 #installBtn {
     display: flex !important;
     font-size: 13px;
     font-weight: 600;
     padding: 0 14px;
-    border-radius: 10px;
+    border-radius: 30px;
     width: auto;
     gap: 6px;
-    background: transparent;
-    color: rgba(255,255,255,0.55);
+    background: #94a3b8;
+    color: #fff;
     cursor: not-allowed;
-    border: 1px solid rgba(255,255,255,0.18);
+    opacity: 0.6;
+    border: none;
     align-items: center;
     justify-content: center;
 }
-#installBtn .icon-svg {
-    width: 17px;
-    height: 17px;
+#installBtn i {
+    font-size: 14px;
 }
 #installBtn.ready {
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-    border-color: rgba(255,255,255,0.3);
+    background: #3b82f6;
     cursor: pointer;
+    opacity: 1;
 }
 #installBtn.ready:hover {
-    background: rgba(255,255,255,0.22);
+    background: #2563eb;
 }
 .search-box {
     margin-top: 14px;
@@ -201,6 +174,7 @@ body.dark .search-box input {
     transform: translateY(-50%);
     font-size: 18px;
     opacity: 0.5;
+    color: inherit;
 }
 .search-box .clear-btn {
     position: absolute;
@@ -247,6 +221,13 @@ body.dark .search-box input {
     cursor: pointer;
     transition: all .2s;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.filters button i {
+    font-size: 14px;
+    opacity: 0.7;
 }
 body.dark .filters button {
     background: #334155;
@@ -258,6 +239,9 @@ body.dark .filters button {
     color: #ffffff;
     border-color: #1a365d;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.filters button.active i {
+    opacity: 1;
 }
 body.dark .filters button.active {
     background: #4a5568;
@@ -283,7 +267,6 @@ body.dark .filters button:hover {
 body.dark .filters::-webkit-scrollbar-thumb {
     background: #475569;
 }
-/* Διαχωριστικές γραμμές (προαιρετικά) – αφαιρέθηκαν για να μην σπάνε το scroll */
 .filters .filter-divider {
     display: none;
 }
@@ -308,6 +291,13 @@ body.dark .ota-search-box {
     font-size: 14px;
     font-weight: 600;
     color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.ota-search-box label i {
+    font-size: 16px;
+    color: #fbbf24;
 }
 .ota-search-box input {
     flex: 1;
@@ -359,38 +349,6 @@ body.dark .ota-search-box .ota-suggestions .suggestion-item {
 body.dark .ota-search-box .ota-suggestions .suggestion-item:hover {
     background: #334155;
 }
-.ota-search-box .geo-btn {
-    flex: 0 0 auto;
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.9);
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background .15s, transform .15s;
-}
-.ota-search-box .geo-btn:hover {
-    background: #fff;
-    transform: scale(1.05);
-}
-.ota-search-box .geo-btn:disabled {
-    cursor: default;
-    transform: none;
-}
-.ota-search-box .geo-btn.loading {
-    animation: geo-pulse 1s ease-in-out infinite;
-}
-@keyframes geo-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-}
-body.dark .ota-search-box .geo-btn {
-    background: #1e293b;
-}
 .ota-search-box .ota-code-display {
     font-size: 14px;
     font-weight: 700;
@@ -401,6 +359,38 @@ body.dark .ota-search-box .geo-btn {
     min-width: 70px;
     text-align: center;
 }
+
+/* ===== ΝΕΟ: Διεύθυνση τοποθεσίας ===== */
+.location-address {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 14px;
+    color: #e2e8f0;
+    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.location-address i {
+    font-size: 16px;
+    color: #fbbf24;
+}
+.location-address .address-placeholder {
+    color: #94a3b8;
+    font-style: italic;
+}
+.location-address .address-found {
+    color: #f1f5f9;
+    font-weight: 500;
+}
+body.dark .location-address {
+    background: rgba(255, 255, 255, 0.04);
+}
+
 .count {
     font-size: 14px;
     color: #4a5568;
@@ -500,6 +490,12 @@ body.dark .card .article {
 .card .details .fine {
     font-weight: 700;
     color: #dc2626;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.card .details .fine i {
+    font-size: 14px;
 }
 body.dark .card .details .fine {
     color: #f87171;
@@ -507,6 +503,12 @@ body.dark .card .details .fine {
 .card .details .suspend {
     color: #2563eb;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.card .details .suspend i {
+    font-size: 14px;
 }
 body.dark .card .details .suspend {
     color: #60a5fa;
@@ -514,6 +516,12 @@ body.dark .card .details .suspend {
 .card .details .points {
     color: #7c3aed;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.card .details .points i {
+    font-size: 14px;
 }
 body.dark .card .details .points {
     color: #a78bfa;
@@ -522,33 +530,26 @@ body.dark .card .details .points {
     flex-shrink: 0;
     background: none;
     border: none;
+    font-size: 22px;
     cursor: pointer;
     padding: 4px;
-    opacity: 0.3;
+    opacity: 0.25;
     transition: all .2s;
     line-height: 1;
     margin-top: -2px;
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-}
-.card .favorite .icon-svg {
-    width: 20px;
-    height: 20px;
+    color: #f59e0b;
 }
 .card .favorite.active {
     opacity: 1;
-    color: #c5a55c;
 }
 .card .favorite:active {
-    transform: scale(1.25);
+    transform: scale(1.3);
 }
 body.dark .card .favorite {
-    opacity: 0.35;
+    opacity: 0.3;
 }
 body.dark .card .favorite.active {
     opacity: 1;
-    color: #d9bd7e;
 }
 .badge-criminal {
     display: inline-block;
@@ -653,6 +654,9 @@ body.dark .empty {
     pointer-events: none;
     z-index: 999;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 body.dark .toast {
     background: #e2e8f0;
@@ -660,12 +664,6 @@ body.dark .toast {
 }
 .toast.show {
     opacity: 1;
-}
-.toast-success {
-    border-left: 4px solid #10b981;
-}
-.toast-warning {
-    border-left: 4px solid #f59e0b;
 }
 .install-banner {
     display: none;
@@ -781,6 +779,7 @@ body.dark .toast {
 .header.shrink .header-actions,
 .header.shrink .filters,
 .header.shrink .ota-search-box,
+.header.shrink .location-address,
 .header.shrink .header-title span,
 .header.shrink .header-logo-wrapper {
     opacity: 0;
@@ -867,6 +866,9 @@ body.dark #signModal .modal-box {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 .selection-footer {
     position: fixed;
@@ -946,6 +948,9 @@ body.dark .selection-footer .info .names {
     cursor: pointer;
     transition: all .2s;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 .selection-footer .actions .pdf-btn {
     background: #10b981;
@@ -982,7 +987,7 @@ body.dark .selection-footer .actions .clear-btn:hover {
     .header-actions button {
         width: 34px;
         height: 34px;
-        font-size: 16px;
+        font-size: 14px;
     }
     .header-actions .pdf-btn {
         font-size: 12px;
@@ -1009,6 +1014,10 @@ body.dark .selection-footer .actions .clear-btn:hover {
         font-size: 12px;
         padding: 5px 12px;
         flex: 0 0 auto;
+        gap: 4px;
+    }
+    .filters button i {
+        font-size: 12px;
     }
     .card {
         padding: 14px 16px;
@@ -1025,6 +1034,10 @@ body.dark .selection-footer .actions .clear-btn:hover {
     .ota-search-box .ota-suggestions {
         left: 0;
         right: 0;
+    }
+    .location-address {
+        font-size: 13px;
+        padding: 4px 10px;
     }
     #signModal .modal-box {
         padding: 16px;
@@ -1049,10 +1062,11 @@ body.dark .selection-footer .actions .clear-btn:hover {
         flex: 1;
         text-align: center;
         padding: 6px 10px;
+        justify-content: center;
     }
 }
 @media print {
-    .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn, #signModal, .selection-footer {
+    .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .location-address, .install-banner, #installBtn, #signModal, .selection-footer {
         display: none !important;
     }
     body {
