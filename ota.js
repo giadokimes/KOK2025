@@ -60,9 +60,18 @@ function loadOtaSelection() {
 // ============================================================
 function updateAddress(components) {
     const addressSpan = document.getElementById('addressText');
-    if (!addressSpan) return; // Ασφάλεια αν το πεδίο λείπει
+    if (!addressSpan) return;
 
-    const road = components.road || components.pedestrian || components.path || components.street || '';
+    // Δοκιμή διαφορετικών πεδίων για οδό
+    const road = components.road || 
+                 components.pedestrian || 
+                 components.path || 
+                 components.street || 
+                 components.footway || 
+                 components.cycleway || 
+                 components.residential || 
+                 '';
+
     const houseNumber = components.house_number || '';
 
     if (road) {
@@ -74,6 +83,18 @@ function updateAddress(components) {
         addressSpan.className = 'address-found';
         localStorage.setItem('kok_last_address', address);
     } else {
+        // Δοκιμή να χρησιμοποιήσουμε το formatted string ως εναλλακτική
+        const formatted = data.results[0].formatted || '';
+        if (formatted) {
+            // Κρατάμε μόνο το τμήμα πριν την πόλη (απλοϊκό)
+            const parts = formatted.split(',');
+            if (parts.length > 1) {
+                addressSpan.textContent = parts[0].trim();
+                addressSpan.className = 'address-found';
+                localStorage.setItem('kok_last_address', parts[0].trim());
+                return;
+            }
+        }
         addressSpan.textContent = 'Η διεύθυνση δεν είναι διαθέσιμη για αυτή την τοποθεσία';
         addressSpan.className = 'address-placeholder';
     }
@@ -181,7 +202,7 @@ async function reverseGeocode(lat, lon) {
             }
 
             // Ενημέρωση διεύθυνσης
-            updateAddress(components);
+            updateAddress(components, data);
         } else {
             showToast('⚠️ Δεν βρέθηκε τοποθεσία.');
             const addressSpan = document.getElementById('addressText');
