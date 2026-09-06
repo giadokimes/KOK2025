@@ -114,41 +114,44 @@ async function reverseGeocode(lat, lon) {
             return;
         }
 
-        // Nominatim (OpenStreetMap) — δωρεάν reverse geocoding, ΧΩΡΙΣ API key.
-        // Usage policy: μέγιστο ~1 αίτημα/δευτερόλεπτο· εδώ καλείται μόνο
-        // κατόπιν ρητού αιτήματος του χρήστη, οπότε δεν υπάρχει κίνδυνος.
-        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=el&zoom=12`;
-        const response = await fetch(url, {
-            headers: { 'Accept': 'application/json' }
-        });
+        // OpenCage — επαναφορά κατόπιν ρητού αιτήματος: η Nominatim έδινε
+        // ανακριβή αποτελέσματα σε περιοχές όπως η Καλαμαριά (επέστρεφε
+        // "Θεσσαλονίκη" αντί για τον σωστό δήμο). Ενεργοποιείται πλέον
+        // μόνο κατόπιν ρητού πατήματος του κουμπιού 📍 (όχι αυτόματα).
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language=el`;
+        const response = await fetch(url);
         if (!response.ok) {
             showToast('⚠️ Σφάλμα επικοινωνίας με τον server.');
             return;
         }
-        const result = await response.json();
-        const components = (result && result.address) || {};
+        const data = await response.json();
 
-        const municipality = components.municipality ||
-                            components.city ||
-                            components.town ||
-                            components.city_district ||
-                            components.suburb ||
-                            components.village;
+        if (data && data.results && data.results.length > 0) {
+            const components = data.results[0].components;
+            const municipality = components.city_district ||
+                                components.suburb ||
+                                components.town ||
+                                components.village ||
+                                components.municipality ||
+                                components.city;
 
-        if (municipality) {
-            const normalized = municipality.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            let found = otaList.find(item => {
-                const itemNorm = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                return itemNorm.includes(normalized) || normalized.includes(itemNorm);
-            });
-            if (found) {
-                selectOta(found.name, found.code);
-                showToast('✅ Εντοπίστηκε: ' + found.name + ' (' + found.code + ')');
+            if (municipality) {
+                const normalized = municipality.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                let found = otaList.find(item => {
+                    const itemNorm = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    return itemNorm.includes(normalized) || normalized.includes(itemNorm);
+                });
+                if (found) {
+                    selectOta(found.name, found.code);
+                    showToast('✅ Εντοπίστηκε: ' + found.name + ' (' + found.code + ')');
+                } else {
+                    showToast('📍 Εντοπίστηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
+                }
             } else {
-                showToast('📍 Εντοπίστηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
+                showToast('⚠️ Δεν βρέθηκε δήμος στην τοποθεσία σου.');
             }
         } else {
-            showToast('⚠️ Δεν βρέθηκε δήμος στην τοποθεσία σου.');
+            showToast('⚠️ Δεν βρέθηκε τοποθεσία.');
         }
     } catch (error) {
         console.error('reverseGeocode error:', error);
