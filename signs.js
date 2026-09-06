@@ -120,14 +120,14 @@ function openSignModal(imgSrc, signCode) {
     if (violation) {
         modalName.textContent = signCode + ' – ' + description;
         let details = '';
-        if (violation.fine) details += '💰 Πρόστιμο: ' + formatFine(violation.fine);
+        if (violation.fine) details += 'Πρόστιμο: ' + formatFine(violation.fine);
         if (violation.suspend && violation.suspend !== '-') {
             if (details) details += ' | ';
-            details += '⛔ ' + violation.suspend;
+            details += 'Κύρωση: ' + violation.suspend;
         }
         if (violation.points > 0) {
             if (details) details += ' | ';
-            details += '📊 ' + violation.points + ' βαθμοί ΣΕΣΟ';
+            details += 'Βαθμοί ΣΕΣΟ: ' + violation.points;
         }
         modalDetails.textContent = details || 'Δεν υπάρχουν διαθέσιμες πληροφορίες ποινών.';
     } else {

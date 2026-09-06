@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v19';
+const CACHE_VERSION = 'kok-v21';
 
 // Βασικά αρχεία της εφαρμογής — ΠΡΕΠΕΙ να επιτύχουν όλα, αλλιώς η εγκατάσταση
 // του service worker αποτυγχάνει σκόπιμα (καλύτερα να ξέρουμε αμέσως).
@@ -7,6 +7,7 @@ const CORE_URLS = [
   './index.html',
   './manifest.json',
   './styles.css',
+  './icons.js',
   './data.js',
   './signs.js',
   './ota.js',

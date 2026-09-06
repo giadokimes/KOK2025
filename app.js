@@ -66,7 +66,7 @@ function render() {
     }
 
     if (filtered.length === 0) {
-        container.innerHTML = `<div class="empty"><span class="icon">🔍</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:13px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+        container.innerHTML = `<div class="empty"><span class="icon">${icon('search', 'icon-svg')}</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:13px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
         return;
     }
 
@@ -103,19 +103,19 @@ function render() {
                 <div class="name">
                     <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                     ${nameWithImages} ${halfBadge} ${criminalBadge}
-                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο" style="display:inline-block;font-size:18px;background:none;border:none;cursor:pointer;padding:0 2px;line-height:1;margin-left:4px;">
-                        ${favorites[v.id] ? '⭐' : '☆'}
+                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο">
+                        ${favorites[v.id] ? icon('starFilled', 'icon-svg') : icon('starOutline', 'icon-svg')}
                     </button>
                 </div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="details">
-                    <span class="fine">💰 ${formatFine(v.fine)}</span>
-                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
-                    ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                    <span class="fine">${icon('coin', 'icon-svg icon-inline')} ${formatFine(v.fine)}</span>
+                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">${icon('ban', 'icon-svg icon-inline')} ${v.suspend}</span>` : ''}
+                    ${v.points > 0 ? `<span class="points">${icon('barChart', 'icon-svg icon-inline')} ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                 </div>
                 ${v.fullDescription ? `
                     <button class="view-btn" onclick="toggleDescription(${v.id})">
-                        ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Προβολή περιγραφής'}
+                        ${isDescOpen ? icon('chevronUp', 'icon-svg icon-inline') + ' Κλείσε περιγραφή' : icon('chevronDown', 'icon-svg icon-inline') + ' Προβολή περιγραφής'}
                     </button>
                     <div class="full-description ${isDescOpen ? 'open' : ''}">
                         ${v.fullDescription}
@@ -154,7 +154,7 @@ function toggleFavorite(id) {
     favorites[id] = !favorites[id];
     localStorage.setItem('kok_favorites', JSON.stringify(favorites));
     render();
-    showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
+    showToast(favorites[id] ? 'Προστέθηκε στα αγαπημένα' : 'Αφαιρέθηκε από τα αγαπημένα');
 }
 
 function toggleFavorites() {
@@ -175,12 +175,12 @@ function getFavorites() {
 function exportFavorites() {
     const favs = getFavorites();
     if (favs.length === 0) {
-        showToast('⚠️ Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
+        showToast('Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
         return;
     }
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
-        showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
         return;
     }
     const html = `
@@ -205,8 +205,8 @@ function exportFavorites() {
     </style>
     </head>
     <body>
-        <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v17» — ${new Date().toLocaleDateString()}</p>
+        <h1>Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
+        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v21» — ${new Date().toLocaleDateString()}</p>
         ${favs.map(v => {
             const ota = selectedOta;
             return `
@@ -214,17 +214,17 @@ function exportFavorites() {
                 <div class="name">${v.name}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="det">
-                    <span class="fine">💰 ${formatFine(v.fine)}</span>
-                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
-                    ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                    <span class="fine">Πρόστιμο: ${formatFine(v.fine)}</span>
+                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">Κύρωση: ${v.suspend}</span>` : ''}
+                    ${v.points > 0 ? `<span class="points">Βαθμοί ΣΕΣΟ: ${v.points}</span>` : ''}
                 </div>
-                ${ota ? `<div class="p-ota">🏛️ Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
-                ${v.fullDescription ? `<div class="desc">📖 ${v.fullDescription}</div>` : ''}
+                ${ota ? `<div class="p-ota">Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
+                ${v.fullDescription ? `<div class="desc">${v.fullDescription}</div>` : ''}
             </div>
         `}).join('')}
         <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
         <div class="no-print" style="text-align:center;margin-top:20px;">
-            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
         </div>
     </body>
     </html>
@@ -329,7 +329,7 @@ function calculateTotalPoints(selected) {
 function exportSelectedToPDF() {
     const selected = data.filter(v => selectedIds.has(v.id));
     if (selected.length === 0) {
-        showToast('⚠️ Δεν έχετε επιλέξει καμία παράβαση.');
+        showToast('Δεν έχετε επιλέξει καμία παράβαση.');
         return;
     }
 
@@ -340,7 +340,7 @@ function exportSelectedToPDF() {
 
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
-        showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
         return;
     }
 
@@ -367,7 +367,7 @@ function exportSelectedToPDF() {
     </style>
     </head>
     <body>
-        <h1>🚔 Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
+        <h1>Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
         <p class="sub">Ημερομηνία: ${new Date().toLocaleDateString()} - Ώρα: ${new Date().toLocaleTimeString()}</p>
         ${otaText ? `<p class="sub">${otaText}</p>` : ''}
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
@@ -377,9 +377,9 @@ function exportSelectedToPDF() {
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
                 <div style="margin-top:4px;font-size:13px;">
-                    <span style="color:#c00;font-weight:bold;">💰 ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
-                    ${v.suspend && v.suspend !== '-' ? ` | ⛔ ${v.suspend}` : ''}
-                    ${v.points > 0 ? ` | 📊 ${v.points} βαθμοί ΣΕΣΟ` : ''}
+                    <span style="color:#c00;font-weight:bold;">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.suspend && v.suspend !== '-' ? ` | Κύρωση: ${v.suspend}` : ''}
+                    ${v.points > 0 ? ` | Βαθμοί ΣΕΣΟ: ${v.points}` : ''}
                 </div>
             </div>
         `).join('')}
@@ -394,7 +394,7 @@ function exportSelectedToPDF() {
         </div>
         <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
         <div class="no-print" style="text-align:center;margin-top:20px;">
-            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
         </div>
     </body>
     </html>

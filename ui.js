@@ -18,12 +18,14 @@ function toggleDark() {
 // ============================================================
 // TOAST
 // ============================================================
-function showToast(msg) {
+function showToast(msg, type) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
+    const iconName = type === 'success' ? 'checkCircle' : type === 'warning' ? 'alertTriangle' : null;
+    t.innerHTML = (iconName ? icon(iconName, 'icon-svg icon-inline') + ' ' : '') + msg;
+    t.className = 'toast' + (type ? ' toast-' + type : '');
     t.classList.add('show');
     clearTimeout(t._timeout);
-    t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+    t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 // ============================================================
@@ -58,12 +60,12 @@ function dismissInstallBanner() {
 window.addEventListener('appinstalled', () => {
     document.getElementById('installBanner').classList.remove('show');
     document.getElementById('installBtn').classList.remove('ready');
-    showToast('✅ Εφαρμογή εγκαταστάθηκε!');
+    showToast('Εφαρμογή εγκαταστάθηκε!', 'success');
 });
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('✅ Service Worker εγγεγραμμένος'))
+        .then(() => console.log('Service Worker εγγεγραμμένος'))
         .catch(err => console.log('❌ Σφάλμα SW:', err));
 }
 
@@ -110,7 +112,7 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v19 - modular)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v21 - modular)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
