@@ -18,12 +18,14 @@ function toggleDark() {
 // ============================================================
 // TOAST
 // ============================================================
-function showToast(msg) {
+function showToast(msg, type) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
+    const iconName = type === 'success' ? 'checkCircle' : type === 'warning' ? 'alertTriangle' : null;
+    t.innerHTML = (iconName ? icon(iconName, 'icon-svg icon-inline') + ' ' : '') + msg;
+    t.className = 'toast' + (type ? ' toast-' + type : '');
     t.classList.add('show');
     clearTimeout(t._timeout);
-    t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+    t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 // ============================================================
@@ -58,12 +60,12 @@ function dismissInstallBanner() {
 window.addEventListener('appinstalled', () => {
     document.getElementById('installBanner').classList.remove('show');
     document.getElementById('installBtn').classList.remove('ready');
-    showToast('✅ Εφαρμογή εγκαταστάθηκε!');
+    showToast('Εφαρμογή εγκαταστάθηκε!', 'success');
 });
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('✅ Service Worker εγγεγραμμένος'))
+        .then(() => console.log('Service Worker εγγεγραμμένος'))
         .catch(err => console.log('❌ Σφάλμα SW:', err));
 }
 
@@ -79,22 +81,17 @@ async function loadExternalData() {
         if (signsRes.ok) signImageMap = await signsRes.json();
         if (otaRes.ok) {
             otaList = await otaRes.json();
-            // Η γεωτοποίηση καλείται ΜΟΝΟ αφού φορτωθεί η λίστα ΟΤΑ
-            if (!selectedOta) {
-                setTimeout(() => {
-                    detectLocation();
-                }, 500);
-            }
         }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
     }
-    // Φόρτωση αποθηκευμένης διεύθυνσης
-    loadSavedAddress();
-    // ΚΛΗΣΗ RENDER ΜΕΤΑ ΤΗ ΦΟΡΤΩΣΗ
     render();
     const otaInput = document.getElementById('otaSearchInput');
     if (otaInput && otaInput.value) onOtaSearch();
+    // Δείχνει την τελευταία γνωστή διεύθυνση από τοπική αποθήκευση —
+    // ΔΕΝ κάνει νέο αίτημα γεωτοποθεσίας (αυτό γίνεται μόνο με το
+    // κουμπί 📍, βλ. ota.js).
+    loadSavedAddress();
 }
 
 // Σμίκρυνση header
@@ -106,10 +103,13 @@ window.addEventListener('scroll', () => {
     if (!ticking) {
         window.requestAnimationFrame(() => {
             const scrollY = window.scrollY;
-            if (scrollY > 40 && !isShrunk) {
+            // Υστέρηση (διαφορετικό threshold για shrink/unshrink) ώστε
+            // μικρές διακυμάνσεις γύρω από ένα ενιαίο σημείο να μην
+            // προκαλούν επαναλαμβανόμενο shrink/unshrink.
+            if (scrollY > 56 && !isShrunk) {
                 header.classList.add('shrink');
                 isShrunk = true;
-            } else if (scrollY <= 40 && isShrunk) {
+            } else if (scrollY < 24 && isShrunk) {
                 header.classList.remove('shrink');
                 isShrunk = false;
             }
@@ -119,7 +119,7 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v22 - με διεύθυνση)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v22 - διεύθυνση + εικονίδια κατηγοριών)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {

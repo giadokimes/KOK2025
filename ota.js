@@ -41,7 +41,7 @@ function selectOta(name, code) {
     document.getElementById('otaSuggestions').classList.remove('show');
     localStorage.setItem('kok_selected_ota', JSON.stringify(selectedOta));
     render();
-    showToast('🏛️ Επιλέχθηκε: ' + name + ' (' + code + ')');
+    showToast('Επιλέχθηκε: ' + name + ' (' + code + ')', 'success');
 }
 
 function loadOtaSelection() {
@@ -56,128 +56,78 @@ function loadOtaSelection() {
 }
 
 // ============================================================
-// ΕΜΦΑΝΙΣΗ ΔΙΕΥΘΥΝΣΗΣ
+// ΓΕΩΤΟΠΟΘΕΣΙΑ (Nominatim / OpenStreetMap — χωρίς API key)
 // ============================================================
-function updateAddress(components) {
-    const addressSpan = document.getElementById('addressText');
-    if (!addressSpan) return;
+// Σημείωση: η γεωτοποθεσία ΔΕΝ καλείται ποτέ αυτόματα· ενεργοποιείται
+// μόνο όταν ο χρήστης πατήσει ρητά το κουμπί εντοπισμού (βλ. ui.js).
+// Έτσι δεν καταναλώνεται το όριο αιτημάτων χωρίς λόγο, και ο χρήστης
+// έχει πλήρη έλεγχο στο πότε ζητείται η άδεια τοποθεσίας.
+let geoInProgress = false;
 
-    // Δοκιμή διαφορετικών πεδίων για οδό
-    const road = components.road || 
-                 components.pedestrian || 
-                 components.path || 
-                 components.street || 
-                 components.footway || 
-                 components.cycleway || 
-                 components.residential || 
-                 '';
-
-    const houseNumber = components.house_number || '';
-
-    if (road) {
-        let address = road;
-        if (houseNumber) {
-            address += ' ' + houseNumber;
-        }
-        addressSpan.textContent = address;
-        addressSpan.className = 'address-found';
-        localStorage.setItem('kok_last_address', address);
-    } else {
-        // Δοκιμή να χρησιμοποιήσουμε το formatted string ως εναλλακτική
-        const formatted = data.results[0].formatted || '';
-        if (formatted) {
-            // Κρατάμε μόνο το τμήμα πριν την πόλη (απλοϊκό)
-            const parts = formatted.split(',');
-            if (parts.length > 1) {
-                addressSpan.textContent = parts[0].trim();
-                addressSpan.className = 'address-found';
-                localStorage.setItem('kok_last_address', parts[0].trim());
-                return;
-            }
-        }
-        addressSpan.textContent = 'Η διεύθυνση δεν είναι διαθέσιμη για αυτή την τοποθεσία';
-        addressSpan.className = 'address-placeholder';
-    }
-}
-
-function loadSavedAddress() {
-    const saved = localStorage.getItem('kok_last_address');
-    if (saved) {
-        const addressSpan = document.getElementById('addressText');
-        if (addressSpan) {
-            addressSpan.textContent = saved;
-            addressSpan.className = 'address-found';
-        }
-    }
-}
-
-// ============================================================
-// ΓΕΩΤΟΠΟΘΕΣΙΑ (OpenCage API)
-// ============================================================
 function detectLocation() {
+    if (geoInProgress) return;
     if (!navigator.geolocation) {
-        showToast('⚠️ Η συσκευή σου δεν υποστηρίζει γεωτοποθεσία.');
-        const addressSpan = document.getElementById('addressText');
-        if (addressSpan) {
-            addressSpan.textContent = 'Η συσκευή δεν υποστηρίζει γεωτοποθεσία';
-            addressSpan.className = 'address-placeholder';
-        }
+        showToast('Η συσκευή σου δεν υποστηρίζει γεωτοποθεσία.', 'warning');
         return;
     }
-    showToast('📍 Εντοπισμός τοποθεσίας...');
+    geoInProgress = true;
+    setGeoButtonState('loading');
+    showToast('Εντοπισμός τοποθεσίας...');
     navigator.geolocation.getCurrentPosition(
         async (position) => {
             const { latitude, longitude } = position.coords;
             await reverseGeocode(latitude, longitude);
+            geoInProgress = false;
+            setGeoButtonState('idle');
         },
         (error) => {
             console.error('Geolocation error:', error);
-            showToast('⚠️ Δεν ήταν δυνατός ο εντοπισμός. Επίλεξε ΟΤΑ χειροκίνητα.');
-            const addressSpan = document.getElementById('addressText');
-            if (addressSpan) {
-                addressSpan.textContent = 'Η τοποθεσία δεν είναι διαθέσιμη';
-                addressSpan.className = 'address-placeholder';
+            let msg = 'Δεν ήταν δυνατός ο εντοπισμός. Επίλεξε ΟΤΑ χειροκίνητα.';
+            if (error.code === error.PERMISSION_DENIED) {
+                msg = 'Δεν δόθηκε άδεια τοποθεσίας. Επίλεξε ΟΤΑ χειροκίνητα.';
             }
+            showToast(msg, 'warning');
+            geoInProgress = false;
+            setGeoButtonState('idle');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
+}
+
+function setGeoButtonState(state) {
+    const btn = document.getElementById('geoBtn');
+    if (!btn) return;
+    btn.classList.toggle('loading', state === 'loading');
+    btn.disabled = state === 'loading';
 }
 
 async function reverseGeocode(lat, lon) {
     try {
         // Περίμενε να φορτωθεί η λίστα ΟΤΑ
         let retries = 0;
-        while (otaList.length === 0 && retries < 50) {
-            await new Promise(resolve => setTimeout(resolve, 300));
+        while (otaList.length === 0 && retries < 20) {
+            await new Promise(resolve => setTimeout(resolve, 200));
             retries++;
         }
         if (otaList.length === 0) {
-            showToast('⚠️ Η λίστα ΟΤΑ δεν φορτώθηκε. Δοκίμασε ξανά.');
-            const addressSpan = document.getElementById('addressText');
-            if (addressSpan) {
-                addressSpan.textContent = 'Η λίστα ΟΤΑ δεν φορτώθηκε';
-                addressSpan.className = 'address-placeholder';
-            }
+            showToast('Η λίστα ΟΤΑ δεν φορτώθηκε. Δοκίμασε ξανά.', 'warning');
             return;
         }
 
+        // OpenCage — επαναφορά κατόπιν ρητού αιτήματος: η Nominatim έδινε
+        // ανακριβή αποτελέσματα σε περιοχές όπως η Καλαμαριά (επέστρεφε
+        // "Θεσσαλονίκη" αντί για τον σωστό δήμο). Ενεργοποιείται πλέον
+        // μόνο κατόπιν ρητού πατήματος του κουμπιού 📍 (όχι αυτόματα).
         const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language=el`;
         const response = await fetch(url);
         if (!response.ok) {
-            showToast('⚠️ Σφάλμα επικοινωνίας με τον server.');
-            const addressSpan = document.getElementById('addressText');
-            if (addressSpan) {
-                addressSpan.textContent = 'Σφάλμα επικοινωνίας με τον server';
-                addressSpan.className = 'address-placeholder';
-            }
+            showToast('Σφάλμα επικοινωνίας με τον server.', 'warning');
             return;
         }
         const data = await response.json();
 
         if (data && data.results && data.results.length > 0) {
             const components = data.results[0].components;
-            
-            // Εύρεση ΟΤΑ
             const municipality = components.city_district ||
                                 components.suburb ||
                                 components.town ||
@@ -193,31 +143,67 @@ async function reverseGeocode(lat, lon) {
                 });
                 if (found) {
                     selectOta(found.name, found.code);
-                    showToast('✅ Εντοπίστηκε: ' + found.name + ' (' + found.code + ')');
+                    showToast('Εντοπίστηκε: ' + found.name + ' (' + found.code + ')', 'success');
                 } else {
-                    showToast('📍 Εντοπίστηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
+                    showToast('Εντοπίστηκε: ' + municipality + ' (δεν βρέθηκε σε ΟΤΑ)');
                 }
             } else {
-                showToast('⚠️ Δεν βρέθηκε δήμος στην τοποθεσία σου.');
+                showToast('Δεν βρέθηκε δήμος στην τοποθεσία σου.', 'warning');
             }
-
-            // Ενημέρωση διεύθυνσης
-            updateAddress(components, data);
+            updateAddress(components, data.results[0].formatted);
         } else {
-            showToast('⚠️ Δεν βρέθηκε τοποθεσία.');
-            const addressSpan = document.getElementById('addressText');
-            if (addressSpan) {
-                addressSpan.textContent = 'Δεν βρέθηκε διεύθυνση για αυτή την τοποθεσία';
-                addressSpan.className = 'address-placeholder';
-            }
+            showToast('Δεν βρέθηκε τοποθεσία.', 'warning');
         }
     } catch (error) {
         console.error('reverseGeocode error:', error);
-        showToast('⚠️ Σφάλμα κατά τον εντοπισμό.');
-        const addressSpan = document.getElementById('addressText');
-        if (addressSpan) {
-            addressSpan.textContent = 'Σφάλμα κατά την ανάκτηση διεύθυνσης';
-            addressSpan.className = 'address-placeholder';
-        }
+        showToast('Σφάλμα κατά τον εντοπισμό.', 'warning');
+    }
+}
+// ============================================================
+// ΔΙΕΥΘΥΝΣΗ ΤΟΠΟΘΕΣΙΑΣ
+// ============================================================
+// Εμφανίζει την πλησιέστερη οδό/διεύθυνση μετά από επιτυχή γεωτοποθεσία
+// (κλήση μόνο μέσα από reverseGeocode, άρα μόνο κατόπιν ρητού πατήματος
+// του κουμπιού 📍). Η τελευταία γνωστή διεύθυνση αποθηκεύεται τοπικά και
+// εμφανίζεται ξανά στο επόμενο άνοιγμα της εφαρμογής, χωρίς νέο αίτημα.
+function updateAddress(components, formatted) {
+    const box = document.getElementById('locationAddress');
+    const addressSpan = document.getElementById('addressText');
+    if (!box || !addressSpan) return;
+
+    const road = components.road ||
+                 components.pedestrian ||
+                 components.path ||
+                 components.street ||
+                 components.footway ||
+                 components.cycleway ||
+                 components.residential || '';
+    const houseNumber = components.house_number || '';
+
+    let address = '';
+    if (road) {
+        address = houseNumber ? road + ' ' + houseNumber : road;
+    } else if (formatted) {
+        address = formatted.split(',')[0].trim();
+    }
+
+    if (address) {
+        addressSpan.textContent = address;
+        addressSpan.className = 'address-found';
+        box.style.display = 'flex';
+        localStorage.setItem('kok_last_address', address);
+    } else {
+        box.style.display = 'none';
+    }
+}
+
+function loadSavedAddress() {
+    const saved = localStorage.getItem('kok_last_address');
+    const box = document.getElementById('locationAddress');
+    const addressSpan = document.getElementById('addressText');
+    if (saved && box && addressSpan) {
+        addressSpan.textContent = saved;
+        addressSpan.className = 'address-found';
+        box.style.display = 'flex';
     }
 }

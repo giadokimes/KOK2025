@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Ο Κώδικας Οδικής Κυκλοφορίας στην τσέπη σου — αναφορά παραβάσεων, προστίμων και κυρώσεων για την Ελληνική Τροχαία.">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="icon" href="favicon-v2.png" type="image/png">
+    <link rel="icon" href="favicon-v2.ico" type="image/x-icon">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#1a365d">
     <title>ΚΟΚ – Τσέπης v22 (PWA)</title>
-    <!-- Font Awesome 6 (γραμμικά εικονίδια) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -25,88 +24,50 @@
             <div class="header-title">ΚΟΚ <span>Τσέπης v22</span></div>
         </div>
         <div class="header-actions">
-            <button onclick="toggleDark()" title="Σκοτεινή λειτουργία">
-                <i class="fa-regular fa-moon"></i>
-            </button>
-            <button onclick="toggleFavorites()" title="Αγαπημένα">
-                <i class="fa-regular fa-star" id="favIcon"></i>
-            </button>
-            <button class="pdf-btn" onclick="exportFavorites()" title="Εξαγωγή PDF">
-                <i class="fa-regular fa-file-pdf"></i> PDF
-            </button>
-            <button onclick="window.print()" title="Εκτύπωση">
-                <i class="fa-regular fa-print"></i>
-            </button>
-            <button id="installBtn" onclick="installApp()">
-                <i class="fa-regular fa-download"></i> Εγκατάσταση
-            </button>
+            <button onclick="toggleDark()" title="Σκοτεινή λειτουργία" id="darkModeBtn"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+            <button onclick="toggleFavorites()" title="Αγαπημένα"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg></button>
+            <button class="pdf-btn" onclick="exportFavorites()" title="Εξαγωγή PDF"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg><span>PDF</span></button>
+            <button onclick="window.print()" title="Εκτύπωση"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+            <button id="installBtn" onclick="installApp()"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Εγκατάσταση</span></button>
         </div>
     </div>
     <div class="search-box">
-        <span class="icon"><i class="fa-regular fa-search"></i></span>
+        <span class="icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
         <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
-        <button class="clear-btn" id="clearBtn" onclick="clearSearch()">
-            <i class="fa-regular fa-xmark"></i>
-        </button>
+        <button class="clear-btn" id="clearBtn" onclick="clearSearch()"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="ota-search-box" id="otaSearchBox">
-        <label><i class="fa-regular fa-city"></i> Κωδικός ΟΤΑ:</label>
+        <label><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><path d="M5 21V7l7-4 7 4v14"/><line x1="9" y1="9" x2="9" y2="9.01"/><line x1="15" y1="9" x2="15" y2="9.01"/><line x1="9" y1="13" x2="9" y2="13.01"/><line x1="15" y1="13" x2="15" y2="13.01"/><line x1="9" y1="17" x2="9" y2="17.01"/><line x1="15" y1="17" x2="15" y2="17.01"/></svg> Κωδικός ΟΤΑ:</label>
         <input type="text" id="otaSearchInput" placeholder="Αναζήτησε δήμο..." oninput="onOtaSearch()" autocomplete="off">
+        <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Εντοπισμός τρέχουσας τοποθεσίας"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>
         <span class="ota-code-display" id="otaCodeDisplay">—</span>
         <div class="ota-suggestions" id="otaSuggestions"></div>
     </div>
-    <!-- ΝΕΟ: Διεύθυνση τοποθεσίας -->
-    <div class="location-address" id="locationAddress">
-        <i class="fa-regular fa-location-dot"></i>
-        <span id="addressText">Αναζήτηση τοποθεσίας...</span>
+    <div class="location-address" id="locationAddress" style="display:none;">
+        <svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="addressText">—</span>
     </div>
     <div class="filters" id="filterContainer">
-        <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">
-            <i class="fa-regular fa-parking"></i> Στάθμευση
-        </button>
-        <button data-filter="κίνηση" onclick="setFilter('κίνηση')">
-            <i class="fa-regular fa-car"></i> Κίνηση
-        </button>
-        <button data-filter="σήμανση" onclick="setFilter('σήμανση')">
-            <i class="fa-regular fa-signs-post"></i> Σήμανση
-        </button>
-        <button data-filter="ταχύτητα" onclick="setFilter('ταχύτητα')">
-            <i class="fa-regular fa-gauge-high"></i> Ταχύτητα
-        </button>
+        <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 8h3a2.5 2.5 0 0 1 0 5h-3v-5zM9.5 13v3"/></svg> Στάθμευση</button>
+        <button data-filter="κίνηση" onclick="setFilter('κίνηση')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM19 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM3 17V11l2-5h10l4 5v6M3 11h18"/></svg> Κίνηση</button>
+        <button data-filter="σήμανση" onclick="setFilter('σήμανση')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M12 6l7-1v6l-7-1M5 8h5v4H5z"/></svg> Σήμανση</button>
+        <button data-filter="ταχύτητα" onclick="setFilter('ταχύτητα')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 19a9 9 0 1 1 14.8 0"/><path d="M12 12 8.5 15.5"/><path d="M12 12V8"/></svg> Ταχύτητα</button>
         <div class="filter-divider"></div>
-        <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')">
-            <i class="fa-regular fa-shield"></i> Ασφάλεια
-        </button>
-        <button data-filter="έγγραφα" onclick="setFilter('έγγραφα')">
-            <i class="fa-regular fa-file-lines"></i> Έγγραφα
-        </button>
-        <button data-filter="φορτηγά" onclick="setFilter('φορτηγά')">
-            <i class="fa-regular fa-truck"></i> Φορτηγά
-        </button>
+        <button data-filter="ασφάλεια" onclick="setFilter('ασφάλεια')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5z"/></svg> Ασφάλεια</button>
+        <button data-filter="έγγραφα" onclick="setFilter('έγγραφα')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg> Έγγραφα</button>
+        <button data-filter="φορτηγά" onclick="setFilter('φορτηγά')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="10"/><path d="M14 10h4l4 4v3h-8z"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg> Φορτηγά</button>
         <div class="filter-divider"></div>
-        <button data-filter="δίκυκλα" onclick="setFilter('δίκυκλα')">
-            <i class="fa-regular fa-motorcycle"></i> Δίκυκλα
-        </button>
-        <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')">
-            <i class="fa-regular fa-scooter"></i> ΕΠΗΟ
-        </button>
-        <button data-filter="επαγγελματικά" onclick="setFilter('επαγγελματικά')">
-            <i class="fa-regular fa-briefcase"></i> Επαγγελματικά
-        </button>
-        <button data-filter="αλκοόλ" onclick="setFilter('αλκοόλ')">
-            <i class="fa-regular fa-wine-bottle"></i> Αλκοόλ
-        </button>
-        <button data-filter="υποτροπή" onclick="setFilter('υποτροπή')">
-            <i class="fa-regular fa-rotate-left"></i> Υποτροπή
-        </button>
+        <button data-filter="δίκυκλα" onclick="setFilter('δίκυκλα')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="18.5" cy="17.5" r="2.5"/><path d="M13 17.5H9l-2-4h9l3 4"/><path d="M9 13l2-4h3l2 4M5.5 15V9h3"/></svg> Δίκυκλα</button>
+        <button data-filter="ΕΠΗΟ" onclick="setFilter('ΕΠΗΟ')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="18.5" cy="17.5" r="2.5"/><path d="M8 17.5h8M18.5 15V9h-3l-4 3M8 9h3"/></svg> ΕΠΗΟ</button>
+        <button data-filter="επαγγελματικά" onclick="setFilter('επαγγελματικά')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Επαγγελματικά</button>
+        <button data-filter="αλκοόλ" onclick="setFilter('αλκοόλ')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v4l2 3v11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9l2-3z"/><path d="M9 2v4h6V2M7 12h10"/></svg> Αλκοόλ</button>
+        <button data-filter="υποτροπή" onclick="setFilter('υποτροπή')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.5 15a9 9 0 1 0 2-9.5L1 10"/></svg> Υποτροπή</button>
     </div>
 </div>
 
 <div class="count" id="countDisplay">
     <span id="countText">0 παραβάσεις</span>
-    <span id="favIndicator" style="display:none;">
-        <i class="fa-regular fa-star"></i> Αγαπημένα (<span id="favCount">0</span>)
-    </span>
+    <span id="favIndicator" style="display:none;"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg> Αγαπημένα (<span id="favCount">0</span>)</span>
 </div>
 
 <div class="list" id="listContainer"></div>
@@ -122,12 +83,10 @@
 <div class="toast" id="toast"></div>
 
 <div class="install-banner" id="installBanner">
-    <span><i class="fa-regular fa-download"></i> Εγκαταστήστε την εφαρμογή</span>
+    <span><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Εγκαταστήστε την εφαρμογή</span>
     <div>
         <button onclick="installApp()">Εγκατάσταση</button>
-        <button class="close-btn" onclick="dismissInstallBanner()">
-            <i class="fa-regular fa-xmark"></i>
-        </button>
+        <button class="close-btn" onclick="dismissInstallBanner()"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
 </div>
 
@@ -137,9 +96,7 @@
         <img id="modalSignImg" src="" alt="Πινακίδα">
         <h3 id="modalSignName"></h3>
         <div class="modal-details" id="modalSignDetails"></div>
-        <button class="close-modal-btn" onclick="closeSignModal()">
-            <i class="fa-regular fa-xmark"></i> Κλείσιμο
-        </button>
+        <button class="close-modal-btn" onclick="closeSignModal()"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Κλείσιμο</button>
     </div>
 </div>
 
@@ -151,16 +108,13 @@
         <span class="names" id="selectedNames"></span>
     </div>
     <div class="actions">
-        <button class="clear-btn" onclick="clearSelection()">
-            <i class="fa-regular fa-eraser"></i> Καθαρισμός
-        </button>
-        <button class="pdf-btn" onclick="exportSelectedToPDF()">
-            <i class="fa-regular fa-file-pdf"></i> PDF κλήσης
-        </button>
+        <button class="clear-btn" onclick="clearSelection()"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Καθαρισμός</button>
+        <button class="pdf-btn" onclick="exportSelectedToPDF()"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg> PDF κλήσης</button>
     </div>
 </div>
 
 <!-- Scripts -->
+<script src="icons.js"></script>
 <script src="data.js"></script>
 <script src="signs.js"></script>
 <script src="ota.js"></script>

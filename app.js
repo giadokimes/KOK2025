@@ -36,19 +36,43 @@ let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
 let openDescriptions = {};
 
 // ============================================================
+// ΑΝΑΖΗΤΗΣΗ — ελαφριά ανοχή σε κλίσεις ελληνικών λέξεων
+// ============================================================
+// Απλό .includes() αποτυγχάνει σε ζεύγη όπως "μονόδρομος" (ονομαστική,
+// όπως γράφει ο χρήστης) vs "μονόδρομο" (αιτιατική, όπως εμφανίζεται
+// συχνά στο κείμενο) — η ονομαστική δεν είναι substring της αιτιατικής.
+// Παράγουμε μερικές εναλλακτικές μορφές της λέξης-κλειδί, κόβοντας
+// συνηθισμένες καταλήξεις, και ελέγχουμε αν ΚΑΠΟΙΑ από αυτές ταιριάζει.
+function queryVariants(word) {
+    const variants = new Set([word]);
+    if (word.length >= 5) {
+        variants.add(word.replace(/ς$/, ''));                    // -ος -> -ο, -ας -> -α κλπ.
+        variants.add(word.replace(/(ος|ης|ας|ων|ού|οί|ές)$/, '')); // αφαίρεση συνηθισμένης κατάληξης
+    }
+    return [...variants].filter(v => v.length >= 3);
+}
+
+function matchesQuery(searchableText, rawQuery) {
+    // Κάθε λέξη του query πρέπει να ταιριάζει (με κάποια εναλλακτική μορφή)
+    // κάπου στο κείμενο — έτσι δουλεύουν σωστά και πολυλεκτικές αναζητήσεις.
+    const words = rawQuery.split(/\s+/).filter(Boolean);
+    return words.every(word =>
+        queryVariants(word).some(variant => searchableText.includes(variant))
+    );
+}
+
+// ============================================================
 // RENDER
 // ============================================================
 function render() {
+    const container = document.getElementById('listContainer');
     if (typeof data === 'undefined' || !Array.isArray(data) || data.length === 0) {
-        const container = document.getElementById('listContainer');
         if (container) {
-            container.innerHTML = `<div class="empty"><span class="icon">⏳</span>Φόρτωση δεδομένων...</div>`;
+            container.innerHTML = `<div class="empty"><span class="icon">${icon('hourglass', 'icon-svg')}</span>Φόρτωση δεδομένων...</div>`;
         }
         return;
     }
-
     const query = document.getElementById('searchInput').value.toLowerCase().trim();
-    const container = document.getElementById('listContainer');
     const countEl = document.getElementById('countText');
     const favIndicator = document.getElementById('favIndicator');
     const favCount = document.getElementById('favCount');
@@ -58,7 +82,7 @@ function render() {
         if (currentFilter !== 'all' && v.category !== currentFilter) return false;
         if (query) {
             const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v.fullDescription || '')).toLowerCase();
-            if (!searchable.includes(query)) return false;
+            if (!matchesQuery(searchable, query)) return false;
         }
         return true;
     });
@@ -74,7 +98,7 @@ function render() {
     }
 
     if (filtered.length === 0) {
-        container.innerHTML = `<div class="empty"><span class="icon">🔍</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:13px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+        container.innerHTML = `<div class="empty"><span class="icon">${icon('search', 'icon-svg')}</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:13px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
         return;
     }
 
@@ -83,7 +107,7 @@ function render() {
         const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
         const isDescOpen = openDescriptions[v.id] || false;
 
-        const nameWithImages = replaceSignCodes(v.name);
+        const nameWithImages = replaceSignCodes(v.name, v.id);
 
         let bgColor = '#ffffff';
         if (v.criminal) {
@@ -111,19 +135,19 @@ function render() {
                 <div class="name">
                     <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                     ${nameWithImages} ${halfBadge} ${criminalBadge}
-                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο" style="display:inline-block;font-size:18px;background:none;border:none;cursor:pointer;padding:0 2px;line-height:1;margin-left:4px;">
-                        ${favorites[v.id] ? '⭐' : '☆'}
+                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο">
+                        ${favorites[v.id] ? icon('starFilled', 'icon-svg') : icon('starOutline', 'icon-svg')}
                     </button>
                 </div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="details">
-                    <span class="fine">💰 ${formatFine(v.fine)}</span>
-                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
-                    ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                    <span class="fine">${icon('coin', 'icon-svg icon-inline')} ${formatFine(v.fine)}</span>
+                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">${icon('ban', 'icon-svg icon-inline')} ${v.suspend}</span>` : ''}
+                    ${v.points > 0 ? `<span class="points">${icon('barChart', 'icon-svg icon-inline')} ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
                 </div>
                 ${v.fullDescription ? `
                     <button class="view-btn" onclick="toggleDescription(${v.id})">
-                        ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Προβολή περιγραφής'}
+                        ${isDescOpen ? icon('chevronUp', 'icon-svg icon-inline') + ' Κλείσε περιγραφή' : icon('chevronDown', 'icon-svg icon-inline') + ' Προβολή περιγραφής'}
                     </button>
                     <div class="full-description ${isDescOpen ? 'open' : ''}">
                         ${v.fullDescription}
@@ -162,7 +186,7 @@ function toggleFavorite(id) {
     favorites[id] = !favorites[id];
     localStorage.setItem('kok_favorites', JSON.stringify(favorites));
     render();
-    showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
+    showToast(favorites[id] ? 'Προστέθηκε στα αγαπημένα' : 'Αφαιρέθηκε από τα αγαπημένα');
 }
 
 function toggleFavorites() {
@@ -183,12 +207,12 @@ function getFavorites() {
 function exportFavorites() {
     const favs = getFavorites();
     if (favs.length === 0) {
-        showToast('⚠️ Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
+        showToast('Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
         return;
     }
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
-        showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
         return;
     }
     const html = `
@@ -213,8 +237,8 @@ function exportFavorites() {
     </style>
     </head>
     <body>
-        <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v22» — ${new Date().toLocaleDateString()}</p>
+        <h1>Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
+        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v21» — ${new Date().toLocaleDateString()}</p>
         ${favs.map(v => {
             const ota = selectedOta;
             return `
@@ -222,17 +246,17 @@ function exportFavorites() {
                 <div class="name">${v.name}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="det">
-                    <span class="fine">💰 ${formatFine(v.fine)}</span>
-                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
-                    ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                    <span class="fine">Πρόστιμο: ${formatFine(v.fine)}</span>
+                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">Κύρωση: ${v.suspend}</span>` : ''}
+                    ${v.points > 0 ? `<span class="points">Βαθμοί ΣΕΣΟ: ${v.points}</span>` : ''}
                 </div>
-                ${ota ? `<div class="p-ota">🏛️ Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
-                ${v.fullDescription ? `<div class="desc">📖 ${v.fullDescription}</div>` : ''}
+                ${ota ? `<div class="p-ota">Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
+                ${v.fullDescription ? `<div class="desc">${v.fullDescription}</div>` : ''}
             </div>
         `}).join('')}
         <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
         <div class="no-print" style="text-align:center;margin-top:20px;">
-            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
         </div>
     </body>
     </html>
@@ -337,7 +361,7 @@ function calculateTotalPoints(selected) {
 function exportSelectedToPDF() {
     const selected = data.filter(v => selectedIds.has(v.id));
     if (selected.length === 0) {
-        showToast('⚠️ Δεν έχετε επιλέξει καμία παράβαση.');
+        showToast('Δεν έχετε επιλέξει καμία παράβαση.');
         return;
     }
 
@@ -345,11 +369,10 @@ function exportSelectedToPDF() {
     const { daysLicense, daysDocuments } = calculateSuspension(selected);
     const totalPoints = calculateTotalPoints(selected);
     const otaText = selectedOta ? `🏛️ Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
-    const addressText = localStorage.getItem('kok_last_address') || '';
 
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
-        showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
         return;
     }
 
@@ -376,10 +399,9 @@ function exportSelectedToPDF() {
     </style>
     </head>
     <body>
-        <h1>🚔 Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
+        <h1>Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
         <p class="sub">Ημερομηνία: ${new Date().toLocaleDateString()} - Ώρα: ${new Date().toLocaleTimeString()}</p>
         ${otaText ? `<p class="sub">${otaText}</p>` : ''}
-        ${addressText ? `<p class="sub">📍 Σημείο ελέγχου: ${addressText}</p>` : ''}
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
         ${selected.map(v => `
             <div class="card">
@@ -387,9 +409,9 @@ function exportSelectedToPDF() {
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
                 <div style="margin-top:4px;font-size:13px;">
-                    <span style="color:#c00;font-weight:bold;">💰 ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
-                    ${v.suspend && v.suspend !== '-' ? ` | ⛔ ${v.suspend}` : ''}
-                    ${v.points > 0 ? ` | 📊 ${v.points} βαθμοί ΣΕΣΟ` : ''}
+                    <span style="color:#c00;font-weight:bold;">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.suspend && v.suspend !== '-' ? ` | Κύρωση: ${v.suspend}` : ''}
+                    ${v.points > 0 ? ` | Βαθμοί ΣΕΣΟ: ${v.points}` : ''}
                 </div>
             </div>
         `).join('')}
@@ -404,7 +426,7 @@ function exportSelectedToPDF() {
         </div>
         <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
         <div class="no-print" style="text-align:center;margin-top:20px;">
-            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
         </div>
     </body>
     </html>
