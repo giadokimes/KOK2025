@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#1a365d">
-    <title>ΚΟΚ – Τσέπης v22 (PWA)</title>
+    <title>ΚΟΚ – Τσέπης v23 (PWA)</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -21,7 +21,7 @@
     <div class="header-top">
         <div class="header-logo-wrapper">
             <img src="logo-48-v2.png" alt="ΚΟΚ Τσέπης" class="header-logo">
-            <div class="header-title">ΚΟΚ <span>Τσέπης v22</span></div>
+            <div class="header-title">ΚΟΚ <span>Τσέπης v23</span></div>
         </div>
         <div class="header-actions">
             <button onclick="toggleDark()" title="Σκοτεινή λειτουργία" id="darkModeBtn"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -43,9 +43,12 @@
         <span class="ota-code-display" id="otaCodeDisplay">—</span>
         <div class="ota-suggestions" id="otaSuggestions"></div>
     </div>
-    <div class="location-address" id="locationAddress" style="display:none;">
+    <div class="location-address" id="locationAddress">
+        <button id="addrBtn" class="geo-btn" onclick="detectAddress()" title="Εντοπισμός διεύθυνσης (μέσω OpenStreetMap)">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        </button>
         <svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span id="addressText">—</span>
+        <span id="addressText" class="address-placeholder">Άγνωστη διεύθυνση</span>
     </div>
     <div class="filters" id="filterContainer">
         <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')"><svg class="icon-svg icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 8h3a2.5 2.5 0 0 1 0 5h-3v-5zM9.5 13v3"/></svg> Στάθμευση</button>
@@ -76,7 +79,7 @@
 <div style="text-align: center; padding: 20px 15px 10px 15px; font-size: 13px; color: #94a3b8; border-top: 1px solid rgba(0, 0, 0, 0.06); margin-top: 20px;">
     <p>© 2026 Siakos Filaretos . All rights reserved.</p>
     <p style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">
-        Εφαρμογή ΚΟΚ Τσέπης v22 — Πνευματική Ιδιοκτησία
+        Εφαρμογή ΚΟΚ Τσέπης v23 — Πνευματική Ιδιοκτησία
     </p>
 </div>
 

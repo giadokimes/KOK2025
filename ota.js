@@ -1,6 +1,14 @@
 // ============================================================
 // ota.js – ΚΩΔΙΚΟΣ ΟΤΑ & ΓΕΩΤΟΠΟΘΕΣΙΑ
 // ============================================================
+// Δύο ΑΝΕΞΑΡΤΗΤΕΣ λειτουργίες γεωτοποθεσίας, με διαφορετικό provider
+// η καθεμία, ώστε να μη σπαταλιέται το όριο του OpenCage (2.500 δωρεάν
+// κλήσεις/ημέρα) σε αιτήματα που δεν χρειάζονται την ακρίβειά του:
+//   1) Κωδικός ΟΤΑ  → κουμπί 📍 → OpenCage (ακριβές, αναγνωρίζει σωστά
+//      δήμους όπως η Καλαμαριά μέσα σε μεγάλο αστικό συγκρότημα)
+//   2) Διεύθυνση    → κουμπί 🧭 → Nominatim/OpenStreetMap (δωρεάν,
+//      χωρίς κλειδί, χωρίς όριο — αρκετά ακριβές για απλή εμφάνιση οδού)
+// Καμία από τις δύο δεν καλείται αυτόματα στο άνοιγμα της εφαρμογής.
 
 let otaList = [];
 let selectedOta = null;
@@ -56,12 +64,8 @@ function loadOtaSelection() {
 }
 
 // ============================================================
-// ΓΕΩΤΟΠΟΘΕΣΙΑ (Nominatim / OpenStreetMap — χωρίς API key)
+// 1) ΚΩΔΙΚΟΣ ΟΤΑ — OpenCage (κουμπί 📍)
 // ============================================================
-// Σημείωση: η γεωτοποθεσία ΔΕΝ καλείται ποτέ αυτόματα· ενεργοποιείται
-// μόνο όταν ο χρήστης πατήσει ρητά το κουμπί εντοπισμού (βλ. ui.js).
-// Έτσι δεν καταναλώνεται το όριο αιτημάτων χωρίς λόγο, και ο χρήστης
-// έχει πλήρη έλεγχο στο πότε ζητείται η άδεια τοποθεσίας.
 let geoInProgress = false;
 
 function detectLocation() {
@@ -71,14 +75,14 @@ function detectLocation() {
         return;
     }
     geoInProgress = true;
-    setGeoButtonState('loading');
-    showToast('Εντοπισμός τοποθεσίας...');
+    setButtonState('geoBtn', 'loading');
+    showToast('Εντοπισμός δήμου...');
     navigator.geolocation.getCurrentPosition(
         async (position) => {
             const { latitude, longitude } = position.coords;
-            await reverseGeocode(latitude, longitude);
+            await reverseGeocodeOta(latitude, longitude);
             geoInProgress = false;
-            setGeoButtonState('idle');
+            setButtonState('geoBtn', 'idle');
         },
         (error) => {
             console.error('Geolocation error:', error);
@@ -88,36 +92,38 @@ function detectLocation() {
             }
             showToast(msg, 'warning');
             geoInProgress = false;
-            setGeoButtonState('idle');
+            setButtonState('geoBtn', 'idle');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
 }
 
-function setGeoButtonState(state) {
-    const btn = document.getElementById('geoBtn');
+function setButtonState(btnId, state) {
+    const btn = document.getElementById(btnId);
     if (!btn) return;
     btn.classList.toggle('loading', state === 'loading');
     btn.disabled = state === 'loading';
 }
 
-async function reverseGeocode(lat, lon) {
+async function waitForOtaList() {
+    let retries = 0;
+    while (otaList.length === 0 && retries < 20) {
+        await new Promise(resolve => setTimeout(resolve, 200));
+        retries++;
+    }
+    return otaList.length > 0;
+}
+
+async function reverseGeocodeOta(lat, lon) {
     try {
-        // Περίμενε να φορτωθεί η λίστα ΟΤΑ
-        let retries = 0;
-        while (otaList.length === 0 && retries < 20) {
-            await new Promise(resolve => setTimeout(resolve, 200));
-            retries++;
-        }
-        if (otaList.length === 0) {
+        if (!(await waitForOtaList())) {
             showToast('Η λίστα ΟΤΑ δεν φορτώθηκε. Δοκίμασε ξανά.', 'warning');
             return;
         }
 
-        // OpenCage — επαναφορά κατόπιν ρητού αιτήματος: η Nominatim έδινε
-        // ανακριβή αποτελέσματα σε περιοχές όπως η Καλαμαριά (επέστρεφε
-        // "Θεσσαλονίκη" αντί για τον σωστό δήμο). Ενεργοποιείται πλέον
-        // μόνο κατόπιν ρητού πατήματος του κουμπιού 📍 (όχι αυτόματα).
+        // OpenCage: πιο ακριβές στη διάκριση δήμων μέσα σε μεγάλα αστικά
+        // συγκροτήματα (π.χ. Καλαμαριά vs Θεσσαλονίκη) — γι' αυτό
+        // χρησιμοποιείται ειδικά για τον κωδικό ΟΤΑ.
         const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language=el`;
         const response = await fetch(url);
         if (!response.ok) {
@@ -150,22 +156,77 @@ async function reverseGeocode(lat, lon) {
             } else {
                 showToast('Δεν βρέθηκε δήμος στην τοποθεσία σου.', 'warning');
             }
-            updateAddress(components, data.results[0].formatted);
         } else {
             showToast('Δεν βρέθηκε τοποθεσία.', 'warning');
         }
     } catch (error) {
-        console.error('reverseGeocode error:', error);
+        console.error('reverseGeocodeOta error:', error);
         showToast('Σφάλμα κατά τον εντοπισμό.', 'warning');
     }
 }
+
 // ============================================================
-// ΔΙΕΥΘΥΝΣΗ ΤΟΠΟΘΕΣΙΑΣ
+// 2) ΔΙΕΥΘΥΝΣΗ — Nominatim / OpenStreetMap (κουμπί 🧭, χωρίς κλειδί)
 // ============================================================
-// Εμφανίζει την πλησιέστερη οδό/διεύθυνση μετά από επιτυχή γεωτοποθεσία
-// (κλήση μόνο μέσα από reverseGeocode, άρα μόνο κατόπιν ρητού πατήματος
-// του κουμπιού 📍). Η τελευταία γνωστή διεύθυνση αποθηκεύεται τοπικά και
-// εμφανίζεται ξανά στο επόμενο άνοιγμα της εφαρμογής, χωρίς νέο αίτημα.
+let addrInProgress = false;
+
+function detectAddress() {
+    if (addrInProgress) return;
+    if (!navigator.geolocation) {
+        showToast('Η συσκευή σου δεν υποστηρίζει γεωτοποθεσία.', 'warning');
+        return;
+    }
+    addrInProgress = true;
+    setButtonState('addrBtn', 'loading');
+    showToast('Εντοπισμός διεύθυνσης...');
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const { latitude, longitude } = position.coords;
+            await reverseGeocodeAddress(latitude, longitude);
+            addrInProgress = false;
+            setButtonState('addrBtn', 'idle');
+        },
+        (error) => {
+            console.error('Geolocation error:', error);
+            let msg = 'Δεν ήταν δυνατός ο εντοπισμός διεύθυνσης.';
+            if (error.code === error.PERMISSION_DENIED) {
+                msg = 'Δεν δόθηκε άδεια τοποθεσίας.';
+            }
+            showToast(msg, 'warning');
+            addrInProgress = false;
+            setButtonState('addrBtn', 'idle');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+}
+
+async function reverseGeocodeAddress(lat, lon) {
+    try {
+        // Nominatim: δωρεάν, χωρίς κλειδί, χωρίς ημερήσιο όριο — αρκετά
+        // ακριβές για την εμφάνιση ονόματος οδού (όχι για τον κωδικό ΟΤΑ,
+        // βλ. σημείωση στην αρχή του αρχείου).
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=el&zoom=18&addressdetails=1`;
+        const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) {
+            showToast('Σφάλμα επικοινωνίας με τον server.', 'warning');
+            return;
+        }
+        const result = await response.json();
+        const components = (result && result.address) || {};
+
+        const found = updateAddress(components, result.display_name);
+        showToast(found ? 'Η διεύθυνση ενημερώθηκε' : 'Δεν βρέθηκε διεύθυνση για αυτή την τοποθεσία.', found ? 'success' : 'warning');
+    } catch (error) {
+        console.error('reverseGeocodeAddress error:', error);
+        showToast('Σφάλμα κατά τον εντοπισμό διεύθυνσης.', 'warning');
+    }
+}
+
+// ============================================================
+// ΔΙΕΥΘΥΝΣΗ ΤΟΠΟΘΕΣΙΑΣ — κοινή εμφάνιση/αποθήκευση
+// ============================================================
+// Η τελευταία γνωστή διεύθυνση αποθηκεύεται τοπικά και εμφανίζεται ξανά
+// στο επόμενο άνοιγμα της εφαρμογής, χωρίς νέο αίτημα δικτύου.
 function updateAddress(components, formatted) {
     const box = document.getElementById('locationAddress');
     const addressSpan = document.getElementById('addressText');
@@ -190,20 +251,19 @@ function updateAddress(components, formatted) {
     if (address) {
         addressSpan.textContent = address;
         addressSpan.className = 'address-found';
-        box.style.display = 'flex';
         localStorage.setItem('kok_last_address', address);
-    } else {
-        box.style.display = 'none';
+        return true;
     }
+    addressSpan.textContent = 'Άγνωστη διεύθυνση';
+    addressSpan.className = 'address-placeholder';
+    return false;
 }
 
 function loadSavedAddress() {
     const saved = localStorage.getItem('kok_last_address');
-    const box = document.getElementById('locationAddress');
     const addressSpan = document.getElementById('addressText');
-    if (saved && box && addressSpan) {
+    if (saved && addressSpan) {
         addressSpan.textContent = saved;
         addressSpan.className = 'address-found';
-        box.style.display = 'flex';
     }
 }

@@ -119,7 +119,7 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v22 - διεύθυνση + εικονίδια κατηγοριών)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v23 - διπλός geocoding (OpenCage+Nominatim))');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {

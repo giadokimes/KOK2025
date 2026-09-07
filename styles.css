@@ -319,12 +319,20 @@ body.dark .ota-search-box {
     margin-top: 8px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
+    gap: 8px;
+    padding: 4px 14px;
     font-size: 12.5px;
     color: rgba(255,255,255,0.65);
 }
-.location-address .icon-svg {
+.location-address .geo-btn {
+    width: 30px;
+    height: 30px;
+}
+.location-address .geo-btn .icon-svg {
+    width: 15px;
+    height: 15px;
+}
+.location-address > .icon-svg {
     width: 14px;
     height: 14px;
     flex-shrink: 0;
@@ -393,7 +401,7 @@ body.dark .ota-search-box .ota-suggestions .suggestion-item {
 body.dark .ota-search-box .ota-suggestions .suggestion-item:hover {
     background: #334155;
 }
-.ota-search-box .geo-btn {
+.geo-btn {
     flex: 0 0 auto;
     width: 36px;
     height: 36px;
@@ -407,22 +415,22 @@ body.dark .ota-search-box .ota-suggestions .suggestion-item:hover {
     justify-content: center;
     transition: background .15s, transform .15s;
 }
-.ota-search-box .geo-btn:hover {
+.geo-btn:hover {
     background: #fff;
     transform: scale(1.05);
 }
-.ota-search-box .geo-btn:disabled {
+.geo-btn:disabled {
     cursor: default;
     transform: none;
 }
-.ota-search-box .geo-btn.loading {
+.geo-btn.loading {
     animation: geo-pulse 1s ease-in-out infinite;
 }
 @keyframes geo-pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
 }
-body.dark .ota-search-box .geo-btn {
+body.dark .geo-btn {
     background: #1e293b;
 }
 .ota-search-box .ota-code-display {
