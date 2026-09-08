@@ -18,14 +18,12 @@ function toggleDark() {
 // ============================================================
 // TOAST
 // ============================================================
-function showToast(msg, type) {
+function showToast(msg) {
     const t = document.getElementById('toast');
-    const iconName = type === 'success' ? 'checkCircle' : type === 'warning' ? 'alertTriangle' : null;
-    t.innerHTML = (iconName ? icon(iconName, 'icon-svg icon-inline') + ' ' : '') + msg;
-    t.className = 'toast' + (type ? ' toast-' + type : '');
+    t.textContent = msg;
     t.classList.add('show');
     clearTimeout(t._timeout);
-    t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
+    t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
 // ============================================================
@@ -60,12 +58,12 @@ function dismissInstallBanner() {
 window.addEventListener('appinstalled', () => {
     document.getElementById('installBanner').classList.remove('show');
     document.getElementById('installBtn').classList.remove('ready');
-    showToast('Εφαρμογή εγκαταστάθηκε!', 'success');
+    showToast('✅ Εφαρμογή εγκαταστάθηκε!');
 });
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('Service Worker εγγεγραμμένος'))
+        .then(() => console.log('✅ Service Worker εγγεγραμμένος'))
         .catch(err => console.log('❌ Σφάλμα SW:', err));
 }
 
@@ -81,17 +79,19 @@ async function loadExternalData() {
         if (signsRes.ok) signImageMap = await signsRes.json();
         if (otaRes.ok) {
             otaList = await otaRes.json();
+            if (!selectedOta) {
+                setTimeout(() => {
+                    detectLocation();
+                }, 500);
+            }
         }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
     }
+    loadSavedAddress();
     render();
     const otaInput = document.getElementById('otaSearchInput');
     if (otaInput && otaInput.value) onOtaSearch();
-    // Δείχνει την τελευταία γνωστή διεύθυνση από τοπική αποθήκευση —
-    // ΔΕΝ κάνει νέο αίτημα γεωτοποθεσίας (αυτό γίνεται μόνο με το
-    // κουμπί 📍, βλ. ota.js).
-    loadSavedAddress();
 }
 
 // Σμίκρυνση header
@@ -103,13 +103,10 @@ window.addEventListener('scroll', () => {
     if (!ticking) {
         window.requestAnimationFrame(() => {
             const scrollY = window.scrollY;
-            // Υστέρηση (διαφορετικό threshold για shrink/unshrink) ώστε
-            // μικρές διακυμάνσεις γύρω από ένα ενιαίο σημείο να μην
-            // προκαλούν επαναλαμβανόμενο shrink/unshrink.
-            if (scrollY > 56 && !isShrunk) {
+            if (scrollY > 40 && !isShrunk) {
                 header.classList.add('shrink');
                 isShrunk = true;
-            } else if (scrollY < 24 && isShrunk) {
+            } else if (scrollY <= 40 && isShrunk) {
                 header.classList.remove('shrink');
                 isShrunk = false;
             }
@@ -119,7 +116,7 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v23 - διπλός geocoding (OpenCage+Nominatim))');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v22 - με πρώτες βοήθειες)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
@@ -132,3 +129,31 @@ document.addEventListener('keydown', (e) => {
         clearSearch();
     }
 });
+
+// ============================================================
+// LAZY LOADING ΓΙΑ ΠΡΩΤΕΣ ΒΟΗΘΕΙΕΣ
+// ============================================================
+function loadFirstAid() {
+    return new Promise((resolve, reject) => {
+        if (document.getElementById('firstAidScript')) {
+            resolve();
+            return;
+        }
+        const script = document.createElement('script');
+        script.id = 'firstAidScript';
+        script.src = 'first-aid.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+async function openFirstAidModal() {
+    await loadFirstAid();
+    if (typeof window.openFirstAidModal === 'function') {
+        window.openFirstAidModal();
+    } else {
+        // Fallback
+        document.getElementById('firstAidModal').style.display = 'flex';
+    }
+}
