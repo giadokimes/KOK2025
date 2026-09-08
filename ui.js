@@ -79,11 +79,6 @@ async function loadExternalData() {
         if (signsRes.ok) signImageMap = await signsRes.json();
         if (otaRes.ok) {
             otaList = await otaRes.json();
-            if (!selectedOta) {
-                setTimeout(() => {
-                    detectLocation();
-                }, 500);
-            }
         }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
