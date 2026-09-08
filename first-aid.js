@@ -10,7 +10,7 @@ let isMetronomeActive = false;
 let isTimerActive = false;
 
 // ============================================================
-// MODAL (BOTTOM SHEET)
+// MODAL
 // ============================================================
 function openFirstAidModal() {
     const modal = document.getElementById('firstAidModal');
@@ -38,7 +38,7 @@ function makeCall() {
 }
 
 // ============================================================
-// ΜΕΤΡΟΝΟΜΟΣ 110 BPM (ήχος + δόνηση)
+// ΜΕΤΡΟΝΟΜΟΣ 110 BPM
 // ============================================================
 function toggleMetronome() {
     if (isMetronomeActive) {
@@ -59,7 +59,7 @@ function startMetronome() {
     status.textContent = 'Διακοπή';
     indicator.classList.add('active');
     isMetronomeActive = true;
-    const interval = 545; // 110 BPM
+    const interval = 545;
     metronomeInterval = setInterval(() => {
         playClick();
         if (navigator.vibrate) {
@@ -124,7 +124,7 @@ function startTimer() {
         if (timerSeconds <= 0) {
             stopTimer();
             playAlert();
-            showToast('⏰ Ολοκληρώθηκε ο κύκλος των 2 λεπτών!');
+            showToast('Ολοκληρώθηκε ο κύκλος των 2 λεπτών!', 'success');
             display.style.color = '#dc2626';
             setTimeout(() => { display.style.color = ''; }, 3000);
         }
@@ -176,7 +176,7 @@ function playAlert() {
 }
 
 // ============================================================
-// ΚΛΕΙΣΙΜΟ MODAL ΜΕ ESCAPE / CLICK ΕΞΩ
+// ΚΛΕΙΣΙΜΟ
 // ============================================================
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeFirstAidModal();
@@ -186,7 +186,5 @@ document.getElementById('firstAidModal').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeFirstAidModal();
 });
 
-// ============================================================
-// ΕΚΘΕΣΗ ΤΗΣ ΣΥΝΑΡΤΗΣΗΣ ΓΙΑ LAZY LOADING
-// ============================================================
 window.openFirstAidModal = openFirstAidModal;
+window.makeCall = makeCall;
