@@ -79,6 +79,7 @@ async function loadExternalData() {
         if (signsRes.ok) signImageMap = await signsRes.json();
         if (otaRes.ok) {
             otaList = await otaRes.json();
+            // Η detectLocation() καλείται ΜΟΝΟ με το κουμπί – όχι αυτόματα
         }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
@@ -111,7 +112,7 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v22 - με πρώτες βοήθειες)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v23 - με lightbox πρώτων βοηθειών)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
@@ -126,7 +127,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ============================================================
-// LAZY LOADING ΓΙΑ ΠΡΩΤΕΣ ΒΟΗΘΕΙΕΣ
+// LAZY LOADING ΓΙΑ ΠΡΩΤΕΣ ΒΟΗΘΕΙΕΣ (lightbox)
 // ============================================================
 function loadFirstAid() {
     return new Promise((resolve, reject) => {
@@ -143,12 +144,14 @@ function loadFirstAid() {
     });
 }
 
+// Το κουμπί στο header καλεί την openFirstAidLightbox() απευθείας,
+// οπότε αυτή η συνάρτηση είναι περιττή – την αφήνω για συμβατότητα.
 async function openFirstAidModal() {
     await loadFirstAid();
-    if (typeof window.openFirstAidModal === 'function') {
-        window.openFirstAidModal();
+    if (typeof window.openFirstAidLightbox === 'function') {
+        window.openFirstAidLightbox();
     } else {
         // Fallback
-        document.getElementById('firstAidModal').style.display = 'flex';
+        document.getElementById('firstAidLightbox').style.display = 'flex';
     }
 }
