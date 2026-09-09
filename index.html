@@ -24,19 +24,22 @@
             <div class="header-title">ΚΟΚ <span>Τσέπης v23</span></div>
         </div>
         <div class="header-actions">
-            <button onclick="toggleDark()" title="Σκοτεινή λειτουργία" id="darkModeBtn"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-            <button onclick="toggleFavorites()" title="Αγαπημένα"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg></button>
-            <button class="pdf-btn" onclick="exportFavorites()" title="Εξαγωγή PDF"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg><span>PDF</span></button>
-            <button onclick="window.print()" title="Εκτύπωση"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
-            <button id="installBtn" onclick="installApp()"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Εγκατάσταση</span></button>
-            <!-- ΝΕΑ ΚΟΥΜΠΙΑ ΕΚΤΑΚΤΗΣ ΑΝΑΓΚΗΣ -->
-            <button class="emergency-btn" onclick="makeCall()" title="Άμεση κλήση 166/112">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <!-- Οδηγός χρήσης -->
+            <button class="guide-btn" onclick="openGuideModal()" title="Οδηγός χρήσης" data-tooltip="Οδηγός χρήσης">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
             </button>
-            <button class="vehicle-check-btn" onclick="openVehicleCheck()" title="Έλεγχος οχήματος / ασφάλισης">
+            <button onclick="toggleDark()" title="Σκοτεινή λειτουργία" id="darkModeBtn" data-tooltip="Σκοτεινή λειτουργία"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+            <button onclick="toggleFavorites()" title="Αγαπημένα" data-tooltip="Αγαπημένες παραβάσεις"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg></button>
+            <button class="pdf-btn" onclick="exportFavorites()" title="Εξαγωγή PDF" data-tooltip="Εξαγωγή PDF αγαπημένων"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg><span>PDF</span></button>
+            <button onclick="window.print()" title="Εκτύπωση" data-tooltip="Εκτύπωση σελίδας"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+            <button class="vehicle-check-btn" onclick="openVehicleCheck()" title="Έλεγχος οχήματος / ασφάλισης" data-tooltip="Έλεγχος οχήματος / ασφάλισης">
                 <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM19 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM3 17V11l2-5h10l4 5v6M3 11h18"/></svg>
             </button>
-            <button class="first-aid-btn" onclick="openFirstAidLightbox()" title="Πρώτες Βοήθειες">
+            <button id="installBtn" onclick="installApp()" data-tooltip="Εγκατάσταση εφαρμογής"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Εγκατάσταση</span></button>
+            <button class="emergency-btn" onclick="makeCall()" title="Άμεση κλήση 166/112" data-tooltip="Άμεση κλήση 166/112">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </button>
+            <button class="first-aid-btn" onclick="openFirstAidLightbox()" title="Πρώτες Βοήθειες" data-tooltip="Πρώτες Βοήθειες (ΚΑΡΠΑ / AED)">
                 <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 12.5L8 12l2 3.5 3.5-7 2 3.5 4.5-1"/></svg>
             </button>
         </div>
@@ -127,29 +130,89 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- ΕΛΕΓΧΟΣ ΟΧΗΜΑΤΟΣ / ΑΣΦΑΛΙΣΗΣ                               -->
+<!-- MODAL ΟΔΗΓΟΥ ΧΡΗΣΗΣ                                          -->
+<!-- ============================================================ -->
+<div id="guideModal" class="guide-modal" style="display:none;">
+    <div class="guide-modal-card">
+        <button class="guide-modal-close" onclick="closeGuideModal()">✕</button>
+        <h2>Οδηγός χρήσης</h2>
+        <div class="guide-content">
+            <section>
+                <h3>🔍 Αναζήτηση παραβάσεων</h3>
+                <p>Πληκτρολόγησε μια λέξη-κλειδί (π.χ. «στάθμευση», «κράνος», «ΛΕΑ») για να βρεις γρήγορα την παράβαση που σε ενδιαφέρει.</p>
+            </section>
+            <section>
+                <h3>🏷️ Φίλτρα</h3>
+                <p>Επίλεξε την κατηγορία παραβάσεων που θέλεις να δεις: Στάθμευση, Κίνηση, Σήμανση, Ταχύτητα, Ασφάλεια, Έγγραφα, Φορτηγά, Δίκυκλα, ΕΠΗΟ, Επαγγελματικά, Αλκοόλ, Υποτροπή.</p>
+            </section>
+            <section>
+                <h3>⭐ Αγαπημένα</h3>
+                <p>Πάτησε το αστεράκι σε μια παράβαση για να την αποθηκεύσεις στα αγαπημένα σου. Μπορείς να δεις μόνο τις αγαπημένες σου πατώντας το κουμπί του αστεριού στο header.</p>
+            </section>
+            <section>
+                <h3>📄 PDF</h3>
+                <p>Με το κουμπί PDF εξάγεις μια λίστα με τις αγαπημένες σου παραβάσεις σε μορφή PDF, έτοιμη για εκτύπωση.</p>
+            </section>
+            <section>
+                <h3>✅ Επιλογή παραβάσεων &amp; PDF κλήσης</h3>
+                <p>Τσεκάροντας τα κουτιά δίπλα σε κάθε παράβαση, τις προσθέτεις σε μια προσωρινή λίστα. Στο footer βλέπεις τον αριθμό τους και πατώντας «PDF κλήσης» δημιουργείς ένα αναλυτικό PDF με τα επιλεγμένα άρθρα, το συνολικό πρόστιμο, τις αφαιρέσεις και τους βαθμούς ΣΕΣΟ.</p>
+            </section>
+            <section>
+                <h3>🏛️ Κωδικός ΟΤΑ</h3>
+                <p>Αναζήτησε τον δήμο σου για να τον προσθέσεις στο PDF της κλήσης. Μπορείς επίσης να πατήσεις το κουμπί εντοπισμού (📍) για αυτόματη εύρεση με βάση την τοποθεσία σου.</p>
+            </section>
+            <section>
+                <h3>📍 Διεύθυνση τοποθεσίας</h3>
+                <p>Με το κουμπί πλοήγησης (🧭) βρίσκεις την τρέχουσα διεύθυνσή σου (οδός και αριθμός) μέσω του OpenStreetMap. Η διεύθυνση αποθηκεύεται και μπορεί να εμφανιστεί στο PDF κλήσης.</p>
+            </section>
+            <section>
+                <h3>🚗 Έλεγχος οχήματος / ασφάλισης</h3>
+                <p>Εισάγοντας τον αριθμό κυκλοφορίας, ανοίγει η επίσημη υπηρεσία OpenCar του gov.gr. Η πινακίδα αντιγράφεται αυτόματα στο πρόχειρό σου – απλά κάνε επικόλληση στη φόρμα. Εκεί μπορείς να δεις αν το όχημα είναι ασφαλισμένο, σε ακινησία ή κλεμμένο.</p>
+            </section>
+            <section>
+                <h3>🚑 Πρώτες Βοήθειες</h3>
+                <p>Το κουμπί της καρδιάς ανοίγει ένα lightbox με οδηγίες για ΚΑΡΠΑ και χρήση φορητού απινιδωτή (AED). Μπορείς να ενεργοποιήσεις μετρονόμο 110 BPM για τις θωρακικές συμπιέσεις και χρονόμετρο 2 λεπτών για τον κύκλο της ΚΑΡΠΑ.</p>
+            </section>
+            <section>
+                <h3>📞 Άμεση κλήση 166/112</h3>
+                <p>Το κόκκινο κουμπί καλεί απευθείας το 166 (ΕΚΑΒ) ή το 112 (Ευρωπαϊκός αριθμός έκτακτης ανάγκης).</p>
+            </section>
+            <section>
+                <h3>🌙 Σκοτεινή λειτουργία</h3>
+                <p>Το κουμπί της σελήνης εναλλάσσει τη φωτεινή με τη σκοτεινή όψη της εφαρμογής, για καλύτερη ορατότητα τη νύχτα.</p>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ΕΛΕΓΧΟΣ ΟΧΗΜΑΤΟΣ / ΑΣΦΑΛΙΣΗΣ                                -->
 <!-- ============================================================ -->
 <div id="vehicleCheckModal" class="vehicle-modal" style="display:none;">
-  <div class="vehicle-modal-card" role="dialog" aria-modal="true" aria-labelledby="vehicleCheckTitle">
-    <button class="vehicle-modal-close" onclick="closeVehicleCheck()" aria-label="Κλείσιμο">×</button>
-    <div class="vehicle-modal-icon">🚗</div>
-    <h2 id="vehicleCheckTitle">Έλεγχος οχήματος</h2>
-    <p class="vehicle-modal-subtitle">Έλεγχος στοιχείων και ασφάλισης μέσω της επίσημης υπηρεσίας OpenCar.</p>
-    <label for="vehiclePlateInput">Αριθμός κυκλοφορίας</label>
-    <input id="vehiclePlateInput" class="vehicle-plate-input" type="text" inputmode="text" maxlength="10" autocomplete="off" placeholder="π.χ. ΝΚΑ1234">
-    <div class="vehicle-check-info">
-      <strong>Τι μπορεί να εμφανιστεί</strong>
-      <span>• κατάσταση κυκλοφορίας</span>
-      <span>• ασφαλισμένο / ανασφάλιστο</span>
-      <span>• έναρξη και λήξη ασφάλισης</span>
-      <span>• βασικά στοιχεία οχήματος</span>
+    <div class="vehicle-modal-card" role="dialog" aria-modal="true" aria-labelledby="vehicleCheckTitle">
+        <button class="vehicle-modal-close" onclick="closeVehicleCheck()" aria-label="Κλείσιμο">×</button>
+        <div class="vehicle-modal-icon">🚗</div>
+        <h2 id="vehicleCheckTitle">Έλεγχος οχήματος</h2>
+        <p class="vehicle-modal-subtitle">Έλεγχος στοιχείων και ασφάλισης μέσω της επίσημης υπηρεσίας OpenCar.</p>
+        <label for="vehiclePlateInput">Αριθμός κυκλοφορίας</label>
+        <input id="vehiclePlateInput" class="vehicle-plate-input" type="text" inputmode="text" maxlength="10" autocomplete="off" placeholder="π.χ. ΝΚΑ1234">
+        <div class="vehicle-check-hint">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>Η πινακίδα θα αντιγραφεί αυτόματα. <strong>Επικόλλησέ</strong> τη στη φόρμα του OpenCar.</span>
+        </div>
+        <div class="vehicle-check-info">
+            <strong>Τι μπορεί να εμφανιστεί</strong>
+            <span>• κατάσταση κυκλοφορίας</span>
+            <span>• ασφαλισμένο / ανασφάλιστο</span>
+            <span>• έναρξη και λήξη ασφάλισης</span>
+            <span>• βασικά στοιχεία οχήματος</span>
+        </div>
+        <div class="vehicle-modal-actions">
+            <button class="vehicle-cancel-btn" onclick="closeVehicleCheck()">Άκυρο</button>
+            <button class="vehicle-open-btn" onclick="openOpenCar()">Άνοιγμα OpenCar</button>
+        </div>
+        <p class="vehicle-modal-note">Η εφαρμογή δεν προσποιείται ότι έχει πρόσβαση σε μη διαθέσιμο ιδιωτικό API. Ο έλεγχος ολοκληρώνεται στην επίσημη υπηρεσία.</p>
     </div>
-    <div class="vehicle-modal-actions">
-      <button class="vehicle-cancel-btn" onclick="closeVehicleCheck()">Άκυρο</button>
-      <button class="vehicle-open-btn" onclick="openOpenCar()">Άνοιγμα OpenCar</button>
-    </div>
-    <p class="vehicle-modal-note">Η εφαρμογή δεν προσποιείται ότι έχει πρόσβαση σε μη διαθέσιμο ιδιωτικό API. Ο έλεγχος ολοκληρώνεται στην επίσημη υπηρεσία.</p>
-  </div>
 </div>
 
 <!-- ============================================================ -->
@@ -159,25 +222,16 @@
     <button class="lightbox-close" onclick="closeFirstAidLightbox()">
         <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-    
-    <!-- Κουμπιά εναλλαγής καρτών -->
     <div class="lightbox-tabs">
         <button class="lightbox-tab active" data-card="cpr" onclick="switchCard('cpr')">ΚΑΡΠΑ</button>
         <button class="lightbox-tab" data-card="aed" onclick="switchCard('aed')">AED</button>
     </div>
-
-    <!-- Εικόνα -->
     <img id="lightboxImage" src="cpr-card.png" alt="ΚΑΡΠΑ" class="lightbox-image">
-
-    <!-- Μπάρα ελέγχου -->
     <div class="lightbox-controls">
-        <!-- 166/112 -->
         <button class="lightbox-call-btn" onclick="makeCall()" title="Κλήση 166/112">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <span>166 / 112</span>
         </button>
-
-        <!-- Μετρονόμος (CPR) -->
         <div class="lightbox-metronome" id="lightboxMetronomeGroup">
             <span class="lightbox-label">Μετρονόμος</span>
             <button class="lightbox-tool-btn" id="lightboxMetronomeBtn" onclick="toggleMetronome()">
@@ -186,8 +240,6 @@
             </button>
             <span class="lightbox-pulse" id="lightboxPulseIndicator"></span>
         </div>
-
-        <!-- Χρονόμετρο (AED) -->
         <div class="lightbox-timer" id="lightboxTimerGroup">
             <span class="lightbox-label">Χρονόμετρο</span>
             <button class="lightbox-tool-btn" id="lightboxTimerBtn" onclick="toggleTimer()">
@@ -208,5 +260,102 @@
 <script src="ui.js"></script>
 <script src="first-aid.js"></script>
 <script src="vehicle-check.js"></script>
+<script>
+    // ============================================================
+    // ΟΔΗΓΟΣ ΧΡΗΣΗΣ – MODAL
+    // ============================================================
+    function openGuideModal() {
+        document.getElementById('guideModal').style.display = 'flex';
+        document.body.classList.add('modal-open');
+    }
+    function closeGuideModal() {
+        document.getElementById('guideModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeGuideModal();
+    });
+    document.getElementById('guideModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeGuideModal();
+    });
+
+    // ============================================================
+    // TOOLTIP – LONG PRESS / HOVER
+    // ============================================================
+    (function initTooltips() {
+        const buttons = document.querySelectorAll('[data-tooltip]');
+        let tooltipEl = null;
+        let timeoutId = null;
+        let hideTimeout = null;
+
+        function showTooltip(btn, text) {
+            if (!tooltipEl) {
+                tooltipEl = document.createElement('div');
+                tooltipEl.className = 'tooltip-popup';
+                document.body.appendChild(tooltipEl);
+            }
+            const rect = btn.getBoundingClientRect();
+            tooltipEl.textContent = text;
+            tooltipEl.style.top = (rect.top - 10) + 'px';
+            tooltipEl.style.left = (rect.left + rect.width/2) + 'px';
+            tooltipEl.style.transform = 'translate(-50%, -100%)';
+            tooltipEl.style.display = 'block';
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                if (tooltipEl) tooltipEl.style.display = 'none';
+            }, 3000);
+        }
+
+        function hideTooltip() {
+            clearTimeout(hideTimeout);
+            if (tooltipEl) tooltipEl.style.display = 'none';
+        }
+
+        // Long press (κινητά)
+        buttons.forEach(btn => {
+            let longPressTimer = null;
+            let isLongPress = false;
+
+            btn.addEventListener('touchstart', (e) => {
+                isLongPress = false;
+                longPressTimer = setTimeout(() => {
+                    isLongPress = true;
+                    const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
+                    if (text) showTooltip(btn, text);
+                }, 700);
+            }, { passive: true });
+
+            btn.addEventListener('touchmove', () => {
+                clearTimeout(longPressTimer);
+            }, { passive: true });
+
+            btn.addEventListener('touchend', () => {
+                clearTimeout(longPressTimer);
+                if (isLongPress) {
+                    isLongPress = false;
+                    // Το tooltip θα κρυφτεί μόνο του μετά από 3 sec
+                }
+            }, { passive: true });
+
+            // Hover (desktop)
+            btn.addEventListener('mouseenter', () => {
+                clearTimeout(timeoutId);
+                const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
+                if (text) {
+                    timeoutId = setTimeout(() => {
+                        showTooltip(btn, text);
+                    }, 500);
+                }
+            });
+            btn.addEventListener('mouseleave', () => {
+                clearTimeout(timeoutId);
+                hideTooltip();
+            });
+        });
+
+        // Κλείσιμο tooltip με κλικ οπουδήποτε
+        document.addEventListener('click', hideTooltip);
+    })();
+</script>
 </body>
 </html>

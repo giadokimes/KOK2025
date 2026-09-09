@@ -1234,6 +1234,237 @@ body.dark .selection-footer .actions .clear-btn:hover {
     font-variant-numeric: tabular-nums;
 }
 
+/* ============================================================
+   ΕΛΕΓΧΟΣ ΟΧΗΜΑΤΟΣ / ΑΣΦΑΛΙΣΗΣ
+   ============================================================ */
+.vehicle-check-btn {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+.vehicle-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(15, 23, 42, .68);
+    backdrop-filter: blur(4px);
+}
+.vehicle-modal-card {
+    position: relative;
+    width: min(470px, 100%);
+    max-height: calc(100vh - 36px);
+    overflow: auto;
+    padding: 26px;
+    border-radius: 18px;
+    background: #fff;
+    color: #172033;
+    box-shadow: 0 22px 70px rgba(0,0,0,.28);
+}
+body.dark .vehicle-modal-card { background: #172033; color: #f1f5f9; }
+.vehicle-modal-icon { font-size: 34px; margin-bottom: 4px; }
+.vehicle-modal-card h2 { margin: 0 0 6px; font-size: 23px; }
+.vehicle-modal-subtitle { margin: 0 0 20px; color: #64748b; line-height: 1.45; }
+body.dark .vehicle-modal-subtitle { color: #cbd5e1; }
+.vehicle-modal-card label { display:block; font-weight:700; margin-bottom:7px; }
+.vehicle-plate-input {
+    width: 100%; box-sizing: border-box; padding: 13px 14px; border: 1px solid #cbd5e1;
+    border-radius: 10px; font-size: 18px; letter-spacing: 1px; text-transform: uppercase;
+    background: #f8fafc; color: #111827;
+}
+body.dark .vehicle-plate-input { background:#0f172a; color:#fff; border-color:#475569; }
+.vehicle-check-info { display:flex; flex-direction:column; gap:5px; margin:16px 0; padding:13px 15px; border-radius:10px; background:#f1f5f9; color:#334155; font-size:14px; line-height:1.35; }
+body.dark .vehicle-check-info { background:#0f172a; color:#cbd5e1; }
+.vehicle-modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:18px; }
+.vehicle-cancel-btn, .vehicle-open-btn { border:0; border-radius:10px; padding:11px 16px; font-weight:700; cursor:pointer; }
+.vehicle-cancel-btn { background:#e2e8f0; color:#334155; }
+.vehicle-open-btn { background:#1a365d; color:#fff; }
+.vehicle-modal-note { margin:14px 0 0; font-size:11px; color:#64748b; line-height:1.4; }
+body.dark .vehicle-modal-note { color:#94a3b8; }
+.vehicle-modal-close { position:absolute; top:10px; right:12px; width:36px; height:36px; border:0; border-radius:50%; background:transparent; color:inherit; font-size:28px; cursor:pointer; }
+body.modal-open { overflow:hidden; }
+
+/* ============================================================
+   ΟΔΗΓΙΕΣ ΣΤΟ MODAL (HINT)
+   ============================================================ */
+.vehicle-check-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 16px;
+    padding: 10px 14px;
+    background: rgba(59, 130, 246, 0.08);
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+    font-size: 14px;
+    color: #1e293b;
+}
+.vehicle-check-hint .icon-svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: #3b82f6;
+}
+.vehicle-check-hint strong {
+    color: #0f172a;
+}
+body.dark .vehicle-check-hint {
+    background: rgba(59, 130, 246, 0.15);
+    color: #e2e8f0;
+}
+body.dark .vehicle-check-hint strong {
+    color: #f1f5f9;
+}
+
+/* ============================================================
+   ΟΔΗΓΟΣ ΧΡΗΣΗΣ – MODAL
+   ============================================================ */
+.guide-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(15, 23, 42, .68);
+    backdrop-filter: blur(4px);
+}
+.guide-modal-card {
+    position: relative;
+    width: min(600px, 100%);
+    max-height: calc(100vh - 36px);
+    overflow: auto;
+    padding: 26px 28px;
+    border-radius: 18px;
+    background: #fff;
+    color: #172033;
+    box-shadow: 0 22px 70px rgba(0,0,0,.28);
+}
+body.dark .guide-modal-card { background: #172033; color: #f1f5f9; }
+.guide-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 28px;
+    cursor: pointer;
+}
+.guide-modal-card h2 {
+    font-size: 24px;
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+}
+body.dark .guide-modal-card h2 {
+    border-bottom-color: #334155;
+}
+.guide-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.guide-content section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: #1e293b;
+}
+body.dark .guide-content section h3 {
+    color: #e2e8f0;
+}
+.guide-content section p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #475569;
+    margin: 0;
+}
+body.dark .guide-content section p {
+    color: #cbd5e1;
+}
+.guide-content section + section {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 12px;
+}
+body.dark .guide-content section + section {
+    border-top-color: #334155;
+}
+
+/* ============================================================
+   TOOLTIP POPUP
+   ============================================================ */
+.tooltip-popup {
+    position: fixed;
+    display: none;
+    background: #1e293b;
+    color: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    max-width: 200px;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 99999;
+    transform: translate(-50%, -100%);
+}
+.tooltip-popup::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #1e293b;
+}
+body.dark .tooltip-popup {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+body.dark .tooltip-popup::after {
+    border-top-color: #e2e8f0;
+}
+
+/* ============================================================
+   ΟΔΗΓΟΣ ΧΡΗΣΗΣ – ΚΟΥΜΠΙ (header)
+   ============================================================ */
+.guide-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, border-color .15s;
+}
+.guide-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.35);
+}
+body.dark .guide-btn {
+    border-color: rgba(255,255,255,0.08);
+}
+.guide-btn .icon-svg {
+    width: 19px;
+    height: 19px;
+}
+
 /* ============================================================ */
 /* RESPONSIVE                                                   */
 /* ============================================================ */
@@ -1346,6 +1577,25 @@ body.dark .selection-footer .actions .clear-btn:hover {
     .lightbox-overlay .lightbox-image {
         max-height: calc(100% - 160px);
     }
+    .vehicle-modal-card {
+        padding: 22px;
+        border-radius: 16px;
+    }
+    .vehicle-modal-actions {
+        flex-direction: column-reverse;
+    }
+    .vehicle-cancel-btn, .vehicle-open-btn {
+        width: 100%;
+    }
+    .guide-modal-card {
+        padding: 18px 16px;
+    }
+    .guide-content section h3 {
+        font-size: 15px;
+    }
+    .guide-content section p {
+        font-size: 13px;
+    }
     #signModal .modal-box {
         padding: 16px;
     }
@@ -1372,7 +1622,7 @@ body.dark .selection-footer .actions .clear-btn:hover {
     }
 }
 @media print {
-    .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn, #signModal, .selection-footer {
+    .header, .search-box, .filters, .count, .favorite, .header-actions, .ota-search-box, .install-banner, #installBtn, #signModal, .selection-footer, .guide-modal, .vehicle-modal {
         display: none !important;
     }
     body {
@@ -1413,62 +1663,4 @@ body.dark .selection-footer .actions .clear-btn:hover {
     .card .desc-toggle {
         display: none !important;
     }
-}
-/* ============================================================
-   ΕΛΕΓΧΟΣ ΟΧΗΜΑΤΟΣ / ΑΣΦΑΛΙΣΗΣ
-   ============================================================ */
-.vehicle-check-btn {
-    border: 0;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-}
-.vehicle-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 18px;
-    background: rgba(15, 23, 42, .68);
-    backdrop-filter: blur(4px);
-}
-.vehicle-modal-card {
-    position: relative;
-    width: min(470px, 100%);
-    max-height: calc(100vh - 36px);
-    overflow: auto;
-    padding: 26px;
-    border-radius: 18px;
-    background: #fff;
-    color: #172033;
-    box-shadow: 0 22px 70px rgba(0,0,0,.28);
-}
-body.dark .vehicle-modal-card { background: #172033; color: #f1f5f9; }
-.vehicle-modal-icon { font-size: 34px; margin-bottom: 4px; }
-.vehicle-modal-card h2 { margin: 0 0 6px; font-size: 23px; }
-.vehicle-modal-subtitle { margin: 0 0 20px; color: #64748b; line-height: 1.45; }
-body.dark .vehicle-modal-subtitle { color: #cbd5e1; }
-.vehicle-modal-card label { display:block; font-weight:700; margin-bottom:7px; }
-.vehicle-plate-input {
-    width: 100%; box-sizing: border-box; padding: 13px 14px; border: 1px solid #cbd5e1;
-    border-radius: 10px; font-size: 18px; letter-spacing: 1px; text-transform: uppercase;
-    background: #f8fafc; color: #111827;
-}
-body.dark .vehicle-plate-input { background:#0f172a; color:#fff; border-color:#475569; }
-.vehicle-check-info { display:flex; flex-direction:column; gap:5px; margin:16px 0; padding:13px 15px; border-radius:10px; background:#f1f5f9; color:#334155; font-size:14px; line-height:1.35; }
-body.dark .vehicle-check-info { background:#0f172a; color:#cbd5e1; }
-.vehicle-modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:18px; }
-.vehicle-cancel-btn, .vehicle-open-btn { border:0; border-radius:10px; padding:11px 16px; font-weight:700; cursor:pointer; }
-.vehicle-cancel-btn { background:#e2e8f0; color:#334155; }
-.vehicle-open-btn { background:#1a365d; color:#fff; }
-.vehicle-modal-note { margin:14px 0 0; font-size:11px; color:#64748b; line-height:1.4; }
-body.dark .vehicle-modal-note { color:#94a3b8; }
-.vehicle-modal-close { position:absolute; top:10px; right:12px; width:36px; height:36px; border:0; border-radius:50%; background:transparent; color:inherit; font-size:28px; cursor:pointer; }
-body.modal-open { overflow:hidden; }
-@media (max-width: 600px) {
-    .vehicle-modal-card { padding:22px; border-radius:16px; }
-    .vehicle-modal-actions { flex-direction:column-reverse; }
-    .vehicle-cancel-btn, .vehicle-open-btn { width:100%; }
 }
