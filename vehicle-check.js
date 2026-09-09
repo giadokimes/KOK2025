@@ -1,4 +1,4 @@
-/* ΚΟΚ Τσέπης — Έλεγχος οχήματος / ασφάλισης */
+/* ΚΟΚ Τσέπης — Έλεγχος οχήματος / ασφάλισης (v24) */
 
 const OPENCAR_URL = 'https://dilosi.services.gov.gr/templates/VEHICLE-INSURANCE/create';
 
@@ -31,7 +31,7 @@ function openOpenCar() {
     const plate = normalizePlate(input ? input.value : '');
     if (!plate) {
         if (typeof showToast === 'function') {
-            showToast('⚠️ Συμπλήρωσε τον αριθμό κυκλοφορίας.');
+            showToast('Συμπλήρωσε τον αριθμό κυκλοφορίας.');
         } else {
             alert('Συμπλήρωσε αριθμό κυκλοφορίας.');
         }
@@ -46,13 +46,13 @@ function openOpenCar() {
         navigator.clipboard.writeText(plate).then(() => {
             copied = true;
             if (typeof showToast === 'function') {
-                showToast('✅ Πινακίδα αντιγράφηκε στο πρόχειρο! Επικόλλησέ την στη φόρμα του OpenCar.');
+                showToast('Πινακίδα αντιγράφηκε στο πρόχειρο! Επικόλλησέ την στη φόρμα του OpenCar.');
             }
         }).catch(() => {});
     } catch (_) {}
 
     if (!copied && typeof showToast === 'function') {
-        showToast('⚠️ Δεν ήταν δυνατή η αντιγραφή. Αντιγράψτε την πινακίδα χειροκίνητα.');
+        showToast('Δεν ήταν δυνατή η αντιγραφή. Αντιγράψτε την πινακίδα χειροκίνητα.');
     }
 
     window.open(OPENCAR_URL, '_blank', 'noopener,noreferrer');

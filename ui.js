@@ -1,5 +1,5 @@
 // ============================================================
-// ui.js – UI & PWA
+// ui.js – UI & PWA (v24)
 // ============================================================
 
 function toggleDark() {
@@ -23,7 +23,7 @@ function showToast(msg) {
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(t._timeout);
-    t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+    t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 // ============================================================
@@ -36,8 +36,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = e;
     document.getElementById('installBanner').classList.add('show');
     const btn = document.getElementById('installBtn');
-    btn.classList.add('ready');
-    btn.style.display = 'flex';
+    if (btn) btn.classList.add('ready');
+    // Το install είναι τώρα στο hamburger
 });
 
 function installApp() {
@@ -45,7 +45,6 @@ function installApp() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(() => {
             document.getElementById('installBanner').classList.remove('show');
-            document.getElementById('installBtn').classList.remove('ready');
             deferredPrompt = null;
         });
     }
@@ -57,14 +56,13 @@ function dismissInstallBanner() {
 
 window.addEventListener('appinstalled', () => {
     document.getElementById('installBanner').classList.remove('show');
-    document.getElementById('installBtn').classList.remove('ready');
-    showToast('✅ Εφαρμογή εγκαταστάθηκε!');
+    showToast('Εφαρμογή εγκαταστάθηκε!');
 });
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('✅ Service Worker εγγεγραμμένος'))
-        .catch(err => console.log('❌ Σφάλμα SW:', err));
+        .then(() => console.log('Service Worker εγγεγραμμένος'))
+        .catch(err => console.log('Σφάλμα SW:', err));
 }
 
 // ============================================================
@@ -79,7 +77,6 @@ async function loadExternalData() {
         if (signsRes.ok) signImageMap = await signsRes.json();
         if (otaRes.ok) {
             otaList = await otaRes.json();
-            // Η detectLocation() καλείται ΜΟΝΟ με το κουμπί – όχι αυτόματα
         }
     } catch (e) {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
@@ -90,29 +87,10 @@ async function loadExternalData() {
     if (otaInput && otaInput.value) onOtaSearch();
 }
 
-// Σμίκρυνση header
-const header = document.querySelector('.header');
-let isShrunk = false;
-let ticking = false;
+// Σμίκρυνση header (απενεργοποιημένη – το νέο design έχει σταθερό header)
+// Αφήνουμε μόνο το scroll event για το σμίκρυνμα (δεν το χρειαζόμαστε πλέον)
 
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            const scrollY = window.scrollY;
-            if (scrollY > 40 && !isShrunk) {
-                header.classList.add('shrink');
-                isShrunk = true;
-            } else if (scrollY <= 40 && isShrunk) {
-                header.classList.remove('shrink');
-                isShrunk = false;
-            }
-            ticking = false;
-        });
-        ticking = true;
-    }
-}, { passive: true });
-
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v23 - με lightbox πρώτων βοηθειών)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v24 - νέο design)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
@@ -144,14 +122,11 @@ function loadFirstAid() {
     });
 }
 
-// Το κουμπί στο header καλεί την openFirstAidLightbox() απευθείας,
-// οπότε αυτή η συνάρτηση είναι περιττή – την αφήνω για συμβατότητα.
-async function openFirstAidModal() {
+async function openFirstAidLightbox() {
     await loadFirstAid();
     if (typeof window.openFirstAidLightbox === 'function') {
         window.openFirstAidLightbox();
     } else {
-        // Fallback
         document.getElementById('firstAidLightbox').style.display = 'flex';
     }
 }
