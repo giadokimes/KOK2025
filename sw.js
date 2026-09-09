@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v23';
+const CACHE_VERSION = 'kok-v24';
 
 // Βασικά αρχεία της εφαρμογής — ΠΡΕΠΕΙ να επιτύχουν όλα, αλλιώς η εγκατάσταση
 // του service worker αποτυγχάνει σκόπιμα (καλύτερα να ξέρουμε αμέσως).
@@ -13,6 +13,7 @@ const CORE_URLS = [
   './ota.js',
   './app.js',
   './ui.js',
+  './vehicle-check.js',
   './icon-192-v2.png',
   './icon-512-v2.png',
   './icon-maskable-512.png',
