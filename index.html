@@ -12,7 +12,6 @@
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#04152E">
     <title>ΚΟΚ – Τσέπης v24</title>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
@@ -47,20 +46,22 @@
                 <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
-
-        <!-- Κουμπιά έκτακτης ανάγκης (δεξιά) -->
-        <div class="header-actions">
-            <button class="emergency-btn" onclick="makeCall()" aria-label="Κλήση 166/112">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </button>
-            <button class="first-aid-btn" onclick="openFirstAidLightbox()" aria-label="Πρώτες Βοήθειες">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 12.5L8 12l2 3.5 3.5-7 2 3.5 4.5-1"/></svg>
-            </button>
-        </div>
     </div>
 </header>
 
-<!-- ===== HAMBURGER MENU (overlay) ===== -->
+<!-- ===== ΓΡΑΜΜΗ ΕΚΤΑΚΤΗΣ ΑΝΑΓΚΗΣ ===== -->
+<div class="emergency-bar">
+    <button class="emergency-btn" onclick="makeCall()" aria-label="Κλήση 166/112">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>166</span>
+    </button>
+    <button class="first-aid-btn" onclick="openFirstAidLightbox()" aria-label="Πρώτες Βοήθειες">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 12.5L8 12l2 3.5 3.5-7 2 3.5 4.5-1"/></svg>
+        <span>Πρώτες Βοήθειες</span>
+    </button>
+</div>
+
+<!-- ===== HAMBURGER MENU ===== -->
 <div id="hamburgerOverlay" class="hamburger-overlay" style="display:none;">
     <div class="hamburger-menu">
         <button class="hamburger-close" onclick="toggleHamburger()">
@@ -99,19 +100,27 @@
     </div>
 </div>
 
-<!-- ===== OTA & ΔΙΕΥΘΥΝΣΗ ===== -->
+<!-- ===== OTA & ADDRESS GRID ===== -->
 <div class="ota-address-grid">
-    <button class="ota-btn" onclick="document.getElementById('otaSearchInput').focus()">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span>Αναζήτηση ΟΤΑ</span>
-    </button>
-    <button class="address-btn" onclick="detectAddress()">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-        <span>Εντοπισμός διεύθυνσης</span>
-    </button>
+    <!-- Αναζήτηση ΟΤΑ (χειροκίνητη) -->
+    <div class="ota-input-wrap">
+        <input type="text" id="otaSearchInput" placeholder="Αναζήτηση ΟΤΑ..." oninput="onOtaSearch()" autocomplete="off">
+        <div class="ota-suggestions" id="otaSuggestions"></div>
+    </div>
+    <!-- Κουμπιά γεωτοποίησης -->
+    <div class="geo-buttons">
+        <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Αυτόματη εύρεση ΟΤΑ (OpenCage)">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Εύρεση ΟΤΑ</span>
+        </button>
+        <button id="addrBtn" class="geo-btn" onclick="detectAddress()" title="Εντοπισμός διεύθυνσης (Nominatim)">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            <span>Διεύθυνση</span>
+        </button>
+    </div>
 </div>
 
-<!-- ===== ΚΑΡΤΑ ΟΤΑ ===== -->
+<!-- ===== OTA CARD ===== -->
 <div class="ota-card" id="otaCard">
     <div class="ota-card-row">
         <span class="ota-label">ΚΩΔΙΚΟΣ ΟΤΑ</span>
@@ -128,7 +137,7 @@
     </div>
 </div>
 
-<!-- ===== ΦΙΛΤΡΑ ===== -->
+<!-- ===== FILTERS ===== -->
 <div class="filters-wrapper">
     <div class="filters" id="filterContainer">
         <button data-filter="all" onclick="setFilter('all')" class="active">Όλες</button>
@@ -202,7 +211,7 @@
     </div>
 </div>
 
-<!-- ===== ΟΔΗΓΟΣ ΧΡΗΣΗΣ ===== -->
+<!-- ===== GUIDE MODAL ===== -->
 <div id="guideModal" class="guide-modal" style="display:none;">
     <div class="guide-modal-card">
         <button class="guide-modal-close" onclick="closeGuideModal()">✕</button>
@@ -223,7 +232,7 @@
     </div>
 </div>
 
-<!-- ===== ΕΛΕΓΧΟΣ ΟΧΗΜΑΤΟΣ ===== -->
+<!-- ===== VEHICLE CHECK MODAL ===== -->
 <div id="vehicleCheckModal" class="vehicle-modal" style="display:none;">
     <div class="vehicle-modal-card">
         <button class="vehicle-modal-close" onclick="closeVehicleCheck()">×</button>
@@ -320,7 +329,7 @@
         if (e.target === e.currentTarget) closeGuideModal();
     });
 
-    // ===== TOOLTIP (long press / hover) =====
+    // ===== TOOLTIP =====
     (function initTooltips() {
         const buttons = document.querySelectorAll('[data-tooltip]');
         let tooltipEl = null;
@@ -396,7 +405,6 @@
         document.addEventListener('click', hideTooltip);
     })();
 
-    // ===== MAKE CALL (global) =====
     window.makeCall = makeCall;
     window.openFirstAidLightbox = openFirstAidLightbox;
 </script>

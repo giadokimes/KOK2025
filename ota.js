@@ -5,6 +5,7 @@
 let otaList = [];
 let selectedOta = null;
 
+// ===== ΧΕΙΡΟΚΙΝΗΤΗ ΑΝΑΖΗΤΗΣΗ =====
 function getOtaSuggestions(query) {
     if (!query || query.length < 2) return [];
     const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -57,9 +58,7 @@ function loadOtaSelection() {
     } catch (e) {}
 }
 
-// ============================================================
-// 1) ΚΩΔΙΚΟΣ ΟΤΑ — OpenCage (κουμπί)
-// ============================================================
+// ===== ΑΥΤΟΜΑΤΗ ΑΝΑΖΗΤΗΣΗ (OpenCage) =====
 let geoInProgress = false;
 
 function detectLocation() {
@@ -69,20 +68,21 @@ function detectLocation() {
         return;
     }
     geoInProgress = true;
-    document.getElementById('geoBtn').classList.add('loading');
+    const btn = document.getElementById('geoBtn');
+    if (btn) btn.classList.add('loading');
     showToast('Εντοπισμός δήμου...');
     navigator.geolocation.getCurrentPosition(
         async (position) => {
             const { latitude, longitude } = position.coords;
             await reverseGeocodeOta(latitude, longitude);
             geoInProgress = false;
-            document.getElementById('geoBtn').classList.remove('loading');
+            if (btn) btn.classList.remove('loading');
         },
         (error) => {
             console.error('Geolocation error:', error);
             showToast('Δεν ήταν δυνατός ο εντοπισμός. Επίλεξε ΟΤΑ χειροκίνητα.');
             geoInProgress = false;
-            document.getElementById('geoBtn').classList.remove('loading');
+            if (btn) btn.classList.remove('loading');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -145,9 +145,7 @@ async function reverseGeocodeOta(lat, lon) {
     }
 }
 
-// ============================================================
-// 2) ΔΙΕΥΘΥΝΣΗ — Nominatim (κουμπί)
-// ============================================================
+// ===== ΔΙΕΥΘΥΝΣΗ (Nominatim) =====
 let addrInProgress = false;
 
 function detectAddress() {
@@ -157,20 +155,21 @@ function detectAddress() {
         return;
     }
     addrInProgress = true;
-    document.getElementById('addrBtn').classList.add('loading');
+    const btn = document.getElementById('addrBtn');
+    if (btn) btn.classList.add('loading');
     showToast('Εντοπισμός διεύθυνσης...');
     navigator.geolocation.getCurrentPosition(
         async (position) => {
             const { latitude, longitude } = position.coords;
             await reverseGeocodeAddress(latitude, longitude);
             addrInProgress = false;
-            document.getElementById('addrBtn').classList.remove('loading');
+            if (btn) btn.classList.remove('loading');
         },
         (error) => {
             console.error('Geolocation error:', error);
             showToast('Δεν ήταν δυνατός ο εντοπισμός διεύθυνσης.');
             addrInProgress = false;
-            document.getElementById('addrBtn').classList.remove('loading');
+            if (btn) btn.classList.remove('loading');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -195,9 +194,7 @@ async function reverseGeocodeAddress(lat, lon) {
     }
 }
 
-// ============================================================
-// ΔΙΕΥΘΥΝΣΗ ΤΟΠΟΘΕΣΙΑΣ — κοινή εμφάνιση/αποθήκευση
-// ============================================================
+// ===== ΔΙΕΥΘΥΝΣΗ – εμφάνιση / αποθήκευση =====
 function updateAddress(components, formatted) {
     const addressSpan = document.getElementById('addressText');
     if (!addressSpan) return;

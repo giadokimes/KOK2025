@@ -88,7 +88,6 @@ function render() {
         const iconName = categoryIcons[v.category] || 'alertTriangle';
         const iconSvg = icon(iconName, 'icon-svg');
 
-        let bgColor = 'var(--card-bg)';
         let priceColor = 'var(--red)';
         if (v.criminal) {
             priceColor = '#dc2626';
@@ -121,12 +120,12 @@ function render() {
             <div class="card-details">
                 ${v.suspend && v.suspend !== '-' ? `
                 <div class="detail-item">
-                    <span class="label">Άδεια οδήγησης</span>
+                    <span class="label">Αφαιρέσεις</span>
                     <span class="value">${v.suspend}</span>
                 </div>
                 ` : `
                 <div class="detail-item">
-                    <span class="label">Άδεια οδήγησης</span>
+                    <span class="label">Αφαιρέσεις</span>
                     <span class="value">—</span>
                 </div>
                 `}
@@ -159,7 +158,7 @@ function render() {
         </div>
     `}).join('');
 
-    // Event listener για κλείσιμο προτάσεων OTA (εξωτερικά)
+    // Event listener για κλείσιμο προτάσεων OTA
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.ota-input-wrap')) {
             const suggestions = document.getElementById('otaSuggestions');
