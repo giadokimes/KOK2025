@@ -25,9 +25,9 @@
         </div>
         <div class="header-actions">
             <!-- Οδηγός χρήσης -->
-            <button class="guide-btn" onclick="openGuideModal()" title="Οδηγός χρήσης" data-tooltip="Οδηγός χρήσης">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-            </button>
+         <button class="guide-btn" onclick="openGuideModal()" title="Οδηγός χρήσης" data-tooltip="Οδηγός χρήσης">
+    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><text x="12" y="16" font-size="14" text-anchor="middle" fill="currentColor" stroke="none">?</text></svg>
+</button>
             <button onclick="toggleDark()" title="Σκοτεινή λειτουργία" id="darkModeBtn" data-tooltip="Σκοτεινή λειτουργία"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
             <button onclick="toggleFavorites()" title="Αγαπημένα" data-tooltip="Αγαπημένες παραβάσεις"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg></button>
             <button class="pdf-btn" onclick="exportFavorites()" title="Εξαγωγή PDF" data-tooltip="Εξαγωγή PDF αγαπημένων"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg><span>PDF</span></button>
@@ -282,80 +282,85 @@
     // ============================================================
     // TOOLTIP – LONG PRESS / HOVER
     // ============================================================
-    (function initTooltips() {
-        const buttons = document.querySelectorAll('[data-tooltip]');
-        let tooltipEl = null;
-        let timeoutId = null;
-        let hideTimeout = null;
+   (function initTooltips() {
+    const buttons = document.querySelectorAll('[data-tooltip]');
+    let tooltipEl = null;
+    let hideTimeout = null;
 
-        function showTooltip(btn, text) {
-            if (!tooltipEl) {
-                tooltipEl = document.createElement('div');
-                tooltipEl.className = 'tooltip-popup';
-                document.body.appendChild(tooltipEl);
-            }
-            const rect = btn.getBoundingClientRect();
-            tooltipEl.textContent = text;
-            tooltipEl.style.top = (rect.top - 10) + 'px';
-            tooltipEl.style.left = (rect.left + rect.width/2) + 'px';
-            tooltipEl.style.transform = 'translate(-50%, -100%)';
-            tooltipEl.style.display = 'block';
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => {
-                if (tooltipEl) tooltipEl.style.display = 'none';
-            }, 3000);
+    function showTooltip(btn, text) {
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.className = 'tooltip-popup';
+            document.body.appendChild(tooltipEl);
+        }
+        const rect = btn.getBoundingClientRect();
+        const tooltipWidth = 200; // max-width
+        const tooltipHeight = 40; // approximate
+        let top = rect.top - 10;
+        let left = rect.left + rect.width / 2;
+
+        // Έλεγχος ορίων οθόνης
+        if (top - tooltipHeight < 0) {
+            // Αν δεν χωράει πάνω, το βάζουμε από κάτω
+            top = rect.bottom + 10;
+        }
+        if (left - tooltipWidth / 2 < 0) {
+            left = tooltipWidth / 2 + 5;
+        } else if (left + tooltipWidth / 2 > window.innerWidth) {
+            left = window.innerWidth - tooltipWidth / 2 - 5;
         }
 
-        function hideTooltip() {
-            clearTimeout(hideTimeout);
+        tooltipEl.textContent = text;
+        tooltipEl.style.top = top + 'px';
+        tooltipEl.style.left = left + 'px';
+        tooltipEl.style.transform = 'translate(-50%, 0)';
+        tooltipEl.style.display = 'block';
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
             if (tooltipEl) tooltipEl.style.display = 'none';
-        }
+        }, 3000);
+    }
 
-        // Long press (κινητά)
-        buttons.forEach(btn => {
-            let longPressTimer = null;
-            let isLongPress = false;
+    function hideTooltip() {
+        clearTimeout(hideTimeout);
+        if (tooltipEl) tooltipEl.style.display = 'none';
+    }
 
-            btn.addEventListener('touchstart', (e) => {
-                isLongPress = false;
-                longPressTimer = setTimeout(() => {
-                    isLongPress = true;
-                    const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
-                    if (text) showTooltip(btn, text);
-                }, 700);
-            }, { passive: true });
+    buttons.forEach(btn => {
+        let longPressTimer = null;
 
-            btn.addEventListener('touchmove', () => {
-                clearTimeout(longPressTimer);
-            }, { passive: true });
-
-            btn.addEventListener('touchend', () => {
-                clearTimeout(longPressTimer);
-                if (isLongPress) {
-                    isLongPress = false;
-                    // Το tooltip θα κρυφτεί μόνο του μετά από 3 sec
-                }
-            }, { passive: true });
-
-            // Hover (desktop)
-            btn.addEventListener('mouseenter', () => {
-                clearTimeout(timeoutId);
+        // Long press (κινητά) – με preventDefault
+        btn.addEventListener('touchstart', (e) => {
+            // Αποτρέπει το εγγενές μενού copy/paste
+            e.preventDefault();
+            longPressTimer = setTimeout(() => {
                 const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
-                if (text) {
-                    timeoutId = setTimeout(() => {
-                        showTooltip(btn, text);
-                    }, 500);
-                }
-            });
-            btn.addEventListener('mouseleave', () => {
-                clearTimeout(timeoutId);
-                hideTooltip();
-            });
-        });
+                if (text) showTooltip(btn, text);
+            }, 700);
+        }, { passive: false });
 
-        // Κλείσιμο tooltip με κλικ οπουδήποτε
-        document.addEventListener('click', hideTooltip);
-    })();
+        btn.addEventListener('touchmove', () => {
+            clearTimeout(longPressTimer);
+        }, { passive: true });
+
+        btn.addEventListener('touchend', () => {
+            clearTimeout(longPressTimer);
+        }, { passive: true });
+
+        // Hover (desktop)
+        btn.addEventListener('mouseenter', () => {
+            const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
+            if (text) {
+                clearTimeout(hideTimeout);
+                showTooltip(btn, text);
+            }
+        });
+        btn.addEventListener('mouseleave', hideTooltip);
+    });
+
+    // Κλείσιμο tooltip με κλικ οπουδήποτε
+    document.addEventListener('click', hideTooltip);
+})();
 </script>
 </body>
 </html>
