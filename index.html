@@ -282,10 +282,12 @@
     // ============================================================
     // TOOLTIP – LONG PRESS / HOVER
     // ============================================================
-   (function initTooltips() {
+(function initTooltips() {
     const buttons = document.querySelectorAll('[data-tooltip]');
     let tooltipEl = null;
     let hideTimeout = null;
+    let longPressTimer = null;
+    let isLongPress = false;
 
     function showTooltip(btn, text) {
         if (!tooltipEl) {
@@ -294,15 +296,16 @@
             document.body.appendChild(tooltipEl);
         }
         const rect = btn.getBoundingClientRect();
-        const tooltipWidth = 200; // max-width
-        const tooltipHeight = 40; // approximate
+        const tooltipWidth = 200;
+        const tooltipHeight = 40;
         let top = rect.top - 10;
         let left = rect.left + rect.width / 2;
 
-        // Έλεγχος ορίων οθόνης
         if (top - tooltipHeight < 0) {
-            // Αν δεν χωράει πάνω, το βάζουμε από κάτω
             top = rect.bottom + 10;
+            tooltipEl.classList.add('bottom');
+        } else {
+            tooltipEl.classList.remove('bottom');
         }
         if (left - tooltipWidth / 2 < 0) {
             left = tooltipWidth / 2 + 5;
@@ -327,17 +330,15 @@
     }
 
     buttons.forEach(btn => {
-        let longPressTimer = null;
-
-        // Long press (κινητά) – με preventDefault
-        btn.addEventListener('touchstart', (e) => {
-            // Αποτρέπει το εγγενές μενού copy/paste
-            e.preventDefault();
+        // Long press (κινητά) – χωρίς preventDefault στο touchstart
+        btn.addEventListener('touchstart', () => {
+            isLongPress = false;
             longPressTimer = setTimeout(() => {
+                isLongPress = true;
                 const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
                 if (text) showTooltip(btn, text);
             }, 700);
-        }, { passive: false });
+        }, { passive: true });
 
         btn.addEventListener('touchmove', () => {
             clearTimeout(longPressTimer);
@@ -345,6 +346,8 @@
 
         btn.addEventListener('touchend', () => {
             clearTimeout(longPressTimer);
+            // Αν ήταν long press, το tooltip θα παραμείνει για 3 δευτερόλεπτα
+            // Δεν κάνουμε preventDefault, ώστε το click να περάσει κανονικά
         }, { passive: true });
 
         // Hover (desktop)
@@ -358,7 +361,6 @@
         btn.addEventListener('mouseleave', hideTooltip);
     });
 
-    // Κλείσιμο tooltip με κλικ οπουδήποτε
     document.addEventListener('click', hideTooltip);
 })();
 </script>
