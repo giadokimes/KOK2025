@@ -51,7 +51,7 @@ jobs:
           os.makedirs("signs", exist_ok=True)
           ok, fail = 0, 0
           for code, filename in zip(codes, files):
-              url = url_map.get(filename)
+              url = url_map.get(filename.replace("_", " "))
               if not url:
                   print(f"❌ {code}: δεν βρέθηκε URL")
                   fail += 1
