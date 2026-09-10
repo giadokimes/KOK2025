@@ -58,17 +58,6 @@ function switchCard(card) {
 }
 
 // ============================================================
-// ΚΛΗΣΗ 166/112
-// ============================================================
-function makeCall() {
-    if (confirm('Πατήστε OK για κλήση στο 166 (ΕΚΑΒ) ή Ακύρωση για 112 (Ευρωπαϊκός αριθμός έκτακτης ανάγκης)')) {
-        window.location.href = 'tel:166';
-    } else {
-        window.location.href = 'tel:112';
-    }
-}
-
-// ============================================================
 // ΜΕΤΡΟΝΟΜΟΣ 110 BPM
 // ============================================================
 function toggleMetronome() {
@@ -223,6 +212,5 @@ document.getElementById('firstAidLightbox').addEventListener('click', (e) => {
 window.openFirstAidLightbox = openFirstAidLightbox;
 window.closeFirstAidLightbox = closeFirstAidLightbox;
 window.switchCard = switchCard;
-window.makeCall = makeCall;
 window.toggleMetronome = toggleMetronome;
 window.toggleTimer = toggleTimer;

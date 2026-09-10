@@ -19,8 +19,10 @@
     --blue: #1E5AA8;
     --blue-light: #2F80ED;
     --red: #dc2626;
+    --red-light: #ef4444;
     --green: #22C55E;
     --orange: #F59E0B;
+    --orange-dark: #f97316;
     --purple: #A855F7;
     --shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
     --radius-card: 18px;
@@ -513,6 +515,8 @@ body {
     padding: 4px 2px 8px 2px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
 }
 .filters::-webkit-scrollbar {
     display: none;
@@ -624,13 +628,44 @@ body {
     font-weight: 400;
     margin-top: 2px;
 }
+.violation-card .card-price-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
 .violation-card .card-price {
     font-size: 20px;
     font-weight: 800;
     color: var(--red);
     text-align: right;
-    flex-shrink: 0;
-    margin-top: 2px;
+}
+.badge-half {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--orange-dark);
+    background: rgba(249, 115, 22, 0.14);
+    border-radius: 6px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    text-align: right;
+}
+.badge-criminal {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    background: var(--red);
+    border-radius: 6px;
+    padding: 2px 6px;
+    margin-left: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 .violation-card .card-divider {
     border-top: 1px solid var(--border);
@@ -851,6 +886,26 @@ body {
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 16px;
+}
+.sign-unverified-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 10px;
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
+.sign-unverified-warning .icon-svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
 }
 #signModal .modal-box .close-modal-btn {
     background: var(--red);

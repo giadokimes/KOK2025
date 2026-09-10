@@ -87,9 +87,6 @@ async function loadExternalData() {
     if (otaInput && otaInput.value) onOtaSearch();
 }
 
-// Σμίκρυνση header (απενεργοποιημένη – το νέο design έχει σταθερό header)
-// Αφήνουμε μόνο το scroll event για το σμίκρυνμα (δεν το χρειαζόμαστε πλέον)
-
 console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v24 - νέο design)');
 loadExternalData();
 
@@ -103,30 +100,3 @@ document.addEventListener('keydown', (e) => {
         clearSearch();
     }
 });
-
-// ============================================================
-// LAZY LOADING ΓΙΑ ΠΡΩΤΕΣ ΒΟΗΘΕΙΕΣ (lightbox)
-// ============================================================
-function loadFirstAid() {
-    return new Promise((resolve, reject) => {
-        if (document.getElementById('firstAidScript')) {
-            resolve();
-            return;
-        }
-        const script = document.createElement('script');
-        script.id = 'firstAidScript';
-        script.src = 'first-aid.js';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-}
-
-async function openFirstAidLightbox() {
-    await loadFirstAid();
-    if (typeof window.openFirstAidLightbox === 'function') {
-        window.openFirstAidLightbox();
-    } else {
-        document.getElementById('firstAidLightbox').style.display = 'flex';
-    }
-}

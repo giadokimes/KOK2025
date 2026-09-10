@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v24';
+const CACHE_VERSION = 'kok-v25';
 
 // Βασικά αρχεία της εφαρμογής — ΠΡΕΠΕΙ να επιτύχουν όλα, αλλιώς η εγκατάσταση
 // του service worker αποτυγχάνει σκόπιμα (καλύτερα να ξέρουμε αμέσως).
@@ -14,6 +14,14 @@ const CORE_URLS = [
   './app.js',
   './ui.js',
   './vehicle-check.js',
+  './first-aid.js',
+  './cpr-card.png',
+  './aed-card.png',
+  './fonts/inter.css',
+  './fonts/inter-greek-wght-normal.woff2',
+  './fonts/inter-greek-ext-wght-normal.woff2',
+  './fonts/inter-latin-wght-normal.woff2',
+  './fonts/inter-latin-ext-wght-normal.woff2',
   './icon-192-v2.png',
   './icon-512-v2.png',
   './icon-maskable-512.png',

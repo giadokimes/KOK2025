@@ -2,21 +2,6 @@
 // app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v24)
 // ============================================================
 
-const categoryColors = {
-    'στάθμευση': '#f59e0b',
-    'κίνηση': '#ef4444',
-    'σήμανση': '#3b82f6',
-    'ταχύτητα': '#f43f5e',
-    'ασφάλεια': '#10b981',
-    'έγγραφα': '#8b5cf6',
-    'φορτηγά': '#f97316',
-    'δίκυκλα': '#ec4899',
-    'ΕΠΗΟ': '#14b8a6',
-    'επαγγελματικά': '#06b6d4',
-    'αλκοόλ': '#f59e0b',
-    'υποτροπή': '#dc2626'
-};
-
 const categoryIcons = {
     'στάθμευση': 'parkingCircle',
     'κίνηση': 'car',
@@ -90,14 +75,14 @@ function render() {
 
         let priceColor = 'var(--red)';
         if (v.criminal) {
-            priceColor = '#dc2626';
+            priceColor = 'var(--red)';
         } else if (v.suspend && v.suspend !== '-') {
             const lower = v.suspend.toLowerCase();
-            if (lower.includes('180') || lower.includes('1 έτος') || lower.includes('μήνες')) priceColor = '#dc2626';
-            else if (lower.includes('70') || lower.includes('90')) priceColor = '#ef4444';
-            else if (lower.includes('40') || lower.includes('60')) priceColor = '#f59e0b';
-            else if (lower.includes('20') || lower.includes('30')) priceColor = '#f97316';
-            else priceColor = '#f59e0b';
+            if (lower.includes('180') || lower.includes('1 έτος') || lower.includes('μήνες')) priceColor = 'var(--red)';
+            else if (lower.includes('70') || lower.includes('90')) priceColor = 'var(--red-light)';
+            else if (lower.includes('40') || lower.includes('60')) priceColor = 'var(--orange)';
+            else if (lower.includes('20') || lower.includes('30')) priceColor = 'var(--orange-dark)';
+            else priceColor = 'var(--orange)';
         }
 
         const fineDisplay = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
@@ -108,10 +93,13 @@ function render() {
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
-                    <div class="card-title">${v.name} ${halfBadge} ${criminalBadge}</div>
+                    <div class="card-title">${v.name} ${criminalBadge}</div>
                     <div class="card-article">Άρθρο: ${v.article}</div>
                 </div>
-                <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
+                <div class="card-price-wrap">
+                    <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
+                    ${halfBadge}
+                </div>
                 <button class="favorite-btn ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο">
                     ${favorites[v.id] ? icon('starFilled', 'icon-svg') : icon('starOutline', 'icon-svg')}
                 </button>

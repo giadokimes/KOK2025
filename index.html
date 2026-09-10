@@ -12,9 +12,7 @@
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#04152E">
     <title>ΚΟΚ – Τσέπης v24</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/inter.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -260,7 +258,7 @@
         <button class="lightbox-tab active" data-card="cpr" onclick="switchCard('cpr')">ΚΑΡΠΑ</button>
         <button class="lightbox-tab" data-card="aed" onclick="switchCard('aed')">AED</button>
     </div>
-    <img id="lightboxImage" src="cpr-card.png" alt="ΚΑΡΠΑ" class="lightbox-image">
+    <img id="lightboxImage" alt="ΚΑΡΠΑ" class="lightbox-image" loading="lazy">
     <div class="lightbox-controls">
         <button class="lightbox-call-btn" onclick="makeCall()">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
