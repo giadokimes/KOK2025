@@ -1,9 +1,8 @@
 // ============================================================
 // signs.js – ΠΙΝΑΚΙΔΕΣ
 // ============================================================
-- let signImageMap = {};
-+ var signImageMap = {};
 
+var signImageMap = {};
 
 const signDescriptions = {
     'Ρ-1': 'Υποχρεωτική παραχώρηση προτεραιότητας',
@@ -84,7 +83,7 @@ const signDescriptions = {
     'Ρ-71': 'Χώρος στάθμευσης ΑμεΑ (οδηγών)',
     'Ρ-72': 'Χώρος στάθμευσης για συγκεκριμένο όχημα ΑμεΑ',
     'Ρ-73α': 'Οχήματα με ρυπογόνα υλικά: στροφή αριστερά',
-    'Ρ-73δ': 'Οχήματα με ρυπογόνα υλικά: στροφή δεξιά',
+    'Ρ-73δ': 'Οχήματα με ρπογόνα υλικά: στροφή δεξιά',
     'Ρ-74α': 'Χώρος στάθμευσης για φόρτιση ηλεκτρικών (αριστερός) (ΜΗ ΕΠΙΒΕΒΑΙΩΜΕΝΟ)',
     'Ρ-74δ': 'Χώρος στάθμευσης για φόρτιση ηλεκτρικών (δεξιός) (ΜΗ ΕΠΙΒΕΒΑΙΩΜΕΝΟ)',
     'Ρ-75': 'Ειδικοί χώροι στάθμευσης (ΜΗ ΕΠΙΒΕΒΑΙΩΜΕΝΟ)',
@@ -92,13 +91,34 @@ const signDescriptions = {
     'Ρ-77': 'Λήξη απαγόρευσης στάσης και στάθμευσης (ΜΗ ΕΠΙΒΕΒΑΙΩΜΕΝΟ)'
 };
 
+// ============================================================
+// Αναζήτηση πινακίδας στο signImageMap, δοκιμάζοντας ΟΛΟΥΣ
+// τους πιθανούς συνδυασμούς Unicode για το πρώτο γράμμα:
+//   - ελληνικό Ρ  (U+03A1)
+//   - λατινικό P  (U+0050)
+//   - λατινικό R  (U+0052)
+// Έτσι δεν μας νοιάζει αν το data.js ή το signs-data.json έχουν
+// διαφορετικό "P" οπτικά ίδιο αλλά διαφορετικό byte.
+// ============================================================
+function findSignImage(prefix, number) {
+    if (typeof signImageMap === 'undefined' || !signImageMap) return null;
+    const candidates = [
+        'Ρ-' + number,   // ελληνικό Ρ
+        'P-' + number,   // λατινικό P
+        'R-' + number    // λατινικό R
+    ];
+    for (const c of candidates) {
+        if (signImageMap[c]) return { code: c, url: signImageMap[c] };
+    }
+    return null;
+}
+
 function replaceSignCodes(text, violationId) {
     if (!text) return text;
     return text.replace(/([ΡP])-([\dαβδ]+)/g, function(match, prefix, number) {
-        const code = 'Ρ-' + number;
-        const imgUrl = signImageMap[code];
-        if (imgUrl) {
-            return `<img src="${imgUrl}" class="sign-img" alt="${code}" title="${code}" loading="lazy" onclick="openSignModal('${imgUrl}', '${code}', ${violationId})">`;
+        const found = findSignImage(prefix, number);
+        if (found) {
+            return `<img src="${found.url}" class="sign-img" alt="${found.code}" title="${found.code}" loading="lazy" onclick="openSignModal('${found.url}', '${found.code}', ${violationId})">`;
         }
         return match;
     });
@@ -119,9 +139,6 @@ function openSignModal(imgSrc, signCode, violationId) {
     const warningHtml = isUnverified
         ? '<div class="sign-unverified-warning">' + icon('alertTriangle', 'icon-svg icon-inline') + ' Η περιγραφή αυτής της πινακίδας δεν έχει ακόμη επιβεβαιωθεί με επίσημη πηγή — έλεγξέ την πριν τη χρησιμοποιήσεις.</div>'
         : '';
-    // Χρησιμοποιούμε το ΣΥΓΚΕΚΡΙΜΕΝΟ id της κάρτας που πατήθηκε — όχι
-    // αναζήτηση με includes() σε όλη τη βάση, που έδινε λάθος αποτέλεσμα
-    // σε κάρτες με πολλαπλές πινακίδες.
     const violation = data.find(v => v.id === violationId);
     if (violation) {
         modalName.textContent = signCode + ' – ' + description;
