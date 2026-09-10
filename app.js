@@ -40,6 +40,20 @@ function safeReplaceSignCodes(text, id) {
     return text;
 }
 
+function safeRenderSignIcons(text, id) {
+    try {
+        if (typeof renderSignIconsRow === 'function' &&
+            typeof signImageMap !== 'undefined' &&
+            signImageMap &&
+            typeof signImageMap === 'object') {
+            return renderSignIconsRow(text, id);
+        }
+    } catch (e) {
+        console.warn('signIcons:', e);
+    }
+    return '';
+}
+
 // ============================================================
 // RENDER
 // ============================================================
@@ -111,7 +125,8 @@ function render() {
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
-                    <div class="card-title">${safeReplaceSignCodes(v.name, v.id)} ${criminalBadge}</div>
+                    <div class="card-title">${v.name} ${criminalBadge}</div>
+                    ${safeRenderSignIcons(v.name, v.id)}
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
@@ -238,6 +253,7 @@ function exportFavorites() {
         .card .det .suspend { color: #00c; font-weight: 500; }
         .card .det .points { color: #7c3aed; }
         .card .p-ota { font-size: 13px; color: #555; margin-top: 4px; }
+        .sign-img { display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin: 0 2px; border: 1px solid #ccc; border-radius: 3px; background: #fff; object-fit: contain; }
         .card .desc { margin-top: 6px; background: #f5f5f5; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
         .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
         @media print { .no-print { display: none; } body { padding: 20px; } }
@@ -402,6 +418,7 @@ function exportSelectedToPDF() {
         .summary .label { font-weight: 600; color: #333; }
         .summary .value { text-align: right; font-weight: 700; }
         .summary .fine { color: #c00; }
+        .sign-img { display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin: 0 2px; border: 1px solid #ccc; border-radius: 3px; background: #fff; object-fit: contain; }
         .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
         @media print { body { padding: 20px; } }
     </style>

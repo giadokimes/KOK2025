@@ -102,11 +102,16 @@ const signDescriptions = {
 // ============================================================
 function findSignImage(prefix, number) {
     if (typeof signImageMap === 'undefined' || !signImageMap) return null;
-    const candidates = [
-        'Ρ-' + number,   // ελληνικό Ρ
-        'P-' + number,   // λατινικό P
-        'R-' + number    // λατινικό R
-    ];
+    // Το κείμενο των παραβάσεων γράφει τα επιθήματα με ελληνικούς
+    // χαρακτήρες (π.χ. Ρ-50α), αλλά το αυτόματο workflow που παράγει
+    // το signs-data.json αποθηκεύει μερικά με λατινικούς (Ρ-50a).
+    // Δοκιμάζουμε και τις δύο γραφές για κάθε πιθανό πρόθεμα.
+    const latinNumber = number.replace(/α/g, 'a').replace(/β/g, 'b').replace(/δ/g, 'd');
+    const numbers = number === latinNumber ? [number] : [number, latinNumber];
+    const candidates = [];
+    for (const n of numbers) {
+        candidates.push('Ρ-' + n, 'P-' + n, 'R-' + n);
+    }
     for (const c of candidates) {
         if (signImageMap[c]) return { code: c, url: signImageMap[c] };
     }
@@ -122,6 +127,42 @@ function replaceSignCodes(text, violationId) {
         }
         return match;
     });
+}
+
+// ============================================================
+// Σειρά εικονιδίων πινακίδων (chip row) — αντί να «σπάμε» το
+// ρέον κείμενο του τίτλου με inline εικόνες (κάποιες παραβάσεις
+// αναφέρουν έως και 28 πινακίδες μαζί), βγάζουμε τους κωδικούς
+// σε ξεχωριστή, wrap-able σειρά κάτω από τον τίτλο.
+// Πινακίδες χωρίς διαθέσιμη εικόνα εμφανίζονται ως ετικέτα
+// κειμένου, ώστε το κενό να φαίνεται αντί να εξαφανίζεται σιωπηλά.
+// ============================================================
+function extractSignRefs(text) {
+    if (!text) return [];
+    const refs = [];
+    const seen = new Set();
+    const re = /([ΡP])-([\dαβδ]+)/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const found = findSignImage(m[1], m[2]);
+        const code = found ? found.code : ('Ρ-' + m[2]);
+        if (seen.has(code)) continue;
+        seen.add(code);
+        refs.push({ code: code, url: found ? found.url : null });
+    }
+    return refs;
+}
+
+function renderSignIconsRow(text, violationId) {
+    const refs = extractSignRefs(text);
+    if (!refs.length) return '';
+    const chips = refs.map(function(r) {
+        if (r.url) {
+            return `<img src="${r.url}" class="sign-img" alt="${r.code}" title="${r.code}" loading="lazy" onclick="openSignModal('${r.url}', '${r.code}', ${violationId})">`;
+        }
+        return `<span class="sign-img sign-img-missing" title="${r.code} — δεν βρέθηκε εικόνα">${r.code}</span>`;
+    }).join('');
+    return `<div class="sign-icons-row">${chips}</div>`;
 }
 
 function openSignModal(imgSrc, signCode, violationId) {
