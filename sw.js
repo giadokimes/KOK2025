@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v25';
+const CACHE_VERSION = 'kok-v26';
 
 // Βασικά αρχεία της εφαρμογής — ΠΡΕΠΕΙ να επιτύχουν όλα, αλλιώς η εγκατάσταση
 // του service worker αποτυγχάνει σκόπιμα (καλύτερα να ξέρουμε αμέσως).
@@ -130,19 +130,27 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_VERSION).then((cache) => {
       // Τα βασικά αρχεία ΠΡΕΠΕΙ να επιτύχουν όλα.
       return cache.addAll(CORE_URLS).then(() => {
-        // Οι πινακίδες είναι best-effort: caching ένα-ένα, χωρίς να
-        // μπλοκάρουν ή να ακυρώνουν την εγκατάσταση αν κάποια αποτύχει.
-        // mode:'no-cors' αποφεύγει σφάλματα CORS σε cross-origin αιτήματα
-        // (η απάντηση αποθηκεύεται ως opaque, αρκετό για offline εμφάνιση εικόνας).
-        return Promise.allSettled(
+        // 1) Τοπικά SVG πινακίδων (από signs-data.json) — best-effort.
+        //    Αν κάποιο λείπει, ΔΕΝ μπλοκάρει την εγκατάσταση.
+        const localSignsPromise = fetch('./signs-data.json')
+          .then((r) => r.ok ? r.json() : {})
+          .then((map) => {
+            const urls = Object.values(map).filter((u) => typeof u === 'string' && !/^https?:/i.test(u));
+            return Promise.allSettled(urls.map((url) => cache.add(url).catch(() => {})));
+          })
+          .catch(() => {});
+
+        // 2) Απομακρυσμένα SVG από Wikimedia — best-effort fallback.
+        //    mode:'no-cors' αποφεύγει σφάλματα CORS σε cross-origin αιτήματα.
+        const remoteSignsPromise = Promise.allSettled(
           SIGN_URLS.map((url) =>
             fetch(new Request(url, { mode: 'no-cors' }))
               .then((response) => cache.put(url, response))
-              .catch(() => {
-                // Αγνοούμε σιωπηλά — η πινακίδα απλά δεν θα είναι διαθέσιμη offline.
-              })
+              .catch(() => {})
           )
         );
+
+        return Promise.all([localSignsPromise, remoteSignsPromise]);
       });
     }).then(() => self.skipWaiting())
   );

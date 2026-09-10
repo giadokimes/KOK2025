@@ -93,7 +93,7 @@ function render() {
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
-                    <div class="card-title">${v.name} ${criminalBadge}</div>
+                    <div class="card-title">${replaceSignCodes(v.name, v.id)} ${criminalBadge}</div>
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
@@ -233,7 +233,7 @@ function exportFavorites() {
             const ota = selectedOta;
             return `
             <div class="card">
-                <div class="name">${v.name}</div>
+                <div class="name">${replaceSignCodes(v.name)}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="det">
                     <span class="fine">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
@@ -397,7 +397,7 @@ function exportSelectedToPDF() {
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
         ${selected.map(v => `
             <div class="card">
-                <div class="name">${v.name}</div>
+                <div class="name">${replaceSignCodes(v.name)}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
                 <div style="margin-top:4px;font-size:13px;">
