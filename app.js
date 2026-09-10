@@ -94,7 +94,6 @@ function render() {
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
                     <div class="card-title">${v.name} ${criminalBadge}</div>
-                    <div class="card-article">Άρθρο: ${v.article}</div>
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
@@ -129,8 +128,8 @@ function render() {
                 </div>
                 `}
                 <div class="detail-item">
-                    <span class="label">Κατηγορία</span>
-                    <span class="value">${v.category.charAt(0).toUpperCase() + v.category.slice(1)}</span>
+                    <span class="label">Άρθρο</span>
+                    <span class="value">${v.article}</span>
                 </div>
             </div>
             ${v.fullDescription ? `
