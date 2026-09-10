@@ -1,5 +1,5 @@
-const CACHE_VERSION = 'kok-v26';
-
+- const CACHE_VERSION = 'kok-v26';
++ const CACHE_VERSION = 'kok-v27'; 
 // Βασικά αρχεία της εφαρμογής — ΠΡΕΠΕΙ να επιτύχουν όλα, αλλιώς η εγκατάσταση
 // του service worker αποτυγχάνει σκόπιμα (καλύτερα να ξέρουμε αμέσως).
 const CORE_URLS = [
