@@ -1,104 +1,73 @@
-name: Fetch traffic sign SVGs
+- name: Download signs via Wikimedia API
+  run: |
+    python3 <<'EOF'
+    import json, urllib.request, urllib.parse, urllib.error, os, time
 
-on:
-  workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/signs.yml'
+    codes = [f"R-{i}" for i in range(1, 78)]
+    codes += ["R-32a","R-32d","R-50a","R-50d","R-51a","R-51d",
+              "R-52a","R-52d","R-66a","R-67a","R-73a","R-73d",
+              "R-74a","R-74d"]
 
-jobs:
-  fetch:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
+    ua = "KOK-App/1.0 (https://github.com/giadokimes/KOK2025)"
+    files = [f"Traffic_Sign_GR_-_KOK_2009_-_{c}.svg" for c in codes]
 
-      - name: Download signs via Wikimedia API
-        run: |
-          python3 <<'EOF'
-          import json, urllib.request, urllib.parse, os, time
+    # 1) Batch query στο Wikimedia API
+    url_map = {}
+    for i in range(0, len(files), 50):
+        batch = files[i:i+50]
+        titles = "|".join(f"File:{f}" for f in batch)
+        api_url = "https://commons.wikimedia.org/w/api.php?" + urllib.parse.urlencode({
+            "action": "query",
+            "titles": titles,
+            "prop": "imageinfo",
+            "iiprop": "url",
+            "format": "json"
+        })
+        req = urllib.request.Request(api_url, headers={"User-Agent": ua})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = json.loads(r.read())
+        for page in data.get("query", {}).get("pages", {}).values():
+            if "imageinfo" in page:
+                title = page["title"].replace("File:", "")
+                url_map[title] = page["imageinfo"][0]["url"]
 
-          codes = [f"R-{i}" for i in range(1, 78)]
-          codes += ["R-32a","R-32d","R-50a","R-50d","R-51a","R-51d",
-                    "R-52a","R-52d","R-66a","R-67a","R-73a","R-73d",
-                    "R-74a","R-74d"]
+    print(f"Βρέθηκαν {len(url_map)} URLs από το API")
 
-          ua = "KOK-App/1.0 (https://github.com/giadokimes/KOK2025)"
-          files = [f"Traffic_Sign_GR_-_KOK_2009_-_{c}.svg" for c in codes]
+    # 2) Κατεβάζουμε με delay 1.5s + retry σε 429
+    os.makedirs("signs", exist_ok=True)
+    ok, fail = 0, 0
+    for code, filename in zip(codes, files):
+        url = url_map.get(filename.replace("_", " "))
+        if not url:
+            print(f"❌ {code}: δεν βρέθηκε URL")
+            fail += 1
+            continue
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": ua})
+            for attempt in range(4):
+                try:
+                    with urllib.request.urlopen(req, timeout=30) as r:
+                        data = r.read()
+                    break
+                except urllib.error.HTTPError as e:
+                    if e.code == 429 and attempt < 3:
+                        wait = 5 * (attempt + 1)
+                        print(f"   ⏳ {code}: 429, αναμονή {wait}s...")
+                        time.sleep(wait)
+                    else:
+                        raise
+            if b"<svg" not in data[:300].lower():
+                print(f"❌ {code}: δεν είναι SVG")
+                fail += 1
+                continue
+            with open(f"signs/{code}.svg", "wb") as f:
+                f.write(data)
+            print(f"✅ {code}: {len(data)} bytes")
+            ok += 1
+            time.sleep(1.5)
+        except Exception as e:
+            print(f"❌ {code}: {e}")
+            fail += 1
 
-          url_map = {}
-          for i in range(0, len(files), 50):
-              batch = files[i:i+50]
-              titles = "|".join(f"File:{f}" for f in batch)
-              api_url = "https://commons.wikimedia.org/w/api.php?" + urllib.parse.urlencode({
-                  "action": "query",
-                  "titles": titles,
-                  "prop": "imageinfo",
-                  "iiprop": "url",
-                  "format": "json"
-              })
-              req = urllib.request.Request(api_url, headers={"User-Agent": ua})
-              with urllib.request.urlopen(req, timeout=30) as r:
-                  data = json.loads(r.read())
-              for page in data.get("query", {}).get("pages", {}).values():
-                  if "imageinfo" in page:
-                      title = page["title"].replace("File:", "")
-                      url_map[title] = page["imageinfo"][0]["url"]
-
-          print(f"Βρέθηκαν {len(url_map)} URLs από το API")
-
-          os.makedirs("signs", exist_ok=True)
-          ok, fail = 0, 0
-          for code, filename in zip(codes, files):
-              url = url_map.get(filename.replace("_", " "))
-              if not url:
-                  print(f"❌ {code}: δεν βρέθηκε URL")
-                  fail += 1
-                  continue
-              try:
-                  req = urllib.request.Request(url, headers={"User-Agent": ua})
-                  with urllib.request.urlopen(req, timeout=30) as r:
-                      data = r.read()
-                  if b"<svg" not in data[:300].lower():
-                      print(f"❌ {code}: δεν είναι SVG")
-                      fail += 1
-                      continue
-                  with open(f"signs/{code}.svg", "wb") as f:
-                      f.write(data)
-                  print(f"✅ {code}: {len(data)} bytes")
-                  ok += 1
-                  time.sleep(0.3)
-              except Exception as e:
-                  print(f"❌ {code}: {e}")
-                  fail += 1
-
-          print(f"\n✅ Επιτυχία: {ok} | ❌ Αποτυχία: {fail}")
-          EOF
-
-      - name: Generate signs-data.json
-        run: |
-          python3 <<'EOF'
-          import json, os
-          mapping = {}
-          for f in sorted(os.listdir("signs")):
-              if not f.endswith(".svg"): continue
-              path = f"signs/{f}"
-              if os.path.getsize(path) < 500: continue
-              with open(path, "r", encoding="utf-8", errors="ignore") as fh:
-                  head = fh.read(300)
-              if "<svg" not in head.lower(): continue
-              code = f.replace(".svg", "").replace("R-", "Ρ-")
-              mapping[code] = path
-          with open("signs-data.json", "w", encoding="utf-8") as fh:
-              json.dump(mapping, fh, ensure_ascii=False, indent=2)
-          print(f"Wrote {len(mapping)} entries")
-          EOF
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add signs/ signs-data.json
-          git commit -m "Auto: fetch signs on pwa-update" || echo "Nothing to commit"
-          git push
+    print(f"\n✅ Επιτυχία: {ok} | ❌ Αποτυχία: {fail}")
+    EOF
