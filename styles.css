@@ -1443,4 +1443,38 @@ body.dark .violation-card .sign-img {
         width: 26px;
         height: 26px;
     }
+}/* Διόρθωση διάταξης card-title (v24) — οριζόντια ροή */
+.violation-card .card-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    line-height: 1.4;
 }
+
+.violation-card .card-title .sign-img {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 4px;
+    background: #fff;
+    object-fit: contain;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+body.dark .violation-card .card-title .sign-img {
+    border-color: rgba(255,255,255,0.2);
+    background: #1e293b;
+}
+
+@media (max-width: 480px) {
+    .violation-card .card-title .sign-img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
