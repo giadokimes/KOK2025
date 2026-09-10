@@ -22,6 +22,24 @@ let showFavorites = false;
 let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
 let openDescriptions = {};
 
+// ------------------------------------------------------------
+// ΑΣΦΑΛΗΣ WRAPPER: αν το signs.js δεν έχει φορτώσει ή έχει σπάσει,
+// η κάρτα δείχνει σκέτο το όνομα αντί να σπάσει όλο το render.
+// ------------------------------------------------------------
+function safeReplaceSignCodes(text, id) {
+    try {
+        if (typeof replaceSignCodes === 'function' &&
+            typeof signImageMap !== 'undefined' &&
+            signImageMap &&
+            typeof signImageMap === 'object') {
+            return replaceSignCodes(text, id);
+        }
+    } catch (e) {
+        console.warn('signReplace:', e);
+    }
+    return text;
+}
+
 // ============================================================
 // RENDER
 // ============================================================
@@ -93,7 +111,7 @@ function render() {
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
-                    <div class="card-title">${replaceSignCodes(v.name, v.id)} ${criminalBadge}</div>
+                    <div class="card-title">${safeReplaceSignCodes(v.name, v.id)} ${criminalBadge}</div>
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
@@ -145,7 +163,6 @@ function render() {
         </div>
     `}).join('');
 
-    // Event listener για κλείσιμο προτάσεων OTA
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.ota-input-wrap')) {
             const suggestions = document.getElementById('otaSuggestions');
@@ -233,7 +250,7 @@ function exportFavorites() {
             const ota = selectedOta;
             return `
             <div class="card">
-                <div class="name">${replaceSignCodes(v.name)}</div>
+                <div class="name">${safeReplaceSignCodes(v.name)}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="det">
                     <span class="fine">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
@@ -397,7 +414,7 @@ function exportSelectedToPDF() {
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
         ${selected.map(v => `
             <div class="card">
-                <div class="name">${replaceSignCodes(v.name)}</div>
+                <div class="name">${safeReplaceSignCodes(v.name)}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
                 <div style="margin-top:4px;font-size:13px;">
