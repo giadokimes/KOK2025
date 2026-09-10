@@ -1,33 +1,20 @@
 // ============================================================
-// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ
+// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v24)
 // ============================================================
 
-const categoryColors = {
-    'στάθμευση': '#f59e0b',
-    'κίνηση': '#ef4444',
-    'σήμανση': '#3b82f6',
-    'ταχύτητα': '#f43f5e',
-    'ασφάλεια': '#10b981',
-    'έγγραφα': '#8b5cf6',
-    'φορτηγά': '#f97316',
-    'δίκυκλα': '#ec4899',
-    'ΕΠΗΟ': '#14b8a6',
-    'επαγγελματικά': '#06b6d4',
-    'αλκοόλ': '#f59e0b',
-    'υποτροπή': '#dc2626'
-};
-
-const severityColors = {
-    'none': '#e2e8f0',
-    '10': '#fef9c3',
-    '20': '#fde68a',
-    '30': '#fcd34d',
-    '40': '#fbbf24',
-    '60': '#fb923c',
-    '70': '#f87171',
-    '90': '#ef4444',
-    '180': '#dc2626',
-    'criminal': '#fca5a5'
+const categoryIcons = {
+    'στάθμευση': 'parkingCircle',
+    'κίνηση': 'car',
+    'σήμανση': 'signpost',
+    'ταχύτητα': 'gauge',
+    'ασφάλεια': 'shield',
+    'έγγραφα': 'fileText',
+    'φορτηγά': 'truck',
+    'δίκυκλα': 'motorcycle',
+    'ΕΠΗΟ': 'scooter',
+    'επαγγελματικά': 'briefcase',
+    'αλκοόλ': 'wineBottle',
+    'υποτροπή': 'rotateLeft'
 };
 
 let currentFilter = 'all';
@@ -83,60 +70,86 @@ function render() {
         const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
         const isDescOpen = openDescriptions[v.id] || false;
 
-        // === ΔΙΟΡΘΩΣΗ: περνάμε και το v.id για να βρίσκει την παράβαση το modal ===
-        const nameWithImages = replaceSignCodes(v.name, v.id);
+        const iconName = categoryIcons[v.category] || 'alertTriangle';
+        const iconSvg = icon(iconName, 'icon-svg');
 
-        let bgColor = '#ffffff';
+        let priceColor = 'var(--red)';
         if (v.criminal) {
-            bgColor = '#fef2f2';
+            priceColor = 'var(--red)';
         } else if (v.suspend && v.suspend !== '-') {
             const lower = v.suspend.toLowerCase();
-            if (lower.includes('10 ημέρες') || lower.includes('10 ημ')) bgColor = '#fffbeb';
-            else if (lower.includes('20 ημέρες') || lower.includes('20 ημ')) bgColor = '#fffbeb';
-            else if (lower.includes('30 ημέρες') || lower.includes('30 ημ')) bgColor = '#fef3c7';
-            else if (lower.includes('40 ημέρες') || lower.includes('40 ημ')) bgColor = '#fef3c7';
-            else if (lower.includes('60 ημέρες') || lower.includes('60 ημ')) bgColor = '#fde68a';
-            else if (lower.includes('70 ημέρες') || lower.includes('70 ημ')) bgColor = '#fee2e2';
-            else if (lower.includes('90 ημέρες') || lower.includes('90 ημ')) bgColor = '#fee2e2';
-            else if (lower.includes('180 ημέρες') || lower.includes('180 ημ') || lower.includes('1 έτος') || lower.includes('μήνες')) bgColor = '#fecaca';
-            else bgColor = '#ffffff';
+            if (lower.includes('180') || lower.includes('1 έτος') || lower.includes('μήνες')) priceColor = 'var(--red)';
+            else if (lower.includes('70') || lower.includes('90')) priceColor = 'var(--red-light)';
+            else if (lower.includes('40') || lower.includes('60')) priceColor = 'var(--orange)';
+            else if (lower.includes('20') || lower.includes('30')) priceColor = 'var(--orange-dark)';
+            else priceColor = 'var(--orange)';
         }
 
-        const darkBg = document.body.classList.contains('dark') ?
-            (bgColor !== '#ffffff' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)') :
-            bgColor;
+        const fineDisplay = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
 
         return `
-        <div class="card" style="background-color: ${darkBg};">
-            <div class="content">
-                <div class="name">
-                    <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
-                    ${nameWithImages} ${halfBadge} ${criminalBadge}
-                    <button class="favorite ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο" style="display:inline-block;font-size:18px;background:none;border:none;cursor:pointer;padding:0 2px;line-height:1;margin-left:4px;">
-                        ${favorites[v.id] ? '⭐' : '☆'}
-                    </button>
+        <div class="violation-card">
+            <div class="card-top">
+                <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
+                <div class="card-icon">${iconSvg}</div>
+                <div class="card-main">
+                    <div class="card-title">${v.name} ${criminalBadge}</div>
                 </div>
-                <div class="article">Άρθρο: ${v.article}</div>
-                <div class="details">
-                    <span class="fine">💰 ${formatFine(v.fine)}</span>
-                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
-                    ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                <div class="card-price-wrap">
+                    <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
+                    ${halfBadge}
                 </div>
-                ${v.fullDescription ? `
-                    <button class="view-btn" onclick="toggleDescription(${v.id})">
-                        ${isDescOpen ? '🔽 Κλείσε περιγραφή' : '📖 Προβολή περιγραφής'}
-                    </button>
-                    <div class="full-description ${isDescOpen ? 'open' : ''}">
-                        ${v.fullDescription}
-                    </div>
-                ` : ''}
+                <button class="favorite-btn ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο">
+                    ${favorites[v.id] ? icon('starFilled', 'icon-svg') : icon('starOutline', 'icon-svg')}
+                </button>
             </div>
+            <div class="card-divider"></div>
+            <div class="card-details">
+                ${v.suspend && v.suspend !== '-' ? `
+                <div class="detail-item">
+                    <span class="label">Αφαιρέσεις</span>
+                    <span class="value">${v.suspend}</span>
+                </div>
+                ` : `
+                <div class="detail-item">
+                    <span class="label">Αφαιρέσεις</span>
+                    <span class="value">—</span>
+                </div>
+                `}
+                ${v.points > 0 ? `
+                <div class="detail-item">
+                    <span class="label">ΣΕΣΟ</span>
+                    <span class="value purple">${v.points} βαθμοί</span>
+                </div>
+                ` : `
+                <div class="detail-item">
+                    <span class="label">ΣΕΣΟ</span>
+                    <span class="value">—</span>
+                </div>
+                `}
+                <div class="detail-item">
+                    <span class="label">Άρθρο</span>
+                    <span class="value">${v.article}</span>
+                </div>
+            </div>
+            ${v.fullDescription ? `
+            <div class="card-footer">
+                <button class="details-btn" onclick="toggleDescription(${v.id})">
+                    ${isDescOpen ? 'Κλείσε περιγραφή' : 'Λεπτομέρειες'}
+                </button>
+            </div>
+            <div class="card-full-description ${isDescOpen ? 'open' : ''}">
+                ${v.fullDescription}
+            </div>
+            ` : ''}
         </div>
     `}).join('');
 
+    // Event listener για κλείσιμο προτάσεων OTA
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.ota-input-wrap')) {
-            document.getElementById('otaSuggestions').classList.remove('show');
+            const suggestions = document.getElementById('otaSuggestions');
+            if (suggestions) suggestions.classList.remove('show');
         }
     });
 }
@@ -163,7 +176,7 @@ function toggleFavorite(id) {
     favorites[id] = !favorites[id];
     localStorage.setItem('kok_favorites', JSON.stringify(favorites));
     render();
-    showToast(favorites[id] ? '⭐ Προστέθηκε στα αγαπημένα' : '⭐ Αφαιρέθηκε από τα αγαπημένα');
+    showToast(favorites[id] ? 'Προστέθηκε στα αγαπημένα' : 'Αφαιρέθηκε από τα αγαπημένα');
 }
 
 function toggleFavorites() {
@@ -184,12 +197,12 @@ function getFavorites() {
 function exportFavorites() {
     const favs = getFavorites();
     if (favs.length === 0) {
-        showToast('⚠️ Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
+        showToast('Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
         return;
     }
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
-        showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
         return;
     }
     const html = `
@@ -197,7 +210,7 @@ function exportFavorites() {
     <html>
     <head><title>Αγαπημένες Παραβάσεις ΚΟΚ</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; }
+        body { font-family: 'Inter', Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; color: #0f172a; }
         h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
         .sub { color: #555; margin-bottom: 20px; }
         .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 12px; page-break-inside: avoid; }
@@ -210,12 +223,12 @@ function exportFavorites() {
         .card .p-ota { font-size: 13px; color: #555; margin-top: 4px; }
         .card .desc { margin-top: 6px; background: #f5f5f5; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
         .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
-        @media print { .no-print { display: none; } body { padding: 20px; } .card { border-color: #ccc; } .card .desc { background: #f9f9f9; } }
+        @media print { .no-print { display: none; } body { padding: 20px; } }
     </style>
     </head>
     <body>
-        <h1>🚗 Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v22» — ${new Date().toLocaleDateString()}</p>
+        <h1>Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
+        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v24» — ${new Date().toLocaleDateString()}</p>
         ${favs.map(v => {
             const ota = selectedOta;
             return `
@@ -223,17 +236,17 @@ function exportFavorites() {
                 <div class="name">${v.name}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="det">
-                    <span class="fine">💰 ${formatFine(v.fine)}</span>
-                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">⛔ ${v.suspend}</span>` : ''}
-                    ${v.points > 0 ? `<span class="points">📊 ${v.points} βαθμοί ΣΕΣΟ</span>` : ''}
+                    <span class="fine">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">Κύρωση: ${v.suspend}</span>` : ''}
+                    ${v.points > 0 ? `<span class="points">Βαθμοί ΣΕΣΟ: ${v.points}</span>` : ''}
                 </div>
-                ${ota ? `<div class="p-ota">🏛️ Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
-                ${v.fullDescription ? `<div class="desc">📖 ${v.fullDescription}</div>` : ''}
+                ${ota ? `<div class="p-ota">Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
+                ${v.fullDescription ? `<div class="desc">${v.fullDescription}</div>` : ''}
             </div>
         `}).join('')}
         <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
         <div class="no-print" style="text-align:center;margin-top:20px;">
-            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
         </div>
     </body>
     </html>
@@ -244,7 +257,7 @@ function exportFavorites() {
 }
 
 // ============================================================
-// SELECTION (προσωρινή λίστα για PDF κλήσης)
+// SELECTION
 // ============================================================
 const selectedIds = new Set();
 
@@ -338,19 +351,19 @@ function calculateTotalPoints(selected) {
 function exportSelectedToPDF() {
     const selected = data.filter(v => selectedIds.has(v.id));
     if (selected.length === 0) {
-        showToast('⚠️ Δεν έχετε επιλέξει καμία παράβαση.');
+        showToast('Δεν έχετε επιλέξει καμία παράβαση.');
         return;
     }
 
     const totalFine = calculateTotalFine(selected);
     const { daysLicense, daysDocuments } = calculateSuspension(selected);
     const totalPoints = calculateTotalPoints(selected);
-    const otaText = selectedOta ? `🏛️ Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
+    const otaText = selectedOta ? `Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
     const addressText = localStorage.getItem('kok_last_address') || '';
 
     const win = window.open('', '_blank', 'width=900,height=700');
     if (!win) {
-        showToast('⚠️ Άνοιξε ένα popup για να συνεχίσεις.');
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
         return;
     }
 
@@ -359,7 +372,7 @@ function exportSelectedToPDF() {
     <html>
     <head><title>Βεβαίωση Κλήσης - ΚΟΚ</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; }
+        body { font-family: 'Inter', Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; color: #0f172a; }
         h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
         .sub { color: #555; margin-bottom: 20px; }
         .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 12px; page-break-inside: avoid; }
@@ -373,14 +386,14 @@ function exportSelectedToPDF() {
         .summary .value { text-align: right; font-weight: 700; }
         .summary .fine { color: #c00; }
         .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
-        @media print { body { padding: 20px; } .card { border-color: #ccc; } }
+        @media print { body { padding: 20px; } }
     </style>
     </head>
     <body>
-        <h1>🚔 Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
+        <h1>Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
         <p class="sub">Ημερομηνία: ${new Date().toLocaleDateString()} - Ώρα: ${new Date().toLocaleTimeString()}</p>
         ${otaText ? `<p class="sub">${otaText}</p>` : ''}
-        ${addressText ? `<p class="sub">📍 Σημείο ελέγχου: ${addressText}</p>` : ''}
+        ${addressText ? `<p class="sub">Σημείο ελέγχου: ${addressText}</p>` : ''}
         <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
         ${selected.map(v => `
             <div class="card">
@@ -388,9 +401,9 @@ function exportSelectedToPDF() {
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
                 <div style="margin-top:4px;font-size:13px;">
-                    <span style="color:#c00;font-weight:bold;">?? ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
-                    ${v.suspend && v.suspend !== '-' ? ` | ⛔ ${v.suspend}` : ''}
-                    ${v.points > 0 ? ` | 📊 ${v.points} βαθμοί ΣΕΣΟ` : ''}
+                    <span style="color:#c00;font-weight:bold;">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.suspend && v.suspend !== '-' ? ` | Κύρωση: ${v.suspend}` : ''}
+                    ${v.points > 0 ? ` | Βαθμοί ΣΕΣΟ: ${v.points}` : ''}
                 </div>
             </div>
         `).join('')}
@@ -405,7 +418,7 @@ function exportSelectedToPDF() {
         </div>
         <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
         <div class="no-print" style="text-align:center;margin-top:20px;">
-            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">🖨️ Εκτύπωση / Αποθήκευση ως PDF</button>
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
         </div>
     </body>
     </html>
@@ -419,6 +432,8 @@ function exportSelectedToPDF() {
 // ============================================================
 // SEARCH
 // ============================================================
+let searchTimeout = null;
+
 function onSearch() {
     const input = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearBtn');
@@ -427,7 +442,10 @@ function onSearch() {
     } else {
         clearBtn.classList.remove('visible');
     }
-    render();
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        render();
+    }, 300);
 }
 
 function clearSearch() {
@@ -443,7 +461,7 @@ function formatFine(fine) {
 }
 
 // ============================================================
-// ΚΛΗΣΗ 166/112 (από το header)
+// MAKE CALL (global)
 // ============================================================
 function makeCall() {
     if (confirm('Πατήστε OK για κλήση στο 166 (ΕΚΑΒ) ή Ακύρωση για 112 (Ευρωπαϊκός αριθμός έκτακτης ανάγκης)')) {
