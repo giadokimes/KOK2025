@@ -1505,3 +1505,25 @@ body.dark .violation-card .sign-img {
     border-color: rgba(255,255,255,0.2);
     background: #1e293b;
 }
+/* ============================================================ */
+/* ΔΙΟΡΘΩΣΗ: πλάτος card-price-wrap (δεν πρέπει να σπρώχνει    */
+/* το card-main σε στενό layout λόγω του «½ για μοτοσικλέτα»)  */
+/* ============================================================ */
+.violation-card .card-price-wrap {
+    max-width: 95px !important;
+    flex-shrink: 1 !important;
+}
+
+.violation-card .badge-half {
+    max-width: 100% !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.15 !important;
+    text-align: right !important;
+    padding: 2px 4px !important;
+}
+
+.violation-card .card-main {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
