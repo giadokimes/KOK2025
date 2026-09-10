@@ -1477,4 +1477,31 @@ body.dark .violation-card .card-title .sign-img {
         height: 24px;
     }
 }
+/* ============================================================ */
+/* ΔΙΟΡΘΩΣΗ: οριζόντια ροή πινακίδων μέσα στην κάρτα */
+/* ============================================================ */
+.violation-card .card-title {
+    display: block !important;
+    line-height: 1.8 !important;
+    word-break: normal !important;
+}
 
+.violation-card .card-title .sign-img,
+.violation-card .sign-img {
+    display: inline-block !important;
+    width: 24px !important;
+    height: 24px !important;
+    vertical-align: middle !important;
+    margin: 0 2px !important;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
+    background: #fff;
+    object-fit: contain;
+    cursor: pointer;
+    float: none !important;
+}
+
+body.dark .violation-card .sign-img {
+    border-color: rgba(255,255,255,0.2);
+    background: #1e293b;
+}
