@@ -1,1 +1,53 @@
+name: Fetch traffic sign SVGs
 
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fetch-signs.yml'
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download signs from Wikimedia
+        run: |
+          mkdir -p signs
+          # Βασικές: R-1 έως R-77
+          for i in $(seq 1 77); do
+            curl -sL -o "signs/R-$i.svg" \
+              "https://commons.wikimedia.org/wiki/Special:FilePath/Traffic_Sign_GR_-_KOK_2009_-_R-$i.svg" || true
+          done
+          # Παραλλαγές (a/d = αριστερά/δεξιά)
+          for v in 32a 32d 50a 50d 51a 51d 52a 52d 66a 67a 73a 73d 74a 74d; do
+            curl -sL -o "signs/R-$v.svg" \
+              "https://commons.wikimedia.org/wiki/Special:FilePath/Traffic_Sign_GR_-_KOK_2009_-_R-$v.svg" || true
+          done
+          ls -la signs/ | head -20
+
+      - name: Generate signs-data.json (local paths)
+        run: |
+          python3 <<'EOF'
+          import json, os
+          mapping = {}
+          for f in sorted(os.listdir('signs')):
+              if not f.endswith('.svg'): continue
+              if os.path.getsize(f'signs/{f}') < 500: continue  # skip 404 HTML
+              code = f.replace('.svg', '').replace('R-', 'Ρ-')
+              mapping[code] = f'signs/{f}'
+          with open('signs-data.json', 'w', encoding='utf-8') as fh:
+              json.dump(mapping, fh, ensure_ascii=False, indent=2)
+          print(f"Wrote {len(mapping)} entries")
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add signs/ signs-data.json
+          git commit -m "Auto: fetch traffic sign SVGs + regenerate signs-data.json" || echo "Nothing to commit"
+          git push
