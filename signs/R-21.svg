@@ -1,41 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<meta charset="utf-8">
-<title>Wikimedia Error</title>
-<style>
-* { margin: 0; padding: 0; }
-body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
-.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 640px; display: flex; flex-direction: row; flex-wrap: wrap; }
-.footer { clear: both; margin-top: 14%; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
-img { margin: 0 2em 2em 0; }
-a img { border: 0; }
-h1 { margin-top: 1em; font-size: 1.2em; }
-.content-text { flex: 1; }
-p { margin: 0.7em 0 1em 0; }
-a { color: #0645ad; text-decoration: none; }
-a:hover { text-decoration: underline; }
-code { font-family: sans-serif; }
-summary { font-weight: bold; cursor: pointer; }
-details[open] { background: #970302; color: #dfdedd; }
-.text-muted { color: #777; }
-@media (prefers-color-scheme: dark) {
-  a { color: #9e9eff; }
-  body { background: transparent; color: #ddd; }
-  .footer { border-top: 1px solid #444; background: #060606; }
-  #logo { filter: invert(1) hue-rotate(180deg); }
-  .text-muted { color: #888; }
-}
-</style>
-<meta name="color-scheme" content="light dark">
-<div class="content" role="main">
-<a href="https://www.wikimedia.org"><img id="logo" src="https://www.wikimedia.org/static/images/wmf-logo.png" srcset="https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x" alt="Wikimedia" width="135" height="101">
-</a>
-<div class="content-text">
-<h1>Error</h1>
-
-<p>Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119</p>
-</div>
-</div>
-<div class="footer"><p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class="text-muted"><code>Request served via cp1106 cp1106, Varnish XID 678990901<br>Upstream caches: cp1106 int<br>Error: 429, Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119 at Thu, 10 Sep 2026 15:12:42 GMT<br><details><summary>Sensitive client information</summary>IP address: 20.161.70.178</details></code></p>
-</div>
-</html>
+<svg width="655" height="655" viewBox="0 0 655 655" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M327 602C478.878 602 602 478.878 602 327C602 175.122 478.878 52 327 52C175.122 52 52 175.122 52 327C52 478.878 175.122 602 327 602Z" fill="white"/>
+<path d="M144.005 325.668L62.1249 240.199L60.8891 409.935L144.005 325.668Z" fill="black"/>
+<path d="M509.995 328.332L593.111 244.065L591.875 413.801L509.995 328.332Z" fill="black"/>
+<path d="M327.5 617.5C487.663 617.5 617.5 487.663 617.5 327.5C617.5 167.337 487.663 37.5 327.5 37.5C167.337 37.5 37.5 167.337 37.5 327.5C37.5 487.663 167.337 617.5 327.5 617.5Z" stroke="#CC0000" stroke-width="75"/>
+<path d="M394.034 253.107C394.034 269.098 400.923 277.094 414.701 277.094C423.929 277.094 430.723 274.302 435.084 268.717C439.445 263.07 441.626 253.646 441.626 240.447V188H464V293.275H446.651L443.427 279.283H442.195C439.161 284.55 435.369 288.516 430.818 291.181C426.331 293.846 420.8 295.179 414.227 295.179C405.379 295.179 398.458 292.323 393.465 286.612H393.086C393.275 288.389 393.465 292.101 393.655 297.749C393.907 303.397 394.034 307.363 394.034 309.647V340.107H371.755V188H394.034V253.107Z" fill="black"/>
+<path d="M442.329 467H424.52V402.191C424.52 394.147 423.312 388.16 420.897 384.232C418.483 380.24 414.71 378.246 409.579 378.246C402.738 378.246 397.707 381.065 394.487 386.702C391.317 392.277 389.733 401.59 389.733 414.64V467H372V361.901H385.885L388.374 375.68H389.28C391.594 370.675 394.94 366.81 399.316 364.086C403.743 361.362 408.598 360 413.88 360C426.708 360 435.21 365.512 439.386 376.535H440.593C443.059 371.34 446.529 367.285 451.007 364.371C455.485 361.457 460.615 360 466.401 360C476.362 360 483.606 363.168 488.133 369.503C492.711 375.838 495 385.499 495 398.486V467H477.267V402.191C477.267 394.147 476.034 388.16 473.57 384.232C471.155 380.24 467.381 378.246 462.25 378.246C455.358 378.246 450.303 380.97 447.083 386.417C443.913 391.802 442.329 400.102 442.329 411.314V467Z" fill="black"/>
+<path d="M158.583 467.81L158.771 432.508L277.134 325.843C286.698 317.365 293.18 309.267 296.577 301.549C300.101 293.831 301.863 286.112 301.863 278.394C301.863 268.651 299.724 259.92 295.445 252.202C291.166 244.357 285.251 238.157 277.7 233.602C270.149 229.047 261.465 226.769 251.649 226.769C241.581 226.769 232.583 229.174 224.654 233.982C216.851 238.663 210.747 244.927 206.343 252.771C201.938 260.616 199.798 269.094 199.924 278.204H159.526C159.526 260.49 163.491 244.99 171.419 231.704C179.474 218.292 190.486 207.853 204.455 200.388C218.424 192.796 234.407 189 252.404 189C269.52 189 284.873 192.922 298.465 200.767C312.057 208.486 322.754 219.114 330.557 232.653C338.486 246.192 342.45 261.629 342.45 278.963C342.45 291.49 340.814 302.118 337.542 310.849C334.27 319.58 329.362 327.678 322.817 335.143C316.273 342.608 308.093 350.706 298.276 359.437L206.909 441.429L202.567 430.041H342.45V467.81H158.583Z" fill="black"/>
+</svg>

@@ -1,41 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<meta charset="utf-8">
-<title>Wikimedia Error</title>
-<style>
-* { margin: 0; padding: 0; }
-body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
-.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 640px; display: flex; flex-direction: row; flex-wrap: wrap; }
-.footer { clear: both; margin-top: 14%; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
-img { margin: 0 2em 2em 0; }
-a img { border: 0; }
-h1 { margin-top: 1em; font-size: 1.2em; }
-.content-text { flex: 1; }
-p { margin: 0.7em 0 1em 0; }
-a { color: #0645ad; text-decoration: none; }
-a:hover { text-decoration: underline; }
-code { font-family: sans-serif; }
-summary { font-weight: bold; cursor: pointer; }
-details[open] { background: #970302; color: #dfdedd; }
-.text-muted { color: #777; }
-@media (prefers-color-scheme: dark) {
-  a { color: #9e9eff; }
-  body { background: transparent; color: #ddd; }
-  .footer { border-top: 1px solid #444; background: #060606; }
-  #logo { filter: invert(1) hue-rotate(180deg); }
-  .text-muted { color: #888; }
-}
-</style>
-<meta name="color-scheme" content="light dark">
-<div class="content" role="main">
-<a href="https://www.wikimedia.org"><img id="logo" src="https://www.wikimedia.org/static/images/wmf-logo.png" srcset="https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x" alt="Wikimedia" width="135" height="101">
-</a>
-<div class="content-text">
-<h1>Error</h1>
-
-<p>Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119</p>
-</div>
-</div>
-<div class="footer"><p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class="text-muted"><code>Request served via cp1106 cp1106, Varnish XID 669234281<br>Upstream caches: cp1106 int<br>Error: 429, Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119 at Thu, 10 Sep 2026 15:12:42 GMT<br><details><summary>Sensitive client information</summary>IP address: 20.161.70.178</details></code></p>
-</div>
-</html>
+<svg width="655" height="655" viewBox="0 0 655 655" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M327.5 617.5C487.663 617.5 617.5 487.663 617.5 327.5C617.5 167.337 487.663 37.5 327.5 37.5C167.337 37.5 37.5 167.337 37.5 327.5C37.5 487.663 167.337 617.5 327.5 617.5Z" fill="white" stroke="#CC0000" stroke-width="75"/>
+<path d="M483 164V183H445V307H426V183H388V164H483Z" fill="#060606"/>
+<path d="M275.797 492C259.191 492 243.707 488.653 229.345 481.959C215.133 475.116 202.94 465.744 192.767 453.845C182.594 441.796 175.339 427.962 171 412.343L216.106 400.294C218.649 409.815 222.987 418.071 229.121 425.061C235.404 432.052 242.735 437.483 251.113 441.35C259.49 445.069 268.168 446.928 277.144 446.928C288.962 446.928 299.659 444.101 309.234 438.449C318.958 432.797 326.588 425.211 332.123 415.69C337.808 406.169 340.65 395.682 340.65 384.229C340.65 372.477 337.733 361.841 331.899 352.321C326.214 342.801 318.509 335.289 308.785 329.785C299.21 324.133 288.663 321.306 277.144 321.306C263.979 321.306 252.833 323.909 243.707 329.116C234.582 334.322 227.475 340.346 222.389 347.189L181.547 332.909L191.421 164H365.784V207.956H215.432L234.507 190.329L226.653 316.844L217.452 305.018C225.979 296.539 236.152 290.068 247.971 285.605C259.79 281.143 271.534 278.912 283.203 278.912C303.25 278.912 321.127 283.523 336.836 292.746C352.693 301.968 365.185 314.538 374.311 330.454C383.437 346.222 388 364.147 388 384.229C388 404.161 382.839 422.31 372.516 438.672C362.193 454.887 348.505 467.828 331.45 477.497C314.395 487.165 295.844 492 275.797 492Z" fill="black"/>
+</svg>
