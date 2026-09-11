@@ -126,7 +126,6 @@ function render() {
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
                     <div class="card-title">${v.name} ${criminalBadge}</div>
-                    ${safeRenderSignIcons(v.name, v.id)}
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
@@ -136,6 +135,7 @@ function render() {
                     ${favorites[v.id] ? icon('starFilled', 'icon-svg') : icon('starOutline', 'icon-svg')}
                 </button>
             </div>
+            ${safeRenderSignIcons(v.name, v.id)}
             <div class="card-divider"></div>
             <div class="card-details">
                 ${v.suspend && v.suspend !== '-' ? `

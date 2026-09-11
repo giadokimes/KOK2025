@@ -1429,7 +1429,7 @@ body.modal-open {
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
-    margin-top: 6px;
+    margin: 10px 0 0 0;
 }
 .sign-img {
     display: inline-block;
@@ -1466,22 +1466,8 @@ body.dark .sign-img {
         height: 24px;
     }
 }
-/* ============================================================ */
-/* ΔΙΟΡΘΩΣΗ: το card-main παίρνει δική του γραμμή, ώστε οι     */
-/* πινακίδες να έχουν όλο το πλάτος της κάρτας                 */
-/* ============================================================ */
-.violation-card .card-top {
-    flex-wrap: wrap;
-}
-
-.violation-card .card-main {
-    flex: 1 0 100%;
-    order: 10;
-    margin-top: 6px;
-}
-
-/* Προαιρετικά: μικραίνει ελαφρώς το εικονίδιο κατηγορίας      */
-/* για να δίνει λίγο ακόμα αέρα στη γραμμή                     */
+/* Ελαφρώς μικρότερο εικονίδιο κατηγορίας, για λίγο παραπάνω    */
+/* χώρο στην κορυφή της κάρτας.                                 */
 .violation-card .card-icon {
     width: 36px;
     height: 36px;
