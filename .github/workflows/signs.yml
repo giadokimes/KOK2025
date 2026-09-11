@@ -69,8 +69,6 @@ jobs:
               if not f.endswith(".svg"):
                   continue
               path = f"signs/{f}"
-              if os.path.getsize(path) < 500:
-                  continue
               with open(path, "r", encoding="utf-8", errors="ignore") as fh:
                   head = fh.read(300)
               if "<svg" not in head.lower():
