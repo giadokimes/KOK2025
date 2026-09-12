@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ΚΟΚ Τσέπης">
     <meta name="theme-color" content="#04152E">
-    <title>ΚΟΚ – Τσέπης v24</title>
+    <title>ΚΟΚ – Τσέπης v25</title>
     <link rel="stylesheet" href="fonts/inter.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -20,32 +20,48 @@
 <!-- ===== HEADER ===== -->
 <header class="header">
     <div class="header-inner">
-        <!-- Hamburger (αριστερά) -->
-        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Μενού" onclick="toggleHamburger()">
-            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        </button>
-
-        <!-- Λογότυπο + τίτλος -->
-        <div class="header-logo">
-            <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Λογότυπο (μικρό) -->
+        <div class="header-logo-compact">
+            <svg class="logo-svg-compact" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="40" height="40" rx="10" fill="#1E5AA8"/>
                 <path d="M12 28L20 12L28 28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="20" cy="24" r="2" fill="white"/>
                 <path d="M16 28H24" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <span class="header-title">ΚΟΚ <span class="header-sub">Τσέπης</span></span>
         </div>
 
-        <!-- Search (ενσωματωμένο) -->
+        <!-- Search + Α-Ω -->
         <div class="search-box">
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="searchInput" placeholder="Αναζήτηση παράβασης..." oninput="onSearch()">
+            <input type="text" id="searchInput" placeholder="Αναζήτηση..." oninput="onSearch()">
             <button class="clear-btn" id="clearBtn" onclick="clearSearch()">
                 <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
+            <button class="alpha-btn" onclick="toggleAlphaSheet()" aria-label="Αλφαβητικό ευρετήριο">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h2l2 12h1L11 6h2l2 12h1"/>
+                    <path d="M18 6v12"/>
+                    <path d="M15 9h6"/>
+                    <path d="M15 15h6"/>
+                </svg>
+            </button>
         </div>
+
+        <!-- Hamburger (ΣΧΟΛΙΑΣΜΕΝΟ - για rollback) -->
+        <!--
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Μενού" onclick="toggleHamburger()">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        -->
     </div>
 </header>
+
+<!-- ===== HAMBURGER OVERLAY (ΣΧΟΛΙΑΣΜΕΝΟ) ===== -->
+<!--
+<div id="hamburgerOverlay" class="hamburger-overlay" style="display:none;">
+    ... παλιό μενού ...
+</div>
+-->
 
 <!-- ===== ΓΡΑΜΜΗ ΕΚΤΑΚΤΗΣ ΑΝΑΓΚΗΣ ===== -->
 <div class="emergency-bar">
@@ -59,59 +75,18 @@
     </button>
 </div>
 
-<!-- ===== HAMBURGER MENU ===== -->
-<div id="hamburgerOverlay" class="hamburger-overlay" style="display:none;">
-    <div class="hamburger-menu">
-        <button class="hamburger-close" onclick="toggleHamburger()">
-            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-        <div class="hamburger-items">
-            <button onclick="toggleDark(); toggleHamburger();" class="hamburger-item">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                <span>Σκοτεινή λειτουργία</span>
-            </button>
-            <button onclick="toggleFavorites(); toggleHamburger();" class="hamburger-item">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg>
-                <span>Αγαπημένα</span>
-            </button>
-            <button onclick="exportFavorites(); toggleHamburger();" class="hamburger-item">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-                <span>PDF αγαπημένων</span>
-            </button>
-            <button onclick="window.print(); toggleHamburger();" class="hamburger-item">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                <span>Εκτύπωση</span>
-            </button>
-            <button onclick="installApp(); toggleHamburger();" class="hamburger-item" id="installMenuItem">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Εγκατάσταση</span>
-            </button>
-            <button onclick="openVehicleCheck(); toggleHamburger();" class="hamburger-item">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM19 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM3 17V11l2-5h10l4 5v6M3 11h18"/></svg>
-                <span>Έλεγχος οχήματος</span>
-            </button>
-            <button onclick="openGuideModal(); toggleHamburger();" class="hamburger-item">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><text x="12" y="16" font-size="14" text-anchor="middle" fill="currentColor" stroke="none">?</text></svg>
-                <span>Οδηγός χρήσης</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ===== OTA & ADDRESS GRID ===== -->
+<!-- ===== OTA & ADDRESS ===== -->
 <div class="ota-address-grid">
-    <!-- Αναζήτηση ΟΤΑ (χειροκίνητη) -->
     <div class="ota-input-wrap">
         <input type="text" id="otaSearchInput" placeholder="Αναζήτηση ΟΤΑ..." oninput="onOtaSearch()" autocomplete="off">
         <div class="ota-suggestions" id="otaSuggestions"></div>
     </div>
-    <!-- Κουμπιά γεωτοποίησης -->
     <div class="geo-buttons">
-        <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Αυτόματη εύρεση ΟΤΑ (OpenCage)">
+        <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Εύρεση ΟΤΑ">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>Εύρεση ΟΤΑ</span>
+            <span>ΟΤΑ</span>
         </button>
-        <button id="addrBtn" class="geo-btn" onclick="detectAddress()" title="Εντοπισμός διεύθυνσης (Nominatim)">
+        <button id="addrBtn" class="geo-btn" onclick="detectAddress()" title="Εντοπισμός διεύθυνσης">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
             <span>Διεύθυνση</span>
         </button>
@@ -154,6 +129,29 @@
     </div>
 </div>
 
+<!-- ===== SORT ===== -->
+<div class="sort-wrapper">
+    <label class="sort-label" for="sortSelect">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+        Ταξινόμηση:
+    </label>
+    <select id="sortSelect" onchange="setSort(this.value)">
+        <option value="severity-asc" selected>Βαρύτητα (χαμηλή → υψηλή)</option>
+        <option value="severity-desc">Βαρύτητα (υψηλή → χαμηλή)</option>
+        <option value="alphabetical">Αλφαβητικά</option>
+    </select>
+</div>
+
+<!-- ===== ACTIVE KEYWORD INDICATOR ===== -->
+<div class="active-keyword-indicator" id="activeKeywordIndicator" style="display:none;">
+    <span class="active-keyword-label-wrap">
+        Φίλτρο: <strong class="active-keyword-label"></strong>
+    </span>
+    <button class="active-keyword-clear" onclick="clearKeyword()">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+</div>
+
 <!-- ===== COUNT ===== -->
 <div class="count" id="countDisplay">
     <span id="countText">0 παραβάσεις</span>
@@ -169,22 +167,18 @@
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
     <p>© 2026 Siakos Filaretos. All rights reserved.</p>
-    <p>ΚΟΚ Τσέπης v24 — Πνευματική Ιδιοκτησία</p>
+    <p>ΚΟΚ Τσέπης v25 — Πνευματική Ιδιοκτησία</p>
 </footer>
 
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
-<!-- ===== INSTALL BANNER ===== -->
+<!-- ===== INSTALL BANNER (ΣΧΟΛΙΑΣΜΕΝΟ - καταργήθηκε) ===== -->
+<!--
 <div class="install-banner" id="installBanner">
-    <span>Εγκαταστήστε την εφαρμογή</span>
-    <div>
-        <button onclick="installApp()">Εγκατάσταση</button>
-        <button class="close-btn" onclick="dismissInstallBanner()">
-            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-    </div>
+    ...
 </div>
+-->
 
 <!-- ===== SIGN MODAL ===== -->
 <div id="signModal">
@@ -196,36 +190,21 @@
     </div>
 </div>
 
-<!-- ===== SELECTION FOOTER ===== -->
-<div class="selection-footer" id="selectionFooter">
-    <div class="info">
-        <span class="count" id="selectedCount">0</span>
-        <span>παραβάσεις επιλέχθηκαν</span>
-        <span class="names" id="selectedNames"></span>
-    </div>
-    <div class="actions">
-        <button class="clear-btn" onclick="clearSelection()">Καθαρισμός</button>
-        <button class="pdf-btn" onclick="exportSelectedToPDF()">PDF κλήσης</button>
-    </div>
-</div>
-
 <!-- ===== GUIDE MODAL ===== -->
 <div id="guideModal" class="guide-modal" style="display:none;">
     <div class="guide-modal-card">
         <button class="guide-modal-close" onclick="closeGuideModal()">✕</button>
         <h2>Οδηγός χρήσης</h2>
         <div class="guide-content">
-            <section><h3>Αναζήτηση παραβάσεων</h3><p>Πληκτρολόγησε λέξη-κλειδί για γρήγορη εύρεση.</p></section>
-            <section><h3>Φίλτρα</h3><p>Επίλεξε κατηγορία για να περιορίσεις τα αποτελέσματα.</p></section>
-            <section><h3>Αγαπημένα</h3><p>Αποθήκευσε παραβάσεις για γρήγορη πρόσβαση.</p></section>
-            <section><h3>PDF</h3><p>Εξαγωγή αγαπημένων σε PDF.</p></section>
+            <section><h3>Αναζήτηση παραβάσεων</h3><p>Πληκτρολόγησε λέξη-κλειδί για γρήγορη εύρεση. Η αναζήτηση αγνοεί τόνους, κεφαλαία/πεζά και ορθογραφικά.</p></section>
+            <section><h3>Αλφαβητικό ευρετήριο</h3><p>Πάτησε το κουμπί «Α-Ω» δίπλα στην αναζήτηση για να δεις όλες τις λέξεις-κλειδιά ομαδοποιημένες αλφαβητικά.</p></section>
+            <section><h3>Φίλτρα &amp; Ταξινόμηση</h3><p>Επίλεξε κατηγορία και ταξινόμησε κατά βαρύτητα ή αλφαβητικά.</p></section>
+            <section><h3>Αγαπημένα</h3><p>Αποθήκευσε παραβάσεις με το αστέρι για γρήγορη πρόσβαση.</p></section>
             <section><h3>Επιλογή &amp; PDF κλήσης</h3><p>Τσεκάρετε παραβάσεις και δημιουργήστε αναλυτικό PDF.</p></section>
             <section><h3>Κωδικός ΟΤΑ</h3><p>Αναζήτηση δήμου για το PDF κλήσης.</p></section>
-            <section><h3>Διεύθυνση τοποθεσίας</h3><p>Εντοπισμός τρέχουσας διεύθυνσης.</p></section>
             <section><h3>Έλεγχος οχήματος</h3><p>Έλεγχος ασφάλισης μέσω OpenCar (gov.gr).</p></section>
             <section><h3>Πρώτες Βοήθειες</h3><p>Οδηγίες ΚΑΡΠΑ &amp; AED με μετρονόμο και χρονόμετρο.</p></section>
             <section><h3>Άμεση κλήση</h3><p>166 (ΕΚΑΒ) ή 112.</p></section>
-            <section><h3>Σκοτεινή λειτουργία</h3><p>Εναλλαγή φωτεινής/σκοτεινής όψης.</p></section>
         </div>
     </div>
 </div>
@@ -272,7 +251,7 @@
             </button>
             <span class="lightbox-pulse" id="lightboxPulseIndicator"></span>
         </div>
-        <div class="lightbox-timer" id="lightboxTimerGroup">
+        <div class="lightbox-timer" id="lightboxTimerGroup" style="display:none;">
             <span class="lightbox-label">Χρονόμετρο</span>
             <button class="lightbox-tool-btn" id="lightboxTimerBtn" onclick="toggleTimer()">
                 <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
@@ -283,9 +262,70 @@
     </div>
 </div>
 
-<!-- Scripts -->
+<!-- ===== SELECTION FOOTER (πάνω από bottom nav) ===== -->
+<div class="selection-footer" id="selectionFooter">
+    <div class="info">
+        <span class="count" id="selectedCount">0</span>
+        <span>παραβάσεις</span>
+        <span class="names" id="selectedNames"></span>
+    </div>
+    <div class="actions">
+        <button class="clear-btn-sel" onclick="clearSelection()">Καθαρισμός</button>
+        <button class="pdf-btn" onclick="exportSelectedToPDF()">PDF κλήσης</button>
+    </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav" id="bottomNav">
+    <button class="bottom-nav-item" id="navDark" onclick="toggleDark()" data-tooltip="Σκοτεινή λειτουργία">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="bottom-nav-item" id="navFav" onclick="toggleFavorites()" data-tooltip="Αγαπημένα">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 15.1 8.9 22.1 9.9 17.1 14.8 18.3 21.8 12 18.4 5.7 21.8 6.9 14.8 1.9 9.9 8.9 8.9"/></svg>
+    </button>
+    <button class="bottom-nav-item" id="navPdf" onclick="exportFavorites()" data-tooltip="PDF αγαπημένων">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+    </button>
+    <button class="bottom-nav-item" id="navVehicle" onclick="openVehicleCheck()" data-tooltip="Έλεγχος οχήματος">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM19 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM3 17V11l2-5h10l4 5v6M3 11h18"/></svg>
+    </button>
+    <button class="bottom-nav-item" id="navMore" onclick="toggleMoreSheet()" data-tooltip="Περισσότερα">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    </button>
+</nav>
+
+<!-- ===== MORE SHEET ===== -->
+<div class="bottom-sheet-overlay" id="moreSheetOverlay" onclick="closeMoreSheet()"></div>
+<div class="bottom-sheet" id="moreSheet">
+    <div class="bottom-sheet-handle"></div>
+    <div class="bottom-sheet-title">Περισσότερα</div>
+    <button class="bottom-sheet-row" onclick="window.print(); closeMoreSheet();">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span>Εκτύπωση σελίδας</span>
+    </button>
+    <button class="bottom-sheet-row" id="moreSheetInstall" onclick="installApp()" style="display:none;">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <span>Εγκατάσταση εφαρμογής</span>
+    </button>
+    <button class="bottom-sheet-row" onclick="openGuideModal(); closeMoreSheet();">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Οδηγός χρήσης</span>
+    </button>
+</div>
+
+<!-- ===== ALPHA SHEET ===== -->
+<div class="bottom-sheet-overlay" id="alphaSheetOverlay" onclick="closeAlphaSheet()"></div>
+<div class="bottom-sheet bottom-sheet-tall" id="alphaSheet">
+    <div class="bottom-sheet-handle"></div>
+    <div class="bottom-sheet-title">Αλφαβητικό Ευρετήριο</div>
+    <div class="alpha-sheet-content" id="alphaSheetContent"></div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
 <script src="icons.js"></script>
 <script src="data.js"></script>
+<script src="synonyms.js"></script>
+<script src="keywords.js"></script>
 <script src="signs.js"></script>
 <script src="ota.js"></script>
 <script src="app.js"></script>
@@ -293,24 +333,6 @@
 <script src="first-aid.js"></script>
 <script src="vehicle-check.js"></script>
 <script>
-    // ===== HAMBURGER =====
-    function toggleHamburger() {
-        const overlay = document.getElementById('hamburgerOverlay');
-        if (overlay.style.display === 'flex') {
-            overlay.style.display = 'none';
-            document.body.classList.remove('modal-open');
-        } else {
-            overlay.style.display = 'flex';
-            document.body.classList.add('modal-open');
-        }
-    }
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            document.getElementById('hamburgerOverlay').style.display = 'none';
-            document.body.classList.remove('modal-open');
-        }
-    });
-
     // ===== ΟΔΗΓΟΣ ΧΡΗΣΗΣ =====
     function openGuideModal() {
         document.getElementById('guideModal').style.display = 'flex';
@@ -352,11 +374,8 @@
             } else {
                 tooltipEl.classList.remove('bottom');
             }
-            if (left - tooltipWidth / 2 < 0) {
-                left = tooltipWidth / 2 + 5;
-            } else if (left + tooltipWidth / 2 > window.innerWidth) {
-                left = window.innerWidth - tooltipWidth / 2 - 5;
-            }
+            if (left - tooltipWidth / 2 < 0) left = tooltipWidth / 2 + 5;
+            else if (left + tooltipWidth / 2 > window.innerWidth) left = window.innerWidth - tooltipWidth / 2 - 5;
 
             tooltipEl.textContent = text;
             tooltipEl.style.top = top + 'px';
@@ -377,25 +396,15 @@
         buttons.forEach(btn => {
             btn.addEventListener('touchstart', () => {
                 longPressTimer = setTimeout(() => {
-                    const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
+                    const text = btn.getAttribute('data-tooltip') || '';
                     if (text) showTooltip(btn, text);
                 }, 700);
             }, { passive: true });
-
-            btn.addEventListener('touchmove', () => {
-                clearTimeout(longPressTimer);
-            }, { passive: true });
-
-            btn.addEventListener('touchend', () => {
-                clearTimeout(longPressTimer);
-            }, { passive: true });
-
+            btn.addEventListener('touchmove', () => clearTimeout(longPressTimer), { passive: true });
+            btn.addEventListener('touchend', () => clearTimeout(longPressTimer), { passive: true });
             btn.addEventListener('mouseenter', () => {
-                const text = btn.getAttribute('data-tooltip') || btn.getAttribute('title') || '';
-                if (text) {
-                    clearTimeout(hideTimeout);
-                    showTooltip(btn, text);
-                }
+                const text = btn.getAttribute('data-tooltip') || '';
+                if (text) { clearTimeout(hideTimeout); showTooltip(btn, text); }
             });
             btn.addEventListener('mouseleave', hideTooltip);
         });

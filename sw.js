@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v31';
+const CACHE_VERSION = 'kok-v32';
 
 const CORE_URLS = [
   './',
@@ -7,6 +7,8 @@ const CORE_URLS = [
   './styles.css',
   './icons.js',
   './data.js',
+  './synonyms.js',
+  './keywords.js',
   './signs.js',
   './ota.js',
   './app.js',
@@ -45,8 +47,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Network-first για αρχεία που αλλάζουν (JSON/JS/HTML/CSS).
-// Cache-first για στατικά (εικόνες, fonts, SVG).
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -61,7 +61,6 @@ self.addEventListener('fetch', (event) => {
     path.endsWith('/');
 
   if (isDynamic) {
-    // Network-first: φέρνει πάντα φρέσκο, αλλά fallback σε cache offline
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -76,7 +75,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first για στατικά assets
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;

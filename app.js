@@ -1,6 +1,6 @@
 // ============================================================
-// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v24.1)
-// Προσθήκη: εμφάνιση προστίμου υπεύθυνου φόρτωσης (offloader_fine)
+// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v25)
+// Collapsed cards, pagination, sort by severity, bottom nav
 // ============================================================
 
 const categoryIcons = {
@@ -18,26 +18,66 @@ const categoryIcons = {
     'υποτροπή': 'rotateLeft'
 };
 
+// ============================================================
+// STOPWORDS (για αναζήτηση)
+// ============================================================
+const STOPWORDS = new Set([
+    // Άρθρα
+    'ο', 'η', 'το', 'οι', 'τα', 'του', 'της', 'των', 'τον', 'την', 'τους', 'τις',
+    'ενας', 'μια', 'ενα', 'μία', 'ένας', 'ένα',
+    // Προθέσεις
+    'σε', 'με', 'για', 'απο', 'από', 'προς', 'κατα', 'κατά', 'μετα', 'μετά',
+    'πριν', 'μεχρι', 'μέχρι', 'επι', 'επί', 'δια', 'διά', 'παρα', 'παρά',
+    'περι', 'περί', 'υπο', 'υπό', 'ανα', 'ανά', 'αντι', 'αντί', 'εκτος', 'εκτός',
+    'εντος', 'εντός', 'στο', 'στη', 'στην', 'στον', 'στους', 'στις', 'στα',
+    // Σύνδεσμοι
+    'και', 'ή', 'η', 'αλλα', 'αλλά', 'ομως', 'όμως', 'ενω', 'ενώ',
+    'καθως', 'καθώς', 'ωστε', 'ώστε', 'γιατι', 'γιατί', 'επειδη', 'επειδή',
+    'αφου', 'αφού', 'οταν', 'όταν', 'οπου', 'όπου', 'οπως', 'όπως',
+    'οτι', 'ότι', 'πως', 'να', 'θα', 'αν', 'μη', 'μην', 'δεν',
+    // Αντωνυμίες
+    'που', 'αυτο', 'αυτό', 'αυτη', 'αυτή', 'αυτος', 'αυτός', 'αυτα', 'αυτά',
+    'αυτες', 'αυτές', 'αυτοι', 'αυτοί', 'οποιος', 'όποιος', 'οποια', 'όποια',
+    'οποιο', 'όποιο', 'καθε', 'κάθε', 'καποιος', 'κάποιος', 'καποια', 'κάποια',
+    'καποιο', 'κάποιο', 'αλλος', 'άλλος', 'αλλη', 'άλλη', 'αλλο', 'άλλο',
+    // Επιρρήματα
+    'πολυ', 'πολύ', 'λιγο', 'λίγο', 'πανω', 'πάνω', 'κατω', 'κάτω',
+    'μεσα', 'μέσα', 'εξω', 'έξω', 'μπροστα', 'μπροστά', 'πισω', 'πίσω',
+    'διπλα', 'δίπλα', 'κοντα', 'κοντά', 'μακρια', 'μακριά', 'τωρα', 'τώρα',
+    'τοτε', 'τότε', 'παντα', 'πάντα', 'ποτε', 'ποτέ', 'ηδη', 'ήδη',
+    'ακομα', 'ακόμα', 'μονο', 'μόνο', 'μαζι', 'μαζί', 'χωρις', 'χωρίς',
+    // Ρήματα
+    'ειναι', 'είναι', 'εχει', 'έχει', 'κανει', 'κάνει', 'γινεται', 'γίνεται',
+    'μπορει', 'μπορεί', 'πρεπει', 'πρέπει', 'θελει', 'θέλει',
+    // Άλλα
+    'κλπ', 'κ.λπ.', 'κα', 'κ.ά.', 'πχ', 'π.χ.', 'δηλαδη', 'δηλαδή'
+]);
+
+// ============================================================
+// STATE
+// ============================================================
+const PAGE_SIZE = 30;
+let visibleCount = PAGE_SIZE;
+let currentSort = 'severity-asc'; // default: βαρύτητα ↑ (πιο συχνές πρώτες)
 let currentFilter = 'all';
 let showFavorites = false;
+let activeKeyword = null;
 let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
-let openDescriptions = {};
+let expandedCards = {};        // ποιες κάρτες είναι expanded (εξωτερικό)
+let openDescriptions = {};     // ποιες περιγραφές είναι ανοιχτές (nested)
+const selectedIds = new Set();
 
-// ------------------------------------------------------------
-// ΑΣΦΑΛΗΣ WRAPPER: αν το signs.js δεν έχει φορτώσει ή έχει σπάσει,
-// η κάρτα δείχνει σκέτο το όνομα αντί να σπάσει όλο το render.
-// ------------------------------------------------------------
+// ============================================================
+// SAFE WRAPPERS για signs.js
+// ============================================================
 function safeReplaceSignCodes(text, id) {
     try {
         if (typeof replaceSignCodes === 'function' &&
             typeof signImageMap !== 'undefined' &&
-            signImageMap &&
-            typeof signImageMap === 'object') {
+            signImageMap && typeof signImageMap === 'object') {
             return replaceSignCodes(text, id);
         }
-    } catch (e) {
-        console.warn('signReplace:', e);
-    }
+    } catch (e) { console.warn('signReplace:', e); }
     return text;
 }
 
@@ -45,13 +85,10 @@ function safeRenderSignIcons(text, id) {
     try {
         if (typeof renderSignIconsRow === 'function' &&
             typeof signImageMap !== 'undefined' &&
-            signImageMap &&
-            typeof signImageMap === 'object') {
+            signImageMap && typeof signImageMap === 'object') {
             return renderSignIconsRow(text, id);
         }
-    } catch (e) {
-        console.warn('signIcons:', e);
-    }
+    } catch (e) { console.warn('signIcons:', e); }
     return '';
 }
 
@@ -60,14 +97,130 @@ function safeStripSignCodes(text) {
         if (typeof stripSignCodesForDisplay === 'function') {
             return stripSignCodesForDisplay(text);
         }
-    } catch (e) {
-        console.warn('signStrip:', e);
-    }
+    } catch (e) { console.warn('signStrip:', e); }
     return text;
 }
 
 // ============================================================
-// RENDER
+// ΑΝΑΖΗΤΗΣΗ — Normalize + Stopwords + Synonyms + Prefix
+// ============================================================
+function normalizeText(text) {
+    if (!text) return '';
+    return text.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+}
+
+function removeStopwords(text) {
+    return text.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.has(w)).join(' ');
+}
+
+function matchesQuery(violation, query) {
+    const q = normalizeText(query).trim();
+    if (!q) return true;
+
+    // Expand με συνώνυμα
+    const expandedQueries = (typeof expandQuery === 'function')
+        ? expandQuery(q).map(normalizeText)
+        : [q];
+
+    const rawSearchable = [
+        violation.name,
+        violation.article,
+        violation.category,
+        violation.details || '',
+        violation.fullDescription || ''
+    ].join(' ');
+
+    const normalized = normalizeText(rawSearchable);
+    const noStop = removeStopwords(normalized);
+    const words = noStop.split(/\s+/);
+
+    return expandedQueries.some(eq => {
+        if (!eq) return false;
+        // includes (substring match)
+        if (noStop.includes(eq)) return true;
+        // prefix match σε λέξεις
+        return words.some(w => w.startsWith(eq) && eq.length >= 3);
+    });
+}
+
+// ============================================================
+// SORT
+// ============================================================
+function getSeverityScore(v) {
+    return typeof v.severity === 'number' ? v.severity : 99;
+}
+
+function sortData(items) {
+    const sorted = [...items];
+    switch (currentSort) {
+        case 'severity-asc':
+            // Χαμηλότερη βαρύτητα πρώτη (πιο συχνές παραβάσεις)
+            return sorted.sort((a, b) => {
+                const sa = getSeverityScore(a);
+                const sb = getSeverityScore(b);
+                if (sa !== sb) return sa - sb;
+                return a.id - b.id; // tie-breaker
+            });
+        case 'severity-desc':
+            // Υψηλότερη βαρύτητα πρώτη
+            return sorted.sort((a, b) => {
+                const sa = getSeverityScore(a);
+                const sb = getSeverityScore(b);
+                if (sa !== sb) return sb - sa;
+                return a.id - b.id;
+            });
+        case 'alphabetical':
+            return sorted.sort((a, b) => a.name.localeCompare(b.name, 'el'));
+        default:
+            return sorted.sort((a, b) => a.id - b.id);
+    }
+}
+
+function setSort(sortType) {
+    currentSort = sortType;
+    visibleCount = PAGE_SIZE;
+    render();
+    // Scroll to top της λίστας
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// KEYWORDS (Αλφαβητικό ευρετήριο)
+// ============================================================
+function setKeyword(keyword) {
+    if (activeKeyword === keyword) {
+        activeKeyword = null;
+    } else {
+        activeKeyword = keyword;
+    }
+    visibleCount = PAGE_SIZE;
+    updateActiveKeywordIndicator();
+    render();
+}
+
+function clearKeyword() {
+    activeKeyword = null;
+    updateActiveKeywordIndicator();
+    visibleCount = PAGE_SIZE;
+    render();
+}
+
+function updateActiveKeywordIndicator() {
+    const indicator = document.getElementById('activeKeywordIndicator');
+    if (!indicator) return;
+    if (activeKeyword) {
+        indicator.style.display = 'flex';
+        const label = indicator.querySelector('.active-keyword-label');
+        if (label) label.textContent = activeKeyword;
+    } else {
+        indicator.style.display = 'none';
+    }
+}
+
+// ============================================================
+// RENDER — Main
 // ============================================================
 function render() {
     if (typeof data === 'undefined' || !Array.isArray(data) || data.length === 0) {
@@ -78,61 +231,153 @@ function render() {
         return;
     }
 
-    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const queryEl = document.getElementById('searchInput');
+    const query = queryEl ? queryEl.value : '';
     const container = document.getElementById('listContainer');
     const countEl = document.getElementById('countText');
     const favIndicator = document.getElementById('favIndicator');
     const favCount = document.getElementById('favCount');
 
+    // Φιλτράρισμα
     let filtered = data.filter(v => {
         if (showFavorites && !favorites[v.id]) return false;
         if (currentFilter !== 'all' && v.category !== currentFilter) return false;
-        if (query) {
-            const searchable = (v.name + ' ' + v.article + ' ' + v.category + ' ' + v.details + ' ' + (v.fullDescription || '')).toLowerCase();
-            if (!searchable.includes(query)) return false;
+
+        if (activeKeyword && typeof keywordIndex !== 'undefined') {
+            const ids = keywordIndex[activeKeyword] || [];
+            if (!ids.includes(v.id)) return false;
         }
+
+        if (query && !matchesQuery(v, query)) return false;
         return true;
     });
 
+    // Ταξινόμηση
+    filtered = sortData(filtered);
+
     const total = data.length;
     const favsCount = getFavorites().length;
-    countEl.textContent = filtered.length + ' από ' + total + ' παραβάσεις';
-    if (showFavorites) {
-        favIndicator.style.display = 'inline';
-        favCount.textContent = favsCount;
-    } else {
-        favIndicator.style.display = 'none';
+    if (countEl) countEl.textContent = filtered.length + ' από ' + total + ' παραβάσεις';
+    if (favIndicator) {
+        if (showFavorites) {
+            favIndicator.style.display = 'inline';
+            if (favCount) favCount.textContent = favsCount;
+        } else {
+            favIndicator.style.display = 'none';
+        }
     }
 
+    // Empty state
     if (filtered.length === 0) {
         container.innerHTML = `<div class="empty"><span class="icon">🔍</span>Δεν βρέθηκαν παραβάσεις<br><span style="font-size:13px;">Δοκίμασε άλλη λέξη-κλειδί</span></div>`;
+        updateBodyPadding();
         return;
     }
 
-    container.innerHTML = filtered.map(v => {
-        const halfBadge = v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : '';
-        const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
-        const isDescOpen = openDescriptions[v.id] || false;
+    // Pagination
+    const visible = filtered.slice(0, visibleCount);
+    const hasMore = filtered.length > visibleCount;
 
-        const iconName = categoryIcons[v.category] || 'alertTriangle';
-        const iconSvg = icon(iconName, 'icon-svg');
+    let html = visible.map(v => renderCard(v)).join('');
 
-        let priceColor = 'var(--red)';
-        if (v.criminal) {
-            priceColor = 'var(--red)';
-        } else if (v.suspend && v.suspend !== '-') {
-            const lower = v.suspend.toLowerCase();
-            if (lower.includes('180') || lower.includes('1 έτος') || lower.includes('μήνες')) priceColor = 'var(--red)';
-            else if (lower.includes('70') || lower.includes('90')) priceColor = 'var(--red-light)';
-            else if (lower.includes('40') || lower.includes('60')) priceColor = 'var(--orange)';
-            else if (lower.includes('20') || lower.includes('30')) priceColor = 'var(--orange-dark)';
-            else priceColor = 'var(--orange)';
-        }
+    if (hasMore) {
+        html += `
+            <div class="load-more-wrap">
+                <button class="load-more-btn" onclick="loadMore()">
+                    ${icon('chevronDown', 'icon-svg')}
+                    Φόρτωσε περισσότερες (${filtered.length - visibleCount} ακόμα)
+                </button>
+            </div>
+        `;
+    }
 
-        const fineDisplay = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
+    container.innerHTML = html;
+    updateBodyPadding();
+}
 
-        return `
-        <div class="violation-card">
+function loadMore() {
+    visibleCount += PAGE_SIZE;
+    render();
+}
+
+// ============================================================
+// RENDER — Single Card
+// ============================================================
+function renderCard(v) {
+    const halfBadge = v.half ? '<span class="badge-half">½ για μοτοσικλέτα</span>' : '';
+    const criminalBadge = v.criminal ? '<span class="badge-criminal">ΠΛΗΜΜΕΛΗΜΑ</span>' : '';
+    const isExpanded = expandedCards[v.id] || false;
+    const isDescOpen = openDescriptions[v.id] || false;
+
+    const iconName = categoryIcons[v.category] || 'alertTriangle';
+    const iconSvg = icon(iconName, 'icon-svg');
+
+    let priceColor = 'var(--red)';
+    if (v.criminal) {
+        priceColor = 'var(--red)';
+    } else if (v.suspend && v.suspend !== '-') {
+        const lower = v.suspend.toLowerCase();
+        if (lower.includes('180') || lower.includes('1 έτος') || lower.includes('μήνες')) priceColor = 'var(--red)';
+        else if (lower.includes('70') || lower.includes('90')) priceColor = 'var(--red-light)';
+        else if (lower.includes('40') || lower.includes('60')) priceColor = 'var(--orange)';
+        else if (lower.includes('20') || lower.includes('30')) priceColor = 'var(--orange-dark)';
+        else priceColor = 'var(--orange)';
+    }
+
+    const fineDisplay = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
+    const severityLabel = getSeverityLabel(v);
+
+    // Collapsed card structure
+    let expandedContent = '';
+    if (isExpanded) {
+        const signsRow = safeRenderSignIcons(v.name, v.id);
+        const offloader = v.offloader_fine ? `
+            <div class="card-offloader">
+                ${icon('truck', 'icon-svg offloader-icon')}
+                <span>Υπεύθυνος φόρτωσης: <strong>+${v.offloader_fine}€</strong></span>
+            </div>
+        ` : '';
+
+        expandedContent = `
+            <div class="card-expanded-content">
+                ${signsRow}
+                <div class="card-divider"></div>
+                <div class="card-details-grid">
+                    <div class="detail-item">
+                        <span class="label">Αφαιρέσεις</span>
+                        <span class="value">${v.suspend && v.suspend !== '-' ? v.suspend : '—'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">ΣΕΣΟ</span>
+                        <span class="value purple">${v.points > 0 ? v.points + ' βαθμοί' : '—'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Άρθρο</span>
+                        <span class="value">${v.article}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Κατηγορία</span>
+                        <span class="value severity-badge">${severityLabel}</span>
+                    </div>
+                </div>
+                ${offloader}
+                ${v.fullDescription ? `
+                <div class="card-desc-toggle">
+                    <button class="details-btn nested" onclick="toggleDescription(${v.id}); event.stopPropagation();">
+                        ${isDescOpen ? 'Απόκρυψη περιγραφής' : 'Περιγραφή'}
+                        ${isDescOpen ? icon('chevronUp', 'icon-svg') : icon('chevronDown', 'icon-svg')}
+                    </button>
+                </div>
+                <div class="card-full-description ${isDescOpen ? 'open' : ''}">
+                    ${v.fullDescription}
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    return `
+        <div class="violation-card ${isExpanded ? 'expanded' : 'collapsed'}">
             <div class="card-top">
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                 <div class="card-icon">${iconSvg}</div>
@@ -143,65 +388,44 @@ function render() {
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
                     ${halfBadge}
                 </div>
-                <button class="favorite-btn ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id})" aria-label="Αγαπημένο">
+                <button class="favorite-btn ${favorites[v.id] ? 'active' : ''}" onclick="toggleFavorite(${v.id}); event.stopPropagation();" aria-label="Αγαπημένο">
                     ${favorites[v.id] ? icon('starFilled', 'icon-svg') : icon('starOutline', 'icon-svg')}
                 </button>
             </div>
-            ${safeRenderSignIcons(v.name, v.id)}
-            <div class="card-divider"></div>
-            <div class="card-details">
-                ${v.suspend && v.suspend !== '-' ? `
-                <div class="detail-item">
-                    <span class="label">Αφαιρέσεις</span>
-                    <span class="value">${v.suspend}</span>
-                </div>
-                ` : `
-                <div class="detail-item">
-                    <span class="label">Αφαιρέσεις</span>
-                    <span class="value">—</span>
-                </div>
-                `}
-                ${v.points > 0 ? `
-                <div class="detail-item">
-                    <span class="label">ΣΕΣΟ</span>
-                    <span class="value purple">${v.points} βαθμοί</span>
-                </div>
-                ` : `
-                <div class="detail-item">
-                    <span class="label">ΣΕΣΟ</span>
-                    <span class="value">—</span>
-                </div>
-                `}
-                <div class="detail-item">
-                    <span class="label">Άρθρο</span>
-                    <span class="value">${v.article}</span>
-                </div>
-            </div>
-            ${v.offloader_fine ? `
-            <div class="card-offloader" style="margin-top:8px;padding:8px 12px;background:rgba(249,115,22,0.1);border-left:3px solid var(--orange-dark);border-radius:8px;display:flex;align-items:center;gap:8px;">
-                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:var(--orange-dark);flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span style="font-size:12px;font-weight:600;color:var(--orange-dark);">Υπεύθυνος φόρτωσης: +${v.offloader_fine}€</span>
-            </div>
-            ` : ''}
-            ${v.fullDescription ? `
-            <div class="card-footer">
-                <button class="details-btn" onclick="toggleDescription(${v.id})">
-                    ${isDescOpen ? 'Κλείσε περιγραφή' : 'Λεπτομέρειες'}
+            <div class="card-expand-toggle">
+                <button class="toggle-details-btn" onclick="toggleCardExpand(${v.id})">
+                    ${isExpanded ? 'Λιγότερα' : 'Λεπτομέρειες'}
+                    ${isExpanded ? icon('chevronUp', 'icon-svg') : icon('chevronDown', 'icon-svg')}
                 </button>
             </div>
-            <div class="card-full-description ${isDescOpen ? 'open' : ''}">
-                ${v.fullDescription}
-            </div>
-            ` : ''}
+            ${expandedContent}
         </div>
-    `}).join('');
+    `;
+}
 
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.ota-input-wrap')) {
-            const suggestions = document.getElementById('otaSuggestions');
-            if (suggestions) suggestions.classList.remove('show');
-        }
-    });
+function getSeverityLabel(v) {
+    const s = getSeverityScore(v);
+    if (s === 99) return '—';
+    const labels = {
+        1: 'Ε1-Α', 2: 'Ε1-Β',
+        3: 'Ε2-Α', 4: 'Ε2-Β',
+        5: 'Ε3-Α', 6: 'Ε3-Β',
+        7: 'Ε3-Β + Σ / Ε4', 8: 'Ειδική (ποινική)'
+    };
+    return labels[s] || '—';
+}
+
+// ============================================================
+// CARD EXPAND / COLLAPSE
+// ============================================================
+function toggleCardExpand(id) {
+    expandedCards[id] = !expandedCards[id];
+    render();
+}
+
+function toggleDescription(id) {
+    openDescriptions[id] = !openDescriptions[id];
+    render();
 }
 
 // ============================================================
@@ -219,6 +443,7 @@ function setFilter(filter) {
             b.classList.toggle('active', b.dataset.filter === filter);
         });
     }
+    visibleCount = PAGE_SIZE;
     render();
 }
 
@@ -231,12 +456,8 @@ function toggleFavorite(id) {
 
 function toggleFavorites() {
     showFavorites = !showFavorites;
-    document.getElementById('favIndicator').style.display = showFavorites ? 'inline' : 'none';
-    render();
-}
-
-function toggleDescription(id) {
-    openDescriptions[id] = !openDescriptions[id];
+    visibleCount = PAGE_SIZE;
+    updateBottomNavActive();
     render();
 }
 
@@ -244,6 +465,9 @@ function getFavorites() {
     return data.filter(v => favorites[v.id]);
 }
 
+// ============================================================
+// EXPORT — FAVORITES PDF
+// ============================================================
 function exportFavorites() {
     const favs = getFavorites();
     if (favs.length === 0) {
@@ -280,7 +504,7 @@ function exportFavorites() {
     </head>
     <body>
         <h1>Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v24» — ${new Date().toLocaleDateString()}</p>
+        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v25» — ${new Date().toLocaleDateString()}</p>
         ${favs.map(v => {
             const ota = selectedOta;
             return `
@@ -312,8 +536,6 @@ function exportFavorites() {
 // ============================================================
 // SELECTION
 // ============================================================
-const selectedIds = new Set();
-
 function toggleSelection(id) {
     if (selectedIds.has(id)) {
         selectedIds.delete(id);
@@ -328,20 +550,23 @@ function updateSelectionUI() {
     const footer = document.getElementById('selectionFooter');
     const countEl = document.getElementById('selectedCount');
     const namesEl = document.getElementById('selectedNames');
+    if (!footer) return;
     const count = selectedIds.size;
     if (count === 0) {
         footer.classList.remove('show');
+        updateBodyPadding();
         return;
     }
     footer.classList.add('show');
-    countEl.textContent = count;
+    if (countEl) countEl.textContent = count;
     const selected = data.filter(v => selectedIds.has(v.id));
-    const names = selected.map(v => v.name).slice(0, 3);
+    const names = selected.map(v => v.name).slice(0, 2);
     let namesText = names.join(', ');
-    if (selected.length > 3) {
-        namesText += ` +${selected.length - 3} ακόμα`;
+    if (selected.length > 2) {
+        namesText += ` +${selected.length - 2} ακόμα`;
     }
-    namesEl.textContent = namesText;
+    if (namesEl) namesEl.textContent = namesText;
+    updateBodyPadding();
 }
 
 function clearSelection() {
@@ -350,6 +575,9 @@ function clearSelection() {
     render();
 }
 
+// ============================================================
+// ΥΠΟΛΟΓΙΣΜΟΙ
+// ============================================================
 function calculateTotalFine(selected) {
     const hasTruck = selected.some(v => v.category === 'φορτηγά');
     if (hasTruck) {
@@ -378,21 +606,16 @@ function calculateSuspension(selected) {
         if (!v.suspend || v.suspend === '-') continue;
         const text = v.suspend;
         const licenseMatch = text.match(/(\d+)\s*ημέρες?\s*αδ\.\s*οδ\./i) || text.match(/(\d+)\s*ημ\.\s*αδ\.\s*οδ\./i);
-        if (licenseMatch) {
-            daysLicense += parseInt(licenseMatch[1], 10);
-        }
+        if (licenseMatch) daysLicense += parseInt(licenseMatch[1], 10);
+
         const docMatch = text.match(/(\d+)\s*ημέρες?\s*στοιχ\.\s*κυκλ\./i) || text.match(/(\d+)\s*ημ\.\s*στοιχ\.\s*κυκλ\./i);
-        if (docMatch) {
-            daysDocuments += parseInt(docMatch[1], 10);
-        }
+        if (docMatch) daysDocuments += parseInt(docMatch[1], 10);
+
         const monthMatch = text.match(/(\d+)\s*μήνες?\s*αδ\.\s*οδ\./i);
-        if (monthMatch) {
-            daysLicense += parseInt(monthMatch[1], 10) * 30;
-        }
+        if (monthMatch) daysLicense += parseInt(monthMatch[1], 10) * 30;
+
         const yearMatch = text.match(/(\d+)\s*έτος?\s*αδ\.\s*οδ\./i);
-        if (yearMatch) {
-            daysLicense += parseInt(yearMatch[1], 10) * 365;
-        }
+        if (yearMatch) daysLicense += parseInt(yearMatch[1], 10) * 365;
     }
     return { daysLicense, daysDocuments };
 }
@@ -401,7 +624,6 @@ function calculateTotalPoints(selected) {
     return selected.reduce((sum, v) => sum + (v.points || 0), 0);
 }
 
-// Υπολογισμός προστίμου υπεύθυνου φόρτωσης (εύρος: "50-250" → 250 max)
 function calculateOffloaderFine(selected) {
     let total = 0;
     for (const v of selected) {
@@ -409,7 +631,7 @@ function calculateOffloaderFine(selected) {
         const str = String(v.offloader_fine);
         const match = str.match(/(\d+)\s*-\s*(\d+)/);
         if (match) {
-            total += parseInt(match[2], 10); // Παίρνουμε το μέγιστο
+            total += parseInt(match[2], 10);
         } else {
             const num = parseInt(str, 10);
             if (!isNaN(num)) total += num;
@@ -418,6 +640,9 @@ function calculateOffloaderFine(selected) {
     return total;
 }
 
+// ============================================================
+// EXPORT — SELECTED PDF (Κλήση)
+// ============================================================
 function exportSelectedToPDF() {
     const selected = data.filter(v => selectedIds.has(v.id));
     if (selected.length === 0) {
@@ -429,7 +654,7 @@ function exportSelectedToPDF() {
     const { daysLicense, daysDocuments } = calculateSuspension(selected);
     const totalPoints = calculateTotalPoints(selected);
     const offloaderTotal = calculateOffloaderFine(selected);
-    const otaText = selectedOta ? `Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
+    const otaText = (typeof selectedOta !== 'undefined' && selectedOta) ? `Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
     const addressText = localStorage.getItem('kok_last_address') || '';
 
     const win = window.open('', '_blank', 'width=900,height=700');
@@ -472,7 +697,7 @@ function exportSelectedToPDF() {
             <div class="card">
                 <div class="name">${safeReplaceSignCodes(v.name)}</div>
                 <div class="article">Άρθρο: ${v.article}</div>
-                <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
+                <div class="desc">${v.fullDescription || ''}</div>
                 <div style="margin-top:4px;font-size:13px;">
                     <span style="color:#c00;font-weight:bold;">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
                     ${v.offloader_fine ? ` | <span style="color:#f97316;font-weight:600;">Υπεύθ. φόρτωσης: +${v.offloader_fine}€</span>` : ''}
@@ -519,6 +744,7 @@ function onSearch() {
     }
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
+        visibleCount = PAGE_SIZE;
         render();
     }, 300);
 }
@@ -526,6 +752,7 @@ function onSearch() {
 function clearSearch() {
     document.getElementById('searchInput').value = '';
     document.getElementById('clearBtn').classList.remove('visible');
+    visibleCount = PAGE_SIZE;
     render();
     document.getElementById('searchInput').focus();
 }
@@ -536,7 +763,7 @@ function formatFine(fine) {
 }
 
 // ============================================================
-// MAKE CALL (global)
+// MAKE CALL
 // ============================================================
 function makeCall() {
     if (confirm('Πατήστε OK για κλήση στο 166 (ΕΚΑΒ) ή Ακύρωση για 112 (Ευρωπαϊκός αριθμός έκτακτης ανάγκης)')) {
@@ -545,3 +772,19 @@ function makeCall() {
         window.location.href = 'tel:112';
     }
 }
+
+// ============================================================
+// HAMBURGER (ΣΧΟΛΙΑΣΜΕΝΟ — για rollback)
+// ============================================================
+/*
+function toggleHamburger() {
+    const overlay = document.getElementById('hamburgerOverlay');
+    if (overlay.style.display === 'flex') {
+        overlay.style.display = 'none';
+        document.body.classList.remove('modal-open');
+    } else {
+        overlay.style.display = 'flex';
+        document.body.classList.add('modal-open');
+    }
+}
+*/
