@@ -1,5 +1,6 @@
 // ============================================================
-// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v24)
+// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v24.1)
+// Προσθήκη: εμφάνιση προστίμου υπεύθυνου φόρτωσης (offloader_fine)
 // ============================================================
 
 const categoryIcons = {
@@ -176,6 +177,12 @@ function render() {
                     <span class="value">${v.article}</span>
                 </div>
             </div>
+            ${v.offloader_fine ? `
+            <div class="card-offloader" style="margin-top:8px;padding:8px 12px;background:rgba(249,115,22,0.1);border-left:3px solid var(--orange-dark);border-radius:8px;display:flex;align-items:center;gap:8px;">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:var(--orange-dark);flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span style="font-size:12px;font-weight:600;color:var(--orange-dark);">Υπεύθυνος φόρτωσης: +${v.offloader_fine}€</span>
+            </div>
+            ` : ''}
             ${v.fullDescription ? `
             <div class="card-footer">
                 <button class="details-btn" onclick="toggleDescription(${v.id})">
@@ -263,6 +270,7 @@ function exportFavorites() {
         .card .det .fine { color: #c00; font-weight: bold; }
         .card .det .suspend { color: #00c; font-weight: 500; }
         .card .det .points { color: #7c3aed; }
+        .card .det .offloader { color: #f97316; font-weight: 600; }
         .card .p-ota { font-size: 13px; color: #555; margin-top: 4px; }
         .sign-img { display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin: 0 2px; border: 1px solid #ccc; border-radius: 3px; background: #fff; object-fit: contain; }
         .card .desc { margin-top: 6px; background: #f5f5f5; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
@@ -281,6 +289,7 @@ function exportFavorites() {
                 <div class="article">Άρθρο: ${v.article}</div>
                 <div class="det">
                     <span class="fine">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.offloader_fine ? `<span class="offloader">Υπεύθ. φόρτωσης: +${v.offloader_fine}€</span>` : ''}
                     ${v.suspend && v.suspend !== '-' ? `<span class="suspend">Κύρωση: ${v.suspend}</span>` : ''}
                     ${v.points > 0 ? `<span class="points">Βαθμοί ΣΕΣΟ: ${v.points}</span>` : ''}
                 </div>
@@ -392,6 +401,23 @@ function calculateTotalPoints(selected) {
     return selected.reduce((sum, v) => sum + (v.points || 0), 0);
 }
 
+// Υπολογισμός προστίμου υπεύθυνου φόρτωσης (εύρος: "50-250" → 250 max)
+function calculateOffloaderFine(selected) {
+    let total = 0;
+    for (const v of selected) {
+        if (!v.offloader_fine) continue;
+        const str = String(v.offloader_fine);
+        const match = str.match(/(\d+)\s*-\s*(\d+)/);
+        if (match) {
+            total += parseInt(match[2], 10); // Παίρνουμε το μέγιστο
+        } else {
+            const num = parseInt(str, 10);
+            if (!isNaN(num)) total += num;
+        }
+    }
+    return total;
+}
+
 function exportSelectedToPDF() {
     const selected = data.filter(v => selectedIds.has(v.id));
     if (selected.length === 0) {
@@ -402,6 +428,7 @@ function exportSelectedToPDF() {
     const totalFine = calculateTotalFine(selected);
     const { daysLicense, daysDocuments } = calculateSuspension(selected);
     const totalPoints = calculateTotalPoints(selected);
+    const offloaderTotal = calculateOffloaderFine(selected);
     const otaText = selectedOta ? `Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
     const addressText = localStorage.getItem('kok_last_address') || '';
 
@@ -429,6 +456,7 @@ function exportSelectedToPDF() {
         .summary .label { font-weight: 600; color: #333; }
         .summary .value { text-align: right; font-weight: 700; }
         .summary .fine { color: #c00; }
+        .summary .offloader { color: #f97316; }
         .sign-img { display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin: 0 2px; border: 1px solid #ccc; border-radius: 3px; background: #fff; object-fit: contain; }
         .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
         @media print { body { padding: 20px; } }
@@ -447,6 +475,7 @@ function exportSelectedToPDF() {
                 <div class="desc">${v.fullDescription || 'Διαθέσιμη περιγραφή'}</div>
                 <div style="margin-top:4px;font-size:13px;">
                     <span style="color:#c00;font-weight:bold;">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.offloader_fine ? ` | <span style="color:#f97316;font-weight:600;">Υπεύθ. φόρτωσης: +${v.offloader_fine}€</span>` : ''}
                     ${v.suspend && v.suspend !== '-' ? ` | Κύρωση: ${v.suspend}` : ''}
                     ${v.points > 0 ? ` | Βαθμοί ΣΕΣΟ: ${v.points}` : ''}
                 </div>
@@ -456,6 +485,7 @@ function exportSelectedToPDF() {
             <h2>Σύνοψη</h2>
             <table>
                 <tr><td class="label">Σύνολο Προστίμου</td><td class="value fine">${totalFine.toFixed(2)}€</td></tr>
+                ${offloaderTotal > 0 ? `<tr><td class="label">Πρόστιμο Υπεύθυνου Φόρτωσης</td><td class="value offloader">+${offloaderTotal}€</td></tr>` : ''}
                 <tr><td class="label">Αφαίρεση Άδειας Οδήγησης</td><td class="value">${daysLicense} ημέρες</td></tr>
                 <tr><td class="label">Αφαίρεση Στοιχείων Κυκλοφορίας</td><td class="value">${daysDocuments} ημέρες</td></tr>
                 <tr><td class="label">Σύνολο Βαθμών ΣΕΣΟ</td><td class="value">${totalPoints} βαθμοί</td></tr>
