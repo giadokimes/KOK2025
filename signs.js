@@ -165,6 +165,34 @@ function renderSignIconsRow(text, violationId) {
     return `<div class="sign-icons-row">${chips}</div>`;
 }
 
+// ============================================================
+// Καθαρή εκδοχή τίτλου για εμφάνιση — αφαιρεί τους κωδικούς
+// πινακίδων (Ρ-40, Ρ-50α, ...) από το κείμενο, αφού πλέον
+// εμφανίζονται ήδη σαν εικονίδια στη sign-icons-row. Χωρίς αυτό,
+// κάθε κωδικός φαινόταν διπλά (μία ως κείμενο, μία ως εικόνα) και
+// γέμιζε την κάρτα. Το v.name το ίδιο ΔΕΝ αλλάζει — μόνο ό,τι
+// εμφανίζεται. Η αναζήτηση/εξαγωγή PDF συνεχίζουν να δουλεύουν
+// στο πλήρες αρχικό κείμενο.
+// ============================================================
+function stripSignCodesForDisplay(text) {
+    if (!text) return text;
+    let out = text;
+    out = out.replace(/([ΡP])-([\dαβδ]+)/g, '');
+    out = out.replace(/\(\s*\)/g, '');
+    out = out.replace(/,(\s*,)+/g, ',');
+    out = out.replace(/\(\s*,\s*/g, '(');
+    out = out.replace(/,\s*\)/g, ')');
+    out = out.replace(/^\s*,\s*/, '');
+    out = out.replace(/\s*,\s*$/, '');
+    out = out.replace(/(\S)\/(?=\s|$)/g, '$1');
+    out = out.replace(/^\s*\/\s*/, '');
+    out = out.replace(/\s{2,}/g, ' ');
+    out = out.trim();
+    out = out.replace(/[\s,/]+$/, '');
+    if (out === 'Παραβίαση') out = 'Παραβίαση πινακίδων';
+    return out || text;
+}
+
 function openSignModal(imgSrc, signCode, violationId) {
     const modal = document.getElementById('signModal');
     const modalImg = document.getElementById('modalSignImg');

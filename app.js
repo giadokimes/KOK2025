@@ -54,6 +54,17 @@ function safeRenderSignIcons(text, id) {
     return '';
 }
 
+function safeStripSignCodes(text) {
+    try {
+        if (typeof stripSignCodesForDisplay === 'function') {
+            return stripSignCodesForDisplay(text);
+        }
+    } catch (e) {
+        console.warn('signStrip:', e);
+    }
+    return text;
+}
+
 // ============================================================
 // RENDER
 // ============================================================
@@ -125,7 +136,7 @@ function render() {
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
                 <div class="card-icon">${iconSvg}</div>
                 <div class="card-main">
-                    <div class="card-title">${v.name} ${criminalBadge}</div>
+                    <div class="card-title">${safeStripSignCodes(v.name)} ${criminalBadge}</div>
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
