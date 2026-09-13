@@ -38,7 +38,7 @@
     --space-4: 16px;
     --space-5: 20px;
     --space-6: 24px;
-    --blur: 18px;
+    --blur: 10px;
     --header-bg: linear-gradient(135deg, #0D3566, #082347);
     --card-bg: rgba(255, 255, 255, 0.9);
     --bottom-nav-height: 64px;
@@ -380,7 +380,8 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 10px 12px;
+    padding: 12px 12px;
+    min-height: 44px;
     border: 1px solid var(--border);
     border-radius: var(--radius-btn);
     background: var(--surface2);
@@ -424,16 +425,14 @@ body.modal-open {
    ============================================================ */
 .ota-card {
     background: var(--card-bg);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
-    padding: 16px;
+    padding: 14px 16px;
     margin: 0 16px 12px 16px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 .ota-card-row {
     display: flex;
@@ -505,6 +504,7 @@ body.modal-open {
     flex: 0 0 auto;
     padding: 0 16px;
     height: 40px;
+    min-height: 40px;
     border-radius: 20px;
     border: 1px solid var(--border);
     background: var(--surface2);
@@ -519,8 +519,8 @@ body.modal-open {
 .filters button.active {
     background: var(--blue);
     color: #fff;
-    border-color: var(--blue-light);
-    box-shadow: 0 0 0 1px rgba(47, 128, 237, 0.4);
+    border-color: var(--blue);
+    box-shadow: 0 2px 8px rgba(30, 90, 168, 0.25);
 }
 .filters button:hover:not(.active) {
     background: var(--surface);
@@ -652,7 +652,7 @@ body.modal-open {
     padding: 0 16px 16px 16px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 /* ============================================================
@@ -660,16 +660,15 @@ body.modal-open {
    ============================================================ */
 .violation-card {
     background: var(--card-bg);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
     padding: 14px 16px;
-    box-shadow: var(--shadow);
-    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.15s;
 }
 .violation-card:hover {
     transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .violation-card .card-top {
@@ -700,7 +699,8 @@ body.modal-open {
     font-size: 15px;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.4;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
 }
 .violation-card .card-price-wrap {
     display: flex;
@@ -712,22 +712,24 @@ body.modal-open {
     margin-top: 2px;
 }
 .violation-card .card-price {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 800;
     color: var(--red);
     text-align: right;
+    letter-spacing: -0.02em;
 }
 
 .badge-half {
     display: inline-block;
     max-width: 100%;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     line-height: 1.15;
-    color: var(--orange-dark);
-    background: rgba(249, 115, 22, 0.14);
+    color: var(--text);
+    background: var(--surface2);
+    border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 2px 4px;
+    padding: 2px 6px;
     white-space: normal;
     word-break: break-word;
     text-align: right;
@@ -747,9 +749,9 @@ body.modal-open {
 }
 .badge-severity {
     display: inline-block;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    color: var(--text2);
+    color: var(--text);
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -781,11 +783,11 @@ body.modal-open {
 /* Checkbox */
 .violation-card .select-check {
     accent-color: var(--blue);
-    width: 18px;
-    height: 18px;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
     flex-shrink: 0;
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 /* Expand toggle button */
@@ -798,19 +800,22 @@ body.modal-open {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: rgba(47, 128, 237, 0.1);
-    border: 1px solid rgba(47, 128, 237, 0.2);
+    background: transparent;
+    border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 4px 14px;
+    padding: 8px 14px;
+    min-height: 36px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--blue-light);
+    color: var(--text2);
     cursor: pointer;
     transition: all 0.15s;
     font-family: inherit;
 }
 .toggle-details-btn:hover {
-    background: rgba(47, 128, 237, 0.2);
+    background: var(--surface2);
+    border-color: var(--blue-light);
+    color: var(--blue-light);
 }
 .toggle-details-btn .icon-svg {
     width: 14px;
@@ -866,7 +871,7 @@ body.modal-open {
     display: inline-block;
     font-size: 12px;
     font-weight: 700;
-    color: var(--text2);
+    color: var(--text);
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -1799,12 +1804,6 @@ body.dark .selection-footer {
     top: -6px;
     border-top: none;
     border-bottom: 6px solid var(--bg2);
-}
-body.dark .tooltip-popup::after {
-    border-top-color: var(--bg2);
-}
-body.dark .tooltip-popup.bottom::after {
-    border-bottom-color: var(--bg2);
 }
 
 /* ============================================================
