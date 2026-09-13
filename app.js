@@ -614,7 +614,10 @@ function calculateSuspension(selected) {
         const monthMatch = text.match(/(\d+)\s*μήνες?\s*αδ\.\s*οδ\./i);
         if (monthMatch) daysLicense += parseInt(monthMatch[1], 10) * 30;
 
-        const yearMatch = text.match(/(\d+)\s*έτος?\s*αδ\.\s*οδ\./i);
+        const docMonthMatch = text.match(/(\d+)\s*μήνες?\s*στοιχ\.\s*κυκλ\./i);
+        if (docMonthMatch) daysDocuments += parseInt(docMonthMatch[1], 10) * 30;
+
+        const yearMatch = text.match(/(\d+)\s*έτ(?:ος|η)\s*αδ\.\s*οδ\./i);
         if (yearMatch) daysLicense += parseInt(yearMatch[1], 10) * 365;
     }
     return { daysLicense, daysDocuments };
