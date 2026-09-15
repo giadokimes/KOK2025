@@ -174,15 +174,19 @@ function expandQuery(query) {
     const normalized = query.toLowerCase().trim();
     const expanded = new Set([normalized]);
 
-    // Αν η λέξη είναι στο λεξικό, πρόσθεσε τα συνώνυμά της
+    // 1. Direct synonyms
     if (synonyms[normalized]) {
         synonyms[normalized].forEach(syn => expanded.add(syn.toLowerCase()));
     }
 
-    // Αν η λέξη περιέχεται σε κάποιο synonym key, πρόσθεσε το key
+    // 2. Partial match — προσθέτει το key ΚΑΙ τα synonyms του (2-level)
     Object.keys(synonyms).forEach(key => {
         if (key.includes(normalized) && key !== normalized) {
             expanded.add(key);
+            // ✅ Πρόσθεσε και τα synonyms αυτού του key
+            if (synonyms[key]) {
+                synonyms[key].forEach(syn => expanded.add(syn.toLowerCase()));
+            }
         }
     });
 
