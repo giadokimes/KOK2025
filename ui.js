@@ -397,7 +397,13 @@ function applyKeyword(kw) {
         setKeyword(kw);
     }
 }
-
+function showAllResults() {
+    const dropdown = document.getElementById('suggestDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+    // Το render() διαβάζει την τρέχουσα τιμή του input και δείχνει όλα
+    if (typeof render === 'function') render();
+    if (typeof updateBodyPadding === 'function') updateBodyPadding();
+}
 // ============================================================
 // ΕΚΚΙΝΗΣΗ
 // ============================================================
