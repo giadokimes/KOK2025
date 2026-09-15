@@ -905,7 +905,7 @@ function closeUpdateModal() {
 // AUTO-SUGGEST HOOK (χρησιμοποιείται από ui.js)
 // ============================================================
 function getSuggestions(query) {
-    if (!query || query.length < 2) return { scenarios: [], keywords: [], violations: [] };
+    if (!query || query.length < 2) return { scenarios: [], keywords: [], violations: [], totalCount: 0 };
     const q = normalizeText(query).trim();
 
     const scenarios = (typeof findMatchingScenarios === 'function')
@@ -917,8 +917,9 @@ function getSuggestions(query) {
         : [];
 
     const matcher = buildQueryMatcher(query);
-    const viols = data.filter(v => matcher(v)).slice(0, 3)
+    const allMatches = data.filter(v => matcher(v));
+    const viols = allMatches.slice(0, 5)
         .map(v => ({ id: v.id, name: v.name, fine: v.fine }));
 
-    return { scenarios, keywords: kws, violations: viols };
+    return { scenarios, keywords: kws, violations: viols, totalCount: allMatches.length };
 }
