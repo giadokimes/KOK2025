@@ -307,13 +307,13 @@ if ('serviceWorker' in navigator) {
             focusViolation(id);
             return;
         }
-
-        const keywordBtn = e.target.closest('[data-keyword]');
+ const keywordBtn = e.target.closest('[data-keyword]');
         if (keywordBtn) {
             applyKeyword(keywordBtn.dataset.keyword);
             return;
         }
     });
+       
 
     // Debounced input
     let inputTimeout = null;
