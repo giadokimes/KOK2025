@@ -237,3 +237,18 @@ document.addEventListener('keydown', (e) => {
         clearSearch();
     }
 });
+
+// ============================================================
+// VALIDATION: Έλεγχος stale IDs στα keywords
+// ============================================================
+(function validateKeywordIds() {
+    if (typeof findStaleKeywordIds !== 'function') return;
+    const stale = findStaleKeywordIds();
+    if (stale.length > 0) {
+        console.error(
+            `⚠️ Stale IDs στο keywords.js (δεν υπάρχουν στο data.js): ${stale.join(', ')}`
+        );
+    } else {
+        console.log('✓ Όλα τα keyword IDs είναι έγκυρα');
+    }
+})();
