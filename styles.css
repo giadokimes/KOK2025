@@ -2173,7 +2173,29 @@ body.dark .suggest-item.scenario {
         padding: 4px 12px 10px 12px;
     }
 }
-
+/* "Δες όλες τις X παραβάσεις" button */
+.suggest-show-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 12px 14px;
+    background: transparent;
+    border: none;
+    color: var(--blue-light);
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.12s;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+}
+.suggest-show-all:hover,
+.suggest-show-all:active {
+    background: var(--surface2);
+}
 @media (min-width: 768px) {
     .list {
         display: grid;
