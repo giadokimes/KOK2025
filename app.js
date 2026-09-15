@@ -543,3 +543,382 @@ function toggleFavorites() {
 function getFavorites() {
     return data.filter(v => favorites[v.id]);
 }
+// ============================================================
+// EXPORT — FAVORITES PDF
+// ============================================================
+function exportFavorites() {
+    const favs = getFavorites();
+    if (favs.length === 0) {
+        showToast('Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
+        return;
+    }
+    const win = window.open('', '_blank', 'width=900,height=700');
+    if (!win) {
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
+        return;
+    }
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head><title>Αγαπημένες Παραβάσεις ΚΟΚ</title>
+    <style>
+        body { font-family: 'Inter', Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; color: #0f172a; }
+        h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
+        .sub { color: #555; margin-bottom: 20px; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 12px; page-break-inside: avoid; }
+        .card .name { font-weight: bold; font-size: 16px; }
+        .card .article { color: #555; font-size: 14px; }
+        .card .det { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 4px; }
+        .card .det .fine { color: #c00; font-weight: bold; }
+        .card .det .suspend { color: #00c; font-weight: 500; }
+        .card .det .points { color: #7c3aed; }
+        .card .det .offloader { color: #f97316; font-weight: 600; }
+        .card .p-ota { font-size: 13px; color: #555; margin-top: 4px; }
+        .sign-img { display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin: 0 2px; border: 1px solid #ccc; border-radius: 3px; background: #fff; object-fit: contain; }
+        .card .desc { margin-top: 6px; background: #f5f5f5; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
+        .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
+        @media print { .no-print { display: none; } body { padding: 20px; } }
+    </style>
+    </head>
+    <body>
+        <h1>Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
+        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v25» — ${new Date().toLocaleDateString()}</p>
+        ${favs.map(v => {
+            const ota = selectedOta;
+            return `
+            <div class="card">
+                <div class="name">${safeReplaceSignCodes(v.name)}</div>
+                <div class="article">Άρθρο: ${v.article}</div>
+                <div class="det">
+                    <span class="fine">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.offloader_fine ? `<span class="offloader">Υπεύθ. φόρτωσης: +${v.offloader_fine}€</span>` : ''}
+                    ${v.suspend && v.suspend !== '-' ? `<span class="suspend">Κύρωση: ${v.suspend}</span>` : ''}
+                    ${v.points > 0 ? `<span class="points">Βαθμοί ΣΕΣΟ: ${v.points}</span>` : ''}
+                </div>
+                ${ota ? `<div class="p-ota">Κωδικός ΟΤΑ: ${ota.name} (${ota.code})</div>` : ''}
+                ${v.fullDescription ? `<div class="desc">${v.fullDescription}</div>` : ''}
+            </div>
+        `}).join('')}
+        <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
+        <div class="no-print" style="text-align:center;margin-top:20px;">
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
+        </div>
+    </body>
+    </html>
+    `;
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => { win.focus(); win.print(); }, 500);
+}
+
+// ============================================================
+// SELECTION
+// ============================================================
+function toggleSelection(id) {
+    if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+    } else {
+        selectedIds.add(id);
+    }
+    updateSelectionUI();
+    render();
+}
+
+function updateSelectionUI() {
+    const footer = document.getElementById('selectionFooter');
+    const countEl = document.getElementById('selectedCount');
+    const namesEl = document.getElementById('selectedNames');
+    if (!footer) return;
+    const count = selectedIds.size;
+    if (count === 0) {
+        footer.classList.remove('show');
+        updateBodyPadding();
+        return;
+    }
+    footer.classList.add('show');
+    if (countEl) countEl.textContent = count;
+    const selected = data.filter(v => selectedIds.has(v.id));
+    const names = selected.map(v => v.name).slice(0, 2);
+    let namesText = names.join(', ');
+    if (selected.length > 2) {
+        namesText += ` +${selected.length - 2} ακόμα`;
+    }
+    if (namesEl) namesEl.textContent = namesText;
+    updateBodyPadding();
+}
+
+function clearSelection() {
+    selectedIds.clear();
+    updateSelectionUI();
+    render();
+}
+
+// ============================================================
+// ΥΠΟΛΟΓΙΣΜΟΙ
+// ============================================================
+function calculateTotalFine(selected) {
+    const hasTruck = selected.some(v => v.category === 'φορτηγά');
+    if (hasTruck) {
+        return selected.reduce((sum, v) => sum + (typeof v.fine === 'number' ? v.fine : 0), 0);
+    } else {
+        const fines = selected.map(v => typeof v.fine === 'number' ? v.fine : 0);
+        const maxFine = Math.max(...fines, 0);
+        let total = 0;
+        let maxUsed = false;
+        for (const f of fines) {
+            if (f === maxFine && !maxUsed) {
+                total += f;
+                maxUsed = true;
+            } else {
+                total += f / 2;
+            }
+        }
+        return total;
+    }
+}
+
+function calculateSuspension(selected) {
+    let daysLicense = 0;
+    let daysDocuments = 0;
+    for (const v of selected) {
+        if (!v.suspend || v.suspend === '-') continue;
+        const text = v.suspend;
+        const licenseMatch = text.match(/(\d+)\s*ημέρες?\s*αδ\.\s*οδ\./i) || text.match(/(\d+)\s*ημ\.\s*αδ\.\s*οδ\./i);
+        if (licenseMatch) daysLicense += parseInt(licenseMatch[1], 10);
+
+        const docMatch = text.match(/(\d+)\s*ημέρες?\s*στοιχ\.\s*κυκλ\./i) || text.match(/(\d+)\s*ημ\.\s*στοιχ\.\s*κυκλ\./i);
+        if (docMatch) daysDocuments += parseInt(docMatch[1], 10);
+
+        const monthMatch = text.match(/(\d+)\s*μήνες?\s*αδ\.\s*οδ\./i);
+        if (monthMatch) daysLicense += parseInt(monthMatch[1], 10) * 30;
+
+        const docMonthMatch = text.match(/(\d+)\s*μήνες?\s*στοιχ\.\s*κυκλ\./i);
+        if (docMonthMatch) daysDocuments += parseInt(docMonthMatch[1], 10) * 30;
+
+        const yearMatch = text.match(/(\d+)\s*έτ(?:ος|η)\s*αδ\.\s*οδ\./i);
+        if (yearMatch) daysLicense += parseInt(yearMatch[1], 10) * 365;
+    }
+    return { daysLicense, daysDocuments };
+}
+
+function calculateTotalPoints(selected) {
+    return selected.reduce((sum, v) => sum + (v.points || 0), 0);
+}
+
+function calculateOffloaderFine(selected) {
+    let total = 0;
+    for (const v of selected) {
+        if (!v.offloader_fine) continue;
+        const str = String(v.offloader_fine);
+        const match = str.match(/(\d+)\s*-\s*(\d+)/);
+        if (match) {
+            total += parseInt(match[2], 10);
+        } else {
+            const num = parseInt(str, 10);
+            if (!isNaN(num)) total += num;
+        }
+    }
+    return total;
+}
+
+// ============================================================
+// EXPORT — SELECTED PDF (Κλήση)
+// ============================================================
+function exportSelectedToPDF() {
+    const selected = data.filter(v => selectedIds.has(v.id));
+    if (selected.length === 0) {
+        showToast('Δεν έχετε επιλέξει καμία παράβαση.');
+        return;
+    }
+
+    const totalFine = calculateTotalFine(selected);
+    const { daysLicense, daysDocuments } = calculateSuspension(selected);
+    const totalPoints = calculateTotalPoints(selected);
+    const offloaderTotal = calculateOffloaderFine(selected);
+    const otaText = (typeof selectedOta !== 'undefined' && selectedOta) ? `Κωδικός ΟΤΑ: ${selectedOta.name} (${selectedOta.code})` : '';
+    const addressText = localStorage.getItem('kok_last_address') || '';
+
+    const win = window.open('', '_blank', 'width=900,height=700');
+    if (!win) {
+        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
+        return;
+    }
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head><title>Βεβαίωση Κλήσης - ΚΟΚ</title>
+    <style>
+        body { font-family: 'Inter', Arial, sans-serif; padding: 30px; max-width: 900px; margin: auto; color: #0f172a; }
+        h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
+        .sub { color: #555; margin-bottom: 20px; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 12px; page-break-inside: avoid; }
+        .card .name { font-weight: bold; font-size: 15px; }
+        .card .article { color: #555; font-size: 13px; }
+        .card .desc { margin-top: 4px; font-size: 13px; color: #333; }
+        .summary { margin-top: 20px; border-top: 2px solid #1e3a5f; padding-top: 15px; }
+        .summary table { width: 100%; border-collapse: collapse; }
+        .summary td { padding: 6px 0; }
+        .summary .label { font-weight: 600; color: #333; }
+        .summary .value { text-align: right; font-weight: 700; }
+        .summary .fine { color: #c00; }
+        .summary .offloader { color: #f97316; }
+        .footer { margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
+        @media print { body { padding: 20px; } }
+    </style>
+    </head>
+    <body>
+        <h1>Βεβαίωση Κλήσης - Κ.Ο.Κ.</h1>
+        <p class="sub">Ημερομηνία: ${new Date().toLocaleDateString()} - Ώρα: ${new Date().toLocaleTimeString()}</p>
+        ${otaText ? `<p class="sub">${otaText}</p>` : ''}
+        ${addressText ? `<p class="sub">Σημείο ελέγχου: ${addressText}</p>` : ''}
+        <p class="sub">Επιλεγμένες παραβάσεις: ${selected.length}</p>
+        ${selected.map(v => `
+            <div class="card">
+                <div class="name">${safeReplaceSignCodes(v.name)}</div>
+                <div class="article">Άρθρο: ${v.article}</div>
+                <div class="desc">${v.fullDescription || ''}</div>
+                <div style="margin-top:4px;font-size:13px;">
+                    <span style="color:#c00;font-weight:bold;">Πρόστιμο: ${typeof v.fine === 'number' ? v.fine + '€' : v.fine}</span>
+                    ${v.offloader_fine ? ` | <span style="color:#f97316;font-weight:600;">Υπεύθ. φόρτωσης: +${v.offloader_fine}€</span>` : ''}
+                    ${v.suspend && v.suspend !== '-' ? ` | Κύρωση: ${v.suspend}` : ''}
+                    ${v.points > 0 ? ` | Βαθμοί ΣΕΣΟ: ${v.points}` : ''}
+                </div>
+            </div>
+        `).join('')}
+        <div class="summary">
+            <h2>Σύνοψη</h2>
+            <table>
+                <tr><td class="label">Σύνολο Προστίμου</td><td class="value fine">${totalFine.toFixed(2)}€</td></tr>
+                ${offloaderTotal > 0 ? `<tr><td class="label">Πρόστιμο Υπεύθυνου Φόρτωσης</td><td class="value offloader">+${offloaderTotal}€</td></tr>` : ''}
+                <tr><td class="label">Αφαίρεση Άδειας Οδήγησης</td><td class="value">${daysLicense} ημέρες</td></tr>
+                <tr><td class="label">Αφαίρεση Στοιχείων Κυκλοφορίας</td><td class="value">${daysDocuments} ημέρες</td></tr>
+                <tr><td class="label">Σύνολο Βαθμών ΣΕΣΟ</td><td class="value">${totalPoints} βαθμοί</td></tr>
+            </table>
+        </div>
+        <div class="footer">Πατήστε Ctrl+P ή επιλέξτε «Εκτύπωση» για να αποθηκεύσετε ως PDF.</div>
+        <div class="no-print" style="text-align:center;margin-top:20px;">
+            <button onclick="window.print()" style="padding:10px 30px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Εκτύπωση / Αποθήκευση ως PDF</button>
+        </div>
+    </body>
+    </html>
+    `;
+
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => { win.focus(); win.print(); }, 500);
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+let searchTimeout = null;
+
+function onSearch() {
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    if (input.value.length > 0) {
+        clearBtn.classList.add('visible');
+    } else {
+        clearBtn.classList.remove('visible');
+    }
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        visibleCount = PAGE_SIZE;
+        render();
+    }, 300);
+}
+
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('clearBtn').classList.remove('visible');
+    visibleCount = PAGE_SIZE;
+    render();
+    document.getElementById('searchInput').focus();
+}
+
+function formatFine(fine) {
+    if (typeof fine === 'number') return fine + '€';
+    return fine;
+}
+
+// ============================================================
+// MAKE CALL
+// ============================================================
+function makeCall() {
+    if (confirm('Πατήστε OK για κλήση στο 166 (ΕΚΑΒ) ή Ακύρωση για 112 (Ευρωπαϊκός αριθμός έκτακτης ανάγκης)')) {
+        window.location.href = 'tel:166';
+    } else {
+        window.location.href = 'tel:112';
+    }
+}
+
+// ============================================================
+// DATA VERSION CHECK
+// ============================================================
+const VERSION_URL = 'data-version.json';
+const LAST_SEEN_KEY = 'kok_lastSeenVersion';
+
+async function checkVersionUpdate() {
+    try {
+        const response = await fetch(VERSION_URL, { cache: 'no-cache' });
+        if (!response.ok) return;
+        const remote = await response.json();
+        const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
+
+        if (!lastSeen) {
+            localStorage.setItem(LAST_SEEN_KEY, remote.version);
+            return;
+        }
+        if (lastSeen !== remote.version) {
+            showUpdateModal(lastSeen, remote);
+            localStorage.setItem(LAST_SEEN_KEY, remote.version);
+        }
+    } catch (err) {
+        console.warn('Αδυναμία ελέγχου έκδοσης:', err);
+    }
+}
+
+function showUpdateModal(prevVersion, remote) {
+    document.getElementById('prevVersion').textContent = prevVersion || '—';
+    document.getElementById('newVersion').textContent = remote.version || '—';
+    document.getElementById('newDate').textContent = remote.updated || '—';
+
+    const list = document.getElementById('changelogList');
+    list.innerHTML = '';
+    (remote.changelog || []).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        list.appendChild(li);
+    });
+
+    document.getElementById('updateModal').style.display = 'flex';
+    document.body.classList.add('modal-open');
+}
+
+function closeUpdateModal() {
+    document.getElementById('updateModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
+}
+
+// ============================================================
+// AUTO-SUGGEST HOOK (χρησιμοποιείται από ui.js)
+// ============================================================
+function getSuggestions(query) {
+    if (!query || query.length < 2) return { scenarios: [], keywords: [], violations: [] };
+    const q = normalizeText(query).trim();
+
+    const scenarios = (typeof findMatchingScenarios === 'function')
+        ? findMatchingScenarios(q).slice(0, 3)
+        : [];
+
+    const kws = (typeof findMatchingKeywords === 'function')
+        ? findMatchingKeywords(q).slice(0, 5)
+        : [];
+
+    const matcher = buildQueryMatcher(query);
+    const viols = data.filter(v => matcher(v)).slice(0, 3)
+        .map(v => ({ id: v.id, name: v.name, fine: v.fine }));
+
+    return { scenarios, keywords: kws, violations: viols };
+}
