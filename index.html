@@ -33,13 +33,15 @@
         <!-- Search + Α-Ω -->
         <div class="search-box">
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="searchInput" placeholder="Αναζήτηση..." oninput="onSearch()">
+            <input type="text" id="searchInput" placeholder="Αναζήτηση..." oninput="onSearch()" autocomplete="off">
             <button class="clear-btn" id="clearBtn" onclick="clearSearch()">
                 <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
             <button class="alpha-btn" onclick="toggleAlphaSheet()" aria-label="Αλφαβητικό ευρετήριο">
                 <span class="alpha-btn-label">Α-Ω</span>
             </button>
+            <!-- Auto-suggest dropdown -->
+            <div class="suggest-dropdown" id="suggestDropdown" style="display:none;"></div>
         </div>
 
         <!-- Hamburger (ΣΧΟΛΙΑΣΜΕΝΟ - για rollback) -->
@@ -345,6 +347,7 @@
 <script src="data.js"></script>
 <script src="synonyms.js"></script>
 <script src="keywords.js"></script>
+<script src="scenarios.js"></script>
 <script src="signs.js"></script>
 <script src="ota.js"></script>
 <script src="app.js"></script>
@@ -359,7 +362,6 @@
             if (el) el.textContent = `Έκδοση δεδομένων: ${DATA_VERSION} (${DATA_UPDATED})`;
         }
     })();
-    checkVersionUpdate();
 
     // ===== ΟΔΗΓΟΣ ΧΡΗΣΗΣ =====
     function openGuideModal() {

@@ -1,5 +1,6 @@
 // ============================================================
-// ui.js – UI & PWA (v25)
+// ui.js – UI & PWA (v25.2)
+// + Auto-suggest dropdown (Φάση E)
 // ============================================================
 
 // ============================================================
@@ -23,6 +24,7 @@ function toggleDark() {
 // ============================================================
 function showToast(msg) {
     const t = document.getElementById('toast');
+    if (!t) return;
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(t._timeout);
@@ -158,7 +160,6 @@ function toggleAlphaGroup(letter) {
     const btn = document.querySelector(`.alpha-letter-btn[onclick="toggleAlphaGroup('${letter}')"]`);
     if (!group || !btn) return;
     const isOpen = group.style.display !== 'none';
-    // Κλείσε όλα τα άλλα
     document.querySelectorAll('.alpha-keywords').forEach(el => { el.style.display = 'none'; });
     document.querySelectorAll('.alpha-letter-btn').forEach(el => el.classList.remove('open'));
     if (!isOpen) {
@@ -172,7 +173,6 @@ function selectKeywordFromSheet(keyword) {
         setKeyword(keyword);
     }
     closeAlphaSheet();
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -199,6 +199,206 @@ if ('serviceWorker' in navigator) {
 }
 
 // ============================================================
+// AUTO-SUGGEST DROPDOWN (v25.2 — Φάση E)
+// ============================================================
+(function initAutoSuggest() {
+    const input = document.getElementById('searchInput');
+    const dropdown = document.getElementById('suggestDropdown');
+    if (!input || !dropdown) return;
+
+    let hideTimeout = null;
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;',
+            '"': '&quot;', "'": '&#39;'
+        }[c]));
+    }
+
+    function renderSuggestions(query) {
+        if (!query || query.length < 2) {
+            hideDropdown();
+            return;
+        }
+
+        const sug = (typeof getSuggestions === 'function')
+            ? getSuggestions(query)
+            : { scenarios: [], keywords: [], violations: [] };
+
+        const total = sug.scenarios.length + sug.keywords.length + sug.violations.length;
+        if (total === 0) {
+            hideDropdown();
+            return;
+        }
+
+        let html = '';
+
+        // Scenarios
+        if (sug.scenarios.length > 0) {
+            html += '<div class="suggest-section">';
+            html += '<div class="suggest-label">🎯 Σενάριο</div>';
+            sug.scenarios.forEach((s, idx) => {
+                html += `
+                    <button class="suggest-item scenario" 
+                            data-scenario-idx="${idx}"
+                            data-scenario-ids="${escapeHtml(JSON.stringify(s.ids))}"
+                            data-scenario-label="${escapeHtml(s.label)}">
+                        <span class="item-icon">${(typeof icon === 'function' ? icon('target', 'icon-svg') : '') || '🎯'}</span>
+                        <span class="item-text">${escapeHtml(s.label)}</span>
+                    </button>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Violations
+        if (sug.violations.length > 0) {
+            html += '<div class="suggest-section">';
+            html += '<div class="suggest-label">📋 Παραβάσεις</div>';
+            sug.violations.forEach(v => {
+                const fine = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
+                html += `
+                    <button class="suggest-item" data-violation-id="${v.id}">
+                        <span class="item-icon">${(typeof icon === 'function' ? icon('fileText', 'icon-svg') : '') || '📋'}</span>
+                        <span class="item-text">${escapeHtml(v.name)}</span>
+                        <span class="item-meta">${escapeHtml(fine)}</span>
+                    </button>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Keywords
+        if (sug.keywords.length > 0) {
+            html += '<div class="suggest-section">';
+            html += '<div class="suggest-label">🔑 Λέξεις-κλειδιά</div>';
+            html += '<div class="suggest-keywords">';
+            sug.keywords.forEach(kw => {
+                html += `<button class="keyword-chip" data-keyword="${escapeHtml(kw)}">${escapeHtml(kw)}</button>`;
+            });
+            html += '</div></div>';
+        }
+
+        dropdown.innerHTML = html;
+        dropdown.style.display = 'block';
+    }
+
+    function hideDropdown() {
+        dropdown.style.display = 'none';
+    }
+
+    // Event delegation — αποφεύγει inline handlers με JSON
+    dropdown.addEventListener('click', (e) => {
+        const scenarioBtn = e.target.closest('[data-scenario-ids]');
+        if (scenarioBtn) {
+            try {
+                const ids = JSON.parse(scenarioBtn.dataset.scenarioIds);
+                const label = scenarioBtn.dataset.scenarioLabel;
+                applyScenario(ids, label);
+            } catch (err) {
+                console.warn('Scenario parse error:', err);
+            }
+            return;
+        }
+
+        const violationBtn = e.target.closest('[data-violation-id]');
+        if (violationBtn) {
+            const id = parseInt(violationBtn.dataset.violationId, 10);
+            focusViolation(id);
+            return;
+        }
+
+        const keywordBtn = e.target.closest('[data-keyword]');
+        if (keywordBtn) {
+            applyKeyword(keywordBtn.dataset.keyword);
+            return;
+        }
+    });
+
+    // Debounced input
+    let inputTimeout = null;
+    input.addEventListener('input', () => {
+        clearTimeout(inputTimeout);
+        inputTimeout = setTimeout(() => {
+            renderSuggestions(input.value.trim());
+        }, 200);
+    });
+
+    // Focus → show if has value
+    input.addEventListener('focus', () => {
+        if (input.value.trim().length >= 2) {
+            renderSuggestions(input.value.trim());
+        }
+    });
+
+    // Blur → hide (with delay για να προλάβει το click)
+    input.addEventListener('blur', () => {
+        hideTimeout = setTimeout(hideDropdown, 200);
+    });
+
+    // Click σε dropdown → ακύρωσε το blur hide
+    dropdown.addEventListener('mousedown', () => {
+        clearTimeout(hideTimeout);
+    });
+
+    // Escape
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideDropdown();
+        }
+    });
+
+    // Κλείσιμο όταν αλλάζει φίλτρο / sort
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && e.target !== input) {
+            hideDropdown();
+        }
+    }, true);
+})();
+
+// ============================================================
+// ACTIONS από auto-suggest
+// ============================================================
+function focusViolation(id) {
+    const dropdown = document.getElementById('suggestDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+
+    expandedCards[id] = true;
+    visibleCount = Math.max(visibleCount, PAGE_SIZE);
+    render();
+
+    setTimeout(() => {
+        const el = document.querySelector(`.violation-card .select-check[data-id="${id}"]`);
+        if (el) {
+            const card = el.closest('.violation-card');
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.style.transition = 'box-shadow 0.3s';
+            card.style.boxShadow = '0 0 0 3px var(--blue-light)';
+            setTimeout(() => { card.style.boxShadow = ''; }, 1500);
+        }
+    }, 150);
+}
+
+function applyScenario(ids, label) {
+    const dropdown = document.getElementById('suggestDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+
+    ids.forEach(id => { expandedCards[id] = true; });
+    render();
+
+    if (ids.length > 0) focusViolation(ids[0]);
+}
+
+function applyKeyword(kw) {
+    const dropdown = document.getElementById('suggestDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+
+    if (typeof setKeyword === 'function') {
+        setKeyword(kw);
+    }
+}
+
+// ============================================================
 // ΕΚΚΙΝΗΣΗ
 // ============================================================
 async function loadExternalData() {
@@ -222,7 +422,7 @@ async function loadExternalData() {
     if (otaInput && otaInput.value) onOtaSearch();
 }
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v25 - bottom nav + collapsed cards)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v25.2 - auto-suggest)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
@@ -235,20 +435,7 @@ document.addEventListener('keydown', (e) => {
         closeMoreSheet();
         closeAlphaSheet();
         clearSearch();
+        const dd = document.getElementById('suggestDropdown');
+        if (dd) dd.style.display = 'none';
     }
 });
-
-// ============================================================
-// VALIDATION: Έλεγχος stale IDs στα keywords
-// ============================================================
-(function validateKeywordIds() {
-    if (typeof findStaleKeywordIds !== 'function') return;
-    const stale = findStaleKeywordIds();
-    if (stale.length > 0) {
-        console.error(
-            `⚠️ Stale IDs στο keywords.js (δεν υπάρχουν στο data.js): ${stale.join(', ')}`
-        );
-    } else {
-        console.log('✓ Όλα τα keyword IDs είναι έγκυρα');
-    }
-})();

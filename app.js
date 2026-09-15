@@ -1,7 +1,7 @@
 // ============================================================
-// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v25.1)
+// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v25.2)
 // Collapsed cards, pagination, sort by severity, bottom nav
-// + Performance fix: cached query matcher (v25.1)
+// + Greek stemmer, fuzzy, scenarios, per-token synonyms
 // ============================================================
 
 const categoryIcons = {
@@ -20,37 +20,88 @@ const categoryIcons = {
 };
 
 // ============================================================
+// GREEK STEMMER (v2) — Αφαιρεί κοινές καταλήξεις για πτώσεις
+// ============================================================
+const GREEK_SUFFIXES = [
+    'ηδες', 'αδες',
+    'ους', 'εων', 'ιων', 'εις',
+    'ος', 'ου', 'ης', 'ων', 'ες', 'ας', 'οι', 'υς',
+    'η', 'α', 'ο', 'ι', 'υ'
+];
+
+function stemGreek(word) {
+    if (!word || word.length < 5) return word;
+    for (const suf of GREEK_SUFFIXES) {
+        if (word.length >= suf.length + 3 && word.endsWith(suf)) {
+            return word.slice(0, -suf.length);
+        }
+    }
+    return word;
+}
+
+// ============================================================
+// LEVENSHTEIN (fuzzy) — για typos, μόνο σε λέξεις >= 5 chars
+// ============================================================
+function levenshtein(a, b) {
+    if (a === b) return 0;
+    const m = a.length, n = b.length;
+    if (Math.abs(m - n) > 2) return 99;
+    const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + cost
+            );
+        }
+    }
+    return dp[m][n];
+}
+
+// ============================================================
+// SCENARIO CACHE — υπολογισμός μία φορά ανά query
+// ============================================================
+let _scenarioCacheKey = null;
+let _scenarioCacheValue = null;
+
+function getScenarioMatchesCached(normalizedQuery) {
+    if (_scenarioCacheKey === normalizedQuery) return _scenarioCacheValue;
+    _scenarioCacheKey = normalizedQuery;
+    _scenarioCacheValue = (typeof getScenarioMatches === 'function')
+        ? getScenarioMatches(normalizedQuery)
+        : new Set();
+    return _scenarioCacheValue;
+}
+
+// ============================================================
 // STOPWORDS (για αναζήτηση)
 // ============================================================
 const STOPWORDS = new Set([
-    // Άρθρα
     'ο', 'η', 'το', 'οι', 'τα', 'του', 'της', 'των', 'τον', 'την', 'τους', 'τις',
     'ενας', 'μια', 'ενα', 'μία', 'ένας', 'ένα',
-    // Προθέσεις
     'σε', 'με', 'για', 'απο', 'από', 'προς', 'κατα', 'κατά', 'μετα', 'μετά',
     'πριν', 'μεχρι', 'μέχρι', 'επι', 'επί', 'δια', 'διά', 'παρα', 'παρά',
     'περι', 'περί', 'υπο', 'υπό', 'ανα', 'ανά', 'αντι', 'αντί', 'εκτος', 'εκτός',
     'εντος', 'εντός', 'στο', 'στη', 'στην', 'στον', 'στους', 'στις', 'στα',
-    // Σύνδεσμοι
-    'και', 'ή', 'η', 'αλλα', 'αλλά', 'ομως', 'όμως', 'ενω', 'ενώ',
+    'και', 'ή', 'αλλα', 'αλλά', 'ομως', 'όμως', 'ενω', 'ενώ',
     'καθως', 'καθώς', 'ωστε', 'ώστε', 'γιατι', 'γιατί', 'επειδη', 'επειδή',
     'αφου', 'αφού', 'οταν', 'όταν', 'οπου', 'όπου', 'οπως', 'όπως',
     'οτι', 'ότι', 'πως', 'να', 'θα', 'αν', 'μη', 'μην', 'δεν',
-    // Αντωνυμίες
     'που', 'αυτο', 'αυτό', 'αυτη', 'αυτή', 'αυτος', 'αυτός', 'αυτα', 'αυτά',
     'αυτες', 'αυτές', 'αυτοι', 'αυτοί', 'οποιος', 'όποιος', 'οποια', 'όποια',
     'οποιο', 'όποιο', 'καθε', 'κάθε', 'καποιος', 'κάποιος', 'καποια', 'κάποια',
     'καποιο', 'κάποιο', 'αλλος', 'άλλος', 'αλλη', 'άλλη', 'αλλο', 'άλλο',
-    // Επιρρήματα
     'πολυ', 'πολύ', 'λιγο', 'λίγο', 'πανω', 'πάνω', 'κατω', 'κάτω',
     'μεσα', 'μέσα', 'εξω', 'έξω', 'μπροστα', 'μπροστά', 'πισω', 'πίσω',
     'διπλα', 'δίπλα', 'κοντα', 'κοντά', 'μακρια', 'μακριά', 'τωρα', 'τώρα',
     'τοτε', 'τότε', 'παντα', 'πάντα', 'ποτε', 'ποτέ', 'ηδη', 'ήδη',
     'ακομα', 'ακόμα', 'μονο', 'μόνο', 'μαζι', 'μαζί', 'χωρις', 'χωρίς',
-    // Ρήματα
     'ειναι', 'είναι', 'εχει', 'έχει', 'κανει', 'κάνει', 'γινεται', 'γίνεται',
     'μπορει', 'μπορεί', 'πρεπει', 'πρέπει', 'θελει', 'θέλει',
-    // Άλλα
     'κλπ', 'κ.λπ.', 'κα', 'κ.ά.', 'πχ', 'π.χ.', 'δηλαδη', 'δηλαδή'
 ]);
 
@@ -59,13 +110,13 @@ const STOPWORDS = new Set([
 // ============================================================
 const PAGE_SIZE = 30;
 let visibleCount = PAGE_SIZE;
-let currentSort = 'severity-asc'; // default: βαρύτητα ↑ (πιο συχνές πρώτες)
+let currentSort = 'severity-asc';
 let currentFilter = 'all';
 let showFavorites = false;
 let activeKeyword = null;
 let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
-let expandedCards = {};        // ποιες κάρτες είναι expanded (εξωτερικό)
-let openDescriptions = {};     // ποιες περιγραφές είναι ανοιχτές (nested)
+let expandedCards = {};
+let openDescriptions = {};
 const selectedIds = new Set();
 
 // ============================================================
@@ -103,7 +154,7 @@ function safeStripSignCodes(text) {
 }
 
 // ============================================================
-// ΑΝΑΖΗΤΗΣΗ — Normalize + Stopwords + Synonyms + Prefix
+// ΑΝΑΖΗΤΗΣΗ — Normalize + Stopwords + Synonyms + Stem + Fuzzy
 // ============================================================
 function normalizeText(text) {
     if (!text) return '';
@@ -117,24 +168,27 @@ function removeStopwords(text) {
 }
 
 // ============================================================
-// QUERY MATCHER (cached) — v25.1 Performance Fix
-// ============================================================
-// Πριν: για κάθε render υπολογίζαμε το expandQuery(q) 235 φορές
-//        (μία για κάθε violation) → 235 × 50 synonyms = 11.750 iterations
-// Μετά: το expandQuery(q) υπολογίζεται ΜΙΑ φορά και επιστρέφεται
-//       μια συνάρτηση matcher που χρησιμοποιείται για κάθε violation.
-// Κέρδος: ~99% ταχύτερη αναζήτηση σε κάθε keystroke.
+// QUERY MATCHER (v25.2) — stemmer + per-token synonyms + fuzzy
 // ============================================================
 function buildQueryMatcher(query) {
-    const q = normalizeText(query).trim();
+    // Stopword removal ΚΑΙ στο query
+    const q = removeStopwords(normalizeText(query).trim());
     if (!q) return () => true;
 
-    // Expand με συνώνυμα — ΜΙΑ φορά, όχι 235
-    const expandedQueries = (typeof expandQuery === 'function')
-        ? expandQuery(q).map(normalizeText)
-        : [q];
+    // Per-token synonym expansion — κάθε token ξεχωριστά
+    const qTokens = q.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+    const expandedTokens = qTokens.map(tok => {
+        const syns = (typeof expandQuery === 'function')
+            ? expandQuery(tok).map(normalizeText)
+            : [tok];
+        return Array.from(new Set([tok, ...syns]));
+    });
 
-    // Επιστρέφουμε closure που χρησιμοποιεί τα προ-υπολογισμένα expandedQueries
+    // Cache των stems των query tokens
+    const tokenStems = expandedTokens.map(list =>
+        list.map(t => ({ word: t, stem: stemGreek(t) }))
+    );
+
     return function matches(violation) {
         const rawSearchable = [
             violation.name,
@@ -146,14 +200,34 @@ function buildQueryMatcher(query) {
 
         const normalized = normalizeText(rawSearchable);
         const noStop = removeStopwords(normalized);
-        const words = noStop.split(/\s+/);
+        const words = noStop.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+        const wordStems = words.map(w => stemGreek(w));
 
-        return expandedQueries.some(eq => {
-            if (!eq) return false;
-            // includes (substring match)
-            if (noStop.includes(eq)) return true;
-            // prefix match σε λέξεις
-            return words.some(w => w.startsWith(eq) && eq.length >= 3);
+        // ΚΑΘΕ query token πρέπει να βρει match (AND logic)
+        return tokenStems.every(tokenSynonyms => {
+            return tokenSynonyms.some(({ word: eq, stem: eqStem }) => {
+                if (!eq) return false;
+
+                // 1. Ακριβής λέξη
+                if (words.includes(eq)) return true;
+
+                // 2. Stem match (πτώσεις: κράνος ↔ κράνους)
+                if (eqStem.length >= 3 && wordStems.includes(eqStem)) return true;
+
+                // 3. Prefix match — min 2 για αριθμούς, 3 για λέξεις
+                const minPrefix = /^\d/.test(eq) ? 2 : 3;
+                if (eq.length >= minPrefix && words.some(w => w.startsWith(eq))) return true;
+
+                // 4. Substring — μόνο για >= 5 chars
+                if (eq.length >= 5 && noStop.includes(eq)) return true;
+
+                // 5. Fuzzy — typos, μόνο για >= 5 chars, edit distance ≤ 1
+                if (eq.length >= 5 && words.some(w =>
+                    w.length >= 5 && levenshtein(w, eq) <= 1
+                )) return true;
+
+                return false;
+            });
         });
     };
 }
@@ -165,8 +239,16 @@ function getSeverityScore(v) {
     return typeof v.severity === 'number' ? v.severity : 99;
 }
 
-function sortData(items) {
+function sortData(items, boostIds = null) {
     const sorted = [...items];
+    // Scenario boost: όσα είναι στο boostIds πάνε πρώτα
+    if (boostIds && boostIds.size > 0) {
+        sorted.sort((a, b) => {
+            const aBoost = boostIds.has(a.id) ? 0 : 1;
+            const bBoost = boostIds.has(b.id) ? 0 : 1;
+            return aBoost - bBoost;
+        });
+    }
     switch (currentSort) {
         case 'severity-asc':
             return sorted.sort((a, b) => {
@@ -248,8 +330,12 @@ function render() {
     const favIndicator = document.getElementById('favIndicator');
     const favCount = document.getElementById('favCount');
 
-    // Φιλτράρισμα — ο matcher υπολογίζεται ΜΙΑ φορά (v25.1)
+    // Φιλτράρισμα — ο matcher υπολογίζεται ΜΙΑ φορά
     const matches = buildQueryMatcher(query);
+    const normalizedQ = removeStopwords(normalizeText(query).trim());
+    const scenarioIds = normalizedQ.length >= 3
+        ? getScenarioMatchesCached(normalizedQ)
+        : new Set();
 
     let filtered = data.filter(v => {
         if (showFavorites && !favorites[v.id]) return false;
@@ -260,12 +346,15 @@ function render() {
             if (!ids.includes(v.id)) return false;
         }
 
+        // Αν το record είναι σε scenario → πάντα match
+        if (scenarioIds.has(v.id)) return true;
+
         if (!matches(v)) return false;
         return true;
     });
 
-    // Ταξινόμηση
-    filtered = sortData(filtered);
+    // Ταξινόμηση με scenario boost
+    filtered = sortData(filtered, scenarioIds);
 
     const total = data.length;
     const favsCount = getFavorites().length;
@@ -339,7 +428,6 @@ function renderCard(v) {
     const fineDisplay = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
     const severityLabel = getSeverityLabel(v);
 
-    // Collapsed card structure
     let expandedContent = '';
     if (isExpanded) {
         const signsRow = safeRenderSignIcons(v.name, v.id);
@@ -818,7 +906,6 @@ async function checkVersionUpdate() {
         const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
 
         if (!lastSeen) {
-            // Πρώτη φορά που τρέχει ο έλεγχος σε αυτή τη συσκευή — απλά καταγράφουμε, χωρίς modal
             localStorage.setItem(LAST_SEEN_KEY, remote.version);
             return;
         }
@@ -851,4 +938,29 @@ function showUpdateModal(prevVersion, remote) {
 function closeUpdateModal() {
     document.getElementById('updateModal').style.display = 'none';
     document.body.classList.remove('modal-open');
+}
+
+// ============================================================
+// AUTO-SUGGEST HOOK (χρησιμοποιείται από ui.js)
+// ============================================================
+function getSuggestions(query) {
+    if (!query || query.length < 2) return { scenarios: [], keywords: [], violations: [] };
+    const q = normalizeText(query).trim();
+
+    // 1. Scenarios
+    const scenarios = (typeof findMatchingScenarios === 'function')
+        ? findMatchingScenarios(q).slice(0, 3)
+        : [];
+
+    // 2. Keywords
+    const kws = (typeof findMatchingKeywords === 'function')
+        ? findMatchingKeywords(q).slice(0, 5)
+        : [];
+
+    // 3. Top violations (max 3)
+    const matcher = buildQueryMatcher(query);
+    const viols = data.filter(v => matcher(v)).slice(0, 3)
+        .map(v => ({ id: v.id, name: v.name, fine: v.fine }));
+
+    return { scenarios, keywords: kws, violations: viols };
 }
