@@ -207,6 +207,27 @@
     </div>
 </div>
 
+<!-- ===== UPDATE (NEW DATA VERSION) MODAL ===== -->
+<div id="updateModal" class="update-modal" style="display:none;">
+    <div class="update-modal-card">
+        <button class="update-modal-close" onclick="closeUpdateModal()">✕</button>
+        <h2>🔔 Νέα Έκδοση Δεδομένων</h2>
+        <p>Τα δεδομένα της εφαρμογής ενημερώθηκαν.</p>
+        <table class="version-table">
+            <tr><td>Προηγούμενη:</td><td id="prevVersion">—</td></tr>
+            <tr><td>Νέα:</td><td id="newVersion">—</td></tr>
+            <tr><td>Ημερομηνία:</td><td id="newDate">—</td></tr>
+        </table>
+        <div id="changelogContainer">
+            <h3>Τι άλλαξε:</h3>
+            <ul id="changelogList"></ul>
+        </div>
+        <div class="update-modal-actions">
+            <button class="update-ok-btn" onclick="closeUpdateModal()">Εντάξει</button>
+        </div>
+    </div>
+</div>
+
 <!-- ===== VEHICLE CHECK MODAL ===== -->
 <div id="vehicleCheckModal" class="vehicle-modal" style="display:none;">
     <div class="vehicle-modal-card">
@@ -338,6 +359,7 @@
             if (el) el.textContent = `Έκδοση δεδομένων: ${DATA_VERSION} (${DATA_UPDATED})`;
         }
     })();
+    checkVersionUpdate();
 
     // ===== ΟΔΗΓΟΣ ΧΡΗΣΗΣ =====
     function openGuideModal() {

@@ -791,3 +791,52 @@ function toggleHamburger() {
     }
 }
 */
+
+// ============================================================
+// DATA VERSION CHECK
+// ============================================================
+const VERSION_URL = 'data-version.json';
+const LAST_SEEN_KEY = 'kok_lastSeenVersion';
+
+async function checkVersionUpdate() {
+    try {
+        const response = await fetch(VERSION_URL, { cache: 'no-cache' });
+        if (!response.ok) return;
+        const remote = await response.json();
+        const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
+
+        if (!lastSeen) {
+            // Πρώτη φορά που τρέχει ο έλεγχος σε αυτή τη συσκευή — απλά καταγράφουμε, χωρίς modal
+            localStorage.setItem(LAST_SEEN_KEY, remote.version);
+            return;
+        }
+        if (lastSeen !== remote.version) {
+            showUpdateModal(lastSeen, remote);
+            localStorage.setItem(LAST_SEEN_KEY, remote.version);
+        }
+    } catch (err) {
+        console.warn('Αδυναμία ελέγχου έκδοσης:', err);
+    }
+}
+
+function showUpdateModal(prevVersion, remote) {
+    document.getElementById('prevVersion').textContent = prevVersion || '—';
+    document.getElementById('newVersion').textContent = remote.version || '—';
+    document.getElementById('newDate').textContent = remote.updated || '—';
+
+    const list = document.getElementById('changelogList');
+    list.innerHTML = '';
+    (remote.changelog || []).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        list.appendChild(li);
+    });
+
+    document.getElementById('updateModal').style.display = 'flex';
+    document.body.classList.add('modal-open');
+}
+
+function closeUpdateModal() {
+    document.getElementById('updateModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
+}

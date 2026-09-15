@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v32';
+const CACHE_VERSION = 'kok-v33';
 
 const CORE_URLS = [
   './',
@@ -7,6 +7,7 @@ const CORE_URLS = [
   './styles.css',
   './icons.js',
   './data.js',
+  './data-version.json',
   './synonyms.js',
   './keywords.js',
   './signs.js',
