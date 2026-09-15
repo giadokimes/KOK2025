@@ -1,6 +1,7 @@
 // ============================================================
-// ui.js – UI & PWA (v25.2)
+// ui.js – UI & PWA (v25.3)
 // + Auto-suggest dropdown (Φάση E)
+// + "Δες όλες τις X" button
 // ============================================================
 
 // ============================================================
@@ -199,7 +200,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // ============================================================
-// AUTO-SUGGEST DROPDOWN (v25.2 — Φάση E)
+// AUTO-SUGGEST DROPDOWN (v25.3 — Φάση E)
 // ============================================================
 (function initAutoSuggest() {
     const input = document.getElementById('searchInput');
@@ -223,7 +224,7 @@ if ('serviceWorker' in navigator) {
 
         const sug = (typeof getSuggestions === 'function')
             ? getSuggestions(query)
-            : { scenarios: [], keywords: [], violations: [] };
+            : { scenarios: [], keywords: [], violations: [], totalCount: 0 };
 
         const total = sug.scenarios.length + sug.keywords.length + sug.violations.length;
         if (total === 0) {
@@ -279,6 +280,17 @@ if ('serviceWorker' in navigator) {
             html += '</div></div>';
         }
 
+        // "Δες όλες τις X παραβάσεις →"
+        if (sug.totalCount > sug.violations.length) {
+            html += `
+                <div class="suggest-section">
+                    <button class="suggest-show-all" data-show-all="1">
+                        📋 Δες όλες τις ${sug.totalCount} παραβάσεις →
+                    </button>
+                </div>
+            `;
+        }
+
         dropdown.innerHTML = html;
         dropdown.style.display = 'block';
     }
@@ -287,7 +299,7 @@ if ('serviceWorker' in navigator) {
         dropdown.style.display = 'none';
     }
 
-    // Event delegation — αποφεύγει inline handlers με JSON
+    // Event delegation
     dropdown.addEventListener('click', (e) => {
         const scenarioBtn = e.target.closest('[data-scenario-ids]');
         if (scenarioBtn) {
@@ -307,13 +319,19 @@ if ('serviceWorker' in navigator) {
             focusViolation(id);
             return;
         }
- const keywordBtn = e.target.closest('[data-keyword]');
+
+        const keywordBtn = e.target.closest('[data-keyword]');
         if (keywordBtn) {
             applyKeyword(keywordBtn.dataset.keyword);
             return;
         }
+
+        const showAllBtn = e.target.closest('[data-show-all]');
+        if (showAllBtn) {
+            showAllResults();
+            return;
+        }
     });
-       
 
     // Debounced input
     let inputTimeout = null;
@@ -324,19 +342,19 @@ if ('serviceWorker' in navigator) {
         }, 200);
     });
 
-    // Focus → show if has value
+    // Focus
     input.addEventListener('focus', () => {
         if (input.value.trim().length >= 2) {
             renderSuggestions(input.value.trim());
         }
     });
 
-    // Blur → hide (with delay για να προλάβει το click)
+    // Blur
     input.addEventListener('blur', () => {
         hideTimeout = setTimeout(hideDropdown, 200);
     });
 
-    // Click σε dropdown → ακύρωσε το blur hide
+    // Click in dropdown → cancel blur
     dropdown.addEventListener('mousedown', () => {
         clearTimeout(hideTimeout);
     });
@@ -348,7 +366,7 @@ if ('serviceWorker' in navigator) {
         }
     });
 
-    // Κλείσιμο όταν αλλάζει φίλτρο / sort
+    // Click outside
     document.addEventListener('click', (e) => {
         if (!dropdown.contains(e.target) && e.target !== input) {
             hideDropdown();
@@ -397,13 +415,14 @@ function applyKeyword(kw) {
         setKeyword(kw);
     }
 }
+
 function showAllResults() {
     const dropdown = document.getElementById('suggestDropdown');
     if (dropdown) dropdown.style.display = 'none';
-    // Το render() διαβάζει την τρέχουσα τιμή του input και δείχνει όλα
     if (typeof render === 'function') render();
     if (typeof updateBodyPadding === 'function') updateBodyPadding();
 }
+
 // ============================================================
 // ΕΚΚΙΝΗΣΗ
 // ============================================================
@@ -428,7 +447,7 @@ async function loadExternalData() {
     if (otaInput && otaInput.value) onOtaSearch();
 }
 
-console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v25.2 - auto-suggest)');
+console.log('Φορτώθηκαν ' + data.length + ' παραβάσεις (v25.3 - auto-suggest + show-all)');
 loadExternalData();
 
 document.addEventListener('keydown', (e) => {
