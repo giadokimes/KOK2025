@@ -171,21 +171,29 @@ const synonyms = {
 // ============================================================
 function expandQuery(query) {
     if (!query) return [query];
-    const normalized = query.toLowerCase().trim();
+
+    // Helper: αφαιρεί τόνους
+    const strip = (s) => s.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+
+    const normalized = strip(query);
     const expanded = new Set([normalized]);
 
-    // 1. Direct synonyms
-    if (synonyms[normalized]) {
-        synonyms[normalized].forEach(syn => expanded.add(syn.toLowerCase()));
-    }
-
-    // 2. Partial match — προσθέτει το key ΚΑΙ τα synonyms του (2-level)
     Object.keys(synonyms).forEach(key => {
-        if (key.includes(normalized) && key !== normalized) {
-            expanded.add(key);
-            // ✅ Πρόσθεσε και τα synonyms αυτού του key
+        const normKey = strip(key);
+
+        // 1. Direct synonyms
+        if (normKey === normalized) {
+            synonyms[key].forEach(syn => expanded.add(strip(syn)));
+        }
+
+        // 2. Partial match (2-level expansion)
+        if (normKey.includes(normalized) && normKey !== normalized) {
+            expanded.add(normKey);
             if (synonyms[key]) {
-                synonyms[key].forEach(syn => expanded.add(syn.toLowerCase()));
+                synonyms[key].forEach(syn => expanded.add(strip(syn)));
             }
         }
     });
