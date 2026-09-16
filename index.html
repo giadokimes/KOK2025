@@ -175,6 +175,7 @@
 <!-- ===== SIGN MODAL ===== -->
 <div id="signModal">
     <div class="modal-box">
+        <button class="modal-close-btn" onclick="closeSignModal()">✕</button>
         <img id="modalSignImg" src="" alt="Πινακίδα">
         <h3 id="modalSignName"></h3>
         <div class="modal-details" id="modalSignDetails"></div>
@@ -185,7 +186,7 @@
 <!-- ===== GUIDE MODAL ===== -->
 <div id="guideModal" class="guide-modal" style="display:none;">
     <div class="guide-modal-card">
-        <button class="guide-modal-close" onclick="closeGuideModal()">✕</button>
+        <button class="guide-modal-close modal-close-btn" onclick="closeGuideModal()">✕</button>
         <h2>Οδηγός χρήσης</h2>
         <div class="guide-content">
             <section><h3>Αναζήτηση παραβάσεων</h3><p>Πληκτρολόγησε λέξη-κλειδί για γρήγορη εύρεση. Η αναζήτηση αγνοεί τόνους, κεφαλαία/πεζά και ορθογραφικά.</p></section>
@@ -207,8 +208,8 @@
 <!-- ===== UPDATE (NEW DATA VERSION) MODAL ===== -->
 <div id="updateModal" class="update-modal" style="display:none;">
     <div class="update-modal-card">
-        <button class="update-modal-close" onclick="closeUpdateModal()">✕</button>
-        <h2>🔔 Νέα Έκδοση Δεδομένων</h2>
+        <button class="update-modal-close modal-close-btn" onclick="closeUpdateModal()">✕</button>
+        <h2>Νέα Έκδοση Δεδομένων</h2>
         <p>Τα δεδομένα της εφαρμογής ενημερώθηκαν.</p>
         <table class="version-table">
             <tr><td>Προηγούμενη:</td><td id="prevVersion">—</td></tr>
@@ -228,7 +229,7 @@
 <!-- ===== VEHICLE CHECK MODAL ===== -->
 <div id="vehicleCheckModal" class="vehicle-modal" style="display:none;">
     <div class="vehicle-modal-card">
-        <button class="vehicle-modal-close" onclick="closeVehicleCheck()">×</button>
+        <button class="vehicle-modal-close modal-close-btn" onclick="closeVehicleCheck()">✕</button>
         <h2>Έλεγχος οχήματος</h2>
         <p class="vehicle-modal-subtitle">Έλεγχος ασφάλισης μέσω OpenCar (gov.gr).</p>
         <label for="vehiclePlateInput">Αριθμός κυκλοφορίας</label>

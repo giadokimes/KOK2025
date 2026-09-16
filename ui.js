@@ -237,14 +237,14 @@ if ('serviceWorker' in navigator) {
         // Scenarios
         if (sug.scenarios.length > 0) {
             html += '<div class="suggest-section">';
-            html += '<div class="suggest-label">🎯 Σενάριο</div>';
+            html += '<div class="suggest-label">Σενάριο</div>';
             sug.scenarios.forEach((s, idx) => {
                 html += `
                     <button class="suggest-item scenario" 
                             data-scenario-idx="${idx}"
                             data-scenario-ids="${escapeHtml(JSON.stringify(s.ids))}"
                             data-scenario-label="${escapeHtml(s.label)}">
-                        <span class="item-icon">${(typeof icon === 'function' ? icon('target', 'icon-svg') : '') || '🎯'}</span>
+                        <span class="item-icon">${(typeof icon === 'function' ? icon('navigation', 'icon-svg') : '') || ''}</span>
                         <span class="item-text">${escapeHtml(s.label)}</span>
                     </button>
                 `;
@@ -255,12 +255,12 @@ if ('serviceWorker' in navigator) {
         // Violations
         if (sug.violations.length > 0) {
             html += '<div class="suggest-section">';
-            html += '<div class="suggest-label">📋 Παραβάσεις</div>';
+            html += '<div class="suggest-label">Παραβάσεις</div>';
             sug.violations.forEach(v => {
                 const fine = typeof v.fine === 'number' ? v.fine + '€' : v.fine;
                 html += `
                     <button class="suggest-item" data-violation-id="${v.id}">
-                        <span class="item-icon">${(typeof icon === 'function' ? icon('fileText', 'icon-svg') : '') || '📋'}</span>
+                        <span class="item-icon">${(typeof icon === 'function' ? icon('fileText', 'icon-svg') : '') || ''}</span>
                         <span class="item-text">${escapeHtml(v.name)}</span>
                         <span class="item-meta">${escapeHtml(fine)}</span>
                     </button>
@@ -272,7 +272,7 @@ if ('serviceWorker' in navigator) {
         // Keywords
         if (sug.keywords.length > 0) {
             html += '<div class="suggest-section">';
-            html += '<div class="suggest-label">🔑 Λέξεις-κλειδιά</div>';
+            html += '<div class="suggest-label">Λέξεις-κλειδιά</div>';
             html += '<div class="suggest-keywords">';
             sug.keywords.forEach(kw => {
                 html += `<button class="keyword-chip" data-keyword="${escapeHtml(kw)}">${escapeHtml(kw)}</button>`;
@@ -285,7 +285,7 @@ if ('serviceWorker' in navigator) {
             html += `
                 <div class="suggest-section">
                     <button class="suggest-show-all" data-show-all="1">
-                        📋 Δες όλες τις ${sug.totalCount} παραβάσεις →
+                        Δες όλες τις ${sug.totalCount} παραβάσεις →
                     </button>
                 </div>
             `;

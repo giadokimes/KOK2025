@@ -1373,8 +1373,10 @@ body.dark .selection-footer {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 1000;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 10000;
     justify-content: center;
     align-items: center;
     padding: 20px;
@@ -1387,8 +1389,11 @@ body.dark .selection-footer {
     padding: 24px;
     text-align: center;
     border: 1px solid var(--border);
+    border-top: 3px solid #D9B36C;
     max-height: 90vh;
     overflow-y: auto;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    position: relative;
 }
 #signModal .modal-box img {
     max-width: 100%;
@@ -1422,6 +1427,29 @@ body.dark .selection-footer {
     font-family: inherit;
 }
 
+.modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+.modal-close-btn:hover {
+    background: var(--surface2);
+    color: var(--text);
+}
+
 .sign-unverified-warning {
     display: flex;
     align-items: center;
@@ -1449,13 +1477,14 @@ body.dark .selection-footer {
 .guide-modal {
     position: fixed;
     inset: 0;
-    z-index: 10001;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 18px;
     background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 .guide-modal-card {
     background: var(--bg2);
@@ -1466,21 +1495,16 @@ body.dark .selection-footer {
     overflow-y: auto;
     padding: 24px;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-}
-.guide-modal-close {
-    float: right;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: var(--muted);
-    cursor: pointer;
+    border-top: 3px solid #D9B36C;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    position: relative;
 }
 .guide-modal-card h2 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 12px;
+    padding-right: 28px;
 }
 .guide-content {
     display: flex;
@@ -1515,7 +1539,8 @@ body.dark .selection-footer {
     justify-content: center;
     padding: 18px;
     background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 .vehicle-modal-card {
     background: var(--bg2);
@@ -1524,13 +1549,16 @@ body.dark .selection-footer {
     width: 100%;
     padding: 24px;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow);
+    border-top: 3px solid #D9B36C;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    position: relative;
 }
 .vehicle-modal-card h2 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 6px;
+    padding-right: 28px;
 }
 .vehicle-modal-subtitle {
     color: var(--text2);
@@ -1603,28 +1631,20 @@ body.dark .selection-footer {
     background: var(--blue);
     color: #fff;
 }
-.vehicle-modal-close {
-    float: right;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: var(--muted);
-    cursor: pointer;
-    padding: 4px 8px;
-}
-
 /* ============================================================
    UPDATE (NEW DATA VERSION) MODAL
    ============================================================ */
 .update-modal {
     position: fixed;
     inset: 0;
-    z-index: 10001;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 18px;
     background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 .update-modal-card {
     background: var(--bg2);
@@ -1635,21 +1655,16 @@ body.dark .selection-footer {
     overflow-y: auto;
     padding: 24px;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-}
-.update-modal-close {
-    float: right;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: var(--muted);
-    cursor: pointer;
+    border-top: 3px solid #D9B36C;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    position: relative;
 }
 .update-modal-card h2 {
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 8px;
+    padding-right: 28px;
 }
 .update-modal-card > p {
     font-size: 14px;
