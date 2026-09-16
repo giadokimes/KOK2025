@@ -108,7 +108,7 @@ body.modal-open {
     align-items: center;
     flex-shrink: 0;
 }
-.logo-svg-compact {
+.logo-header-img {
     width: 36px;
     height: 36px;
 }
@@ -2083,7 +2083,7 @@ body.dark .suggest-item.scenario {
     .header-inner {
         gap: 8px;
     }
-    .logo-svg-compact {
+    .logo-header-img {
         width: 32px;
         height: 32px;
     }

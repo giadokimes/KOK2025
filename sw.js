@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v34';
+const CACHE_VERSION = 'kok-v35';
 
 const CORE_URLS = [
   './',
@@ -26,6 +26,7 @@ const CORE_URLS = [
   './fonts/inter-latin-ext-wght-normal.woff2',
   './icon-192-v2.png',
   './icon-512-v2.png',
+  './logo-header.png',
   './icon-maskable-512.png',
   './apple-touch-icon.png',
   './favicon-v2.ico',
