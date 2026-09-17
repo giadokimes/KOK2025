@@ -18,44 +18,128 @@ function getOtaSuggestions(query) {
         .slice(0, 10);
 }
 
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function onOtaSearch() {
     const input = document.getElementById('otaSearchInput');
     const suggestionsDiv = document.getElementById('otaSuggestions');
+    if (!input || !suggestionsDiv) return;
     const val = input.value;
     const suggestions = getOtaSuggestions(val);
     if (suggestions.length === 0) {
         suggestionsDiv.classList.remove('show');
+        suggestionsDiv.innerHTML = '';
         return;
     }
     suggestionsDiv.classList.add('show');
-    suggestionsDiv.innerHTML = suggestions.map(item =>
-        `<div class="suggestion-item" onclick="selectOta('${item.name}', '${item.code}')">
-            ${item.name} (${item.code})
+    suggestionsDiv.innerHTML = suggestions.map((item, idx) =>
+        `<div class="suggestion-item" data-ota-idx="${idx}" role="button" tabindex="0">
+            ${escapeHtml(item.name)} (${escapeHtml(item.code)})
         </div>`
     ).join('');
+    suggestionsDiv._otaSuggestions = suggestions;
 }
+
+
+(function() {
+    function handleOtaClick(e) {
+        const item = e.target.closest('.suggestion-item');
+        if (!item) return;
+        const suggestionsDiv =
+            document.getElementById('otaSuggestions');
+        if (!suggestionsDiv ||
+            !suggestionsDiv._otaSuggestions) return;
+        const idx = parseInt(item.dataset.otaIdx, 10);
+        if (isNaN(idx)) return;
+        const ota = suggestionsDiv._otaSuggestions[idx];
+        if (ota) selectOta(ota.name, ota.code);
+    }
+
+    function initOtaDelegation() {
+        const suggestionsDiv =
+            document.getElementById('otaSuggestions');
+        if (!suggestionsDiv || suggestionsDiv._otaBound)
+            return;
+        suggestionsDiv.addEventListener('click',
+            handleOtaClick);
+        suggestionsDiv._otaBound = true;
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded',
+            initOtaDelegation);
+    } else {
+        initOtaDelegation();
+    }
+})();
 
 function selectOta(name, code) {
     selectedOta = { name, code };
-    document.getElementById('otaSearchInput').value = name;
-    document.getElementById('otaCodeDisplay').textContent = 'Κωδικός: ' + code;
-    document.getElementById('otaNameDisplay').textContent = name;
-    document.getElementById('otaSuggestions').classList.remove('show');
-    localStorage.setItem('kok_selected_ota', JSON.stringify(selectedOta));
-    render();
-    showToast('Επιλέχθηκε: ' + name + ' (' + code + ')');
+    const searchInput =
+        document.getElementById('otaSearchInput');
+    const codeDisplay =
+        document.getElementById('otaCodeDisplay');
+    const nameDisplay =
+        document.getElementById('otaNameDisplay');
+    const suggestionsDiv =
+        document.getElementById('otaSuggestions');
+
+    if (searchInput) searchInput.value = name;
+    if (codeDisplay)
+        codeDisplay.textContent = 'Κωδικός: ' + code;
+    if (nameDisplay) nameDisplay.textContent = name;
+    if (suggestionsDiv) {
+        suggestionsDiv.classList.remove('show');
+        suggestionsDiv.innerHTML = '';
+        suggestionsDiv._otaSuggestions = null;
+    }
+
+    try {
+        localStorage.setItem('kok_selected_ota',
+            JSON.stringify(selectedOta));
+    } catch (e) {
+        console.warn('Could not save OTA selection', e);
+    }
+
+    if (typeof render === 'function') render();
+    if (typeof showToast === 'function') {
+        showToast('Επιλέχθηκε: ' + name + ' (' + code + ')');
+    }
 }
 
 function loadOtaSelection() {
     try {
-        const saved = JSON.parse(localStorage.getItem('kok_selected_ota'));
-        if (saved) {
+        const raw =
+            localStorage.getItem('kok_selected_ota');
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (saved && saved.name) {
             selectedOta = saved;
-            document.getElementById('otaSearchInput').value = saved.name || '';
-            document.getElementById('otaCodeDisplay').textContent = 'Κωδικός: ' + (saved.code || '—');
-            document.getElementById('otaNameDisplay').textContent = saved.name || '—';
+            const searchInput =
+                document.getElementById('otaSearchInput');
+            const codeDisplay =
+                document.getElementById('otaCodeDisplay');
+            const nameDisplay =
+                document.getElementById('otaNameDisplay');
+            if (searchInput)
+                searchInput.value = saved.name || '';
+            if (codeDisplay)
+                codeDisplay.textContent =
+                    'Κωδικός: ' + (saved.code || '—');
+            if (nameDisplay)
+                nameDisplay.textContent =
+                    saved.name || '—';
         }
-    } catch (e) {}
+    } catch (e) {
+        console.warn('Corrupt OTA selection, ignoring', e);
+    }
 }
 
 // ===== ΑΥΤΟΜΑΤΗ ΑΝΑΖΗΤΗΣΗ (Cloudflare Worker → OpenCage) =====
@@ -179,7 +263,12 @@ function detectAddress() {
 async function reverseGeocodeAddress(lat, lon) {
     try {
         const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=el&zoom=18&addressdetails=1`;
-        const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'KOK-Tsepis/25 (https://github.com/giadokimes/KOK2025)'
+            }
+        });
         if (!response.ok) {
             showToast('Σφάλμα επικοινωνίας με τον server.');
             return;

@@ -731,9 +731,6 @@ function calculateOffloaderFine(selected) {
 // ============================================================
 // EXPORT — SELECTED PDF (Κλήση)
 // ============================================================
-// ============================================================
-// EXPORT — SELECTED PDF (Κλήση)
-// ============================================================
 function exportSelectedToPDF() {
     const selected = data.filter(v => selectedIds.has(v.id));
     if (selected.length === 0) {
@@ -747,13 +744,22 @@ function exportSelectedToPDF() {
     const offloaderTotal = calculateOffloaderFine(selected);
     const otaText = (typeof selectedOta !== 'undefined' && selectedOta)
         ? `${selectedOta.name} (${selectedOta.code})` : '';
-    const addressText = localStorage.getItem('kok_last_address') || '';
+    let addressText = '';
+    try {
+        addressText = localStorage.getItem('kok_last_address') || '';
+    } catch (e) {}
 
-    const win = window.open('', '_blank', 'width=900,height=700');
-    if (!win) {
-        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
-        return;
+    const dataVer = (typeof DATA_VERSION !== 'undefined' ? DATA_VERSION : '—');
+    const dataUpd = (typeof DATA_UPDATED !== 'undefined' ? DATA_UPDATED : '');
+    const appVer = (typeof APP_VERSION !== 'undefined' ? APP_VERSION : '25');
+
+    let win = null;
+    try {
+        win = window.open('', '_blank', 'width=900,height=700');
+    } catch (e) {
+        win = null;
     }
+    const useBlobFallback = !win;
 
     const html = `
     <!DOCTYPE html>
@@ -1092,7 +1098,7 @@ function exportSelectedToPDF() {
         <div class="pdf-footer">
             <strong>Σημείωση:</strong> Το παρόν αποτελεί βοηθητικό σημείωμα καταγραφής και δεν υποκαθιστά το επίσημο έντυπο βεβαίωσης παράβασης. Τα στοιχεία πρέπει να επαληθεύονται με τις ισχύουσες διατάξεις του Κ.Ο.Κ.
             <br>
-            Δημιουργήθηκε με <strong>ΚΟΚ Τσέπης v25</strong> — Πατήστε Ctrl+P ή «Εκτύπωση» για αποθήκευση ως PDF.
+            Δημιουργήθηκε με <strong>ΚΟΚ Τσέπης v${appVer}</strong> — Δεδομένα: <strong>${dataVer}</strong>${dataUpd ? ' (' + dataUpd + ')' : ''} — Πατήστε Ctrl+P ή «Εκτύπωση» για αποθήκευση ως PDF.
         </div>
 
         <!-- Print button (screen only) -->
@@ -1103,6 +1109,21 @@ function exportSelectedToPDF() {
     </body>
     </html>
     `;
+
+    if (useBlobFallback) {
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bebaiosi-klisis-kok.html';
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+        showToast('Το popup μπλοκαρίστηκε — κατέβηκε αρχείο HTML. Άνοιξέ το και πάτα Εκτύπωση.');
+        return;
+    }
 
     win.document.write(html);
     win.document.close();
