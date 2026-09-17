@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v35';
+const CACHE_VERSION = 'kok-v36';
 
 const CORE_URLS = [
   './',
@@ -12,7 +12,9 @@ const CORE_URLS = [
   './keywords.js',
   './scenarios.js',
   './signs.js',
+  './signs-data.json',
   './ota.js',
+  './ota-data.json',
   './app.js',
   './ui.js',
   './vehicle-check.js',
@@ -35,8 +37,16 @@ const CORE_URLS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll(CORE_URLS))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_VERSION).then(async (cache) => {
+      await Promise.allSettled(
+        CORE_URLS.map(url =>
+          cache.add(url).catch(err => {
+            console.warn('Cache miss:', url, err);
+          })
+        )
+      );
+      return self.skipWaiting();
+    })
   );
 });
 
