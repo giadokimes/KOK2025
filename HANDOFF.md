@@ -14,7 +14,7 @@ Repo: https://github.com/giadokimes/KOK2025
 | Τομέας | Κατάσταση |
 |---|---|
 | Branch | pwa-update |
-| Δεδομένα | 235 εγγραφές |
+| Δεδομένα | 224 εγγραφές |
 | Αναζήτηση | Stemmer + synonyms + scenarios + auto-suggest |
 | Auto-suggest | Λειτουργεί (2+ chars) |
 | PDF Βεβαίωσης | Νέα μορφή (FROZEN) |
