@@ -1,5 +1,5 @@
 // ============================================================
-// ota.js – ΚΩΔΙΚΟΣ ΟΤΑ & ΓΕΩΤΟΠΟΘΕΣΙΑ (v24)
+// ota.js – ΚΩΔΙΚΟΣ ΟΤΑ & ΓΕΩΤΟΠΟΘΕΣΙΑ (v25)
 // ============================================================
 
 let otaList = [];
@@ -58,7 +58,7 @@ function loadOtaSelection() {
     } catch (e) {}
 }
 
-// ===== ΑΥΤΟΜΑΤΗ ΑΝΑΖΗΤΗΣΗ (OpenCage) =====
+// ===== ΑΥΤΟΜΑΤΗ ΑΝΑΖΗΤΗΣΗ (Cloudflare Worker → OpenCage) =====
 let geoInProgress = false;
 
 function detectLocation() {
@@ -100,11 +100,12 @@ async function waitForOtaList() {
 async function reverseGeocodeOta(lat, lon) {
     try {
         if (!(await waitForOtaList())) {
-            showToast('Η λίστα ΟΤΑ δεν φορτώθηκε. Δοκίμασε ξανά.');
+            showToast('Η λίστα ΟΤΑ δεν φόρτωσε. Δοκίμασε ξανά.');
             return;
         }
 
-        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=e693b1d11617416ba9df9797a1d0a66e&language=el`;
+        // ⚠️ Χρήση Cloudflare Worker proxy — το OpenCage key ΔΕΝ φαίνεται στον client
+        const url = `https://kok-geocode-proxy.sinoriakos.workers.dev/?q=${lat}+${lon}&language=el`;
         const response = await fetch(url);
         if (!response.ok) {
             showToast('Σφάλμα επικοινωνίας με τον server.');
