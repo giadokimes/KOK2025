@@ -114,7 +114,14 @@ let currentSort = 'severity-asc';
 let currentFilter = 'all';
 let showFavorites = false;
 let activeKeyword = null;
-let favorites = JSON.parse(localStorage.getItem('kok_favorites')) || {};
+let favorites = (() => {
+    try {
+        return JSON.parse(localStorage.getItem('kok_favorites')) || {};
+    } catch (e) {
+        console.warn('Corrupt favorites, resetting');
+        return {};
+    }
+})();
 let expandedCards = {};
 let openDescriptions = {};
 const selectedIds = new Set();
