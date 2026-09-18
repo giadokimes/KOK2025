@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'kok-v37';
+const CACHE_VERSION = 'kok-v38';
 
 const CORE_URLS = [
   './',
