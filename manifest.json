@@ -2,10 +2,17 @@
   "name": "ΚΟΚ Τσέπης",
   "short_name": "ΚΟΚ Τσέπης",
   "description": "Ο Κώδικας Οδικής Κυκλοφορίας στην τσέπη σου",
+  "lang": "el",
+  "dir": "ltr",
   "start_url": ".",
+  "scope": "/KOK2025/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
   "background_color": "#1a365d",
   "theme_color": "#1a365d",
+  "categories": ["education", "utilities", "travel"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192-v2.png",
