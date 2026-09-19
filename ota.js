@@ -1,9 +1,62 @@
 // ============================================================
-// ota.js – ΚΩΔΙΚΟΣ ΟΤΑ & ΓΕΩΤΟΠΟΘΕΣΙΑ (v25)
+// ota.js – ΚΩΔΙΚΟΣ ΟΤΑ & ΓΕΩΤΟΠΟΘΕΣΙΑ (v26)
 // ============================================================
 
 let otaList = [];
 let selectedOta = null;
+
+// ===== ΒΟΗΘΗΤΙΚΕΣ ΓΙΑ ΑΝΤΙΣΤΟΙΧΙΣΗ ΟΤΑ =====
+const OTA_NOISE_WORDS = new Set([
+    'κοινοτητα', 'δημος', 'δημου', 'δημοτικη', 'δημοτικης',
+    'ενοτητα', 'ενοτητας', 'τοπικη', 'τοπικης', 'περιφερειακη'
+]);
+
+function normalizeOtaString(str) {
+    if (!str) return '';
+    return str.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[-–—\/,]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function stripOtaNoiseWords(str) {
+    return normalizeOtaString(str)
+        .split(' ').filter(w => w && !OTA_NOISE_WORDS.has(w))
+        .join(' ').trim();
+}
+
+function findOtaMatch(municipality) {
+    if (!municipality) return null;
+    const inputNorm = normalizeOtaString(municipality);
+    const inputStripped = stripOtaNoiseWords(municipality);
+    const inputTokens = inputStripped.split(' ').filter(Boolean);
+
+    // 1) Ακριβής ταύτιση μετά την αφαίρεση θορύβου
+    let found = otaList.find(item =>
+        stripOtaNoiseWords(item.name) === inputStripped
+    );
+    if (found) return found;
+
+    // 2) Substring match (και προς τις δύο κατευθύνσεις)
+    found = otaList.find(item => {
+        const itemNorm = normalizeOtaString(item.name);
+        return itemNorm.includes(inputNorm) || inputNorm.includes(itemNorm);
+    });
+    if (found) return found;
+
+    // 3) Όλα τα tokens εισόδου υπάρχουν στο ΟΤΑ (ή ως πρόθεμα)
+    if (inputTokens.length > 0) {
+        found = otaList.find(item => {
+            const otaTokens = stripOtaNoiseWords(item.name).split(' ').filter(Boolean);
+            return inputTokens.every(t =>
+                otaTokens.some(ot => ot === t || ot.startsWith(t) || t.startsWith(ot))
+            );
+        });
+        if (found) return found;
+    }
+    return null;
+}
 
 // ===== ΧΕΙΡΟΚΙΝΗΤΗ ΑΝΑΖΗΤΗΣΗ =====
 function getOtaSuggestions(query) {
@@ -207,11 +260,7 @@ async function reverseGeocodeOta(lat, lon) {
                                 components.city;
 
             if (municipality) {
-                const normalized = municipality.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                let found = otaList.find(item => {
-                    const itemNorm = item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                    return itemNorm.includes(normalized) || normalized.includes(itemNorm);
-                });
+                const found = findOtaMatch(municipality);
                 if (found) {
                     selectOta(found.name, found.code);
                     showToast('Εντοπίστηκε: ' + found.name + ' (' + found.code + ')');
