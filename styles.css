@@ -539,6 +539,7 @@ body.modal-open {
 .filters {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     padding: 4px 2px 8px 2px;
 }
@@ -889,12 +890,33 @@ body.dark .violation-card .card-icon[data-category="υποτροπή"] .icon-svg
 }
 
 .violation-card .select-check {
-    accent-color: var(--blue);
-    width: 28px;
-    height: 28px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
     cursor: pointer;
     flex-shrink: 0;
-    margin-top: 4px;
+    margin-top: 7px;
+    position: relative;
+    transition: all 0.15s;
+}
+.violation-card .select-check:checked {
+    background: var(--gold-strong);
+    border-color: var(--gold-strong);
+}
+.violation-card .select-check:checked::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .card-expand-toggle {
