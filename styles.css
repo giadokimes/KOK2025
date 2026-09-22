@@ -43,6 +43,9 @@
     --card-bg: rgba(255, 255, 255, 0.9);
     --bottom-nav-height: 64px;
     --selection-footer-height: 64px;
+    --gold: #D9B36C;
+    --gold-strong: #8C6F3A;
+    --gold-text: #8A6D23;
 }
 
 body.dark {
@@ -58,6 +61,7 @@ body.dark {
     --shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
     --header-bg: linear-gradient(135deg, #0D3566, #082347);
     --card-bg: rgba(8, 23, 47, 0.58);
+    --gold-text: #E8CC96;
 }
 
 html {
@@ -313,13 +317,56 @@ body.modal-open {
 /* ============================================================
    OTA & ADDRESS
    ============================================================ */
+.ota-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+.ota-section-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+}
+.ota-section-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ota-section-toggle-label .icon-svg {
+    width: 16px;
+    height: 16px;
+    color: var(--text2);
+}
+.ota-section-chevron {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+}
+.ota-section.open .ota-section-chevron {
+    transform: rotate(180deg);
+}
+.ota-section-body {
+    display: none;
+}
+.ota-section.open .ota-section-body {
+    display: block;
+}
 .ota-address-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 10px;
-    padding: 16px 16px 8px 16px;
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 12px 0 8px 0;
 }
 .ota-input-wrap {
     position: relative;
@@ -415,7 +462,7 @@ body.modal-open {
     .ota-address-grid {
         grid-template-columns: 1fr;
         gap: 8px;
-        padding: 12px 12px 6px 12px;
+        padding: 10px 0 6px 0;
     }
     .geo-buttons {
         gap: 6px;
@@ -491,16 +538,9 @@ body.modal-open {
 }
 .filters {
     display: flex;
-    overflow-x: auto;
+    flex-wrap: wrap;
     gap: 10px;
     padding: 4px 2px 8px 2px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
-    mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
-}
-.filters::-webkit-scrollbar {
-    display: none;
 }
 .filters button {
     flex: 0 0 auto;
@@ -519,10 +559,10 @@ body.modal-open {
     white-space: nowrap;
 }
 .filters button.active {
-    background: var(--blue);
+    background: var(--gold-strong);
     color: #fff;
-    border-color: var(--blue);
-    box-shadow: 0 2px 8px rgba(30, 90, 168, 0.25);
+    border-color: var(--gold-strong);
+    box-shadow: 0 2px 8px rgba(140, 111, 58, 0.3);
 }
 .filters button:hover:not(.active) {
     background: var(--surface);
@@ -672,6 +712,19 @@ body.modal-open {
     transform: translateY(-1px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
+.violation-card.selected {
+    background: rgba(251, 246, 236, 0.94);
+    border-color: var(--gold);
+}
+body.dark .violation-card.selected {
+    background: rgba(43, 34, 12, 0.55);
+}
+.card-selected-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold-text);
+    margin-top: 2px;
+}
 
 .violation-card .card-top {
     display: flex;
@@ -693,6 +746,58 @@ body.modal-open {
     height: 18px;
     color: var(--blue-light);
 }
+
+/* Per-category icon badge colors — muted/institutional tones, not saturated */
+.violation-card .card-icon[data-category="στάθμευση"] { background: #E3E8EF; }
+.violation-card .card-icon[data-category="στάθμευση"] .icon-svg { color: #35507A; }
+.violation-card .card-icon[data-category="κίνηση"] { background: #EAE6DE; }
+.violation-card .card-icon[data-category="κίνηση"] .icon-svg { color: #6B5B3E; }
+.violation-card .card-icon[data-category="σήμανση"] { background: #E1E9E6; }
+.violation-card .card-icon[data-category="σήμανση"] .icon-svg { color: #3D6259; }
+.violation-card .card-icon[data-category="ταχύτητα"] { background: #F0E6DE; }
+.violation-card .card-icon[data-category="ταχύτητα"] .icon-svg { color: #8A4A2E; }
+.violation-card .card-icon[data-category="ασφάλεια"] { background: #EFE1E3; }
+.violation-card .card-icon[data-category="ασφάλεια"] .icon-svg { color: #7A3A42; }
+.violation-card .card-icon[data-category="έγγραφα"] { background: #E6E9DD; }
+.violation-card .card-icon[data-category="έγγραφα"] .icon-svg { color: #56603A; }
+.violation-card .card-icon[data-category="φορτηγά"] { background: #E1E4EA; }
+.violation-card .card-icon[data-category="φορτηγά"] .icon-svg { color: #3A4A63; }
+.violation-card .card-icon[data-category="δίκυκλα"] { background: #EDE3DA; }
+.violation-card .card-icon[data-category="δίκυκλα"] .icon-svg { color: #7A4D2E; }
+.violation-card .card-icon[data-category="ΕΠΗΟ"] { background: #DEE9E7; }
+.violation-card .card-icon[data-category="ΕΠΗΟ"] .icon-svg { color: #2E6B63; }
+.violation-card .card-icon[data-category="επαγγελματικά"] { background: #E7E1EA; }
+.violation-card .card-icon[data-category="επαγγελματικά"] .icon-svg { color: #5A3E6B; }
+.violation-card .card-icon[data-category="αλκοόλ"] { background: #F0DFDF; }
+.violation-card .card-icon[data-category="αλκοόλ"] .icon-svg { color: #8A2E2E; }
+.violation-card .card-icon[data-category="υποτροπή"] { background: #E3E3E3; }
+.violation-card .card-icon[data-category="υποτροπή"] .icon-svg { color: #444444; }
+
+body.dark .violation-card .card-icon[data-category="στάθμευση"] { background: rgba(80, 120, 180, 0.18); }
+body.dark .violation-card .card-icon[data-category="στάθμευση"] .icon-svg { color: #8FAFDE; }
+body.dark .violation-card .card-icon[data-category="κίνηση"] { background: rgba(160, 140, 90, 0.18); }
+body.dark .violation-card .card-icon[data-category="κίνηση"] .icon-svg { color: #D2BE94; }
+body.dark .violation-card .card-icon[data-category="σήμανση"] { background: rgba(70, 140, 120, 0.18); }
+body.dark .violation-card .card-icon[data-category="σήμανση"] .icon-svg { color: #8FC2B4; }
+body.dark .violation-card .card-icon[data-category="ταχύτητα"] { background: rgba(180, 100, 60, 0.18); }
+body.dark .violation-card .card-icon[data-category="ταχύτητα"] .icon-svg { color: #E0A57E; }
+body.dark .violation-card .card-icon[data-category="ασφάλεια"] { background: rgba(170, 80, 95, 0.18); }
+body.dark .violation-card .card-icon[data-category="ασφάλεια"] .icon-svg { color: #DE97A2; }
+body.dark .violation-card .card-icon[data-category="έγγραφα"] { background: rgba(130, 150, 80, 0.18); }
+body.dark .violation-card .card-icon[data-category="έγγραφα"] .icon-svg { color: #B8C48F; }
+body.dark .violation-card .card-icon[data-category="φορτηγά"] { background: rgba(80, 100, 140, 0.18); }
+body.dark .violation-card .card-icon[data-category="φορτηγά"] .icon-svg { color: #93A8CC; }
+body.dark .violation-card .card-icon[data-category="δίκυκλα"] { background: rgba(170, 110, 60, 0.18); }
+body.dark .violation-card .card-icon[data-category="δίκυκλα"] .icon-svg { color: #DDAE7E; }
+body.dark .violation-card .card-icon[data-category="ΕΠΗΟ"] { background: rgba(60, 150, 135, 0.18); }
+body.dark .violation-card .card-icon[data-category="ΕΠΗΟ"] .icon-svg { color: #85CABF; }
+body.dark .violation-card .card-icon[data-category="επαγγελματικά"] { background: rgba(120, 80, 150, 0.18); }
+body.dark .violation-card .card-icon[data-category="επαγγελματικά"] .icon-svg { color: #BC9CD1; }
+body.dark .violation-card .card-icon[data-category="αλκοόλ"] { background: rgba(180, 60, 60, 0.18); }
+body.dark .violation-card .card-icon[data-category="αλκοόλ"] .icon-svg { color: #E08A8A; }
+body.dark .violation-card .card-icon[data-category="υποτροπή"] { background: rgba(150, 150, 150, 0.18); }
+body.dark .violation-card .card-icon[data-category="υποτροπή"] .icon-svg { color: #C4C4C4; }
+
 .violation-card .card-main {
     flex: 1 1 auto;
     min-width: 0;
@@ -808,15 +913,15 @@ body.modal-open {
     min-height: 36px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--text2);
+    color: var(--gold-text);
     cursor: pointer;
     transition: all 0.15s;
     font-family: inherit;
 }
 .toggle-details-btn:hover {
     background: var(--surface2);
-    border-color: var(--blue-light);
-    color: var(--blue-light);
+    border-color: var(--gold);
+    color: var(--gold-text);
 }
 .toggle-details-btn .icon-svg {
     width: 14px;
@@ -835,7 +940,7 @@ body.modal-open {
 }
 
 .card-divider {
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--gold);
     margin: 10px 0;
 }
 

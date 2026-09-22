@@ -67,43 +67,55 @@
     </button>
 </div>
 
-<!-- ===== OTA & ADDRESS ===== -->
-<div class="ota-address-grid">
-    <div class="ota-input-wrap">
-        <input type="text" id="otaSearchInput" placeholder="Αναζήτηση ΟΤΑ..." oninput="onOtaSearch()" autocomplete="off">
-        <div class="ota-suggestions" id="otaSuggestions"></div>
-    </div>
-    <div class="geo-buttons">
-        <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Εύρεση ΟΤΑ">
+<!-- ===== OTA & ADDRESS (collapsible) ===== -->
+<div class="ota-section" id="otaSection">
+    <button class="ota-section-toggle" onclick="toggleOtaSection()" aria-expanded="false" aria-controls="otaSectionBody">
+        <span class="ota-section-toggle-label">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>ΟΤΑ</span>
-        </button>
-        <button id="addrBtn" class="geo-btn" onclick="detectAddress()" title="Εντοπισμός διεύθυνσης">
-            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-            <span>Διεύθυνση</span>
-        </button>
-    </div>
-</div>
+            ΟΤΑ / Διεύθυνση
+        </span>
+        <svg class="icon-svg ota-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="ota-section-body" id="otaSectionBody">
+        <div class="ota-address-grid">
+            <div class="ota-input-wrap">
+                <input type="text" id="otaSearchInput" placeholder="Αναζήτηση ΟΤΑ..." oninput="onOtaSearch()" autocomplete="off">
+                <div class="ota-suggestions" id="otaSuggestions"></div>
+            </div>
+            <div class="geo-buttons">
+                <button id="geoBtn" class="geo-btn" onclick="detectLocation()" title="Εύρεση ΟΤΑ">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>ΟΤΑ</span>
+                </button>
+                <button id="addrBtn" class="geo-btn" onclick="detectAddress()" title="Εντοπισμός διεύθυνσης">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                    <span>Διεύθυνση</span>
+                </button>
+            </div>
+        </div>
 
-<!-- ===== OTA CARD ===== -->
-<div class="ota-card" id="otaCard">
-    <div class="ota-card-row">
-        <span class="ota-label">ΚΩΔΙΚΟΣ ΟΤΑ</span>
-        <span class="ota-code" id="otaCodeDisplay">—</span>
-    </div>
-    <div class="ota-card-row">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span id="otaNameDisplay">—</span>
-    </div>
-    <div class="ota-divider"></div>
-    <div class="ota-card-row">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        <span id="addressText" class="address-placeholder">Τοποθεσία: Άγνωστη</span>
+        <!-- ===== OTA CARD ===== -->
+        <div class="ota-card" id="otaCard">
+            <div class="ota-card-row">
+                <span class="ota-label">ΚΩΔΙΚΟΣ ΟΤΑ</span>
+                <span class="ota-code" id="otaCodeDisplay">—</span>
+            </div>
+            <div class="ota-card-row">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span id="otaNameDisplay">—</span>
+            </div>
+            <div class="ota-divider"></div>
+            <div class="ota-card-row">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                <span id="addressText" class="address-placeholder">Τοποθεσία: Άγνωστη</span>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- ===== FILTERS ===== -->
 <div class="filters-wrapper">
+
     <div class="filters" id="filterContainer">
         <button data-filter="all" onclick="setFilter('all')" class="active">Όλες</button>
         <button data-filter="στάθμευση" onclick="setFilter('στάθμευση')">Στάθμευση</button>

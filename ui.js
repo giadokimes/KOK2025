@@ -78,6 +78,14 @@ function updateBottomNavInstallVisibility() {
     }
 }
 
+function toggleOtaSection() {
+    const section = document.getElementById('otaSection');
+    const toggleBtn = section ? section.querySelector('.ota-section-toggle') : null;
+    if (!section || !toggleBtn) return;
+    const isOpen = section.classList.toggle('open');
+    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
 function toggleMoreSheet() {
     const sheet = document.getElementById('moreSheet');
     const overlay = document.getElementById('moreSheetOverlay');
@@ -440,6 +448,11 @@ async function loadExternalData() {
         console.warn('Δεν φορτώθηκαν τα εξωτερικά αρχεία:', e);
     }
     loadSavedAddress();
+    const hasSavedOta = localStorage.getItem('kok_selected_ota') || localStorage.getItem('kok_last_address');
+    if (hasSavedOta) {
+        const otaSection = document.getElementById('otaSection');
+        if (otaSection) otaSection.classList.add('open');
+    }
     render();
     updateBottomNavActive();
     updateBodyPadding();

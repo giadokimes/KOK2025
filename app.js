@@ -463,12 +463,13 @@ function renderCard(v) {
     }
 
     return `
-        <div class="violation-card ${isExpanded ? 'expanded' : 'collapsed'}">
+        <div class="violation-card ${isExpanded ? 'expanded' : 'collapsed'} ${selectedIds.has(v.id) ? 'selected' : ''}">
             <div class="card-top">
                 <input type="checkbox" class="select-check" data-id="${v.id}" onchange="toggleSelection(${v.id})" ${selectedIds.has(v.id) ? 'checked' : ''}>
-                <div class="card-icon">${iconSvg}</div>
+                <div class="card-icon" data-category="${v.category}">${iconSvg}</div>
                 <div class="card-main">
                     <div class="card-title">${safeStripSignCodes(v.name)} ${criminalBadge}</div>
+                    ${selectedIds.has(v.id) ? '<div class="card-selected-label">Επιλεγμένο για PDF</div>' : ''}
                 </div>
                 <div class="card-price-wrap">
                     <div class="card-price" style="color:${priceColor};">${fineDisplay}</div>
