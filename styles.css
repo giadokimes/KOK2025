@@ -835,11 +835,12 @@ body.dark .violation-card .card-icon[data-category="υποτροπή"] .icon-svg
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 2px 6px;
+    padding: 3px 6px;
     white-space: normal;
     word-break: normal;
     overflow-wrap: break-word;
     text-align: right;
+}
 }
 .badge-criminal {
     display: inline-block;
