@@ -87,6 +87,7 @@ body.modal-open {
 /* ============================================================
    HEADER
    ============================================================ */
+
 .header {
     background: var(--header-bg);
     backdrop-filter: blur(var(--blur));
@@ -98,7 +99,6 @@ body.modal-open {
     z-index: 100;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
-
 .header-inner {
     display: flex;
     align-items: center;
