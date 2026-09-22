@@ -477,10 +477,8 @@ body.modal-open {
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
     padding: 14px 16px;
-    margin: 0 16px 12px 16px;
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 12px auto;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 .ota-card-row {
