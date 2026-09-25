@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "gr.hellenicsimplesolutions.kok",
-        "sha256_cert_fingerprints": ["FF:C7:4F:3A:08:79:A6:13:FF:6A:09:32:8E:88:60:E9:98:FA:1B:A6:3C:0D:77:27:2D:D8:C9:03:2C:9A:CB:A6"]
+        "sha256_cert_fingerprints": ["FF:C7:4F:3A:08:79:A6:13:FF:6A:09:32:8E:88:60:E9:98:FA:1B:A6:3C:0D:77:27:2D:D8:C9:03:2C:9A:CB:A6", "A4:8C:8A:01:F8:A4:AE:D0:7C:C1:9B:12:BC:56:CC:8A:09:D6:E6:53:8B:61:C8:E2:9F:B2:04:96:03:44:55:72"]
       }
     }]
