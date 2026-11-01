@@ -4,7 +4,7 @@
 const DATA_VERSION = "2026.09";
 const DATA_UPDATED = "Σεπτέμβριος 2026";
 const DATA_SOURCE = "Ν.5209/2025, όπως κωδικοποιήθηκε με τον Ν.5322/2026 (ΦΕΚ Α' 117)";
-const APP_VERSION = "26";
+const APP_VERSION = "26.1";
 
 const data = [
     // ===== ΣΤΑΘΜΕΥΣΗ (1-36) =====
