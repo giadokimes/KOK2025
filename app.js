@@ -1,7 +1,8 @@
 // ============================================================
-// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v25.2)
+// app.js – ΚΥΡΙΕΣ ΣΥΝΑΡΤΗΣΕΙΣ (v26.1)
 // Collapsed cards, pagination, sort by severity, bottom nav
 // + Greek stemmer, fuzzy, scenarios, per-token synonyms
+// + Fallback για PDF αγαπημένων (για TWA/Play Store)
 // ============================================================
 
 const categoryIcons = {
@@ -551,8 +552,9 @@ function toggleFavorites() {
 function getFavorites() {
     return data.filter(v => favorites[v.id]);
 }
+
 // ============================================================
-// EXPORT — FAVORITES PDF
+// EXPORT — FAVORITES PDF (v26.1 με fallback για TWA)
 // ============================================================
 function exportFavorites() {
     const favs = getFavorites();
@@ -560,11 +562,16 @@ function exportFavorites() {
         showToast('Δεν έχετε επιλέξει αγαπημένες παραβάσεις.');
         return;
     }
-    const win = window.open('', '_blank', 'width=900,height=700');
-    if (!win) {
-        showToast('Άνοιξε ένα popup για να συνεχίσεις.');
-        return;
+
+    let win = null;
+    try {
+        win = window.open('', '_blank', 'width=900,height=700');
+    } catch (e) {
+        win = null;
     }
+    const useBlobFallback = !win;
+
+    const appVer = (typeof APP_VERSION !== 'undefined' ? APP_VERSION : '26.1');
     const html = `
     <!DOCTYPE html>
     <html>
@@ -590,9 +597,9 @@ function exportFavorites() {
     </head>
     <body>
         <h1>Αγαπημένες Παραβάσεις Κ.Ο.Κ.</h1>
-        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v25» — ${new Date().toLocaleDateString()}</p>
+        <p class="sub">Εξαγωγή από την εφαρμογή «ΚΟΚ – Τσέπης v${appVer}» — ${new Date().toLocaleDateString('el-GR')}</p>
         ${favs.map(v => {
-            const ota = selectedOta;
+            const ota = (typeof selectedOta !== 'undefined') ? selectedOta : null;
             return `
             <div class="card">
                 <div class="name">${safeReplaceSignCodes(v.name)}</div>
@@ -614,6 +621,22 @@ function exportFavorites() {
     </body>
     </html>
     `;
+
+    if (useBlobFallback) {
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'agapimenes-paravaseis-kok.html';
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+        showToast('Το popup μπλοκαρίστηκε — κατέβηκε αρχείο HTML. Άνοιξέ το και πάτα Εκτύπωση.');
+        return;
+    }
+
     win.document.write(html);
     win.document.close();
     setTimeout(() => { win.focus(); win.print(); }, 500);
@@ -752,7 +775,7 @@ function exportSelectedToPDF() {
 
     const dataVer = (typeof DATA_VERSION !== 'undefined' ? DATA_VERSION : '—');
     const dataUpd = (typeof DATA_UPDATED !== 'undefined' ? DATA_UPDATED : '');
-    const appVer = (typeof APP_VERSION !== 'undefined' ? APP_VERSION : '25');
+    const appVer = (typeof APP_VERSION !== 'undefined' ? APP_VERSION : '26.1');
 
     let win = null;
     try {
